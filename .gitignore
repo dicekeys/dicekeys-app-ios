@@ -160,31 +160,6 @@ xcuserdata
 dump.rdb
 *.orig
 
-ios/fastlane/report.xml
-android/app/app-release.apk
-android/app/app-release.apk.zip
-
-# Haskell
-dist
-dist-*
-cabal-dev
-*.o
-*.hi
-*.chi
-*.chs.h
-*.dyn_o
-*.dyn_hi
-.hpc
-.hsenv
-.cabal-sandbox/
-cabal.sandbox.config
-*.prof
-*.aux
-*.hp
-*.eventlog
-.stack-work/
-cabal.project.local
-.HTF/
 
 # Idea
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
@@ -240,15 +215,5 @@ fabric.properties
 # Haskell Idea plugin
 .ideaHaskellLib
 
-# Elm
-# elm-package generated files
-elm-stuff
-# elm-repl generated files
-repl-temp-*
-fastlane/report.xml
-*.dSYM.zip
+ios/
 
-.idea/
-
-fastlane/Appfile
-fastlane/report.xml
