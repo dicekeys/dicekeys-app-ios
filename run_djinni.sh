@@ -61,7 +61,6 @@ $BASE_DIR/deps/djinni/src/run \
     --ident-java-field fooBar \
     --ident-java-enum FooBar \
     --ident-java-type FooBar \
-
     \
     --jni-out $JNI_OUTPUT_FOLDER \
     --ident-jni-class NativeFooBar \
