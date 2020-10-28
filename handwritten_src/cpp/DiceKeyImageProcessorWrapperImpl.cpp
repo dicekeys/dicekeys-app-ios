@@ -23,4 +23,30 @@ std::string DiceKeyImageProcessorWrapperImpl::getHelloWorld() {
 
     return myString;
 }
+
+bool DiceKeyImageProcessorWrapperImpl::processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & data) {
+    return true;
+}
+
+bool DiceKeyImageProcessorWrapperImpl::processRGBAImageAndRenderOverlay(int32_t width, int32_t height, const std::vector<uint8_t> & data) {
+    return true;
+}
+
+bool DiceKeyImageProcessorWrapperImpl::processAndAugmentRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & data) {
+    return true;
+}
+
+std::string DiceKeyImageProcessorWrapperImpl::readJson() {
+    return "{}";
+}
+
+bool DiceKeyImageProcessorWrapperImpl::isFinished() {
+    return true;
+}
+
+std::vector<uint8_t> DiceKeyImageProcessorWrapperImpl::getFaceImage(int32_t faceIndex, int32_t height, const std::vector<uint8_t> & data) {
+    std::vector<uint8_t> bytes;
+    return  bytes;
+}
+
 }

@@ -11,8 +11,17 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        // Initialize wrapper
         let processor = DKDiceKeyImageProcessorWrapper.create()!
         print(processor.getHelloWorld())
+
+        // Test API
+        print(processor.processRGBAImage(800, height: 600, data: Data()))
+        print(processor.processAndAugmentRGBAImage(800, height: 600, data: Data()))
+        print(processor.processRGBAImageAndRenderOverlay(800, height: 600, data: Data()))
+        print(processor.readJson())
+        print(processor.isFinished())
 
         return true
     }
