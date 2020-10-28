@@ -8,13 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		6F3EE37325499EB7002602CD /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F3EE37225499EB7002602CD /* opencv2.framework */; };
-		6F3EE3BF25499F9B002602CD /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6F3EE37E25499F9B002602CD /* CMakeLists.txt */; };
 		6F3EE3C025499F9B002602CD /* dicekey-from-human-readable-form.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE37F25499F9B002602CD /* dicekey-from-human-readable-form.cpp */; };
 		6F3EE3C125499F9B002602CD /* dicekey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE38125499F9B002602CD /* dicekey.cpp */; };
 		6F3EE3C225499F9B002602CD /* dicekey-face-specification.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE38425499F9B002602CD /* dicekey-face-specification.cpp */; };
 		6F3EE3C325499F9B002602CD /* face.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE38625499F9B002602CD /* face.cpp */; };
 		6F3EE3C425499F9B002602CD /* assemble-dicekey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE38C25499F9B002602CD /* assemble-dicekey.cpp */; };
-		6F3EE3C525499F9B002602CD /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6F3EE38E25499F9B002602CD /* CMakeLists.txt */; };
 		6F3EE3C625499F9B002602CD /* decode-die.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE38F25499F9B002602CD /* decode-die.cpp */; };
 		6F3EE3C725499F9B002602CD /* inconsolata-700.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE39425499F9B002602CD /* inconsolata-700.cpp */; };
 		6F3EE3C825499F9B002602CD /* face-read.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE39725499F9B002602CD /* face-read.cpp */; };
@@ -31,6 +29,7 @@
 		6F3EE3D325499F9B002602CD /* validate-faces-read.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE3B925499F9B002602CD /* validate-faces-read.cpp */; };
 		6F3EE3D425499F9B002602CD /* visualize-read-results.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE3BB25499F9B002602CD /* visualize-read-results.cpp */; };
 		6F3EE3D525499F9B002602CD /* write-face-characters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE3BD25499F9B002602CD /* write-face-characters.cpp */; };
+		6F3EE3E32549A37D002602CD /* app.djinni in Resources */ = {isa = PBXBuildFile; fileRef = 6F3EE3E22549A37D002602CD /* app.djinni */; };
 		6FAC6AAA25480DE000AA8249 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AA925480DE000AA8249 /* AppDelegate.swift */; };
 		6FAC6AAC25480DE000AA8249 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AAB25480DE000AA8249 /* SceneDelegate.swift */; };
 		6FAC6AB125480DE000AA8249 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FAC6AAF25480DE000AA8249 /* Main.storyboard */; };
@@ -123,6 +122,7 @@
 		6F3EE3BC25499F9B002602CD /* visualize-read-results.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "visualize-read-results.h"; sourceTree = "<group>"; };
 		6F3EE3BD25499F9B002602CD /* write-face-characters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "write-face-characters.cpp"; sourceTree = "<group>"; };
 		6F3EE3BE25499F9B002602CD /* write-face-characters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "write-face-characters.h"; sourceTree = "<group>"; };
+		6F3EE3E22549A37D002602CD /* app.djinni */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = app.djinni; sourceTree = "<group>"; };
 		6FAC6AA625480DE000AA8249 /* DiceKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiceKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FAC6AA925480DE000AA8249 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6FAC6AAB25480DE000AA8249 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -299,11 +299,21 @@
 			path = utilities;
 			sourceTree = "<group>";
 		};
+		6F3EE3DC2549A312002602CD /* idl */ = {
+			isa = PBXGroup;
+			children = (
+				6F3EE3E22549A37D002602CD /* app.djinni */,
+			);
+			name = idl;
+			path = ../idl;
+			sourceTree = "<group>";
+		};
 		6FAC6A9D25480DE000AA8249 = {
 			isa = PBXGroup;
 			children = (
 				6FAC6D852548873000AA8249 /* .swift-version */,
 				6FAC6D862548873000AA8249 /* .swiftlint.yml */,
+				6F3EE3DC2549A312002602CD /* idl */,
 				6FAC6AA825480DE000AA8249 /* DiceKeys */,
 				6FAC6ABF25480DE200AA8249 /* DiceKeysTests */,
 				6FAC6ACA25480DE200AA8249 /* DiceKeysUITests */,
@@ -489,11 +499,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F3EE3BF25499F9B002602CD /* CMakeLists.txt in Resources */,
 				6FAC6AB625480DE200AA8249 /* LaunchScreen.storyboard in Resources */,
+				6F3EE3E32549A37D002602CD /* app.djinni in Resources */,
 				6FAC6AB325480DE200AA8249 /* Assets.xcassets in Resources */,
 				6FAC6AB125480DE000AA8249 /* Main.storyboard in Resources */,
-				6F3EE3C525499F9B002602CD /* CMakeLists.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
