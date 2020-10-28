@@ -3,8 +3,10 @@
 
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace dicekeys {
 
@@ -12,9 +14,23 @@ class DiceKeyImageProcessorWrapper {
 public:
     virtual ~DiceKeyImageProcessorWrapper() {}
 
+    /** `create()` factory method has to be used in Swift/Objective-C/Kotlin/Java */
     static std::shared_ptr<DiceKeyImageProcessorWrapper> create();
 
+    /** This method is used to test integration between native and shared code */
     virtual std::string getHelloWorld() = 0;
+
+    virtual bool processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & data) = 0;
+
+    virtual bool processRGBAImageAndRenderOverlay(int32_t width, int32_t height, const std::vector<uint8_t> & data) = 0;
+
+    virtual bool processAndAugmentRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & data) = 0;
+
+    virtual std::string readJson() = 0;
+
+    virtual bool isFinished() = 0;
+
+    virtual std::vector<uint8_t> getFaceImage(int32_t faceIndex, int32_t height, const std::vector<uint8_t> & data) = 0;
 };
 
 }  // namespace dicekeys

@@ -6,8 +6,22 @@ package com.dicekeys.dicekeys;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class DiceKeyImageProcessorWrapper {
+    /** This method is used to test integration between native and shared code */
     public abstract String getHelloWorld();
 
+    public abstract boolean processRGBAImage(int width, int height, byte[] data);
+
+    public abstract boolean processRGBAImageAndRenderOverlay(int width, int height, byte[] data);
+
+    public abstract boolean processAndAugmentRGBAImage(int width, int height, byte[] data);
+
+    public abstract String readJson();
+
+    public abstract boolean isFinished();
+
+    public abstract byte[] getFaceImage(int faceIndex, int height, byte[] data);
+
+    /** `create()` factory method has to be used in Swift/Objective-C/Kotlin/Java */
     public static DiceKeyImageProcessorWrapper create()
     {
         return CppProxy.create();
@@ -43,6 +57,54 @@ public abstract class DiceKeyImageProcessorWrapper {
             return native_getHelloWorld(this.nativeRef);
         }
         private native String native_getHelloWorld(long _nativeRef);
+
+        @Override
+        public boolean processRGBAImage(int width, int height, byte[] data)
+        {
+            assert !this.destroyed.get() : "trying to use a destroyed object";
+            return native_processRGBAImage(this.nativeRef, width, height, data);
+        }
+        private native boolean native_processRGBAImage(long _nativeRef, int width, int height, byte[] data);
+
+        @Override
+        public boolean processRGBAImageAndRenderOverlay(int width, int height, byte[] data)
+        {
+            assert !this.destroyed.get() : "trying to use a destroyed object";
+            return native_processRGBAImageAndRenderOverlay(this.nativeRef, width, height, data);
+        }
+        private native boolean native_processRGBAImageAndRenderOverlay(long _nativeRef, int width, int height, byte[] data);
+
+        @Override
+        public boolean processAndAugmentRGBAImage(int width, int height, byte[] data)
+        {
+            assert !this.destroyed.get() : "trying to use a destroyed object";
+            return native_processAndAugmentRGBAImage(this.nativeRef, width, height, data);
+        }
+        private native boolean native_processAndAugmentRGBAImage(long _nativeRef, int width, int height, byte[] data);
+
+        @Override
+        public String readJson()
+        {
+            assert !this.destroyed.get() : "trying to use a destroyed object";
+            return native_readJson(this.nativeRef);
+        }
+        private native String native_readJson(long _nativeRef);
+
+        @Override
+        public boolean isFinished()
+        {
+            assert !this.destroyed.get() : "trying to use a destroyed object";
+            return native_isFinished(this.nativeRef);
+        }
+        private native boolean native_isFinished(long _nativeRef);
+
+        @Override
+        public byte[] getFaceImage(int faceIndex, int height, byte[] data)
+        {
+            assert !this.destroyed.get() : "trying to use a destroyed object";
+            return native_getFaceImage(this.nativeRef, faceIndex, height, data);
+        }
+        private native byte[] native_getFaceImage(long _nativeRef, int faceIndex, int height, byte[] data);
 
         public static native DiceKeyImageProcessorWrapper create();
     }

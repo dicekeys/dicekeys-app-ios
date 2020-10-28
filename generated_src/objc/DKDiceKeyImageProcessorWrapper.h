@@ -7,8 +7,30 @@
 
 @interface DKDiceKeyImageProcessorWrapper : NSObject
 
+/** `create()` factory method has to be used in Swift/Objective-C/Kotlin/Java */
 + (nullable DKDiceKeyImageProcessorWrapper *)create;
 
+/** This method is used to test integration between native and shared code */
 - (nonnull NSString *)getHelloWorld;
+
+- (BOOL)processRGBAImage:(int32_t)width
+                  height:(int32_t)height
+                    data:(nonnull NSData *)data;
+
+- (BOOL)processRGBAImageAndRenderOverlay:(int32_t)width
+                                  height:(int32_t)height
+                                    data:(nonnull NSData *)data;
+
+- (BOOL)processAndAugmentRGBAImage:(int32_t)width
+                            height:(int32_t)height
+                              data:(nonnull NSData *)data;
+
+- (nonnull NSString *)readJson;
+
+- (BOOL)isFinished;
+
+- (nonnull NSData *)getFaceImage:(int32_t)faceIndex
+                          height:(int32_t)height
+                            data:(nonnull NSData *)data;
 
 @end
