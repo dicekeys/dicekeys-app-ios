@@ -1,5 +1,8 @@
 #include "DiceKeyImageProcessorWrapperImpl.hpp"
+#include <opencv2/imgcodecs.hpp>
 #include <string>
+#include "validate-faces-read.h"
+#include "visualize-read-results.h"
 
 namespace dicekeys {
 std::shared_ptr<DiceKeyImageProcessorWrapper> DiceKeyImageProcessorWrapper::create() {
@@ -7,7 +10,7 @@ std::shared_ptr<DiceKeyImageProcessorWrapper> DiceKeyImageProcessorWrapper::crea
 }
 
 DiceKeyImageProcessorWrapperImpl::DiceKeyImageProcessorWrapperImpl() {
-
+    reader = std::make_shared<DiceKeyImageProcessor>();
 }
 
 std::string DiceKeyImageProcessorWrapperImpl::getHelloWorld() {

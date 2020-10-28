@@ -1,9 +1,11 @@
 #pragma once
 
 #include "DiceKeyImageProcessorWrapper.hpp"
+#include "read-dicekey.hpp"
 
 namespace dicekeys {
 class DiceKeyImageProcessorWrapperImpl : public DiceKeyImageProcessorWrapper {
+    std::shared_ptr<DiceKeyImageProcessor> reader;
 
 public:
     DiceKeyImageProcessorWrapperImpl();
