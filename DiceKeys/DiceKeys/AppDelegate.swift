@@ -13,6 +13,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let objcObject = ObjCObject()
         print(objcObject.log())
+
+        let app = DKApp.create()!
+        print(app.getHelloWorld())
+
         return true
     }
 
