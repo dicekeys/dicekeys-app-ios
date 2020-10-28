@@ -138,6 +138,9 @@
 		6F3EE46D2549AC91002602CD /* DKDiceKeyImageProcessorWrapper+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DKDiceKeyImageProcessorWrapper+Private.h"; sourceTree = "<group>"; };
 		6F3EE46E2549AC91002602CD /* DKDiceKeyImageProcessorWrapper+Private.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "DKDiceKeyImageProcessorWrapper+Private.mm"; sourceTree = "<group>"; };
 		6F3EE46F2549AC91002602CD /* DKDiceKeyImageProcessorWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DKDiceKeyImageProcessorWrapper.h; sourceTree = "<group>"; };
+		6F3EE47B2549ADCF002602CD /* NativeDiceKeyImageProcessorWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NativeDiceKeyImageProcessorWrapper.cpp; sourceTree = "<group>"; };
+		6F3EE47C2549ADCF002602CD /* NativeDiceKeyImageProcessorWrapper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NativeDiceKeyImageProcessorWrapper.hpp; sourceTree = "<group>"; };
+		6F3EE4812549ADCF002602CD /* DiceKeyImageProcessorWrapper.java */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.java; path = DiceKeyImageProcessorWrapper.java; sourceTree = "<group>"; };
 		6FAC6AA625480DE000AA8249 /* DiceKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiceKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FAC6AA925480DE000AA8249 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6FAC6AAB25480DE000AA8249 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -328,6 +331,8 @@
 			isa = PBXGroup;
 			children = (
 				6F3EE46A2549AC91002602CD /* cpp */,
+				6F3EE47D2549ADCF002602CD /* java */,
+				6F3EE47A2549ADCF002602CD /* jni */,
 				6F3EE46C2549AC91002602CD /* objc */,
 			);
 			name = generated_src;
@@ -382,6 +387,47 @@
 				6F3EE46F2549AC91002602CD /* DKDiceKeyImageProcessorWrapper.h */,
 			);
 			path = objc;
+			sourceTree = "<group>";
+		};
+		6F3EE47A2549ADCF002602CD /* jni */ = {
+			isa = PBXGroup;
+			children = (
+				6F3EE47B2549ADCF002602CD /* NativeDiceKeyImageProcessorWrapper.cpp */,
+				6F3EE47C2549ADCF002602CD /* NativeDiceKeyImageProcessorWrapper.hpp */,
+			);
+			path = jni;
+			sourceTree = "<group>";
+		};
+		6F3EE47D2549ADCF002602CD /* java */ = {
+			isa = PBXGroup;
+			children = (
+				6F3EE47E2549ADCF002602CD /* com */,
+			);
+			path = java;
+			sourceTree = "<group>";
+		};
+		6F3EE47E2549ADCF002602CD /* com */ = {
+			isa = PBXGroup;
+			children = (
+				6F3EE47F2549ADCF002602CD /* dicekeys */,
+			);
+			path = com;
+			sourceTree = "<group>";
+		};
+		6F3EE47F2549ADCF002602CD /* dicekeys */ = {
+			isa = PBXGroup;
+			children = (
+				6F3EE4802549ADCF002602CD /* dicekeys */,
+			);
+			path = dicekeys;
+			sourceTree = "<group>";
+		};
+		6F3EE4802549ADCF002602CD /* dicekeys */ = {
+			isa = PBXGroup;
+			children = (
+				6F3EE4812549ADCF002602CD /* DiceKeyImageProcessorWrapper.java */,
+			);
+			path = dicekeys;
 			sourceTree = "<group>";
 		};
 		6FAC6A9D25480DE000AA8249 = {
