@@ -3,7 +3,7 @@
 
 # Configure
 
-IDL_FILE="idl/app.djinni"
+IDL_FILE="idl/DiceKeyImageProcessorWrapper.djinni"
 CPP_NAMESPACE="dicekeys"
 OBJC_PREFIX="DK"
 JAVA_PACKAGE="com.dicekeys.dicekeys"

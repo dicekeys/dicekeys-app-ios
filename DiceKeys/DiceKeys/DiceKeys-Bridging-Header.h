@@ -3,4 +3,4 @@
 //
 
 #import "ObjCObject.h"
-#import "DKApp.h"
+#import "DKDiceKeyImageProcessorWrapper.h"

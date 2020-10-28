@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let objcObject = ObjCObject()
         print(objcObject.log())
 
-        let app = DKApp.create()!
+        let app = DKDiceKeyImageProcessorWrapper.create()!
         print(app.getHelloWorld())
 
         return true
