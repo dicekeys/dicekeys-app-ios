@@ -33,6 +33,7 @@
 		6F3EE4582549A8F2002602CD /* DJIProxyCaches.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE4562549A8F2002602CD /* DJIProxyCaches.mm */; };
 		6F3EE4662549A9BE002602CD /* DiceKeyImageProcessorWrapperImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE4642549A9BE002602CD /* DiceKeyImageProcessorWrapperImpl.cpp */; };
 		6F3EE4702549AC91002602CD /* DKDiceKeyImageProcessorWrapper+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE46E2549AC91002602CD /* DKDiceKeyImageProcessorWrapper+Private.mm */; };
+		6F3EE4E22549B2BB002602CD /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F3EE4E12549B2BB002602CD /* test.png */; };
 		6FAC6AAA25480DE000AA8249 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AA925480DE000AA8249 /* AppDelegate.swift */; };
 		6FAC6AAC25480DE000AA8249 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AAB25480DE000AA8249 /* SceneDelegate.swift */; };
 		6FAC6AB125480DE000AA8249 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FAC6AAF25480DE000AA8249 /* Main.storyboard */; };
@@ -140,6 +141,7 @@
 		6F3EE47B2549ADCF002602CD /* NativeDiceKeyImageProcessorWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NativeDiceKeyImageProcessorWrapper.cpp; sourceTree = "<group>"; };
 		6F3EE47C2549ADCF002602CD /* NativeDiceKeyImageProcessorWrapper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NativeDiceKeyImageProcessorWrapper.hpp; sourceTree = "<group>"; };
 		6F3EE4812549ADCF002602CD /* DiceKeyImageProcessorWrapper.java */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.java; path = DiceKeyImageProcessorWrapper.java; sourceTree = "<group>"; };
+		6F3EE4E12549B2BB002602CD /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 		6FAC6AA625480DE000AA8249 /* DiceKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiceKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FAC6AA925480DE000AA8249 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6FAC6AAB25480DE000AA8249 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -427,6 +429,15 @@
 			path = dicekeys;
 			sourceTree = "<group>";
 		};
+		6F3EE4E02549B2B1002602CD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6F3EE4E12549B2BB002602CD /* test.png */,
+				6FAC6AB225480DE200AA8249 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		6FAC6A9D25480DE000AA8249 = {
 			isa = PBXGroup;
 			children = (
@@ -457,7 +468,7 @@
 				6FAC6AB725480DE200AA8249 /* Info.plist */,
 				6FAC6AA925480DE000AA8249 /* AppDelegate.swift */,
 				6FAC6AAB25480DE000AA8249 /* SceneDelegate.swift */,
-				6FAC6AB225480DE200AA8249 /* Assets.xcassets */,
+				6F3EE4E02549B2B1002602CD /* Resources */,
 				6F3EE31525499E99002602CD /* deps */,
 				6F3EE4122549A6B3002602CD /* generated_src */,
 				6F3EE4622549A9BE002602CD /* handwritten_src */,
@@ -621,6 +632,7 @@
 				6FAC6AB625480DE200AA8249 /* LaunchScreen.storyboard in Resources */,
 				6FAC6AB325480DE200AA8249 /* Assets.xcassets in Resources */,
 				6FAC6AB125480DE000AA8249 /* Main.storyboard in Resources */,
+				6F3EE4E22549B2BB002602CD /* test.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
