@@ -16,10 +16,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let processor = DKDiceKeyImageProcessorWrapper.create()!
         print(processor.getHelloWorld())
 
+
+        // Load test image from bundle
+        let image = UIImage(named: "test.png")!
+        let heightInPoints = image.size.height
+        let heightInPixels = Int32(heightInPoints * image.scale)
+
+        let widthInPoints = image.size.width
+        let widthInPixels = Int32(widthInPoints * image.scale)
+
+        let pngData = image.pngData()!
+
         // Test API
-        print(processor.processRGBAImage(800, height: 600, data: Data()))
-        print(processor.processAndAugmentRGBAImage(800, height: 600, data: Data()))
-        print(processor.processRGBAImageAndRenderOverlay(800, height: 600, data: Data()))
+        print(processor.processRGBAImage(widthInPixels, height: heightInPixels, data: pngData))
+        print(processor.processAndAugmentRGBAImage(widthInPixels, height: heightInPixels, data: pngData))
+        print(processor.processRGBAImageAndRenderOverlay(widthInPixels, height: heightInPixels, data: pngData))
         print(processor.readJson())
         print(processor.isFinished())
 
