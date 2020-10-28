@@ -44,7 +44,6 @@
 		6FAC6AE325480E7500AA8249 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AE225480E7500AA8249 /* CameraController.swift */; };
 		6FAC6AE825480E7F00AA8249 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AE725480E7F00AA8249 /* SessionManager.swift */; };
 		6FAC6D75254867AA00AA8249 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6D74254867AA00AA8249 /* CameraViewModel.swift */; };
-		6FAC6DA925488BCB00AA8249 /* ObjCObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6DA825488BCB00AA8249 /* ObjCObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -161,8 +160,6 @@
 		6FAC6D852548873000AA8249 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		6FAC6D862548873000AA8249 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		6FAC6DA625488BCB00AA8249 /* DiceKeys-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DiceKeys-Bridging-Header.h"; sourceTree = "<group>"; };
-		6FAC6DA725488BCB00AA8249 /* ObjCObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjCObject.h; sourceTree = "<group>"; };
-		6FAC6DA825488BCB00AA8249 /* ObjCObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjCObject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -457,8 +454,6 @@
 			isa = PBXGroup;
 			children = (
 				6FAC6DA625488BCB00AA8249 /* DiceKeys-Bridging-Header.h */,
-				6FAC6DA725488BCB00AA8249 /* ObjCObject.h */,
-				6FAC6DA825488BCB00AA8249 /* ObjCObject.m */,
 				6FAC6AB725480DE200AA8249 /* Info.plist */,
 				6FAC6AA925480DE000AA8249 /* AppDelegate.swift */,
 				6FAC6AAB25480DE000AA8249 /* SceneDelegate.swift */,
@@ -693,7 +688,6 @@
 				6F3EE4572549A8F2002602CD /* DJIError.mm in Sources */,
 				6F3EE3CC25499F9B002602CD /* find-rectangles.cpp in Sources */,
 				6F3EE3CF25499F9B002602CD /* read-face-characters.cpp in Sources */,
-				6FAC6DA925488BCB00AA8249 /* ObjCObject.m in Sources */,
 				6FAC6ADE25480E6200AA8249 /* CaptureView.swift in Sources */,
 				6F3EE3D125499F9B002602CD /* simple-ocr.cpp in Sources */,
 				6F3EE4582549A8F2002602CD /* DJIProxyCaches.mm in Sources */,
