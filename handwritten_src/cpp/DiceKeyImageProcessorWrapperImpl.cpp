@@ -26,7 +26,7 @@ bool DiceKeyImageProcessorWrapperImpl::processAndAugmentRGBAImage(int32_t width,
 }
 
 std::string DiceKeyImageProcessorWrapperImpl::readJson() {
-    return "{}";
+    return reader->jsonDiceKeyRead();
 }
 
 bool DiceKeyImageProcessorWrapperImpl::isFinished() {
