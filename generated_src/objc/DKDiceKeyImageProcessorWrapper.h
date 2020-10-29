@@ -7,7 +7,15 @@
 
 @interface DKDiceKeyImageProcessorWrapper : NSObject
 
-/** `create()` factory method has to be used in Swift/Objective-C/Kotlin/Java */
+/**
+ * `create()` factory method has to be used to create an instance of the class in Swift/Objective-C/Kotlin/Java
+ *
+ * For example, in Swift:
+ * let wrapper = DKDiceKeyImageProcessorWrapper.create()!
+ *
+ * in Objective-C:
+ * DKDiceKeyImageProcessorWrapper *wrapper = [DKDiceKeyImageProcessorWrapper create];
+ */
 + (nullable DKDiceKeyImageProcessorWrapper *)create;
 
 - (BOOL)processRGBAImage:(int32_t)width

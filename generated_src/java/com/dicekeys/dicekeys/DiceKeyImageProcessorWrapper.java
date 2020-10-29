@@ -18,7 +18,15 @@ public abstract class DiceKeyImageProcessorWrapper {
 
     public abstract byte[] getFaceImage(int faceIndex, int height, byte[] data);
 
-    /** `create()` factory method has to be used in Swift/Objective-C/Kotlin/Java */
+    /**
+     * `create()` factory method has to be used to create an instance of the class in Swift/Objective-C/Kotlin/Java
+     *
+     * For example, in Swift:
+     * let wrapper = DKDiceKeyImageProcessorWrapper.create()!
+     *
+     * in Objective-C:
+     * DKDiceKeyImageProcessorWrapper *wrapper = [DKDiceKeyImageProcessorWrapper create];
+     */
     public static DiceKeyImageProcessorWrapper create()
     {
         return CppProxy.create();

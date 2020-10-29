@@ -14,7 +14,15 @@ class DiceKeyImageProcessorWrapper {
 public:
     virtual ~DiceKeyImageProcessorWrapper() {}
 
-    /** `create()` factory method has to be used in Swift/Objective-C/Kotlin/Java */
+    /**
+     * `create()` factory method has to be used to create an instance of the class in Swift/Objective-C/Kotlin/Java
+     *
+     * For example, in Swift:
+     * let wrapper = DKDiceKeyImageProcessorWrapper.create()!
+     *
+     * in Objective-C:
+     * DKDiceKeyImageProcessorWrapper *wrapper = [DKDiceKeyImageProcessorWrapper create];
+     */
     static std::shared_ptr<DiceKeyImageProcessorWrapper> create();
 
     virtual bool processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & data) = 0;
