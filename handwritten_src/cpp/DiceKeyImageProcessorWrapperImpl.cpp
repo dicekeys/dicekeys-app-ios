@@ -28,6 +28,8 @@ std::string DiceKeyImageProcessorWrapperImpl::getHelloWorld() {
 }
 
 bool DiceKeyImageProcessorWrapperImpl::processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & data) {
+    reader->processRGBAImage(width, height, (const uint32_t *)data.data());
+
     return true;
 }
 
