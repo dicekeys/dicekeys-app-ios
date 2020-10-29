@@ -22,13 +22,13 @@
                   height:(int32_t)height
                    bytes:(nonnull NSData *)bytes;
 
-- (BOOL)processRGBAImageAndRenderOverlay:(int32_t)width
-                                  height:(int32_t)height
-                                   bytes:(nonnull NSData *)bytes;
+- (nonnull NSData *)processRGBAImageAndRenderOverlay:(int32_t)width
+                                              height:(int32_t)height
+                                               bytes:(nonnull NSData *)bytes;
 
-- (BOOL)processAndAugmentRGBAImage:(int32_t)width
-                            height:(int32_t)height
-                             bytes:(nonnull NSData *)bytes;
+- (nonnull NSData *)processAndAugmentRGBAImage:(int32_t)width
+                                        height:(int32_t)height
+                                         bytes:(nonnull NSData *)bytes;
 
 - (nonnull NSString *)readJson;
 

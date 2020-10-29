@@ -27,9 +27,9 @@ public:
 
     virtual bool processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes) = 0;
 
-    virtual bool processRGBAImageAndRenderOverlay(int32_t width, int32_t height, const std::vector<uint8_t> & bytes) = 0;
+    virtual std::vector<uint8_t> processRGBAImageAndRenderOverlay(int32_t width, int32_t height, const std::vector<uint8_t> & bytes) = 0;
 
-    virtual bool processAndAugmentRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes) = 0;
+    virtual std::vector<uint8_t> processAndAugmentRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes) = 0;
 
     virtual std::string readJson() = 0;
 

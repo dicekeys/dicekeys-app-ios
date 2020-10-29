@@ -10,9 +10,9 @@ dice_key_image_processor_wrapper = interface +c {
     
     process_RGBA_image(width: i32, height: i32, bytes: binary): bool;
 
-    process_RGBA_image_and_render_overlay(width: i32, height: i32, bytes: binary): bool;
+    process_RGBA_image_and_render_overlay(width: i32, height: i32, bytes: binary): binary;
 
-    process_and_augment_RGBA_image(width: i32, height: i32, bytes: binary): bool;
+    process_and_augment_RGBA_image(width: i32, height: i32, bytes: binary): binary;
 
     read_json(): string;
 

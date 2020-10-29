@@ -8,9 +8,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class DiceKeyImageProcessorWrapper {
     public abstract boolean processRGBAImage(int width, int height, byte[] bytes);
 
-    public abstract boolean processRGBAImageAndRenderOverlay(int width, int height, byte[] bytes);
+    public abstract byte[] processRGBAImageAndRenderOverlay(int width, int height, byte[] bytes);
 
-    public abstract boolean processAndAugmentRGBAImage(int width, int height, byte[] bytes);
+    public abstract byte[] processAndAugmentRGBAImage(int width, int height, byte[] bytes);
 
     public abstract String readJson();
 
@@ -64,20 +64,20 @@ public abstract class DiceKeyImageProcessorWrapper {
         private native boolean native_processRGBAImage(long _nativeRef, int width, int height, byte[] bytes);
 
         @Override
-        public boolean processRGBAImageAndRenderOverlay(int width, int height, byte[] bytes)
+        public byte[] processRGBAImageAndRenderOverlay(int width, int height, byte[] bytes)
         {
             assert !this.destroyed.get() : "trying to use a destroyed object";
             return native_processRGBAImageAndRenderOverlay(this.nativeRef, width, height, bytes);
         }
-        private native boolean native_processRGBAImageAndRenderOverlay(long _nativeRef, int width, int height, byte[] bytes);
+        private native byte[] native_processRGBAImageAndRenderOverlay(long _nativeRef, int width, int height, byte[] bytes);
 
         @Override
-        public boolean processAndAugmentRGBAImage(int width, int height, byte[] bytes)
+        public byte[] processAndAugmentRGBAImage(int width, int height, byte[] bytes)
         {
             assert !this.destroyed.get() : "trying to use a destroyed object";
             return native_processAndAugmentRGBAImage(this.nativeRef, width, height, bytes);
         }
-        private native boolean native_processAndAugmentRGBAImage(long _nativeRef, int width, int height, byte[] bytes);
+        private native byte[] native_processAndAugmentRGBAImage(long _nativeRef, int width, int height, byte[] bytes);
 
         @Override
         public String readJson()
