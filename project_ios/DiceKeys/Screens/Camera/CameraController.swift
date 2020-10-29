@@ -39,52 +39,14 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
 
     @IBOutlet var mainContainer: CaptureView!
 
-    func prepareForImageCapture() {
-        buttonFlip.isHidden = false
-        navigationItem.rightBarButtonItem = buttonFlash
-        buttonGallery.isHidden = false
-        buttonTake.isHidden = false
-
-        imageView.image = nil
-        imageView.isHidden = true
-        buttonRetake.isHidden = true
-
-        isCapturing = true
-
-        #if targetEnvironment(simulator)
-        buttonTake.isEnabled = false
-        #else
-        buttonTake.isEnabled = true
-        #endif
-
-        updateGalleryButtonImage()
-    }
-
-    func prepareForImageAccept() {
-        navigationItem.rightBarButtonItem = buttonContinue
-
-        buttonFlip.isHidden = true
-        buttonGallery.isHidden = true
-        buttonTake.isHidden = true
-
-        imageView.image = image
-        imageView.isHidden = false
-        buttonRetake.isHidden = false
-
-        actionDisableFlash()
-
-        isCapturing = false
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        buttonContinue = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(actionContinue))
-        buttonContinue.accessibilityLabel = "Next"
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Create continue button
+        do {
+            buttonContinue = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(actionContinue))
+            buttonContinue.accessibilityLabel = "Next"
+        }
 
         viewModel = CameraViewModel()
         assert(viewModel != nil)
@@ -133,6 +95,47 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
         super.viewWillDisappear(animated)
         captureManager.flashOn = false
     }
+
+    // MARK: - Capture/Accept State
+
+    func prepareForImageCapture() {
+        buttonFlip.isHidden = false
+        navigationItem.rightBarButtonItem = buttonFlash
+        buttonGallery.isHidden = false
+        buttonTake.isHidden = false
+
+        imageView.image = nil
+        imageView.isHidden = true
+        buttonRetake.isHidden = true
+
+        isCapturing = true
+
+        #if targetEnvironment(simulator)
+        buttonTake.isEnabled = false
+        #else
+        buttonTake.isEnabled = true
+        #endif
+
+        updateGalleryButtonImage()
+    }
+
+    func prepareForImageAccept() {
+        navigationItem.rightBarButtonItem = buttonContinue
+
+        buttonFlip.isHidden = true
+        buttonGallery.isHidden = true
+        buttonTake.isHidden = true
+
+        imageView.image = image
+        imageView.isHidden = false
+        buttonRetake.isHidden = false
+
+        actionDisableFlash()
+
+        isCapturing = false
+    }
+
+    // MARK: -
 
     @objc func imageCapturedSuccessfully() {
         let orig = captureManager.stillImage!
