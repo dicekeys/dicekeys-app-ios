@@ -20,15 +20,15 @@
 
 - (BOOL)processRGBAImage:(int32_t)width
                   height:(int32_t)height
-                    data:(nonnull NSData *)data;
+                   bytes:(nonnull NSData *)bytes;
 
 - (BOOL)processRGBAImageAndRenderOverlay:(int32_t)width
                                   height:(int32_t)height
-                                    data:(nonnull NSData *)data;
+                                   bytes:(nonnull NSData *)bytes;
 
 - (BOOL)processAndAugmentRGBAImage:(int32_t)width
                             height:(int32_t)height
-                              data:(nonnull NSData *)data;
+                             bytes:(nonnull NSData *)bytes;
 
 - (nonnull NSString *)readJson;
 
@@ -36,6 +36,6 @@
 
 - (nonnull NSData *)getFaceImage:(int32_t)faceIndex
                           height:(int32_t)height
-                            data:(nonnull NSData *)data;
+                           bytes:(nonnull NSData *)bytes;
 
 @end

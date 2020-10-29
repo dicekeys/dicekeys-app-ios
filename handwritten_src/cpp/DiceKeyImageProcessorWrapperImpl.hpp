@@ -10,16 +10,16 @@ class DiceKeyImageProcessorWrapperImpl : public DiceKeyImageProcessorWrapper {
 public:
     DiceKeyImageProcessorWrapperImpl();
 
-    bool processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & data);
+    bool processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes);
 
-    bool processRGBAImageAndRenderOverlay(int32_t width, int32_t height, const std::vector<uint8_t> & data);
+    bool processRGBAImageAndRenderOverlay(int32_t width, int32_t height, const std::vector<uint8_t> & bytes);
 
-    bool processAndAugmentRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & data);
+    bool processAndAugmentRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes);
 
     std::string readJson();
 
     bool isFinished();
 
-    std::vector<uint8_t> getFaceImage(int32_t faceIndex, int32_t height, const std::vector<uint8_t> & data);
+    std::vector<uint8_t> getFaceImage(int32_t faceIndex, int32_t height, const std::vector<uint8_t> & bytes);
 };
 }

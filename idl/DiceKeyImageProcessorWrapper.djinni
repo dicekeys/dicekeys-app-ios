@@ -8,15 +8,15 @@ dice_key_image_processor_wrapper = interface +c {
     # DKDiceKeyImageProcessorWrapper *wrapper = [DKDiceKeyImageProcessorWrapper create];
     static create(): dice_key_image_processor_wrapper;
     
-    process_RGBA_image(width: i32, height: i32, data: binary): bool;
+    process_RGBA_image(width: i32, height: i32, bytes: binary): bool;
 
-    process_RGBA_image_and_render_overlay(width: i32, height: i32, data: binary): bool;
+    process_RGBA_image_and_render_overlay(width: i32, height: i32, bytes: binary): bool;
 
-    process_and_augment_RGBA_image(width: i32, height: i32, data: binary): bool;
+    process_and_augment_RGBA_image(width: i32, height: i32, bytes: binary): bool;
 
     read_json(): string;
 
     is_finished(): bool;
 
-    get_face_image(face_index: i32, height: i32, data: binary): binary;
+    get_face_image(face_index: i32, height: i32, bytes: binary): binary;
 }

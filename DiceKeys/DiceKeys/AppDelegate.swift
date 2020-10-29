@@ -24,11 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let data = image.rgba()
 
         // Test API
-        print(wrapper.processRGBAImage(w, height: h, data: data))
-        print(wrapper.processAndAugmentRGBAImage(w, height: h, data: data))
-        print(wrapper.processRGBAImageAndRenderOverlay(w, height: h, data: data))
+        print(wrapper.processRGBAImage(w, height: h, bytes: data))
+        print(wrapper.processAndAugmentRGBAImage(w, height: h, bytes: data))
+        print(wrapper.processRGBAImageAndRenderOverlay(w, height: h, bytes: data))
         print(wrapper.readJson())
         print(wrapper.isFinished())
+//        print(wrapper.getFaceImage(<#T##faceIndex: Int32##Int32#>, height: <#T##Int32#>, bytes: <#T##Data#>))
 
         return true
     }

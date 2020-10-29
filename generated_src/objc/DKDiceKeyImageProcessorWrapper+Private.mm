@@ -39,33 +39,33 @@ static_assert(__has_feature(objc_arc), "Djinni requires ARC to be enabled for th
 
 - (BOOL)processRGBAImage:(int32_t)width
                   height:(int32_t)height
-                    data:(nonnull NSData *)data {
+                   bytes:(nonnull NSData *)bytes {
     try {
         auto objcpp_result_ = _cppRefHandle.get()->processRGBAImage(::djinni::I32::toCpp(width),
                                                                     ::djinni::I32::toCpp(height),
-                                                                    ::djinni::Binary::toCpp(data));
+                                                                    ::djinni::Binary::toCpp(bytes));
         return ::djinni::Bool::fromCpp(objcpp_result_);
     } DJINNI_TRANSLATE_EXCEPTIONS()
 }
 
 - (BOOL)processRGBAImageAndRenderOverlay:(int32_t)width
                                   height:(int32_t)height
-                                    data:(nonnull NSData *)data {
+                                   bytes:(nonnull NSData *)bytes {
     try {
         auto objcpp_result_ = _cppRefHandle.get()->processRGBAImageAndRenderOverlay(::djinni::I32::toCpp(width),
                                                                                     ::djinni::I32::toCpp(height),
-                                                                                    ::djinni::Binary::toCpp(data));
+                                                                                    ::djinni::Binary::toCpp(bytes));
         return ::djinni::Bool::fromCpp(objcpp_result_);
     } DJINNI_TRANSLATE_EXCEPTIONS()
 }
 
 - (BOOL)processAndAugmentRGBAImage:(int32_t)width
                             height:(int32_t)height
-                              data:(nonnull NSData *)data {
+                             bytes:(nonnull NSData *)bytes {
     try {
         auto objcpp_result_ = _cppRefHandle.get()->processAndAugmentRGBAImage(::djinni::I32::toCpp(width),
                                                                               ::djinni::I32::toCpp(height),
-                                                                              ::djinni::Binary::toCpp(data));
+                                                                              ::djinni::Binary::toCpp(bytes));
         return ::djinni::Bool::fromCpp(objcpp_result_);
     } DJINNI_TRANSLATE_EXCEPTIONS()
 }
@@ -86,11 +86,11 @@ static_assert(__has_feature(objc_arc), "Djinni requires ARC to be enabled for th
 
 - (nonnull NSData *)getFaceImage:(int32_t)faceIndex
                           height:(int32_t)height
-                            data:(nonnull NSData *)data {
+                           bytes:(nonnull NSData *)bytes {
     try {
         auto objcpp_result_ = _cppRefHandle.get()->getFaceImage(::djinni::I32::toCpp(faceIndex),
                                                                 ::djinni::I32::toCpp(height),
-                                                                ::djinni::Binary::toCpp(data));
+                                                                ::djinni::Binary::toCpp(bytes));
         return ::djinni::Binary::fromCpp(objcpp_result_);
     } DJINNI_TRANSLATE_EXCEPTIONS()
 }
