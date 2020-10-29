@@ -18,18 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Load test image from bundle
         let image = UIImage(named: "test.png")!
-        let heightInPoints = image.size.height
-        let heightInPixels = Int32(heightInPoints * image.scale)
 
-        let widthInPoints = image.size.width
-        let widthInPixels = Int32(widthInPoints * image.scale)
+        let w = image.bitmapWidth
+        let h = image.bitmapHeight
 
-        let rgbaData = image.rgba()
+        let data = image.rgba()
 
         // Test API
-        print(processor.processRGBAImage(widthInPixels, height: heightInPixels, data: rgbaData))
-        print(processor.processAndAugmentRGBAImage(widthInPixels, height: heightInPixels, data: rgbaData))
-        print(processor.processRGBAImageAndRenderOverlay(widthInPixels, height: heightInPixels, data: rgbaData))
+        print(processor.processRGBAImage(w, height: h, data: data))
+        print(processor.processAndAugmentRGBAImage(w, height: h, data: data))
+        print(processor.processRGBAImageAndRenderOverlay(w, height: h, data: data))
         print(processor.readJson())
         print(processor.isFinished())
 

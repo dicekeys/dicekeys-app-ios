@@ -8,6 +8,20 @@
 import UIKit
 
 extension UIImage {
+    var bitmapWidth: Int32 {
+        guard let value = self.cgImage?.width else {
+            return 0
+        }
+        return Int32(value)
+    }
+
+    var bitmapHeight: Int32 {
+        guard let value = self.cgImage?.height else {
+            return 0
+        }
+        return Int32(value)
+    }
+
     func rgba() -> Data {
         // Return empty `Data` collection if `UIImage` itself is empty
         guard let bitmap = self.cgImage?.dataProvider?.data else {
