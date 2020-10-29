@@ -6,8 +6,6 @@
 
 2. Build OpenCV framework (https://docs.opencv.org/master/d5/da3/tutorial_ios_install.html)
 
-`cd deps`
-
-`python opencv/platforms/ios/build_framework.py ios`
+`cd deps && ./build_opencv.sh`
 
 
