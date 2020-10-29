@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
 
         // Initialize wrapper
-        let processor = DKDiceKeyImageProcessorWrapper.create()!
+        let wrapper = DKDiceKeyImageProcessorWrapper.create()!
 
         // Load test image from bundle
         let image = UIImage(named: "test.png")!
@@ -24,11 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let data = image.rgba()
 
         // Test API
-        print(processor.processRGBAImage(w, height: h, data: data))
-        print(processor.processAndAugmentRGBAImage(w, height: h, data: data))
-        print(processor.processRGBAImageAndRenderOverlay(w, height: h, data: data))
-        print(processor.readJson())
-        print(processor.isFinished())
+        print(wrapper.processRGBAImage(w, height: h, data: data))
+        print(wrapper.processAndAugmentRGBAImage(w, height: h, data: data))
+        print(wrapper.processRGBAImageAndRenderOverlay(w, height: h, data: data))
+        print(wrapper.readJson())
+        print(wrapper.isFinished())
 
         return true
     }
