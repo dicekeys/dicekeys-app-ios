@@ -34,7 +34,6 @@ bool DiceKeyImageProcessorWrapperImpl::isFinished() {
 }
 
 std::vector<uint8_t> DiceKeyImageProcessorWrapperImpl::getFaceImage(int32_t faceIndex, int32_t height, const std::vector<uint8_t> & data) {
-    std::vector<uint8_t> result;
-    return result;
+    return std::vector<uint8_t>();
 }
 }
