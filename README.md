@@ -14,4 +14,8 @@ or init submodules manually:
 
 `cd deps && ./build_opencv.sh`
 
+3. Open `DiceKeys/DiceKeys.xcodeproj`
 
+4. Select `DiceKeys` → `iOS Device` scheme
+
+5. Select `Product` → `Run` in menu (or press `⌘` + `R`)
