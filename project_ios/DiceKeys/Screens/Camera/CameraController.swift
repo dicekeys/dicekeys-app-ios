@@ -150,8 +150,8 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
             // Load test image from bundle
             let image = orig
 
-            let w = image.bitmapWidth
-            let h = image.bitmapHeight
+            let w = Int32(image.bitmapWidth)
+            let h = Int32(image.bitmapHeight)
 
             let data = image.rgba()
 

@@ -20,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Load test image from bundle
             let image = UIImage(named: "test.png")!
 
-            let w = image.bitmapWidth
-            let h = image.bitmapHeight
+            let w = Int32(image.bitmapWidth)
+            let h = Int32(image.bitmapHeight)
 
             let data = image.rgba()
 
