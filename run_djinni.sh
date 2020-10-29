@@ -22,6 +22,8 @@ JAVA_OUTPUT_FOLDER="$GENERATED_OUTPUT_FOLDER/java/$JAVA_DIR"
 JNI_OUTPUT_FOLDER="$GENERATED_OUTPUT_FOLDER/jni"
 OBJC_OUTPUT_FOLDER="$GENERATED_OUTPUT_FOLDER/objc"
 
+# Briding header
+BRIDGING_HEADER="DiceKeys-Bridging-Header"
 
 # Bootstrap
 
@@ -52,9 +54,9 @@ $BASE_DIR/deps/djinni/src/run \
     --ident-cpp-file FooBar \
     \
     --objc-out $OBJC_OUTPUT_FOLDER \
-    --objc-type-prefix $OBJC_PREFIX \
-    \
     --objcpp-out $OBJC_OUTPUT_FOLDER \
+    --objc-type-prefix $OBJC_PREFIX \
+    --objc-swift-bridging-header $BRIDGING_HEADER \
     \
     --java-out $JAVA_OUTPUT_FOLDER \
     --java-package $JAVA_PACKAGE \
@@ -67,4 +69,7 @@ $BASE_DIR/deps/djinni/src/run \
     --ident-jni-file NativeFooBar \
     \
     --idl $IDL_FILE
+
+
+cp "$OBJC_OUTPUT_FOLDER/$BRIDGING_HEADER.h" "$BASE_DIR/DiceKeys/DiceKeys/$BRIDGING_HEADER.h"
 
