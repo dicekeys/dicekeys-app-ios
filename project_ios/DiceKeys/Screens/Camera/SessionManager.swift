@@ -185,7 +185,7 @@ class SessionManger: NSObject {
         }
     }
 
-    func captureStillImage() {
+    func captureImage(completion: @escaping ((UIImage?) -> Void)) {
         var videoConnection: AVCaptureConnection?
         stillImageOutput.connections.forEach { connection in
             connection.inputPorts.forEach { port in
@@ -204,11 +204,12 @@ class SessionManger: NSObject {
         }
 
         stillImageOutput.captureStillImageAsynchronously(from: videoConnection!, completionHandler: { buffer, _ -> Void in
-            if let exifAttachments = CMGetAttachment(buffer!, key: kCGImagePropertyExifDictionary, attachmentModeOut: nil) {
-                let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer!)
-                self.stillImage = UIImage(data: imageData!)
-                NotificationCenter.default.post(name: Notification.Name(kImageCapturedSuccessfully), object: nil)
-//                UIImageWriteToSavedPhotosAlbum(self.previewImage.image, nil, nil, nil)
+            guard let buffer = buffer else {
+                return
+            }
+            if let exifAttachments = CMGetAttachment(buffer, key: kCGImagePropertyExifDictionary, attachmentModeOut: nil) {
+                let image = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer).flatMap { UIImage(data: $0) }
+                completion(image)
             }
         })
     }

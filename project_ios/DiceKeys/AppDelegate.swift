@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let w = Int32(image.bitmapWidth)
             let h = Int32(image.bitmapHeight)
 
-            let data = image.rgba()
+            let data = image.rgba()!
 
             // Test API
             // processRGBAImageAndRenderOverlay

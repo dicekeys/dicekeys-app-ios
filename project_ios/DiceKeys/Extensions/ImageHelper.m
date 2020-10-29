@@ -9,19 +9,25 @@
 
 #import "ImageHelper.h"
 
-
 @implementation ImageHelper
 
-
-+ (unsigned char *) convertUIImageToBitmapRGBA8:(UIImage *) image {
++ (NSData *) convertUIImageToBitmapRGBA8:(UIImage *) image {
 
     CGImageRef imageRef = image.CGImage;
 
+    if (!imageRef) {
+        return nil;
+    }
+
+    return [self convertCGImageToBitmapRGBA8:imageRef];
+}
+
++ (NSData *)convertCGImageToBitmapRGBA8:(CGImageRef)imageRef {
     // Create a bitmap context to draw the uiimage into
     CGContextRef context = [self newBitmapRGBA8ContextFromImage:imageRef];
 
     if(!context) {
-        return NULL;
+        return nil;
     }
 
     size_t width = CGImageGetWidth(imageRef);
@@ -58,7 +64,8 @@
 
     CGContextRelease(context);
 
-    return newBitmap;
+    NSData *data = [NSData dataWithBytes:newBitmap length:bufferLength];
+    return data;
 }
 
 + (CGContextRef) newBitmapRGBA8ContextFromImage:(CGImageRef) image {
@@ -95,12 +102,12 @@
     //Create bitmap context
 
     context = CGBitmapContextCreate(bitmapData,
-            width,
-            height,
-            bitsPerComponent,
-            bytesPerRow,
-            colorSpace,
-            kCGImageAlphaPremultipliedLast);    // RGBA
+                                    width,
+                                    height,
+                                    bitsPerComponent,
+                                    bytesPerRow,
+                                    colorSpace,
+                                    kCGImageAlphaPremultipliedLast);    // RGBA
     if(!context) {
         free(bitmapData);
         NSLog(@"Bitmap context not created");
@@ -112,8 +119,8 @@
 }
 
 + (UIImage *) convertBitmapRGBA8ToUIImage:(unsigned char *) buffer
-        withWidth:(int) width
-       withHeight:(int) height {
+                                withWidth:(int) width
+                               withHeight:(int) height {
 
 
     size_t bufferLength = width * height * 4;
@@ -133,16 +140,16 @@
     CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
 
     CGImageRef iref = CGImageCreate(width,
-                height,
-                bitsPerComponent,
-                bitsPerPixel,
-                bytesPerRow,
-                colorSpaceRef,
-                bitmapInfo,
-                provider,    // data provider
-                NULL,        // decode
-                YES,            // should interpolate
-                renderingIntent);
+                                    height,
+                                    bitsPerComponent,
+                                    bitsPerPixel,
+                                    bytesPerRow,
+                                    colorSpaceRef,
+                                    bitmapInfo,
+                                    provider,    // data provider
+                                    NULL,        // decode
+                                    YES,            // should interpolate
+                                    renderingIntent);
 
     uint32_t* pixels = (uint32_t*)malloc(bufferLength);
 
@@ -155,12 +162,12 @@
     }
 
     CGContextRef context = CGBitmapContextCreate(pixels,
-                 width,
-                 height,
-                 bitsPerComponent,
-                 bytesPerRow,
-                 colorSpaceRef,
-                 bitmapInfo);
+                                                 width,
+                                                 height,
+                                                 bitsPerComponent,
+                                                 bytesPerRow,
+                                                 colorSpaceRef,
+                                                 bitmapInfo);
 
     if(context == NULL) {
         NSLog(@"Error context not created");

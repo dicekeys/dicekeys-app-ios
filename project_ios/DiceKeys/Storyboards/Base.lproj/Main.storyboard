@@ -44,11 +44,11 @@
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X70-7r-zfv" userLabel="Session Container">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="381"/>
-                                                <color key="backgroundColor" red="0.36078431370000003" green="0.36078431370000003" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qyZ-gw-o6j">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="381"/>
-                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -66,8 +66,8 @@
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="rcV-Sp-b2x"/>
                                                 <exclude reference="9sW-rd-Zhd"/>
+                                                <exclude reference="rcV-Sp-b2x"/>
                                             </mask>
                                         </variation>
                                     </view>
@@ -152,9 +152,9 @@
                                                 </state>
                                                 <variation key="default">
                                                     <mask key="constraints">
-                                                        <exclude reference="h46-5e-EoB"/>
-                                                        <exclude reference="eGC-FG-EpG"/>
                                                         <exclude reference="JfR-Gt-QN6"/>
+                                                        <exclude reference="eGC-FG-EpG"/>
+                                                        <exclude reference="h46-5e-EoB"/>
                                                         <exclude reference="jKa-Hb-bBM"/>
                                                     </mask>
                                                 </variation>

@@ -11,18 +11,11 @@ import QuartzCore
 import UIKit
 
 class CameraController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    var viewModel: CameraViewModel!
-    var captureManager: SessionManger!
+    //    var sessionManager: SessionManger!
+    var videoSessionManager: VideoSessionManager!
     var isCapturing: Bool!
-    var image: UIImage? {
-        didSet {
-            viewModel.image = image
-            viewModel.imageData = image?.jpegData(compressionQuality: 0.51)
-            if image != nil {
-                prepareForImageAccept()
-            }
-        }
-    }
+    var image: UIImage?
+    var timer: Timer?
 
     @IBOutlet var buttonFlash: UIBarButtonItem!
 
@@ -39,6 +32,10 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
 
     @IBOutlet var mainContainer: CaptureView!
 
+    deinit {
+        timer?.invalidate()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -47,9 +44,6 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
             buttonContinue = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(actionContinue))
             buttonContinue.accessibilityLabel = "Next"
         }
-
-        viewModel = CameraViewModel()
-        assert(viewModel != nil)
 
         buttonFlip.imageView!.contentMode = UIView.ContentMode.center
         buttonRetake.imageView!.contentMode = UIView.ContentMode.center
@@ -67,33 +61,132 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
         super.viewDidAppear(animated)
 
         #if targetEnvironment(simulator)
-            image = UIImage(named: "Photo")
+        image = UIImage(named: "Photo")
         #else
-            captureManager = SessionManger(view: sessionContainer)
-            captureManager.backOn = false
+        //            if sessionManager == nil {
+        //                sessionManager = SessionManger(view: sessionContainer)
+        //                sessionManager.backOn = false
+        //
+        //                DispatchQueue.global().async {
+        //                    self.sessionManager.captureSession.startRunning()
+        //                }
+        //
+        //                // TODO: Manage flash button state
+        //                // RAC(self.buttonFlash, enabled) = RACSignal combineLatest:@[
+        //                //     RACObserve(self.sessionManager, flashAvailable),
+        //                //     RACObserve(self, isCapturing),
+        //                // ]
+        //                // reduce:^id(NSNumber *flashAvailable, NSNumber *isCapturing){
+        //                //     BOOL enabled = flashAvailable.boolValue && isCapturing.boolValue
+        //                //     return @(enabled)
+        //                // }
+        //            }
+        // Add video session manager
+        do {
+            if videoSessionManager == nil {
+                // Create session manager
+                var skippedFrames = 0
+                videoSessionManager = VideoSessionManager(cameraPosition: .back)
+                videoSessionManager.block = { ciImage in
+                    skippedFrames += 1
+                    if skippedFrames < 10 {
+                        return
+                    }
 
-            NotificationCenter.default.addObserver(self, selector: #selector(imageCapturedSuccessfully), name: NSNotification.Name(kImageCapturedSuccessfully), object: nil)
+                    let context = CIContext(options: nil)
+                    let cgImage = context.createCGImage(ciImage, from: ciImage.extent)!
 
-            DispatchQueue.global().async {
-                self.captureManager.captureSession.startRunning()
+                    guard let data = ImageHelper.convertCGImage(toBitmapRGBA8: cgImage) else {
+                        return
+                    }
+
+                    let processor = DKImageProcessor.create()!
+
+                    let w = Int32(cgImage.width)
+                    let h = Int32(cgImage.height)
+
+
+                    // Test API
+                    // processRGBAImageAndRenderOverlay
+                    //            var overlay = wrapper.processRGBAImageAndRenderOverlay(w, height: h, bytes: data)
+                    //            overlay.withUnsafeMutableBytes { rawBufferPointer in
+                    //                let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+                    //                let overlayImage = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
+                    //
+                    //                imageView.image = overlayImage
+                    //            }
+
+                    var overlay = processor.processRGBAImageAndRenderOverlay(w, height: h, bytes: data)
+                    overlay.withUnsafeMutableBytes { rawBufferPointer in
+                        let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+                        let image = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
+
+                        self.image = image
+                        self.imageView.image = self.image
+                        self.imageView.isHidden = false
+                    }
+
+                    skippedFrames = 0
+                }
+                
+                // Add video preview layer
+                do {
+                    let view = self.sessionContainer!
+
+                    let previewLayer = AVCaptureVideoPreviewLayer(session: videoSessionManager.captureSession)
+                    previewLayer.videoGravity = .resizeAspectFill
+
+                    previewLayer.bounds = view.layer.bounds
+                    previewLayer.position = CGPoint(x: view.layer.bounds.midX, y: view.layer.bounds.midY)
+
+                    view.layer.addSublayer(previewLayer)
+                }
+
+                // Set up timer
+                if timer == nil {
+                    //                    timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true, block: { _ in
+                    //                        self.sessionManager.captureImage { image in
+                    //                            if let image = image {
+                    //                                let processor = DKImageProcessor.create()!
+                    //
+                    //                                let w = Int32(image.bitmapWidth)
+                    //                                let h = Int32(image.bitmapHeight)
+                    //
+                    //                                let data = image.rgba()
+                    //
+                    //                                // Test API
+                    //                                // processRGBAImageAndRenderOverlay
+                    //                                //            var overlay = wrapper.processRGBAImageAndRenderOverlay(w, height: h, bytes: data)
+                    //                                //            overlay.withUnsafeMutableBytes { rawBufferPointer in
+                    //                                //                let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+                    //                                //                let overlayImage = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
+                    //                                //
+                    //                                //                imageView.image = overlayImage
+                    //                                //            }
+                    //
+                    //                                var overlay = processor.processRGBAImageAndRenderOverlay(w, height: h, bytes: data)
+                    //                                overlay.withUnsafeMutableBytes { rawBufferPointer in
+                    //                                    let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+                    //                                    let image = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)?.rotate(radians: Float.pi / 2)
+                    //
+                    //                                    self.image = image
+                    //                                    self.imageView.image = image
+                    //                                }
+                    //                            } else {
+                    //                                self.imageView.image = nil
+                    //                            }
+                    //                        }
+                    //                    })
+                }
+
             }
-
-            // TODO: Manage flash button state
-            // RAC(self.buttonFlash, enabled) = RACSignal combineLatest:@[
-            //     RACObserve(self.captureManager, flashAvailable),
-            //     RACObserve(self, isCapturing),
-            // ]
-            // reduce:^id(NSNumber *flashAvailable, NSNumber *isCapturing){
-            //     BOOL enabled = flashAvailable.boolValue && isCapturing.boolValue
-            //     return @(enabled)
-            // }
-
+        }
         #endif
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        captureManager.flashOn = false
+        //        sessionManager.flashOn = false
     }
 
     // MARK: - Capture/Accept State
@@ -104,8 +197,8 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
         buttonGallery.isHidden = false
         buttonTake.isHidden = false
 
-        imageView.image = nil
-        imageView.isHidden = true
+        //        imageView.image = nil
+        //        imageView.isHidden = true
         buttonRetake.isHidden = true
 
         isCapturing = true
@@ -130,53 +223,12 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
         imageView.isHidden = false
         buttonRetake.isHidden = false
 
-        actionDisableFlash()
+        //        actionDisableFlash()
 
         isCapturing = false
     }
 
     // MARK: -
-
-    @objc func imageCapturedSuccessfully() {
-        let orig = captureManager.stillImage!
-
-        //        UIImageWriteToSavedPhotosAlbum(orig, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
-
-        // Test
-        do {
-            // Initialize wrapper
-            let wrapper = DKImageProcessor.create()!
-
-            // Load test image from bundle
-            let image = orig
-
-            let w = Int32(image.bitmapWidth)
-            let h = Int32(image.bitmapHeight)
-
-            let data = image.rgba()
-
-            // Test API
-            // processRGBAImageAndRenderOverlay
-//            var overlay = wrapper.processRGBAImageAndRenderOverlay(w, height: h, bytes: data)
-//            overlay.withUnsafeMutableBytes { rawBufferPointer in
-//                let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
-//                let overlayImage = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
-//
-//                imageView.image = overlayImage
-//            }
-
-            var augmented = wrapper.processAndAugmentRGBAImage(w, height: h, bytes: data)
-            augmented.withUnsafeMutableBytes { rawBufferPointer in
-                let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
-                let image = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
-
-                self.image = image
-            }
-        }
-
-        captureManager.previewLayer.connection!.isEnabled = true
-        enableButtons()
-    }
 
     @objc func image(_: UIImage, didFinishSavingWithError error: NSError?, contextInfo _: UnsafeRawPointer) {
         if let error = error {
@@ -215,31 +267,31 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
 
     // MARK: - Flash
 
-    @IBAction func actionToggleFlash() {
-        if captureManager.flashOn {
-            actionDisableFlash()
-        } else {
-            actionEnableFlash()
-        }
-    }
-
-    func actionEnableFlash() {
-        captureManager.flashOn = true
-        buttonFlash.image = UIImage(systemName: "bolt")
-    }
-
-    func actionDisableFlash() {
-        captureManager.flashOn = false
-        buttonFlash.image = UIImage(systemName: "bolt.slash")
-    }
+    //    @IBAction func actionToggleFlash() {
+    //        if sessionManager.flashOn {
+    //            actionDisableFlash()
+    //        } else {
+    //            actionEnableFlash()
+    //        }
+    //    }
+    //
+    //    func actionEnableFlash() {
+    //        sessionManager.flashOn = true
+    //        buttonFlash.image = UIImage(systemName: "bolt")
+    //    }
+    //
+    //    func actionDisableFlash() {
+    //        sessionManager.flashOn = false
+    //        buttonFlash.image = UIImage(systemName: "bolt.slash")
+    //    }
 
     @IBAction func actionFlipCamera() {
-        if captureManager.backOn {
-            captureManager.backOn = false
-            captureManager.turnOffFlash()
-        } else {
-            captureManager.backOn = true
-        }
+        //        if sessionManager.backOn {
+        //            sessionManager.backOn = false
+        //            sessionManager.turnOffFlash()
+        //        } else {
+        //            sessionManager.backOn = true
+        //        }
     }
 
     @IBAction func actionGallery() {
@@ -251,9 +303,9 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
     }
 
     @IBAction func actionTakeImage() {
-        captureManager.captureStillImage()
-        captureManager.previewLayer.connection!.isEnabled = false
-        disableButtons()
+        //        sessionManager.captureImage()
+        //        sessionManager.previewLayer.connection!.isEnabled = false
+        //        disableButtons()
     }
 
     @IBAction func actionRetake() {
