@@ -23,6 +23,13 @@ extension UIImage {
     }
 
     func rgba() -> Data {
+        /*
+         Maybe whole rgba code could be replaced as
+
+         func rgba() -> Data? {
+             self.cgImage?.dataProvider?.data as? Data
+         }
+        */
         // Return empty `Data` collection if `UIImage` itself is empty
         guard let bitmap = self.cgImage?.dataProvider?.data else {
             return Data()
