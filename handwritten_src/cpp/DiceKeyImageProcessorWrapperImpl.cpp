@@ -30,7 +30,7 @@ std::string DiceKeyImageProcessorWrapperImpl::readJson() {
 }
 
 bool DiceKeyImageProcessorWrapperImpl::isFinished() {
-    return true;
+    return reader->isFinished();
 }
 
 std::vector<uint8_t> DiceKeyImageProcessorWrapperImpl::getFaceImage(int32_t faceIndex, int32_t height, const std::vector<uint8_t> & data) {
