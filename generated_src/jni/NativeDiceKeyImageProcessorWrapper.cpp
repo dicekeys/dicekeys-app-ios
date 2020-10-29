@@ -28,16 +28,6 @@ CJNIEXPORT jobject JNICALL Java_com_dicekeys_dicekeys_DiceKeyImageProcessorWrapp
     } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, 0 /* value doesn't matter */)
 }
 
-CJNIEXPORT jstring JNICALL Java_com_dicekeys_dicekeys_DiceKeyImageProcessorWrapper_00024CppProxy_native_1getHelloWorld(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef)
-{
-    try {
-        DJINNI_FUNCTION_PROLOGUE1(jniEnv, nativeRef);
-        const auto& ref = ::djinni::objectFromHandleAddress<::dicekeys::DiceKeyImageProcessorWrapper>(nativeRef);
-        auto r = ref->getHelloWorld();
-        return ::djinni::release(::djinni::String::fromCpp(jniEnv, r));
-    } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, 0 /* value doesn't matter */)
-}
-
 CJNIEXPORT jboolean JNICALL Java_com_dicekeys_dicekeys_DiceKeyImageProcessorWrapper_00024CppProxy_native_1processRGBAImage(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef, jint j_width, jint j_height, jbyteArray j_data)
 {
     try {

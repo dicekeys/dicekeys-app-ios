@@ -6,9 +6,6 @@ package com.dicekeys.dicekeys;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class DiceKeyImageProcessorWrapper {
-    /** This method is used to test integration between native and shared code */
-    public abstract String getHelloWorld();
-
     public abstract boolean processRGBAImage(int width, int height, byte[] data);
 
     public abstract boolean processRGBAImageAndRenderOverlay(int width, int height, byte[] data);
@@ -49,14 +46,6 @@ public abstract class DiceKeyImageProcessorWrapper {
             _djinni_private_destroy();
             super.finalize();
         }
-
-        @Override
-        public String getHelloWorld()
-        {
-            assert !this.destroyed.get() : "trying to use a destroyed object";
-            return native_getHelloWorld(this.nativeRef);
-        }
-        private native String native_getHelloWorld(long _nativeRef);
 
         @Override
         public boolean processRGBAImage(int width, int height, byte[] data)

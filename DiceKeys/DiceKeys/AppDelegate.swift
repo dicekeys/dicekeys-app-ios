@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Initialize wrapper
         let processor = DKDiceKeyImageProcessorWrapper.create()!
-        print(processor.getHelloWorld())
 
         // Load test image from bundle
         let image = UIImage(named: "test.png")!

@@ -13,20 +13,6 @@ DiceKeyImageProcessorWrapperImpl::DiceKeyImageProcessorWrapperImpl() {
     reader = std::make_shared<DiceKeyImageProcessor>();
 }
 
-std::string DiceKeyImageProcessorWrapperImpl::getHelloWorld() {
-    std::string myString = "Hello DiceKeys World! ";
-
-    time_t t = time(0);
-    tm now=*localtime(&t);
-    char tmdescr[200]={0};
-    const char fmt[]="%r";
-    if (strftime(tmdescr, sizeof(tmdescr)-1, fmt, &now)>0) {
-        myString += tmdescr;
-    }
-
-    return myString;
-}
-
 bool DiceKeyImageProcessorWrapperImpl::processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & data) {
     return reader->processRGBAImage(width, height, (const uint32_t *)data.data());
 }

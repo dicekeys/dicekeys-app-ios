@@ -37,13 +37,6 @@ static_assert(__has_feature(objc_arc), "Djinni requires ARC to be enabled for th
     } DJINNI_TRANSLATE_EXCEPTIONS()
 }
 
-- (nonnull NSString *)getHelloWorld {
-    try {
-        auto objcpp_result_ = _cppRefHandle.get()->getHelloWorld();
-        return ::djinni::String::fromCpp(objcpp_result_);
-    } DJINNI_TRANSLATE_EXCEPTIONS()
-}
-
 - (BOOL)processRGBAImage:(int32_t)width
                   height:(int32_t)height
                     data:(nonnull NSData *)data {

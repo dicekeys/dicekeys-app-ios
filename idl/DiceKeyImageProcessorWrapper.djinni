@@ -1,10 +1,7 @@
 dice_key_image_processor_wrapper = interface +c {
     # `create()` factory method has to be used in Swift/Objective-C/Kotlin/Java
     static create(): dice_key_image_processor_wrapper;
-
-    # This method is used to test integration between native and shared code
-    get_hello_world(): string;
-
+    
     process_RGBA_image(width: i32, height: i32, data: binary): bool;
 
     process_RGBA_image_and_render_overlay(width: i32, height: i32, data: binary): bool;

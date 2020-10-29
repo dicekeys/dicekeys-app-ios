@@ -17,9 +17,6 @@ public:
     /** `create()` factory method has to be used in Swift/Objective-C/Kotlin/Java */
     static std::shared_ptr<DiceKeyImageProcessorWrapper> create();
 
-    /** This method is used to test integration between native and shared code */
-    virtual std::string getHelloWorld() = 0;
-
     virtual bool processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & data) = 0;
 
     virtual bool processRGBAImageAndRenderOverlay(int32_t width, int32_t height, const std::vector<uint8_t> & data) = 0;
