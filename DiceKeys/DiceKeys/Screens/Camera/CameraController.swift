@@ -98,68 +98,35 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
 
         mainContainer.controller = self
 
-        // TODO: uncomment
-        //        prepareForImageCapture()
-
-        // Test
-        do {
-            // Initialize wrapper
-            let wrapper = DKDiceKeyImageProcessorWrapper.create()!
-
-            // Load test image from bundle
-            let image = UIImage(named: "test.png")!
-
-            let w = image.bitmapWidth
-            let h = image.bitmapHeight
-
-            let data = image.rgba()
-
-            // Test API
-            // processRGBAImageAndRenderOverlay
-//            var overlay = wrapper.processRGBAImageAndRenderOverlay(w, height: h, bytes: data)
-//            overlay.withUnsafeMutableBytes { rawBufferPointer in
-//                let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
-//                let overlayImage = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
-//
-//                imageView.image = overlayImage
-//            }
-
-            //        print(wrapper.processRGBAImage(w, height: h, bytes: data))
-            //        print(wrapper.processAndAugmentRGBAImage(w, height: h, bytes: data))
-            //        print(wrapper.readJson())
-            //        print(wrapper.isFinished())
-
-
-        }
+        prepareForImageCapture()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        // TODO: uncomment
-        //        #if targetEnvironment(simulator)
-        //            image = UIImage(named: "Photo")
-        //        #else
-        //            captureManager = SessionManger(view: sessionContainer)
-        //            captureManager.backOn = false
-        //
-        //            NotificationCenter.default.addObserver(self, selector: #selector(imageCapturedSuccessfully), name: NSNotification.Name(kImageCapturedSuccessfully), object: nil)
-        //
-        //            DispatchQueue.global().async {
-        //                self.captureManager.captureSession.startRunning()
-        //            }
-        //
-        //            // TODO: Manage flash button state
-        //            // RAC(self.buttonFlash, enabled) = RACSignal combineLatest:@[
-        //            //     RACObserve(self.captureManager, flashAvailable),
-        //            //     RACObserve(self, isCapturing),
-        //            // ]
-        //            // reduce:^id(NSNumber *flashAvailable, NSNumber *isCapturing){
-        //            //     BOOL enabled = flashAvailable.boolValue && isCapturing.boolValue
-        //            //     return @(enabled)
-        //            // }
-        //
-        //        #endif
+        #if targetEnvironment(simulator)
+            image = UIImage(named: "Photo")
+        #else
+            captureManager = SessionManger(view: sessionContainer)
+            captureManager.backOn = false
+
+            NotificationCenter.default.addObserver(self, selector: #selector(imageCapturedSuccessfully), name: NSNotification.Name(kImageCapturedSuccessfully), object: nil)
+
+            DispatchQueue.global().async {
+                self.captureManager.captureSession.startRunning()
+            }
+
+            // TODO: Manage flash button state
+            // RAC(self.buttonFlash, enabled) = RACSignal combineLatest:@[
+            //     RACObserve(self.captureManager, flashAvailable),
+            //     RACObserve(self, isCapturing),
+            // ]
+            // reduce:^id(NSNumber *flashAvailable, NSNumber *isCapturing){
+            //     BOOL enabled = flashAvailable.boolValue && isCapturing.boolValue
+            //     return @(enabled)
+            // }
+
+        #endif
     }
 
     override func viewWillDisappear(_ animated: Bool) {

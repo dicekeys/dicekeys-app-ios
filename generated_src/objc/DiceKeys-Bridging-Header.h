@@ -12,4 +12,4 @@ FOUNDATION_EXPORT double DiceKeysBridgingHeaderVersionNumber;
 //! Project version string for DiceKeysBridgingHeader.
 FOUNDATION_EXPORT const unsigned char DiceKeysBridgingHeaderVersionString[];
 
-#import "DKDiceKeyImageProcessorWrapper.h"
+#import "DKImageProcessor.h"

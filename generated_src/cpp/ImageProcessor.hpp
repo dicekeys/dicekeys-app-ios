@@ -10,20 +10,20 @@
 
 namespace dicekeys {
 
-class DiceKeyImageProcessorWrapper {
+class ImageProcessor {
 public:
-    virtual ~DiceKeyImageProcessorWrapper() {}
+    virtual ~ImageProcessor() {}
 
     /**
      * `create()` factory method has to be used to create an instance of the class in Swift/Objective-C/Kotlin/Java
      *
      * For example, in Swift:
-     * let wrapper = DKDiceKeyImageProcessorWrapper.create()!
+     * let wrapper = DKImageProcessor.create()!
      *
      * in Objective-C:
-     * DKDiceKeyImageProcessorWrapper *wrapper = [DKDiceKeyImageProcessorWrapper create];
+     * DKImageProcessor *wrapper = [DKImageProcessor create];
      */
-    static std::shared_ptr<DiceKeyImageProcessorWrapper> create();
+    static std::shared_ptr<ImageProcessor> create();
 
     virtual bool processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes) = 0;
 

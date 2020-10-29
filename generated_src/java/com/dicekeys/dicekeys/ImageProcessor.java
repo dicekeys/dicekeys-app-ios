@@ -5,7 +5,7 @@ package com.dicekeys.dicekeys;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public abstract class DiceKeyImageProcessorWrapper {
+public abstract class ImageProcessor {
     public abstract boolean processRGBAImage(int width, int height, byte[] bytes);
 
     public abstract byte[] processRGBAImageAndRenderOverlay(int width, int height, byte[] bytes);
@@ -22,17 +22,17 @@ public abstract class DiceKeyImageProcessorWrapper {
      * `create()` factory method has to be used to create an instance of the class in Swift/Objective-C/Kotlin/Java
      *
      * For example, in Swift:
-     * let wrapper = DKDiceKeyImageProcessorWrapper.create()!
+     * let wrapper = DKImageProcessor.create()!
      *
      * in Objective-C:
-     * DKDiceKeyImageProcessorWrapper *wrapper = [DKDiceKeyImageProcessorWrapper create];
+     * DKImageProcessor *wrapper = [DKImageProcessor create];
      */
-    public static DiceKeyImageProcessorWrapper create()
+    public static ImageProcessor create()
     {
         return CppProxy.create();
     }
 
-    private static final class CppProxy extends DiceKeyImageProcessorWrapper
+    private static final class CppProxy extends ImageProcessor
     {
         private final long nativeRef;
         private final AtomicBoolean destroyed = new AtomicBoolean(false);
@@ -103,6 +103,6 @@ public abstract class DiceKeyImageProcessorWrapper {
         }
         private native byte[] native_getFaceImage(long _nativeRef, int faceIndex, int height, byte[] bytes);
 
-        public static native DiceKeyImageProcessorWrapper create();
+        public static native ImageProcessor create();
     }
 }

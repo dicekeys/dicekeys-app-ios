@@ -1,14 +1,14 @@
 #pragma once
 
-#include "DiceKeyImageProcessorWrapper.hpp"
+#include "ImageProcessor.hpp"
 #include "read-dicekey.hpp"
 
 namespace dicekeys {
-class DiceKeyImageProcessorWrapperImpl : public DiceKeyImageProcessorWrapper {
+class ImageProcessorImpl : public ImageProcessor {
     std::shared_ptr<DiceKeyImageProcessor> reader;
 
 public:
-    DiceKeyImageProcessorWrapperImpl();
+    ImageProcessorImpl();
 
     bool processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes);
 
