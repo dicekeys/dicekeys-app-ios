@@ -142,7 +142,38 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
 
         //        UIImageWriteToSavedPhotosAlbum(orig, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
 
-        image = orig
+        // Test
+        do {
+            // Initialize wrapper
+            let wrapper = DKImageProcessor.create()!
+
+            // Load test image from bundle
+            let image = orig
+
+            let w = image.bitmapWidth
+            let h = image.bitmapHeight
+
+            let data = image.rgba()
+
+            // Test API
+            // processRGBAImageAndRenderOverlay
+//            var overlay = wrapper.processRGBAImageAndRenderOverlay(w, height: h, bytes: data)
+//            overlay.withUnsafeMutableBytes { rawBufferPointer in
+//                let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+//                let overlayImage = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
+//
+//                imageView.image = overlayImage
+//            }
+
+            var augmented = wrapper.processAndAugmentRGBAImage(w, height: h, bytes: data)
+            augmented.withUnsafeMutableBytes { rawBufferPointer in
+                let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+                let image = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
+
+                self.image = image
+            }
+        }
+
         captureManager.previewLayer.connection!.isEnabled = true
         enableButtons()
     }
