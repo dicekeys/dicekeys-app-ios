@@ -16,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let processor = DKDiceKeyImageProcessorWrapper.create()!
         print(processor.getHelloWorld())
 
-
         // Load test image from bundle
         let image = UIImage(named: "test.png")!
         let heightInPoints = image.size.height
@@ -25,12 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let widthInPoints = image.size.width
         let widthInPixels = Int32(widthInPoints * image.scale)
 
-        let pngData = image.pngData()!
+        let rgbaData = image.rgba()
 
         // Test API
-        print(processor.processRGBAImage(widthInPixels, height: heightInPixels, data: pngData))
-        print(processor.processAndAugmentRGBAImage(widthInPixels, height: heightInPixels, data: pngData))
-        print(processor.processRGBAImageAndRenderOverlay(widthInPixels, height: heightInPixels, data: pngData))
+        print(processor.processRGBAImage(widthInPixels, height: heightInPixels, data: rgbaData))
+        print(processor.processAndAugmentRGBAImage(widthInPixels, height: heightInPixels, data: rgbaData))
+        print(processor.processRGBAImageAndRenderOverlay(widthInPixels, height: heightInPixels, data: rgbaData))
         print(processor.readJson())
         print(processor.isFinished())
 
