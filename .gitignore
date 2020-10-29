@@ -215,5 +215,5 @@ fabric.properties
 # Haskell Idea plugin
 .ideaHaskellLib
 
-ios/
 
+deps/ios/
