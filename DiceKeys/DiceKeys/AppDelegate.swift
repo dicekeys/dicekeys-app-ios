@@ -12,24 +12,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        // Initialize wrapper
-        let wrapper = DKDiceKeyImageProcessorWrapper.create()!
+        // Test
+        do {
+            // Initialize wrapper
+            let wrapper = DKDiceKeyImageProcessorWrapper.create()!
 
-        // Load test image from bundle
-        let image = UIImage(named: "test.png")!
+            // Load test image from bundle
+            let image = UIImage(named: "test.png")!
 
-        let w = image.bitmapWidth
-        let h = image.bitmapHeight
+            let w = image.bitmapWidth
+            let h = image.bitmapHeight
 
-        let data = image.rgba()
+            let data = image.rgba()
 
-        // Test API
-        print(wrapper.processRGBAImage(w, height: h, bytes: data))
-        print(wrapper.processAndAugmentRGBAImage(w, height: h, bytes: data))
-        print(wrapper.processRGBAImageAndRenderOverlay(w, height: h, bytes: data))
-        print(wrapper.readJson())
-        print(wrapper.isFinished())
-//        print(wrapper.getFaceImage(<#T##faceIndex: Int32##Int32#>, height: <#T##Int32#>, bytes: <#T##Data#>))
+            // Test API
+            // processRGBAImageAndRenderOverlay
+//            var overlay = wrapper.processRGBAImageAndRenderOverlay(w, height: h, bytes: data)
+//            overlay.withUnsafeMutableBytes { rawBufferPointer in
+//                let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+//                let overlayImage = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
+//
+//                imageView.image = overlayImage
+//            }
+
+            var augmented = wrapper.processAndAugmentRGBAImage(w, height: h, bytes: data)
+            augmented.withUnsafeMutableBytes { rawBufferPointer in
+                let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+                let image = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
+
+                print(image)
+            }
+
+            //        print(wrapper.processRGBAImage(w, height: h, bytes: data))
+            //        print(wrapper.processAndAugmentRGBAImage(w, height: h, bytes: data))
+            //        print(wrapper.readJson())
+            //        print(wrapper.isFinished())
+        }
 
         return true
     }

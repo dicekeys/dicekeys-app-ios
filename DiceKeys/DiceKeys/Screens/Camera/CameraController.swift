@@ -52,9 +52,9 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
         isCapturing = true
 
         #if targetEnvironment(simulator)
-            buttonTake.isEnabled = false
+        buttonTake.isEnabled = false
         #else
-            buttonTake.isEnabled = true
+        buttonTake.isEnabled = true
         #endif
 
         updateGalleryButtonImage()
@@ -98,35 +98,68 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
 
         mainContainer.controller = self
 
-        prepareForImageCapture()
+        // TODO: uncomment
+        //        prepareForImageCapture()
+
+        // Test
+        do {
+            // Initialize wrapper
+            let wrapper = DKDiceKeyImageProcessorWrapper.create()!
+
+            // Load test image from bundle
+            let image = UIImage(named: "test.png")!
+
+            let w = image.bitmapWidth
+            let h = image.bitmapHeight
+
+            let data = image.rgba()
+
+            // Test API
+            // processRGBAImageAndRenderOverlay
+//            var overlay = wrapper.processRGBAImageAndRenderOverlay(w, height: h, bytes: data)
+//            overlay.withUnsafeMutableBytes { rawBufferPointer in
+//                let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+//                let overlayImage = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
+//
+//                imageView.image = overlayImage
+//            }
+
+            //        print(wrapper.processRGBAImage(w, height: h, bytes: data))
+            //        print(wrapper.processAndAugmentRGBAImage(w, height: h, bytes: data))
+            //        print(wrapper.readJson())
+            //        print(wrapper.isFinished())
+
+
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        #if targetEnvironment(simulator)
-            image = UIImage(named: "Photo")
-        #else
-            captureManager = SessionManger(view: sessionContainer)
-            captureManager.backOn = false
-
-            NotificationCenter.default.addObserver(self, selector: #selector(imageCapturedSuccessfully), name: NSNotification.Name(kImageCapturedSuccessfully), object: nil)
-
-            DispatchQueue.global().async {
-                self.captureManager.captureSession.startRunning()
-            }
-
-            // TODO: Manage flash button state
-            // RAC(self.buttonFlash, enabled) = RACSignal combineLatest:@[
-            //     RACObserve(self.captureManager, flashAvailable),
-            //     RACObserve(self, isCapturing),
-            // ]
-            // reduce:^id(NSNumber *flashAvailable, NSNumber *isCapturing){
-            //     BOOL enabled = flashAvailable.boolValue && isCapturing.boolValue
-            //     return @(enabled)
-            // }
-
-        #endif
+        // TODO: uncomment
+        //        #if targetEnvironment(simulator)
+        //            image = UIImage(named: "Photo")
+        //        #else
+        //            captureManager = SessionManger(view: sessionContainer)
+        //            captureManager.backOn = false
+        //
+        //            NotificationCenter.default.addObserver(self, selector: #selector(imageCapturedSuccessfully), name: NSNotification.Name(kImageCapturedSuccessfully), object: nil)
+        //
+        //            DispatchQueue.global().async {
+        //                self.captureManager.captureSession.startRunning()
+        //            }
+        //
+        //            // TODO: Manage flash button state
+        //            // RAC(self.buttonFlash, enabled) = RACSignal combineLatest:@[
+        //            //     RACObserve(self.captureManager, flashAvailable),
+        //            //     RACObserve(self, isCapturing),
+        //            // ]
+        //            // reduce:^id(NSNumber *flashAvailable, NSNumber *isCapturing){
+        //            //     BOOL enabled = flashAvailable.boolValue && isCapturing.boolValue
+        //            //     return @(enabled)
+        //            // }
+        //
+        //        #endif
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -137,7 +170,7 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
     @objc func imageCapturedSuccessfully() {
         let orig = captureManager.stillImage!
 
-//        UIImageWriteToSavedPhotosAlbum(orig, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        //        UIImageWriteToSavedPhotosAlbum(orig, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
 
         image = orig
         captureManager.previewLayer.connection!.isEnabled = true
@@ -146,14 +179,14 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
 
     @objc func image(_: UIImage, didFinishSavingWithError error: NSError?, contextInfo _: UnsafeRawPointer) {
         if let error = error {
-//            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
-//            ac.addAction(UIAlertAction(title: "OK", style: .default))
-//            present(ac, animated: true)
+            //            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+            //            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            //            present(ac, animated: true)
             print("Error: \(error)")
         } else {
-//            let ac = UIAlertController(title: "Saved!", message: "Your image has been saved to your photos.", preferredStyle: .alert)
-//            ac.addAction(UIAlertAction(title: "OK", style: .default))
-//            present(ac, animated: true)
+            //            let ac = UIAlertController(title: "Saved!", message: "Your image has been saved to your photos.", preferredStyle: .alert)
+            //            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            //            present(ac, animated: true)
         }
     }
 

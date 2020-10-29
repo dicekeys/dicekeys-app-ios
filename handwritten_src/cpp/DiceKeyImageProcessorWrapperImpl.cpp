@@ -14,8 +14,7 @@ DiceKeyImageProcessorWrapperImpl::DiceKeyImageProcessorWrapperImpl() {
 }
 
 bool DiceKeyImageProcessorWrapperImpl::processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes) {
-    auto ptr = (const uint32_t *)bytes.data();
-    return reader->processRGBAImage(width, height, ptr);
+    return reader->processRGBAImage(width, height, (const uint32_t *)bytes.data());
 }
 
 std::vector<uint8_t> DiceKeyImageProcessorWrapperImpl::processRGBAImageAndRenderOverlay(int32_t width, int32_t height, const std::vector<uint8_t> & bytes) {
@@ -31,11 +30,9 @@ std::vector<uint8_t> DiceKeyImageProcessorWrapperImpl::processRGBAImageAndRender
 std::vector<uint8_t> DiceKeyImageProcessorWrapperImpl::processAndAugmentRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes) {
     // Scan codes
     reader->processRGBAImage(width, height, (const uint32_t *)bytes.data());
-    // Create empty collection
-    std::vector<uint8_t> augmented(bytes.size());
-    // Render overlay
-    reader->augmentRGBAImage(width, height, (uint32_t *)augmented.data());
-    return augmented;
+    // Render overlay over original image
+    reader->augmentRGBAImage(width, height, (uint32_t *)bytes.data());
+    return bytes;
 }
 
 std::string DiceKeyImageProcessorWrapperImpl::readJson() {
