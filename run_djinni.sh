@@ -3,7 +3,7 @@
 
 # Configure
 
-IDL_FILE="idl/DiceKeyImageProcessorWrapper.djinni"
+IDL_FILE="idl/ImageProcessor.djinni"
 CPP_NAMESPACE="dicekeys"
 OBJC_PREFIX="DK"
 JAVA_PACKAGE="com.dicekeys.dicekeys"
@@ -70,6 +70,6 @@ $BASE_DIR/deps/djinni/src/run \
     \
     --idl $IDL_FILE
 
-cp "$OBJC_OUTPUT_FOLDER/$BRIDGING_HEADER.h" "$BASE_DIR/DiceKeys/DiceKeys/$BRIDGING_HEADER.h"
-echo '#import "ImageHelper.h"' >> "$BASE_DIR/DiceKeys/DiceKeys/$BRIDGING_HEADER.h"
+cp "$OBJC_OUTPUT_FOLDER/$BRIDGING_HEADER.h" "$BASE_DIR/project_ios/DiceKeys/$BRIDGING_HEADER.h"
+echo '#import "ImageHelper.h"' >> "$BASE_DIR/project_ios/DiceKeys/$BRIDGING_HEADER.h"
 

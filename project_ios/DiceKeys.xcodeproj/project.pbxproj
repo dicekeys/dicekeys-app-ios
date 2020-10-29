@@ -68,7 +68,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6F3EE3E22549A37D002602CD /* DiceKeyImageProcessorWrapper.djinni */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DiceKeyImageProcessorWrapper.djinni; sourceTree = "<group>"; };
+		6F3EE3E22549A37D002602CD /* ImageProcessor.djinni */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ImageProcessor.djinni; sourceTree = "<group>"; };
 		6F3EE4642549A9BE002602CD /* ImageProcessorImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageProcessorImpl.cpp; sourceTree = "<group>"; };
 		6F3EE4652549A9BE002602CD /* ImageProcessorImpl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ImageProcessorImpl.hpp; sourceTree = "<group>"; };
 		6F3EE47B2549ADCF002602CD /* NativeDiceKeyImageProcessorWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NativeDiceKeyImageProcessorWrapper.cpp; sourceTree = "<group>"; };
@@ -200,7 +200,7 @@
 		6F3EE3DC2549A312002602CD /* idl */ = {
 			isa = PBXGroup;
 			children = (
-				6F3EE3E22549A37D002602CD /* DiceKeyImageProcessorWrapper.djinni */,
+				6F3EE3E22549A37D002602CD /* ImageProcessor.djinni */,
 			);
 			name = idl;
 			path = ../idl;
