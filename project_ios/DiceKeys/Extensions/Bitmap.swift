@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIImage {
+public extension UIImage {
     convenience init?(bitmap: Data, width: Int, height: Int) {
         let bitsPerComponent = 8
         let bitsPerPixel = 4 * 8
@@ -43,7 +43,7 @@ extension UIImage {
     }
 }
 
-extension CGImage {
+public extension CGImage {
     var bitmap: Data? {
         let bitsPerComponent = 8
         let bytesPerRow = 4 * width
@@ -79,7 +79,7 @@ public extension CGFloat {
     }
 }
 
-extension UIImage {
+public extension UIImage {
     func rotate(radians: Float) -> UIImage? {
         var newSize = CGRect(origin: CGPoint.zero, size: size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
         // Trim off the extremely small float value to prevent core graphics from rounding it up
