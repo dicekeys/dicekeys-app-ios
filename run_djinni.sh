@@ -71,5 +71,4 @@ $BASE_DIR/deps/djinni/src/run \
     --idl $IDL_FILE
 
 cp "$OBJC_OUTPUT_FOLDER/$BRIDGING_HEADER.h" "$BASE_DIR/project_ios/DiceKeys/$BRIDGING_HEADER.h"
-echo '#import "ImageHelper.h"' >> "$BASE_DIR/project_ios/DiceKeys/$BRIDGING_HEADER.h"
 

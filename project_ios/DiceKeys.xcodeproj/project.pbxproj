@@ -11,7 +11,7 @@
 		6F3EE4E22549B2BB002602CD /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F3EE4E12549B2BB002602CD /* test.png */; };
 		6F8435B7254AAA1F00ABE33B /* DJIError.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6F842E39254AAA1C00ABE33B /* DJIError.mm */; };
 		6F8435B8254AAA1F00ABE33B /* DJIProxyCaches.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6F842E3C254AAA1C00ABE33B /* DJIProxyCaches.mm */; };
-		6F846B45254AAC5200ABE33B /* CGImage+Bitmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B44254AAC5200ABE33B /* CGImage+Bitmap.swift */; };
+		6F846B45254AAC5200ABE33B /* Bitmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B44254AAC5200ABE33B /* Bitmap.swift */; };
 		6F846B7E254AE0FD00ABE33B /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F846B7D254AE0FD00ABE33B /* opencv2.framework */; };
 		6F846BC2254AE10700ABE33B /* dicekey-from-human-readable-form.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B81254AE10700ABE33B /* dicekey-from-human-readable-form.cpp */; };
 		6F846BC3254AE10700ABE33B /* dicekey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B83254AE10700ABE33B /* dicekey.cpp */; };
@@ -34,7 +34,6 @@
 		6F846BD5254AE10700ABE33B /* validate-faces-read.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BBB254AE10700ABE33B /* validate-faces-read.cpp */; };
 		6F846BD6254AE10700ABE33B /* visualize-read-results.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BBD254AE10700ABE33B /* visualize-read-results.cpp */; };
 		6F846BD7254AE10700ABE33B /* write-face-characters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BBF254AE10700ABE33B /* write-face-characters.cpp */; };
-		6F846BE3254B0A5E00ABE33B /* ImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BE2254B0A5E00ABE33B /* ImageHelper.m */; };
 		6F846BF1254B122300ABE33B /* DKImageProcessor+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BEE254B122300ABE33B /* DKImageProcessor+Private.mm */; };
 		6F846BFF254B277000ABE33B /* VideoSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BFE254B277000ABE33B /* VideoSessionManager.swift */; };
 		6F846C04254B2BCF00ABE33B /* UIWindow+Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */; };
@@ -81,7 +80,7 @@
 		6F842E3A254AAA1C00ABE33B /* DJIMarshal+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DJIMarshal+Private.h"; sourceTree = "<group>"; };
 		6F842E3B254AAA1C00ABE33B /* DJIObjcWrapperCache+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DJIObjcWrapperCache+Private.h"; sourceTree = "<group>"; };
 		6F842E3C254AAA1C00ABE33B /* DJIProxyCaches.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DJIProxyCaches.mm; sourceTree = "<group>"; };
-		6F846B44254AAC5200ABE33B /* CGImage+Bitmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImage+Bitmap.swift"; sourceTree = "<group>"; };
+		6F846B44254AAC5200ABE33B /* Bitmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bitmap.swift; sourceTree = "<group>"; };
 		6F846B7D254AE0FD00ABE33B /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ios/opencv2.framework; sourceTree = "<group>"; };
 		6F846B80254AE10700ABE33B /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		6F846B81254AE10700ABE33B /* dicekey-from-human-readable-form.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "dicekey-from-human-readable-form.cpp"; sourceTree = "<group>"; };
@@ -142,8 +141,6 @@
 		6F846BBE254AE10700ABE33B /* visualize-read-results.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "visualize-read-results.h"; sourceTree = "<group>"; };
 		6F846BBF254AE10700ABE33B /* write-face-characters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "write-face-characters.cpp"; sourceTree = "<group>"; };
 		6F846BC0254AE10700ABE33B /* write-face-characters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "write-face-characters.h"; sourceTree = "<group>"; };
-		6F846BE1254B0A5E00ABE33B /* ImageHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageHelper.h; sourceTree = "<group>"; };
-		6F846BE2254B0A5E00ABE33B /* ImageHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageHelper.m; sourceTree = "<group>"; };
 		6F846BE7254B11D300ABE33B /* ImageProcessor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ImageProcessor.hpp; sourceTree = "<group>"; };
 		6F846BEE254B122300ABE33B /* DKImageProcessor+Private.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "DKImageProcessor+Private.mm"; sourceTree = "<group>"; };
 		6F846BEF254B122300ABE33B /* DKImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DKImageProcessor.h; sourceTree = "<group>"; };
@@ -349,9 +346,7 @@
 		6F846B43254AAC3100ABE33B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				6F846B44254AAC5200ABE33B /* CGImage+Bitmap.swift */,
-				6F846BE1254B0A5E00ABE33B /* ImageHelper.h */,
-				6F846BE2254B0A5E00ABE33B /* ImageHelper.m */,
+				6F846B44254AAC5200ABE33B /* Bitmap.swift */,
 				6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */,
 			);
 			path = Extensions;
@@ -720,7 +715,6 @@
 				6F846BF1254B122300ABE33B /* DKImageProcessor+Private.mm in Sources */,
 				6FAC6AAA25480DE000AA8249 /* AppDelegate.swift in Sources */,
 				6FAC6AE825480E7F00AA8249 /* SessionManager.swift in Sources */,
-				6F846BE3254B0A5E00ABE33B /* ImageHelper.m in Sources */,
 				6F846BD1254AE10700ABE33B /* read-face-characters.cpp in Sources */,
 				6F8435B8254AAA1F00ABE33B /* DJIProxyCaches.mm in Sources */,
 				6F846BD2254AE10700ABE33B /* read-faces.cpp in Sources */,
@@ -732,7 +726,7 @@
 				6F846BC8254AE10700ABE33B /* decode-die.cpp in Sources */,
 				6F846BCF254AE10700ABE33B /* json.cpp in Sources */,
 				6F846BD5254AE10700ABE33B /* validate-faces-read.cpp in Sources */,
-				6F846B45254AAC5200ABE33B /* CGImage+Bitmap.swift in Sources */,
+				6F846B45254AAC5200ABE33B /* Bitmap.swift in Sources */,
 				6F846BFF254B277000ABE33B /* VideoSessionManager.swift in Sources */,
 				6F846BCE254AE10700ABE33B /* find-rectangles.cpp in Sources */,
 				6F846BCB254AE10700ABE33B /* find-faces.cpp in Sources */,

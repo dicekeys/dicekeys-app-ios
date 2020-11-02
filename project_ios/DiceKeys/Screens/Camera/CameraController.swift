@@ -105,7 +105,6 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
                     let w = cgImage.width
                     let h = cgImage.height
 
-
                     // Test API
                     // processRGBAImageAndRenderOverlay
                     //            var overlay = wrapper.processRGBAImageAndRenderOverlay(w, height: h, bytes: data)
@@ -116,17 +115,17 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
                     //                imageView.image = overlayImage
                     //            }
 
-                    let retVal = processor.processRGBAImageAndRenderOverlay(Int32(w), height: Int32(h), bytes: data)
+                    let bitmap = processor.processRGBAImageAndRenderOverlay(Int32(w), height: Int32(h), bytes: data)
 
-                    if let overlay = imageBitmap(retVal, width: w, height: h) {
-                        self.image = UIImage(cgImage: overlay)
+                    if let image = UIImage(bitmap: bitmap, width: w, height: h) {
+                        self.image = image
                         self.imageView.image = self.image
                         self.imageView.isHidden = false
                     }
 
                     skippedFrames = 0
                 }
-                
+
                 // Add video preview layer
                 do {
                     let view = self.sessionContainer!
