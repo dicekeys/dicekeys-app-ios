@@ -96,14 +96,14 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
                     let context = CIContext(options: nil)
                     let cgImage = context.createCGImage(ciImage, from: ciImage.extent)!
 
-                    guard let data = cgImage.bitmapRGBA8 else {
+                    guard let data = cgImage.bitmap else {
                         return
                     }
 
                     let processor = DKImageProcessor.create()!
 
-                    let w = Int32(cgImage.width)
-                    let h = Int32(cgImage.height)
+                    let w = cgImage.width
+                    let h = cgImage.height
 
 
                     // Test API
@@ -116,12 +116,10 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
                     //                imageView.image = overlayImage
                     //            }
 
-                    var overlay = processor.processRGBAImageAndRenderOverlay(w, height: h, bytes: data)
-                    overlay.withUnsafeMutableBytes { rawBufferPointer in
-                        let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
-                        let image = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
+                    let retVal = processor.processRGBAImageAndRenderOverlay(Int32(w), height: Int32(h), bytes: data)
 
-                        self.image = image
+                    if let overlay = imageBitmap(retVal, width: w, height: h) {
+                        self.image = UIImage(cgImage: overlay)
                         self.imageView.image = self.image
                         self.imageView.isHidden = false
                     }

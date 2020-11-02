@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let w = Int32(image.width)
             let h = Int32(image.height)
 
-            let data = image.bitmapRGBA8!
+            let data = image.bitmap!
 
             // Test API
             // processRGBAImageAndRenderOverlay
@@ -38,9 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             var augmented = wrapper.processAndAugmentRGBAImage(w, height: h, bytes: data)
             augmented.withUnsafeMutableBytes { rawBufferPointer in
                 let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
-                let image = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
-
-                print(image)
+//                let image = CGImage.fromBitmap(data, width: w, height: h)
+//
+//                print(image)
             }
 
             //        print(wrapper.processRGBAImage(w, height: h, bytes: data))
