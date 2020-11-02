@@ -18,12 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let wrapper = DKImageProcessor.create()!
 
             // Load test image from bundle
-            let image = UIImage(named: "test.png")!
+            let image = UIImage(named: "test.png")!.cgImage!
 
-            let w = Int32(image.bitmapWidth)
-            let h = Int32(image.bitmapHeight)
+            let w = Int32(image.width)
+            let h = Int32(image.height)
 
-            let data = image.rgba()!
+            let data = image.bitmapRGBA8!
 
             // Test API
             // processRGBAImageAndRenderOverlay

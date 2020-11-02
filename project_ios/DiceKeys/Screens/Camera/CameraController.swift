@@ -96,7 +96,7 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
                     let context = CIContext(options: nil)
                     let cgImage = context.createCGImage(ciImage, from: ciImage.extent)!
 
-                    guard let data = ImageHelper.convertCGImage(toBitmapRGBA8: cgImage) else {
+                    guard let data = cgImage.bitmapRGBA8 else {
                         return
                     }
 

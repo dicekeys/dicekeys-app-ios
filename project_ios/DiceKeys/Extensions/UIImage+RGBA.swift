@@ -7,48 +7,16 @@
 
 import UIKit
 
-extension UIImage {
-    var bitmapWidth: Int {
-        cgImage?.width ?? 0
-    }
-
-    var bitmapHeight: Int {
-        cgImage?.height ?? 0
-    }
-
-    func rgba() -> Data? {
-        /*
-         Maybe whole rgba code could be replaced as
-
-         func rgba() -> Data? {
-         self.cgImage?.dataProvider?.data as? Data
-         }
-         */
-        // Return empty `Data` collection if `UIImage` itself is empty
-        //        guard let bitmap = self.cgImage?.dataProvider?.data else {
-        //            return Data()
-        //        }
-        //
-        //        var bytes = [UInt8]()
-        //        var ptr: UnsafePointer<UInt8> = CFDataGetBytePtr(bitmap)
-        //
-        //        for _ in 0 ..< Int(self.size.height) {
-        //            for _ in 0 ..< Int(self.size.width) {
-        //                // Read r, g, b, a bytes from binary string
-        //                let r = ptr.pointee; ptr = ptr.advanced(by: 1)
-        //                let g = ptr.pointee; ptr = ptr.advanced(by: 1)
-        //                let b = ptr.pointee; ptr = ptr.advanced(by: 1)
-        //                let a = ptr.pointee; ptr = ptr.advanced(by: 1)
-        //                // Save values to array
-        //                bytes.append(r)
-        //                bytes.append(g)
-        //                bytes.append(b)
-        //                bytes.append(a)
-        //            }
-        //        }
-        //
-        //        return Data(bytes)
-        cgImage?.dataProvider?.data as? Data
+extension CGImage {
+    var bitmapRGBA8: Data? {
+        let bufferLength = width * height * 4
+        var buffer = [UInt8](repeating: 0, count: bufferLength)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        guard let context = CGContext(data: &buffer, width: width, height: height, bitsPerComponent: 8, bytesPerRow: 4 * width, space: colorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
+            return nil
+        }
+        context.draw(self, in: CGRect(x: 0, y: 0, width: width, height: height))
+        return Data(buffer)
     }
 }
 
