@@ -37,6 +37,10 @@ extension UIImage {
 
         self.init(cgImage: cgImage)
     }
+
+    var bitmap: Data? {
+        cgImage?.bitmap
+    }
 }
 
 extension CGImage {
