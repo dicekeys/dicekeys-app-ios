@@ -46,7 +46,6 @@ extension UIImage {
 extension CGImage {
     var bitmap: Data? {
         let bitsPerComponent = 8
-        let bitsPerPixel = 4 * 8
         let bytesPerRow = 4 * width
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
