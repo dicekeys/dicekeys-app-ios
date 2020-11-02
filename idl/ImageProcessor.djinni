@@ -8,15 +8,15 @@ image_processor = interface +c {
     # DKImageProcessor *wrapper = [DKImageProcessor create];
     static create(): image_processor;
     
-    process_RGBA_image(width: i32, height: i32, bytes: binary): bool;
+    process(image: binary, width: i32, height: i32): bool;
 
-    process_RGBA_image_and_render_overlay(width: i32, height: i32, bytes: binary): binary;
+    overlay(image: binary, width: i32, height: i32): binary;
 
-    process_and_augment_RGBA_image(width: i32, height: i32, bytes: binary): binary;
+    augmented(image: binary, width: i32, height: i32): binary;
 
-    read_json(): string;
+    json(): string;
 
     is_finished(): bool;
 
-    get_face_image(face_index: i32, height: i32, bytes: binary): binary;
+    face_image(face_index: i32, height: i32, bytes: binary): binary;
 }

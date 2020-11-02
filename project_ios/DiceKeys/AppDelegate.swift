@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                imageView.image = overlayImage
 //            }
 
-            var augmented = wrapper.processAndAugmentRGBAImage(w, height: h, bytes: data)
+            var augmented = wrapper.augmented(data, width: w, height: h)
             augmented.withUnsafeMutableBytes { rawBufferPointer in
                 let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
 //                let image = CGImage.fromBitmap(data, width: w, height: h)

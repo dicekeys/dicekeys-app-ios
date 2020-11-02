@@ -115,7 +115,7 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
                     //                imageView.image = overlayImage
                     //            }
 
-                    let bitmap = processor.processRGBAImageAndRenderOverlay(Int32(w), height: Int32(h), bytes: data)
+                    let bitmap = processor.overlay(data, width: Int32(w), height: Int32(h))
 
                     if let image = UIImage(bitmap: bitmap, width: w, height: h) {
                         self.image = image

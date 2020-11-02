@@ -10,16 +10,16 @@ class ImageProcessorImpl : public ImageProcessor {
 public:
     ImageProcessorImpl();
 
-    bool processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes);
+    bool process(const std::vector<uint8_t> & image, int32_t width, int32_t height);
 
-    std::vector<uint8_t> processRGBAImageAndRenderOverlay(int32_t width, int32_t height, const std::vector<uint8_t> & bytes);
+    std::vector<uint8_t> overlay(const std::vector<uint8_t> & image, int32_t width, int32_t height);
 
-    std::vector<uint8_t> processAndAugmentRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes);
+    std::vector<uint8_t> augmented(const std::vector<uint8_t> & image, int32_t width, int32_t height);
 
-    std::string readJson();
+    std::string json();
 
     bool isFinished();
 
-    std::vector<uint8_t> getFaceImage(int32_t faceIndex, int32_t height, const std::vector<uint8_t> & bytes);
+    std::vector<uint8_t> faceImage(int32_t faceIndex, int32_t height, const std::vector<uint8_t> & bytes);
 };
 }

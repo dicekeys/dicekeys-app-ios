@@ -28,48 +28,48 @@ CJNIEXPORT jobject JNICALL Java_com_dicekeys_dicekeys_ImageProcessor_00024CppPro
     } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, 0 /* value doesn't matter */)
 }
 
-CJNIEXPORT jboolean JNICALL Java_com_dicekeys_dicekeys_ImageProcessor_00024CppProxy_native_1processRGBAImage(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef, jint j_width, jint j_height, jbyteArray j_bytes)
+CJNIEXPORT jboolean JNICALL Java_com_dicekeys_dicekeys_ImageProcessor_00024CppProxy_native_1process(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef, jbyteArray j_image, jint j_width, jint j_height)
 {
     try {
         DJINNI_FUNCTION_PROLOGUE1(jniEnv, nativeRef);
         const auto& ref = ::djinni::objectFromHandleAddress<::dicekeys::ImageProcessor>(nativeRef);
-        auto r = ref->processRGBAImage(::djinni::I32::toCpp(jniEnv, j_width),
-                                       ::djinni::I32::toCpp(jniEnv, j_height),
-                                       ::djinni::Binary::toCpp(jniEnv, j_bytes));
+        auto r = ref->process(::djinni::Binary::toCpp(jniEnv, j_image),
+                              ::djinni::I32::toCpp(jniEnv, j_width),
+                              ::djinni::I32::toCpp(jniEnv, j_height));
         return ::djinni::release(::djinni::Bool::fromCpp(jniEnv, r));
     } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, 0 /* value doesn't matter */)
 }
 
-CJNIEXPORT jbyteArray JNICALL Java_com_dicekeys_dicekeys_ImageProcessor_00024CppProxy_native_1processRGBAImageAndRenderOverlay(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef, jint j_width, jint j_height, jbyteArray j_bytes)
+CJNIEXPORT jbyteArray JNICALL Java_com_dicekeys_dicekeys_ImageProcessor_00024CppProxy_native_1overlay(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef, jbyteArray j_image, jint j_width, jint j_height)
 {
     try {
         DJINNI_FUNCTION_PROLOGUE1(jniEnv, nativeRef);
         const auto& ref = ::djinni::objectFromHandleAddress<::dicekeys::ImageProcessor>(nativeRef);
-        auto r = ref->processRGBAImageAndRenderOverlay(::djinni::I32::toCpp(jniEnv, j_width),
-                                                       ::djinni::I32::toCpp(jniEnv, j_height),
-                                                       ::djinni::Binary::toCpp(jniEnv, j_bytes));
+        auto r = ref->overlay(::djinni::Binary::toCpp(jniEnv, j_image),
+                              ::djinni::I32::toCpp(jniEnv, j_width),
+                              ::djinni::I32::toCpp(jniEnv, j_height));
         return ::djinni::release(::djinni::Binary::fromCpp(jniEnv, r));
     } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, 0 /* value doesn't matter */)
 }
 
-CJNIEXPORT jbyteArray JNICALL Java_com_dicekeys_dicekeys_ImageProcessor_00024CppProxy_native_1processAndAugmentRGBAImage(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef, jint j_width, jint j_height, jbyteArray j_bytes)
+CJNIEXPORT jbyteArray JNICALL Java_com_dicekeys_dicekeys_ImageProcessor_00024CppProxy_native_1augmented(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef, jbyteArray j_image, jint j_width, jint j_height)
 {
     try {
         DJINNI_FUNCTION_PROLOGUE1(jniEnv, nativeRef);
         const auto& ref = ::djinni::objectFromHandleAddress<::dicekeys::ImageProcessor>(nativeRef);
-        auto r = ref->processAndAugmentRGBAImage(::djinni::I32::toCpp(jniEnv, j_width),
-                                                 ::djinni::I32::toCpp(jniEnv, j_height),
-                                                 ::djinni::Binary::toCpp(jniEnv, j_bytes));
+        auto r = ref->augmented(::djinni::Binary::toCpp(jniEnv, j_image),
+                                ::djinni::I32::toCpp(jniEnv, j_width),
+                                ::djinni::I32::toCpp(jniEnv, j_height));
         return ::djinni::release(::djinni::Binary::fromCpp(jniEnv, r));
     } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, 0 /* value doesn't matter */)
 }
 
-CJNIEXPORT jstring JNICALL Java_com_dicekeys_dicekeys_ImageProcessor_00024CppProxy_native_1readJson(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef)
+CJNIEXPORT jstring JNICALL Java_com_dicekeys_dicekeys_ImageProcessor_00024CppProxy_native_1json(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef)
 {
     try {
         DJINNI_FUNCTION_PROLOGUE1(jniEnv, nativeRef);
         const auto& ref = ::djinni::objectFromHandleAddress<::dicekeys::ImageProcessor>(nativeRef);
-        auto r = ref->readJson();
+        auto r = ref->json();
         return ::djinni::release(::djinni::String::fromCpp(jniEnv, r));
     } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, 0 /* value doesn't matter */)
 }
@@ -84,14 +84,14 @@ CJNIEXPORT jboolean JNICALL Java_com_dicekeys_dicekeys_ImageProcessor_00024CppPr
     } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, 0 /* value doesn't matter */)
 }
 
-CJNIEXPORT jbyteArray JNICALL Java_com_dicekeys_dicekeys_ImageProcessor_00024CppProxy_native_1getFaceImage(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef, jint j_faceIndex, jint j_height, jbyteArray j_bytes)
+CJNIEXPORT jbyteArray JNICALL Java_com_dicekeys_dicekeys_ImageProcessor_00024CppProxy_native_1faceImage(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef, jint j_faceIndex, jint j_height, jbyteArray j_bytes)
 {
     try {
         DJINNI_FUNCTION_PROLOGUE1(jniEnv, nativeRef);
         const auto& ref = ::djinni::objectFromHandleAddress<::dicekeys::ImageProcessor>(nativeRef);
-        auto r = ref->getFaceImage(::djinni::I32::toCpp(jniEnv, j_faceIndex),
-                                   ::djinni::I32::toCpp(jniEnv, j_height),
-                                   ::djinni::Binary::toCpp(jniEnv, j_bytes));
+        auto r = ref->faceImage(::djinni::I32::toCpp(jniEnv, j_faceIndex),
+                                ::djinni::I32::toCpp(jniEnv, j_height),
+                                ::djinni::Binary::toCpp(jniEnv, j_bytes));
         return ::djinni::release(::djinni::Binary::fromCpp(jniEnv, r));
     } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, 0 /* value doesn't matter */)
 }

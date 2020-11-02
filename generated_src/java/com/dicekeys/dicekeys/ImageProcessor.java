@@ -6,17 +6,17 @@ package com.dicekeys.dicekeys;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class ImageProcessor {
-    public abstract boolean processRGBAImage(int width, int height, byte[] bytes);
+    public abstract boolean process(byte[] image, int width, int height);
 
-    public abstract byte[] processRGBAImageAndRenderOverlay(int width, int height, byte[] bytes);
+    public abstract byte[] overlay(byte[] image, int width, int height);
 
-    public abstract byte[] processAndAugmentRGBAImage(int width, int height, byte[] bytes);
+    public abstract byte[] augmented(byte[] image, int width, int height);
 
-    public abstract String readJson();
+    public abstract String json();
 
     public abstract boolean isFinished();
 
-    public abstract byte[] getFaceImage(int faceIndex, int height, byte[] bytes);
+    public abstract byte[] faceImage(int faceIndex, int height, byte[] bytes);
 
     /**
      * `create()` factory method has to be used to create an instance of the class in Swift/Objective-C/Kotlin/Java
@@ -56,36 +56,36 @@ public abstract class ImageProcessor {
         }
 
         @Override
-        public boolean processRGBAImage(int width, int height, byte[] bytes)
+        public boolean process(byte[] image, int width, int height)
         {
             assert !this.destroyed.get() : "trying to use a destroyed object";
-            return native_processRGBAImage(this.nativeRef, width, height, bytes);
+            return native_process(this.nativeRef, image, width, height);
         }
-        private native boolean native_processRGBAImage(long _nativeRef, int width, int height, byte[] bytes);
+        private native boolean native_process(long _nativeRef, byte[] image, int width, int height);
 
         @Override
-        public byte[] processRGBAImageAndRenderOverlay(int width, int height, byte[] bytes)
+        public byte[] overlay(byte[] image, int width, int height)
         {
             assert !this.destroyed.get() : "trying to use a destroyed object";
-            return native_processRGBAImageAndRenderOverlay(this.nativeRef, width, height, bytes);
+            return native_overlay(this.nativeRef, image, width, height);
         }
-        private native byte[] native_processRGBAImageAndRenderOverlay(long _nativeRef, int width, int height, byte[] bytes);
+        private native byte[] native_overlay(long _nativeRef, byte[] image, int width, int height);
 
         @Override
-        public byte[] processAndAugmentRGBAImage(int width, int height, byte[] bytes)
+        public byte[] augmented(byte[] image, int width, int height)
         {
             assert !this.destroyed.get() : "trying to use a destroyed object";
-            return native_processAndAugmentRGBAImage(this.nativeRef, width, height, bytes);
+            return native_augmented(this.nativeRef, image, width, height);
         }
-        private native byte[] native_processAndAugmentRGBAImage(long _nativeRef, int width, int height, byte[] bytes);
+        private native byte[] native_augmented(long _nativeRef, byte[] image, int width, int height);
 
         @Override
-        public String readJson()
+        public String json()
         {
             assert !this.destroyed.get() : "trying to use a destroyed object";
-            return native_readJson(this.nativeRef);
+            return native_json(this.nativeRef);
         }
-        private native String native_readJson(long _nativeRef);
+        private native String native_json(long _nativeRef);
 
         @Override
         public boolean isFinished()
@@ -96,12 +96,12 @@ public abstract class ImageProcessor {
         private native boolean native_isFinished(long _nativeRef);
 
         @Override
-        public byte[] getFaceImage(int faceIndex, int height, byte[] bytes)
+        public byte[] faceImage(int faceIndex, int height, byte[] bytes)
         {
             assert !this.destroyed.get() : "trying to use a destroyed object";
-            return native_getFaceImage(this.nativeRef, faceIndex, height, bytes);
+            return native_faceImage(this.nativeRef, faceIndex, height, bytes);
         }
-        private native byte[] native_getFaceImage(long _nativeRef, int faceIndex, int height, byte[] bytes);
+        private native byte[] native_faceImage(long _nativeRef, int faceIndex, int height, byte[] bytes);
 
         public static native ImageProcessor create();
     }

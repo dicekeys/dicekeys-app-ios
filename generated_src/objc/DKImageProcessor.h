@@ -18,24 +18,24 @@
  */
 + (nullable DKImageProcessor *)create;
 
-- (BOOL)processRGBAImage:(int32_t)width
-                  height:(int32_t)height
-                   bytes:(nonnull NSData *)bytes;
+- (BOOL)process:(nonnull NSData *)image
+          width:(int32_t)width
+         height:(int32_t)height;
 
-- (nonnull NSData *)processRGBAImageAndRenderOverlay:(int32_t)width
-                                              height:(int32_t)height
-                                               bytes:(nonnull NSData *)bytes;
+- (nonnull NSData *)overlay:(nonnull NSData *)image
+                      width:(int32_t)width
+                     height:(int32_t)height;
 
-- (nonnull NSData *)processAndAugmentRGBAImage:(int32_t)width
-                                        height:(int32_t)height
-                                         bytes:(nonnull NSData *)bytes;
+- (nonnull NSData *)augmented:(nonnull NSData *)image
+                        width:(int32_t)width
+                       height:(int32_t)height;
 
-- (nonnull NSString *)readJson;
+- (nonnull NSString *)json;
 
 - (BOOL)isFinished;
 
-- (nonnull NSData *)getFaceImage:(int32_t)faceIndex
-                          height:(int32_t)height
-                           bytes:(nonnull NSData *)bytes;
+- (nonnull NSData *)faceImage:(int32_t)faceIndex
+                       height:(int32_t)height
+                        bytes:(nonnull NSData *)bytes;
 
 @end

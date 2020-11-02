@@ -25,17 +25,17 @@ public:
      */
     static std::shared_ptr<ImageProcessor> create();
 
-    virtual bool processRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes) = 0;
+    virtual bool process(const std::vector<uint8_t> & image, int32_t width, int32_t height) = 0;
 
-    virtual std::vector<uint8_t> processRGBAImageAndRenderOverlay(int32_t width, int32_t height, const std::vector<uint8_t> & bytes) = 0;
+    virtual std::vector<uint8_t> overlay(const std::vector<uint8_t> & image, int32_t width, int32_t height) = 0;
 
-    virtual std::vector<uint8_t> processAndAugmentRGBAImage(int32_t width, int32_t height, const std::vector<uint8_t> & bytes) = 0;
+    virtual std::vector<uint8_t> augmented(const std::vector<uint8_t> & image, int32_t width, int32_t height) = 0;
 
-    virtual std::string readJson() = 0;
+    virtual std::string json() = 0;
 
     virtual bool isFinished() = 0;
 
-    virtual std::vector<uint8_t> getFaceImage(int32_t faceIndex, int32_t height, const std::vector<uint8_t> & bytes) = 0;
+    virtual std::vector<uint8_t> faceImage(int32_t faceIndex, int32_t height, const std::vector<uint8_t> & bytes) = 0;
 };
 
 }  // namespace dicekeys
