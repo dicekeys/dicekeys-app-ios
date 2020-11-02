@@ -11,44 +11,6 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-
-        // Test
-        do {
-            // Initialize wrapper
-            let wrapper = DKImageProcessor.create()!
-
-            // Load test image from bundle
-            let image = UIImage(named: "test.png")!.cgImage!
-
-            let w = Int32(image.width)
-            let h = Int32(image.height)
-
-            let data = image.bitmap!
-
-            // Test API
-            // processRGBAImageAndRenderOverlay
-//            var overlay = wrapper.processRGBAImageAndRenderOverlay(w, height: h, bytes: data)
-//            overlay.withUnsafeMutableBytes { rawBufferPointer in
-//                let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
-//                let overlayImage = ImageHelper.convertBitmapRGBA8(toUIImage: ptr, withWidth: w, withHeight: h)
-//
-//                imageView.image = overlayImage
-//            }
-
-            var augmented = wrapper.augmented(data, width: w, height: h)
-            augmented.withUnsafeMutableBytes { rawBufferPointer in
-                let ptr: UnsafeMutablePointer<UInt8> = rawBufferPointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
-//                let image = CGImage.fromBitmap(data, width: w, height: h)
-//
-//                print(image)
-            }
-
-            //        print(wrapper.processRGBAImage(w, height: h, bytes: data))
-            //        print(wrapper.processAndAugmentRGBAImage(w, height: h, bytes: data))
-            //        print(wrapper.readJson())
-            //        print(wrapper.isFinished())
-        }
-
         return true
     }
 
