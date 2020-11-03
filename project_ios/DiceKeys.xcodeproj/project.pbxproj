@@ -7,34 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6F3EE4662549A9BE002602CD /* ImageProcessorImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F3EE4642549A9BE002602CD /* ImageProcessorImpl.cpp */; };
 		6F3EE4E22549B2BB002602CD /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F3EE4E12549B2BB002602CD /* test.png */; };
-		6F8435B7254AAA1F00ABE33B /* DJIError.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6F842E39254AAA1C00ABE33B /* DJIError.mm */; };
-		6F8435B8254AAA1F00ABE33B /* DJIProxyCaches.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6F842E3C254AAA1C00ABE33B /* DJIProxyCaches.mm */; };
+		6F565C5D2551736100B6B3B1 /* ReadDiceKey.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F565C3725516F8900B6B3B1 /* ReadDiceKey.framework */; };
+		6F565C5E2551736100B6B3B1 /* ReadDiceKey.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F565C3725516F8900B6B3B1 /* ReadDiceKey.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F846B45254AAC5200ABE33B /* Bitmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B44254AAC5200ABE33B /* Bitmap.swift */; };
-		6F846B7E254AE0FD00ABE33B /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F846B7D254AE0FD00ABE33B /* opencv2.framework */; };
-		6F846BC2254AE10700ABE33B /* dicekey-from-human-readable-form.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B81254AE10700ABE33B /* dicekey-from-human-readable-form.cpp */; };
-		6F846BC3254AE10700ABE33B /* dicekey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B83254AE10700ABE33B /* dicekey.cpp */; };
-		6F846BC4254AE10700ABE33B /* dicekey-face-specification.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B86254AE10700ABE33B /* dicekey-face-specification.cpp */; };
-		6F846BC5254AE10700ABE33B /* face.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B88254AE10700ABE33B /* face.cpp */; };
-		6F846BC6254AE10700ABE33B /* assemble-dicekey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B8E254AE10700ABE33B /* assemble-dicekey.cpp */; };
-		6F846BC8254AE10700ABE33B /* decode-die.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B91254AE10700ABE33B /* decode-die.cpp */; };
-		6F846BC9254AE10700ABE33B /* inconsolata-700.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B96254AE10700ABE33B /* inconsolata-700.cpp */; };
-		6F846BCA254AE10700ABE33B /* face-read.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B99254AE10700ABE33B /* face-read.cpp */; };
-		6F846BCB254AE10700ABE33B /* find-faces.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B9B254AE10700ABE33B /* find-faces.cpp */; };
-		6F846BCC254AE10700ABE33B /* find-undoverlines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B9D254AE10700ABE33B /* find-undoverlines.cpp */; };
-		6F846BCD254AE10700ABE33B /* draw-rotated-rect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BA3254AE10700ABE33B /* draw-rotated-rect.cpp */; };
-		6F846BCE254AE10700ABE33B /* find-rectangles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BA5254AE10700ABE33B /* find-rectangles.cpp */; };
-		6F846BCF254AE10700ABE33B /* json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BAB254AE10700ABE33B /* json.cpp */; };
-		6F846BD0254AE10700ABE33B /* read-dicekey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BAD254AE10700ABE33B /* read-dicekey.cpp */; };
-		6F846BD1254AE10700ABE33B /* read-face-characters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BAF254AE10700ABE33B /* read-face-characters.cpp */; };
-		6F846BD2254AE10700ABE33B /* read-faces.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BB1254AE10700ABE33B /* read-faces.cpp */; };
-		6F846BD3254AE10700ABE33B /* simple-ocr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BB3254AE10700ABE33B /* simple-ocr.cpp */; };
-		6F846BD4254AE10700ABE33B /* undoverline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BB5254AE10700ABE33B /* undoverline.cpp */; };
-		6F846BD5254AE10700ABE33B /* validate-faces-read.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BBB254AE10700ABE33B /* validate-faces-read.cpp */; };
-		6F846BD6254AE10700ABE33B /* visualize-read-results.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BBD254AE10700ABE33B /* visualize-read-results.cpp */; };
-		6F846BD7254AE10700ABE33B /* write-face-characters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BBF254AE10700ABE33B /* write-face-characters.cpp */; };
-		6F846BF1254B122300ABE33B /* DKImageProcessor+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BEE254B122300ABE33B /* DKImageProcessor+Private.mm */; };
 		6F846BFF254B277000ABE33B /* VideoSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BFE254B277000ABE33B /* VideoSessionManager.swift */; };
 		6F846C04254B2BCF00ABE33B /* UIWindow+Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */; };
 		6FAC6AAA25480DE000AA8249 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AA925480DE000AA8249 /* AppDelegate.swift */; };
@@ -50,6 +26,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6F565C3625516F8900B6B3B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6F565C3125516F8900B6B3B1 /* ReadDiceKey.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6F1C40F125505DE000EB8C43;
+			remoteInfo = ReadDiceKey;
+		};
+		6F565C3825516F8900B6B3B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6F565C3125516F8900B6B3B1 /* ReadDiceKey.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6F1C40FA25505DE000EB8C43;
+			remoteInfo = ReadDiceKeyTests;
+		};
 		6FAC6ABD25480DE200AA8249 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6FAC6A9E25480DE000AA8249 /* Project object */;
@@ -66,85 +56,25 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		6F565C5F2551736100B6B3B1 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6F565C5E2551736100B6B3B1 /* ReadDiceKey.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		6F3EE3E22549A37D002602CD /* ImageProcessor.djinni */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ImageProcessor.djinni; sourceTree = "<group>"; };
-		6F3EE4642549A9BE002602CD /* ImageProcessorImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageProcessorImpl.cpp; sourceTree = "<group>"; };
-		6F3EE4652549A9BE002602CD /* ImageProcessorImpl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ImageProcessorImpl.hpp; sourceTree = "<group>"; };
-		6F3EE47B2549ADCF002602CD /* NativeDiceKeyImageProcessorWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NativeDiceKeyImageProcessorWrapper.cpp; sourceTree = "<group>"; };
-		6F3EE47C2549ADCF002602CD /* NativeDiceKeyImageProcessorWrapper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NativeDiceKeyImageProcessorWrapper.hpp; sourceTree = "<group>"; };
-		6F3EE4812549ADCF002602CD /* DiceKeyImageProcessorWrapper.java */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.java; path = DiceKeyImageProcessorWrapper.java; sourceTree = "<group>"; };
 		6F3EE4E12549B2BB002602CD /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
-		6F842E37254AAA1C00ABE33B /* DJICppWrapperCache+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DJICppWrapperCache+Private.h"; sourceTree = "<group>"; };
-		6F842E38254AAA1C00ABE33B /* DJIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DJIError.h; sourceTree = "<group>"; };
-		6F842E39254AAA1C00ABE33B /* DJIError.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DJIError.mm; sourceTree = "<group>"; };
-		6F842E3A254AAA1C00ABE33B /* DJIMarshal+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DJIMarshal+Private.h"; sourceTree = "<group>"; };
-		6F842E3B254AAA1C00ABE33B /* DJIObjcWrapperCache+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DJIObjcWrapperCache+Private.h"; sourceTree = "<group>"; };
-		6F842E3C254AAA1C00ABE33B /* DJIProxyCaches.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DJIProxyCaches.mm; sourceTree = "<group>"; };
+		6F565C3125516F8900B6B3B1 /* ReadDiceKey.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReadDiceKey.xcodeproj; path = "../../../read-dicekey-ios/ReadDiceKey/ReadDiceKey.xcodeproj"; sourceTree = "<group>"; };
 		6F846B44254AAC5200ABE33B /* Bitmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bitmap.swift; sourceTree = "<group>"; };
-		6F846B7D254AE0FD00ABE33B /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ios/opencv2.framework; sourceTree = "<group>"; };
-		6F846B80254AE10700ABE33B /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
-		6F846B81254AE10700ABE33B /* dicekey-from-human-readable-form.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "dicekey-from-human-readable-form.cpp"; sourceTree = "<group>"; };
-		6F846B82254AE10700ABE33B /* dicekey-from-human-readable-form.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "dicekey-from-human-readable-form.hpp"; sourceTree = "<group>"; };
-		6F846B83254AE10700ABE33B /* dicekey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dicekey.cpp; sourceTree = "<group>"; };
-		6F846B84254AE10700ABE33B /* dicekey.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = dicekey.hpp; sourceTree = "<group>"; };
-		6F846B86254AE10700ABE33B /* dicekey-face-specification.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "dicekey-face-specification.cpp"; sourceTree = "<group>"; };
-		6F846B87254AE10700ABE33B /* dicekey-face-specification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "dicekey-face-specification.h"; sourceTree = "<group>"; };
-		6F846B88254AE10700ABE33B /* face.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = face.cpp; sourceTree = "<group>"; };
-		6F846B89254AE10700ABE33B /* face.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = face.hpp; sourceTree = "<group>"; };
-		6F846B8A254AE10700ABE33B /* lib-dicekey.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "lib-dicekey.hpp"; sourceTree = "<group>"; };
-		6F846B8C254AE10700ABE33B /* json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
-		6F846B8E254AE10700ABE33B /* assemble-dicekey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "assemble-dicekey.cpp"; sourceTree = "<group>"; };
-		6F846B8F254AE10700ABE33B /* assemble-dicekey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "assemble-dicekey.h"; sourceTree = "<group>"; };
-		6F846B90254AE10700ABE33B /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
-		6F846B91254AE10700ABE33B /* decode-die.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "decode-die.cpp"; sourceTree = "<group>"; };
-		6F846B92254AE10700ABE33B /* decode-face.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "decode-face.h"; sourceTree = "<group>"; };
-		6F846B93254AE10700ABE33B /* dicekey-face-specification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "dicekey-face-specification.h"; sourceTree = "<group>"; };
-		6F846B94254AE10700ABE33B /* dicekey.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = dicekey.hpp; sourceTree = "<group>"; };
-		6F846B96254AE10700ABE33B /* inconsolata-700.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "inconsolata-700.cpp"; sourceTree = "<group>"; };
-		6F846B97254AE10700ABE33B /* inconsolata-700.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "inconsolata-700.h"; sourceTree = "<group>"; };
-		6F846B98254AE10700ABE33B /* ocr-font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ocr-font.h"; sourceTree = "<group>"; };
-		6F846B99254AE10700ABE33B /* face-read.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "face-read.cpp"; sourceTree = "<group>"; };
-		6F846B9A254AE10700ABE33B /* face-read.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "face-read.h"; sourceTree = "<group>"; };
-		6F846B9B254AE10700ABE33B /* find-faces.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "find-faces.cpp"; sourceTree = "<group>"; };
-		6F846B9C254AE10700ABE33B /* find-faces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "find-faces.h"; sourceTree = "<group>"; };
-		6F846B9D254AE10700ABE33B /* find-undoverlines.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "find-undoverlines.cpp"; sourceTree = "<group>"; };
-		6F846B9E254AE10700ABE33B /* find-undoverlines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "find-undoverlines.h"; sourceTree = "<group>"; };
-		6F846B9F254AE10700ABE33B /* font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = font.h; sourceTree = "<group>"; };
-		6F846BA1254AE10700ABE33B /* color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = color.h; sourceTree = "<group>"; };
-		6F846BA2254AE10700ABE33B /* cv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cv.h; sourceTree = "<group>"; };
-		6F846BA3254AE10700ABE33B /* draw-rotated-rect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "draw-rotated-rect.cpp"; sourceTree = "<group>"; };
-		6F846BA4254AE10700ABE33B /* draw-rotated-rect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "draw-rotated-rect.h"; sourceTree = "<group>"; };
-		6F846BA5254AE10700ABE33B /* find-rectangles.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "find-rectangles.cpp"; sourceTree = "<group>"; };
-		6F846BA6254AE10700ABE33B /* find-rectangles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "find-rectangles.h"; sourceTree = "<group>"; };
-		6F846BA7254AE10700ABE33B /* geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geometry.h; sourceTree = "<group>"; };
-		6F846BA8254AE10700ABE33B /* rectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rectangle.h; sourceTree = "<group>"; };
-		6F846BA9254AE10700ABE33B /* rotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rotate.h; sourceTree = "<group>"; };
-		6F846BAA254AE10700ABE33B /* sample-point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "sample-point.h"; sourceTree = "<group>"; };
-		6F846BAB254AE10700ABE33B /* json.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = json.cpp; sourceTree = "<group>"; };
-		6F846BAC254AE10700ABE33B /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
-		6F846BAD254AE10700ABE33B /* read-dicekey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "read-dicekey.cpp"; sourceTree = "<group>"; };
-		6F846BAE254AE10700ABE33B /* read-dicekey.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "read-dicekey.hpp"; sourceTree = "<group>"; };
-		6F846BAF254AE10700ABE33B /* read-face-characters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "read-face-characters.cpp"; sourceTree = "<group>"; };
-		6F846BB0254AE10700ABE33B /* read-face-characters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "read-face-characters.h"; sourceTree = "<group>"; };
-		6F846BB1254AE10700ABE33B /* read-faces.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "read-faces.cpp"; sourceTree = "<group>"; };
-		6F846BB2254AE10700ABE33B /* read-faces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "read-faces.h"; sourceTree = "<group>"; };
-		6F846BB3254AE10700ABE33B /* simple-ocr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "simple-ocr.cpp"; sourceTree = "<group>"; };
-		6F846BB4254AE10700ABE33B /* simple-ocr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "simple-ocr.h"; sourceTree = "<group>"; };
-		6F846BB5254AE10700ABE33B /* undoverline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = undoverline.cpp; sourceTree = "<group>"; };
-		6F846BB6254AE10700ABE33B /* undoverline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = undoverline.h; sourceTree = "<group>"; };
-		6F846BB8254AE10700ABE33B /* bit-operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "bit-operations.h"; sourceTree = "<group>"; };
-		6F846BB9254AE10700ABE33B /* statistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = statistics.h; sourceTree = "<group>"; };
-		6F846BBA254AE10700ABE33B /* vfunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vfunctional.h; sourceTree = "<group>"; };
-		6F846BBB254AE10700ABE33B /* validate-faces-read.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "validate-faces-read.cpp"; sourceTree = "<group>"; };
-		6F846BBC254AE10700ABE33B /* validate-faces-read.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "validate-faces-read.h"; sourceTree = "<group>"; };
-		6F846BBD254AE10700ABE33B /* visualize-read-results.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "visualize-read-results.cpp"; sourceTree = "<group>"; };
-		6F846BBE254AE10700ABE33B /* visualize-read-results.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "visualize-read-results.h"; sourceTree = "<group>"; };
-		6F846BBF254AE10700ABE33B /* write-face-characters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "write-face-characters.cpp"; sourceTree = "<group>"; };
-		6F846BC0254AE10700ABE33B /* write-face-characters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "write-face-characters.h"; sourceTree = "<group>"; };
-		6F846BE7254B11D300ABE33B /* ImageProcessor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ImageProcessor.hpp; sourceTree = "<group>"; };
-		6F846BEE254B122300ABE33B /* DKImageProcessor+Private.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "DKImageProcessor+Private.mm"; sourceTree = "<group>"; };
-		6F846BEF254B122300ABE33B /* DKImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DKImageProcessor.h; sourceTree = "<group>"; };
-		6F846BF0254B122300ABE33B /* DKImageProcessor+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DKImageProcessor+Private.h"; sourceTree = "<group>"; };
 		6F846BFE254B277000ABE33B /* VideoSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSessionManager.swift; sourceTree = "<group>"; };
 		6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Orientation.swift"; sourceTree = "<group>"; };
 		6FAC6AA625480DE000AA8249 /* DiceKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiceKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,7 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F846B7E254AE0FD00ABE33B /* opencv2.framework in Frameworks */,
+				6F565C5D2551736100B6B3B1 /* ReadDiceKey.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,95 +133,6 @@
 			path = ../idl;
 			sourceTree = "<group>";
 		};
-		6F3EE4122549A6B3002602CD /* generated_src */ = {
-			isa = PBXGroup;
-			children = (
-				6F3EE46A2549AC91002602CD /* cpp */,
-				6F3EE47D2549ADCF002602CD /* java */,
-				6F3EE47A2549ADCF002602CD /* jni */,
-				6F3EE46C2549AC91002602CD /* objc */,
-			);
-			name = generated_src;
-			path = ../../generated_src;
-			sourceTree = "<group>";
-		};
-		6F3EE4622549A9BE002602CD /* handwritten_src */ = {
-			isa = PBXGroup;
-			children = (
-				6F3EE4632549A9BE002602CD /* cpp */,
-			);
-			name = handwritten_src;
-			path = ../../handwritten_src;
-			sourceTree = "<group>";
-		};
-		6F3EE4632549A9BE002602CD /* cpp */ = {
-			isa = PBXGroup;
-			children = (
-				6F3EE4642549A9BE002602CD /* ImageProcessorImpl.cpp */,
-				6F3EE4652549A9BE002602CD /* ImageProcessorImpl.hpp */,
-			);
-			path = cpp;
-			sourceTree = "<group>";
-		};
-		6F3EE46A2549AC91002602CD /* cpp */ = {
-			isa = PBXGroup;
-			children = (
-				6F846BE7254B11D300ABE33B /* ImageProcessor.hpp */,
-			);
-			path = cpp;
-			sourceTree = "<group>";
-		};
-		6F3EE46C2549AC91002602CD /* objc */ = {
-			isa = PBXGroup;
-			children = (
-				6F846BEF254B122300ABE33B /* DKImageProcessor.h */,
-				6F846BF0254B122300ABE33B /* DKImageProcessor+Private.h */,
-				6F846BEE254B122300ABE33B /* DKImageProcessor+Private.mm */,
-			);
-			path = objc;
-			sourceTree = "<group>";
-		};
-		6F3EE47A2549ADCF002602CD /* jni */ = {
-			isa = PBXGroup;
-			children = (
-				6F3EE47B2549ADCF002602CD /* NativeDiceKeyImageProcessorWrapper.cpp */,
-				6F3EE47C2549ADCF002602CD /* NativeDiceKeyImageProcessorWrapper.hpp */,
-			);
-			path = jni;
-			sourceTree = "<group>";
-		};
-		6F3EE47D2549ADCF002602CD /* java */ = {
-			isa = PBXGroup;
-			children = (
-				6F3EE47E2549ADCF002602CD /* com */,
-			);
-			path = java;
-			sourceTree = "<group>";
-		};
-		6F3EE47E2549ADCF002602CD /* com */ = {
-			isa = PBXGroup;
-			children = (
-				6F3EE47F2549ADCF002602CD /* dicekeys */,
-			);
-			path = com;
-			sourceTree = "<group>";
-		};
-		6F3EE47F2549ADCF002602CD /* dicekeys */ = {
-			isa = PBXGroup;
-			children = (
-				6F3EE4802549ADCF002602CD /* dicekeys */,
-			);
-			path = dicekeys;
-			sourceTree = "<group>";
-		};
-		6F3EE4802549ADCF002602CD /* dicekeys */ = {
-			isa = PBXGroup;
-			children = (
-				6F3EE4812549ADCF002602CD /* DiceKeyImageProcessorWrapper.java */,
-			);
-			path = dicekeys;
-			sourceTree = "<group>";
-		};
 		6F3EE4E02549B2B1002602CD /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -301,46 +142,20 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		6F8427F3254AAA1700ABE33B /* deps */ = {
+		6F565C3225516F8900B6B3B1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6F8427F4254AAA1700ABE33B /* djinni */,
-				6F846B8B254AE10700ABE33B /* includes */,
-				6F846B7F254AE10700ABE33B /* lib-dicekey */,
-				6F846B8D254AE10700ABE33B /* lib-read-dicekey */,
-				6F846B7D254AE0FD00ABE33B /* opencv2.framework */,
+				6F565C3725516F8900B6B3B1 /* ReadDiceKey.framework */,
+				6F565C3925516F8900B6B3B1 /* ReadDiceKeyTests.xctest */,
 			);
-			name = deps;
-			path = ../../deps;
+			name = Products;
 			sourceTree = "<group>";
 		};
-		6F8427F4254AAA1700ABE33B /* djinni */ = {
+		6F565C3F25516F9500B6B3B1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6F842E28254AAA1C00ABE33B /* support-lib */,
 			);
-			path = djinni;
-			sourceTree = "<group>";
-		};
-		6F842E28254AAA1C00ABE33B /* support-lib */ = {
-			isa = PBXGroup;
-			children = (
-				6F842E36254AAA1C00ABE33B /* objc */,
-			);
-			path = "support-lib";
-			sourceTree = "<group>";
-		};
-		6F842E36254AAA1C00ABE33B /* objc */ = {
-			isa = PBXGroup;
-			children = (
-				6F842E37254AAA1C00ABE33B /* DJICppWrapperCache+Private.h */,
-				6F842E38254AAA1C00ABE33B /* DJIError.h */,
-				6F842E39254AAA1C00ABE33B /* DJIError.mm */,
-				6F842E3A254AAA1C00ABE33B /* DJIMarshal+Private.h */,
-				6F842E3B254AAA1C00ABE33B /* DJIObjcWrapperCache+Private.h */,
-				6F842E3C254AAA1C00ABE33B /* DJIProxyCaches.mm */,
-			);
-			path = objc;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		6F846B43254AAC3100ABE33B /* Extensions */ = {
@@ -350,121 +165,6 @@
 				6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		6F846B7F254AE10700ABE33B /* lib-dicekey */ = {
-			isa = PBXGroup;
-			children = (
-				6F846B80254AE10700ABE33B /* CMakeLists.txt */,
-				6F846B81254AE10700ABE33B /* dicekey-from-human-readable-form.cpp */,
-				6F846B82254AE10700ABE33B /* dicekey-from-human-readable-form.hpp */,
-				6F846B83254AE10700ABE33B /* dicekey.cpp */,
-				6F846B84254AE10700ABE33B /* dicekey.hpp */,
-				6F846B85254AE10700ABE33B /* externally-generated */,
-				6F846B88254AE10700ABE33B /* face.cpp */,
-				6F846B89254AE10700ABE33B /* face.hpp */,
-				6F846B8A254AE10700ABE33B /* lib-dicekey.hpp */,
-			);
-			name = "lib-dicekey";
-			path = "read-dicekey/lib-dicekey";
-			sourceTree = "<group>";
-		};
-		6F846B85254AE10700ABE33B /* externally-generated */ = {
-			isa = PBXGroup;
-			children = (
-				6F846B86254AE10700ABE33B /* dicekey-face-specification.cpp */,
-				6F846B87254AE10700ABE33B /* dicekey-face-specification.h */,
-			);
-			path = "externally-generated";
-			sourceTree = "<group>";
-		};
-		6F846B8B254AE10700ABE33B /* includes */ = {
-			isa = PBXGroup;
-			children = (
-				6F846B8C254AE10700ABE33B /* json.hpp */,
-			);
-			name = includes;
-			path = "read-dicekey/includes";
-			sourceTree = "<group>";
-		};
-		6F846B8D254AE10700ABE33B /* lib-read-dicekey */ = {
-			isa = PBXGroup;
-			children = (
-				6F846B8E254AE10700ABE33B /* assemble-dicekey.cpp */,
-				6F846B8F254AE10700ABE33B /* assemble-dicekey.h */,
-				6F846B90254AE10700ABE33B /* CMakeLists.txt */,
-				6F846B91254AE10700ABE33B /* decode-die.cpp */,
-				6F846B92254AE10700ABE33B /* decode-face.h */,
-				6F846B93254AE10700ABE33B /* dicekey-face-specification.h */,
-				6F846B94254AE10700ABE33B /* dicekey.hpp */,
-				6F846B95254AE10700ABE33B /* externally-generated */,
-				6F846B99254AE10700ABE33B /* face-read.cpp */,
-				6F846B9A254AE10700ABE33B /* face-read.h */,
-				6F846B9B254AE10700ABE33B /* find-faces.cpp */,
-				6F846B9C254AE10700ABE33B /* find-faces.h */,
-				6F846B9D254AE10700ABE33B /* find-undoverlines.cpp */,
-				6F846B9E254AE10700ABE33B /* find-undoverlines.h */,
-				6F846B9F254AE10700ABE33B /* font.h */,
-				6F846BA0254AE10700ABE33B /* graphics */,
-				6F846BAB254AE10700ABE33B /* json.cpp */,
-				6F846BAC254AE10700ABE33B /* json.h */,
-				6F846BAD254AE10700ABE33B /* read-dicekey.cpp */,
-				6F846BAE254AE10700ABE33B /* read-dicekey.hpp */,
-				6F846BAF254AE10700ABE33B /* read-face-characters.cpp */,
-				6F846BB0254AE10700ABE33B /* read-face-characters.h */,
-				6F846BB1254AE10700ABE33B /* read-faces.cpp */,
-				6F846BB2254AE10700ABE33B /* read-faces.h */,
-				6F846BB3254AE10700ABE33B /* simple-ocr.cpp */,
-				6F846BB4254AE10700ABE33B /* simple-ocr.h */,
-				6F846BB5254AE10700ABE33B /* undoverline.cpp */,
-				6F846BB6254AE10700ABE33B /* undoverline.h */,
-				6F846BB7254AE10700ABE33B /* utilities */,
-				6F846BBB254AE10700ABE33B /* validate-faces-read.cpp */,
-				6F846BBC254AE10700ABE33B /* validate-faces-read.h */,
-				6F846BBD254AE10700ABE33B /* visualize-read-results.cpp */,
-				6F846BBE254AE10700ABE33B /* visualize-read-results.h */,
-				6F846BBF254AE10700ABE33B /* write-face-characters.cpp */,
-				6F846BC0254AE10700ABE33B /* write-face-characters.h */,
-			);
-			name = "lib-read-dicekey";
-			path = "read-dicekey/lib-read-dicekey";
-			sourceTree = "<group>";
-		};
-		6F846B95254AE10700ABE33B /* externally-generated */ = {
-			isa = PBXGroup;
-			children = (
-				6F846B96254AE10700ABE33B /* inconsolata-700.cpp */,
-				6F846B97254AE10700ABE33B /* inconsolata-700.h */,
-				6F846B98254AE10700ABE33B /* ocr-font.h */,
-			);
-			path = "externally-generated";
-			sourceTree = "<group>";
-		};
-		6F846BA0254AE10700ABE33B /* graphics */ = {
-			isa = PBXGroup;
-			children = (
-				6F846BA1254AE10700ABE33B /* color.h */,
-				6F846BA2254AE10700ABE33B /* cv.h */,
-				6F846BA3254AE10700ABE33B /* draw-rotated-rect.cpp */,
-				6F846BA4254AE10700ABE33B /* draw-rotated-rect.h */,
-				6F846BA5254AE10700ABE33B /* find-rectangles.cpp */,
-				6F846BA6254AE10700ABE33B /* find-rectangles.h */,
-				6F846BA7254AE10700ABE33B /* geometry.h */,
-				6F846BA8254AE10700ABE33B /* rectangle.h */,
-				6F846BA9254AE10700ABE33B /* rotate.h */,
-				6F846BAA254AE10700ABE33B /* sample-point.h */,
-			);
-			path = graphics;
-			sourceTree = "<group>";
-		};
-		6F846BB7254AE10700ABE33B /* utilities */ = {
-			isa = PBXGroup;
-			children = (
-				6F846BB8254AE10700ABE33B /* bit-operations.h */,
-				6F846BB9254AE10700ABE33B /* statistics.h */,
-				6F846BBA254AE10700ABE33B /* vfunctional.h */,
-			);
-			path = utilities;
 			sourceTree = "<group>";
 		};
 		6FAC6A9D25480DE000AA8249 = {
@@ -477,6 +177,7 @@
 				6FAC6ABF25480DE200AA8249 /* DiceKeysTests */,
 				6FAC6ACA25480DE200AA8249 /* DiceKeysUITests */,
 				6FAC6AA725480DE000AA8249 /* Products */,
+				6F565C3F25516F9500B6B3B1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -493,14 +194,12 @@
 		6FAC6AA825480DE000AA8249 /* DiceKeys */ = {
 			isa = PBXGroup;
 			children = (
+				6F565C3125516F8900B6B3B1 /* ReadDiceKey.xcodeproj */,
 				6FAC6DA625488BCB00AA8249 /* DiceKeys-Bridging-Header.h */,
 				6FAC6AB725480DE200AA8249 /* Info.plist */,
 				6FAC6AA925480DE000AA8249 /* AppDelegate.swift */,
 				6FAC6AAB25480DE000AA8249 /* SceneDelegate.swift */,
-				6F8427F3254AAA1700ABE33B /* deps */,
 				6F846B43254AAC3100ABE33B /* Extensions */,
-				6F3EE4122549A6B3002602CD /* generated_src */,
-				6F3EE4622549A9BE002602CD /* handwritten_src */,
 				6F3EE4E02549B2B1002602CD /* Resources */,
 				6FAC6D9F254889E100AA8249 /* Screens */,
 				6FAC6D702548678400AA8249 /* Storyboards */,
@@ -565,6 +264,7 @@
 				6FAC6AA225480DE000AA8249 /* Sources */,
 				6FAC6AA325480DE000AA8249 /* Frameworks */,
 				6FAC6AA425480DE000AA8249 /* Resources */,
+				6F565C5F2551736100B6B3B1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -645,6 +345,12 @@
 			mainGroup = 6FAC6A9D25480DE000AA8249;
 			productRefGroup = 6FAC6AA725480DE000AA8249 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 6F565C3225516F8900B6B3B1 /* Products */;
+					ProjectRef = 6F565C3125516F8900B6B3B1 /* ReadDiceKey.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				6FAC6AA525480DE000AA8249 /* DiceKeys */,
@@ -653,6 +359,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		6F565C3725516F8900B6B3B1 /* ReadDiceKey.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReadDiceKey.framework;
+			remoteRef = 6F565C3625516F8900B6B3B1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6F565C3925516F8900B6B3B1 /* ReadDiceKeyTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReadDiceKeyTests.xctest;
+			remoteRef = 6F565C3825516F8900B6B3B1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6FAC6AA425480DE000AA8249 /* Resources */ = {
@@ -708,38 +431,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F846BC3254AE10700ABE33B /* dicekey.cpp in Sources */,
-				6F846BD4254AE10700ABE33B /* undoverline.cpp in Sources */,
-				6F846BCD254AE10700ABE33B /* draw-rotated-rect.cpp in Sources */,
-				6F846BC4254AE10700ABE33B /* dicekey-face-specification.cpp in Sources */,
-				6F846BF1254B122300ABE33B /* DKImageProcessor+Private.mm in Sources */,
 				6FAC6AAA25480DE000AA8249 /* AppDelegate.swift in Sources */,
 				6FAC6AE825480E7F00AA8249 /* SessionManager.swift in Sources */,
-				6F846BD1254AE10700ABE33B /* read-face-characters.cpp in Sources */,
-				6F8435B8254AAA1F00ABE33B /* DJIProxyCaches.mm in Sources */,
-				6F846BD2254AE10700ABE33B /* read-faces.cpp in Sources */,
-				6F846BD6254AE10700ABE33B /* visualize-read-results.cpp in Sources */,
-				6F3EE4662549A9BE002602CD /* ImageProcessorImpl.cpp in Sources */,
-				6F846BC5254AE10700ABE33B /* face.cpp in Sources */,
 				6F846C04254B2BCF00ABE33B /* UIWindow+Orientation.swift in Sources */,
-				6F846BD0254AE10700ABE33B /* read-dicekey.cpp in Sources */,
-				6F846BC8254AE10700ABE33B /* decode-die.cpp in Sources */,
-				6F846BCF254AE10700ABE33B /* json.cpp in Sources */,
-				6F846BD5254AE10700ABE33B /* validate-faces-read.cpp in Sources */,
 				6F846B45254AAC5200ABE33B /* Bitmap.swift in Sources */,
 				6F846BFF254B277000ABE33B /* VideoSessionManager.swift in Sources */,
-				6F846BCE254AE10700ABE33B /* find-rectangles.cpp in Sources */,
-				6F846BCB254AE10700ABE33B /* find-faces.cpp in Sources */,
-				6F846BC9254AE10700ABE33B /* inconsolata-700.cpp in Sources */,
 				6FAC6AAC25480DE000AA8249 /* SceneDelegate.swift in Sources */,
-				6F846BCC254AE10700ABE33B /* find-undoverlines.cpp in Sources */,
-				6F846BC2254AE10700ABE33B /* dicekey-from-human-readable-form.cpp in Sources */,
-				6F846BD3254AE10700ABE33B /* simple-ocr.cpp in Sources */,
-				6F846BCA254AE10700ABE33B /* face-read.cpp in Sources */,
-				6F846BC6254AE10700ABE33B /* assemble-dicekey.cpp in Sources */,
-				6F8435B7254AAA1F00ABE33B /* DJIError.mm in Sources */,
 				6FAC6ADE25480E6200AA8249 /* CaptureView.swift in Sources */,
-				6F846BD7254AE10700ABE33B /* write-face-characters.cpp in Sources */,
 				6FAC6AE325480E7500AA8249 /* CameraController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -921,6 +619,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M5HDTU7792;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../deps/ios\"";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = DiceKeys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -945,6 +644,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M5HDTU7792;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../deps/ios\"";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = DiceKeys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
