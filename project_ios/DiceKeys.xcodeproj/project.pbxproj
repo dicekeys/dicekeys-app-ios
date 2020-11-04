@@ -21,25 +21,11 @@
 		6FAC6ADE25480E6200AA8249 /* CaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6ADD25480E6200AA8249 /* CaptureView.swift */; };
 		6FAC6AE325480E7500AA8249 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AE225480E7500AA8249 /* CameraController.swift */; };
 		6FAC6AE825480E7F00AA8249 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AE725480E7F00AA8249 /* SessionManager.swift */; };
-		6FFB9B2825518DA50056234D /* ReadDiceKey.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F75174C255177740005A502 /* ReadDiceKey.framework */; };
-		6FFB9B2925518DA50056234D /* ReadDiceKey.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F75174C255177740005A502 /* ReadDiceKey.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6FADE8392552AE33006DF99F /* ReadDiceKey.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FADE8322552AE06006DF99F /* ReadDiceKey.framework */; };
+		6FADE83A2552AE33006DF99F /* ReadDiceKey.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FADE8322552AE06006DF99F /* ReadDiceKey.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		6F75174B255177740005A502 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6F751746255177730005A502 /* ReadDiceKey.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6F1C40F125505DE000EB8C43;
-			remoteInfo = ReadDiceKey;
-		};
-		6F75174D255177740005A502 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6F751746255177730005A502 /* ReadDiceKey.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6F1C40FA25505DE000EB8C43;
-			remoteInfo = ReadDiceKeyTests;
-		};
 		6FAC6ABD25480DE200AA8249 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6FAC6A9E25480DE000AA8249 /* Project object */;
@@ -54,6 +40,20 @@
 			remoteGlobalIDString = 6FAC6AA525480DE000AA8249;
 			remoteInfo = DiceKeys;
 		};
+		6FADE8312552AE06006DF99F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6FADE82C2552AE06006DF99F /* ReadDiceKey.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6F1C40F125505DE000EB8C43;
+			remoteInfo = ReadDiceKey;
+		};
+		6FADE8332552AE06006DF99F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6FADE82C2552AE06006DF99F /* ReadDiceKey.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6F1C40FA25505DE000EB8C43;
+			remoteInfo = ReadDiceKeyTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,7 +63,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				6FFB9B2925518DA50056234D /* ReadDiceKey.framework in Embed Frameworks */,
+				6FADE83A2552AE33006DF99F /* ReadDiceKey.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -72,7 +72,6 @@
 
 /* Begin PBXFileReference section */
 		6F3EE4E12549B2BB002602CD /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
-		6F751746255177730005A502 /* ReadDiceKey.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReadDiceKey.xcodeproj; path = "../../deps/read-dicekey-ios/ReadDiceKey/ReadDiceKey.xcodeproj"; sourceTree = "<group>"; };
 		6F846B44254AAC5200ABE33B /* Bitmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bitmap.swift; sourceTree = "<group>"; };
 		6F846BFE254B277000ABE33B /* VideoSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSessionManager.swift; sourceTree = "<group>"; };
 		6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Orientation.swift"; sourceTree = "<group>"; };
@@ -95,6 +94,7 @@
 		6FAC6D852548873000AA8249 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		6FAC6D862548873000AA8249 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		6FAC6DA625488BCB00AA8249 /* DiceKeys-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DiceKeys-Bridging-Header.h"; sourceTree = "<group>"; };
+		6FADE82C2552AE06006DF99F /* ReadDiceKey.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReadDiceKey.xcodeproj; path = "../../../read-dicekey-ios/ReadDiceKey/ReadDiceKey.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,7 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FFB9B2825518DA50056234D /* ReadDiceKey.framework in Frameworks */,
+				6FADE8392552AE33006DF99F /* ReadDiceKey.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,15 +137,6 @@
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		6F751747255177730005A502 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6F75174C255177740005A502 /* ReadDiceKey.framework */,
-				6F75174E255177740005A502 /* ReadDiceKeyTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		6F846B43254AAC3100ABE33B /* Extensions */ = {
@@ -183,7 +174,7 @@
 		6FAC6AA825480DE000AA8249 /* DiceKeys */ = {
 			isa = PBXGroup;
 			children = (
-				6F751746255177730005A502 /* ReadDiceKey.xcodeproj */,
+				6FADE82C2552AE06006DF99F /* ReadDiceKey.xcodeproj */,
 				6FAC6DA625488BCB00AA8249 /* DiceKeys-Bridging-Header.h */,
 				6FAC6AB725480DE200AA8249 /* Info.plist */,
 				6FAC6AA925480DE000AA8249 /* AppDelegate.swift */,
@@ -240,6 +231,15 @@
 				6FAC6ADC25480DF800AA8249 /* Camera */,
 			);
 			path = Screens;
+			sourceTree = "<group>";
+		};
+		6FADE82D2552AE06006DF99F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6FADE8322552AE06006DF99F /* ReadDiceKey.framework */,
+				6FADE8342552AE06006DF99F /* ReadDiceKeyTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,8 +336,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 6F751747255177730005A502 /* Products */;
-					ProjectRef = 6F751746255177730005A502 /* ReadDiceKey.xcodeproj */;
+					ProductGroup = 6FADE82D2552AE06006DF99F /* Products */;
+					ProjectRef = 6FADE82C2552AE06006DF99F /* ReadDiceKey.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -350,18 +350,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		6F75174C255177740005A502 /* ReadDiceKey.framework */ = {
+		6FADE8322552AE06006DF99F /* ReadDiceKey.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = ReadDiceKey.framework;
-			remoteRef = 6F75174B255177740005A502 /* PBXContainerItemProxy */;
+			remoteRef = 6FADE8312552AE06006DF99F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6F75174E255177740005A502 /* ReadDiceKeyTests.xctest */ = {
+		6FADE8342552AE06006DF99F /* ReadDiceKeyTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = ReadDiceKeyTests.xctest;
-			remoteRef = 6F75174D255177740005A502 /* PBXContainerItemProxy */;
+			remoteRef = 6FADE8332552AE06006DF99F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
