@@ -1,3 +1,0 @@
-[submodule "deps/read-dicekey-ios"]
-	path = deps/read-dicekey-ios
-	url = https://github.com/dicekeys/read-dicekey-ios
