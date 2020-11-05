@@ -6,7 +6,7 @@ target 'DiceKeys' do
   use_frameworks!
 
   # Pods for DiceKeys
-  pod "ReadDiceKey", :path => "../../read-dicekey-ios/ReadDiceKey.podspec"
+  pod "ReadDiceKey", :path => "../read-dicekey-ios/ReadDiceKey.podspec"
 
   target 'DiceKeysTests' do
     inherit! :search_paths

@@ -8,7 +8,7 @@ PODS:
     - OpenCV2 (~> 4.3.0)
 
 DEPENDENCIES:
-  - ReadDiceKey (from `../../read-dicekey-ios/ReadDiceKey.podspec`)
+  - ReadDiceKey (from `../read-dicekey-ios/ReadDiceKey.podspec`)
 
 SPEC REPOS:
   trunk:
@@ -17,13 +17,13 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   ReadDiceKey:
-    :path: "../../read-dicekey-ios/ReadDiceKey.podspec"
+    :path: "../read-dicekey-ios/ReadDiceKey.podspec"
 
 SPEC CHECKSUMS:
   Djinni: de170220fcf453440e0fa7c71582040aa095591d
   OpenCV2: ffe82e5cb5d16dc3fc01a5f4127b9a5b3cfc7d1b
   ReadDiceKey: 47b5248de58173f63a2abc75986fbff0e174912d
 
-PODFILE CHECKSUM: 7143cdfa4dd5cfc228a743d0570d2239940e2ec4
+PODFILE CHECKSUM: c84057b68c3addf0529f7640139c21ae6fe3bd61
 
 COCOAPODS: 1.10.0

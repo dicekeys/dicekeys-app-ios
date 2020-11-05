@@ -734,7 +734,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3D5F184BC3A8DD2234A00D0F /* Pods-DiceKeysTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M5HDTU7792;
@@ -757,7 +756,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F5E037741A28CC6CA9137A98 /* Pods-DiceKeysTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M5HDTU7792;
@@ -780,7 +778,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B4CF76E3ABEDC8F66941F330 /* Pods-DiceKeys-DiceKeysUITests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M5HDTU7792;
 				INFOPLIST_FILE = DiceKeysUITests/Info.plist;
@@ -801,7 +798,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D62952D418B79F6700259BAD /* Pods-DiceKeys-DiceKeysUITests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M5HDTU7792;
 				INFOPLIST_FILE = DiceKeysUITests/Info.plist;
