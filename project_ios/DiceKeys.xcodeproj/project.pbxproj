@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04EA543F170C770F1092B593 /* Pods_DiceKeysTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */; };
+		6185ECF52F55E701A7D44A6F /* Pods_DiceKeys.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD0DF73F2796056AF2C9CA0 /* Pods_DiceKeys.framework */; };
 		6F3EE4E22549B2BB002602CD /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F3EE4E12549B2BB002602CD /* test.png */; };
 		6F846B45254AAC5200ABE33B /* Bitmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B44254AAC5200ABE33B /* Bitmap.swift */; };
 		6F846BFF254B277000ABE33B /* VideoSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BFE254B277000ABE33B /* VideoSessionManager.swift */; };
@@ -21,8 +23,7 @@
 		6FAC6ADE25480E6200AA8249 /* CaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6ADD25480E6200AA8249 /* CaptureView.swift */; };
 		6FAC6AE325480E7500AA8249 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AE225480E7500AA8249 /* CameraController.swift */; };
 		6FAC6AE825480E7F00AA8249 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AE725480E7F00AA8249 /* SessionManager.swift */; };
-		6FADE8392552AE33006DF99F /* ReadDiceKey.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FADE8322552AE06006DF99F /* ReadDiceKey.framework */; };
-		6FADE83A2552AE33006DF99F /* ReadDiceKey.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FADE8322552AE06006DF99F /* ReadDiceKey.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B5D66895958DCA98A0B25D61 /* Pods_DiceKeys_DiceKeysUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FF34CD70539F7AB4106E41 /* Pods_DiceKeys_DiceKeysUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,20 +41,6 @@
 			remoteGlobalIDString = 6FAC6AA525480DE000AA8249;
 			remoteInfo = DiceKeys;
 		};
-		6FADE8312552AE06006DF99F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6FADE82C2552AE06006DF99F /* ReadDiceKey.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6F1C40F125505DE000EB8C43;
-			remoteInfo = ReadDiceKey;
-		};
-		6FADE8332552AE06006DF99F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6FADE82C2552AE06006DF99F /* ReadDiceKey.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6F1C40FA25505DE000EB8C43;
-			remoteInfo = ReadDiceKeyTests;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,7 +50,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				6FADE83A2552AE33006DF99F /* ReadDiceKey.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +57,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeysTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		336285FF67EA50C62F01AC19 /* Pods-DiceKeys.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys.release.xcconfig"; path = "Target Support Files/Pods-DiceKeys/Pods-DiceKeys.release.xcconfig"; sourceTree = "<group>"; };
+		3D5F184BC3A8DD2234A00D0F /* Pods-DiceKeysTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeysTests.debug.xcconfig"; path = "Target Support Files/Pods-DiceKeysTests/Pods-DiceKeysTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6F3EE4E12549B2BB002602CD /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 		6F846B44254AAC5200ABE33B /* Bitmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bitmap.swift; sourceTree = "<group>"; };
 		6F846BFE254B277000ABE33B /* VideoSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSessionManager.swift; sourceTree = "<group>"; };
@@ -94,7 +83,12 @@
 		6FAC6D852548873000AA8249 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		6FAC6D862548873000AA8249 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		6FAC6DA625488BCB00AA8249 /* DiceKeys-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DiceKeys-Bridging-Header.h"; sourceTree = "<group>"; };
-		6FADE82C2552AE06006DF99F /* ReadDiceKey.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReadDiceKey.xcodeproj; path = "../../../read-dicekey-ios/ReadDiceKey/ReadDiceKey.xcodeproj"; sourceTree = "<group>"; };
+		A8FF34CD70539F7AB4106E41 /* Pods_DiceKeys_DiceKeysUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeysUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAD0DF73F2796056AF2C9CA0 /* Pods_DiceKeys.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4CF76E3ABEDC8F66941F330 /* Pods-DiceKeys-DiceKeysUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-DiceKeysUITests.debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys-DiceKeysUITests/Pods-DiceKeys-DiceKeysUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D62952D418B79F6700259BAD /* Pods-DiceKeys-DiceKeysUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-DiceKeysUITests.release.xcconfig"; path = "Target Support Files/Pods-DiceKeys-DiceKeysUITests/Pods-DiceKeys-DiceKeysUITests.release.xcconfig"; sourceTree = "<group>"; };
+		DB881CF2AEECEBA83A4A2040 /* Pods-DiceKeys.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys.debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys/Pods-DiceKeys.debug.xcconfig"; sourceTree = "<group>"; };
+		F5E037741A28CC6CA9137A98 /* Pods-DiceKeysTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeysTests.release.xcconfig"; path = "Target Support Files/Pods-DiceKeysTests/Pods-DiceKeysTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,7 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FADE8392552AE33006DF99F /* ReadDiceKey.framework in Frameworks */,
+				6185ECF52F55E701A7D44A6F /* Pods_DiceKeys.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04EA543F170C770F1092B593 /* Pods_DiceKeysTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,6 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5D66895958DCA98A0B25D61 /* Pods_DiceKeys_DiceKeysUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +131,9 @@
 		6F565C3F25516F9500B6B3B1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AAD0DF73F2796056AF2C9CA0 /* Pods_DiceKeys.framework */,
+				A8FF34CD70539F7AB4106E41 /* Pods_DiceKeys_DiceKeysUITests.framework */,
+				2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -158,6 +157,7 @@
 				6FAC6ACA25480DE200AA8249 /* DiceKeysUITests */,
 				6FAC6AA725480DE000AA8249 /* Products */,
 				6F565C3F25516F9500B6B3B1 /* Frameworks */,
+				E2B878D0BDEA1D91C5A1FFAE /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -174,7 +174,6 @@
 		6FAC6AA825480DE000AA8249 /* DiceKeys */ = {
 			isa = PBXGroup;
 			children = (
-				6FADE82C2552AE06006DF99F /* ReadDiceKey.xcodeproj */,
 				6FAC6DA625488BCB00AA8249 /* DiceKeys-Bridging-Header.h */,
 				6FAC6AB725480DE200AA8249 /* Info.plist */,
 				6FAC6AA925480DE000AA8249 /* AppDelegate.swift */,
@@ -233,13 +232,17 @@
 			path = Screens;
 			sourceTree = "<group>";
 		};
-		6FADE82D2552AE06006DF99F /* Products */ = {
+		E2B878D0BDEA1D91C5A1FFAE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6FADE8322552AE06006DF99F /* ReadDiceKey.framework */,
-				6FADE8342552AE06006DF99F /* ReadDiceKeyTests.xctest */,
+				DB881CF2AEECEBA83A4A2040 /* Pods-DiceKeys.debug.xcconfig */,
+				336285FF67EA50C62F01AC19 /* Pods-DiceKeys.release.xcconfig */,
+				B4CF76E3ABEDC8F66941F330 /* Pods-DiceKeys-DiceKeysUITests.debug.xcconfig */,
+				D62952D418B79F6700259BAD /* Pods-DiceKeys-DiceKeysUITests.release.xcconfig */,
+				3D5F184BC3A8DD2234A00D0F /* Pods-DiceKeysTests.debug.xcconfig */,
+				F5E037741A28CC6CA9137A98 /* Pods-DiceKeysTests.release.xcconfig */,
 			);
-			name = Products;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,11 +252,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6FAC6AD025480DE200AA8249 /* Build configuration list for PBXNativeTarget "DiceKeys" */;
 			buildPhases = (
+				F27FC1EB2BA6BCB99546AC6B /* [CP] Check Pods Manifest.lock */,
 				6FAC6D8A2548886E00AA8249 /* Run Script: Swift Lint */,
 				6FAC6AA225480DE000AA8249 /* Sources */,
 				6FAC6AA325480DE000AA8249 /* Frameworks */,
 				6FAC6AA425480DE000AA8249 /* Resources */,
 				6F565C5F2551736100B6B3B1 /* Embed Frameworks */,
+				CA9BB091A4288A3D3017F297 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -268,6 +273,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6FAC6AD325480DE200AA8249 /* Build configuration list for PBXNativeTarget "DiceKeysTests" */;
 			buildPhases = (
+				255B0FFF8FC50C46D6D93818 /* [CP] Check Pods Manifest.lock */,
 				6FAC6AB825480DE200AA8249 /* Sources */,
 				6FAC6AB925480DE200AA8249 /* Frameworks */,
 				6FAC6ABA25480DE200AA8249 /* Resources */,
@@ -286,9 +292,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6FAC6AD625480DE200AA8249 /* Build configuration list for PBXNativeTarget "DiceKeysUITests" */;
 			buildPhases = (
+				CEB6721DA555B0B1625E1B29 /* [CP] Check Pods Manifest.lock */,
 				6FAC6AC325480DE200AA8249 /* Sources */,
 				6FAC6AC425480DE200AA8249 /* Frameworks */,
 				6FAC6AC525480DE200AA8249 /* Resources */,
+				4035568018E95AD3B4CDFA88 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -334,12 +342,6 @@
 			mainGroup = 6FAC6A9D25480DE000AA8249;
 			productRefGroup = 6FAC6AA725480DE000AA8249 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 6FADE82D2552AE06006DF99F /* Products */;
-					ProjectRef = 6FADE82C2552AE06006DF99F /* ReadDiceKey.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				6FAC6AA525480DE000AA8249 /* DiceKeys */,
@@ -348,23 +350,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		6FADE8322552AE06006DF99F /* ReadDiceKey.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ReadDiceKey.framework;
-			remoteRef = 6FADE8312552AE06006DF99F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6FADE8342552AE06006DF99F /* ReadDiceKeyTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ReadDiceKeyTests.xctest;
-			remoteRef = 6FADE8332552AE06006DF99F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6FAC6AA425480DE000AA8249 /* Resources */ = {
@@ -395,6 +380,45 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		255B0FFF8FC50C46D6D93818 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DiceKeysTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4035568018E95AD3B4CDFA88 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DiceKeys-DiceKeysUITests/Pods-DiceKeys-DiceKeysUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DiceKeys-DiceKeysUITests/Pods-DiceKeys-DiceKeysUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DiceKeys-DiceKeysUITests/Pods-DiceKeys-DiceKeysUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		6FAC6D8A2548886E00AA8249 /* Run Script: Swift Lint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -412,6 +436,67 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		CA9BB091A4288A3D3017F297 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DiceKeys/Pods-DiceKeys-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DiceKeys/Pods-DiceKeys-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DiceKeys/Pods-DiceKeys-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CEB6721DA555B0B1625E1B29 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DiceKeys-DiceKeysUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F27FC1EB2BA6BCB99546AC6B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DiceKeys-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -533,7 +618,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -588,7 +673,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -600,6 +685,7 @@
 		};
 		6FAC6AD125480DE200AA8249 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DB881CF2AEECEBA83A4A2040 /* Pods-DiceKeys.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -607,8 +693,6 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M5HDTU7792;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../deps/ios\"";
-				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = DiceKeys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -625,6 +709,7 @@
 		};
 		6FAC6AD225480DE200AA8249 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 336285FF67EA50C62F01AC19 /* Pods-DiceKeys.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -632,8 +717,6 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M5HDTU7792;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../deps/ios\"";
-				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = DiceKeys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -649,6 +732,7 @@
 		};
 		6FAC6AD425480DE200AA8249 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3D5F184BC3A8DD2234A00D0F /* Pods-DiceKeysTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -671,6 +755,7 @@
 		};
 		6FAC6AD525480DE200AA8249 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F5E037741A28CC6CA9137A98 /* Pods-DiceKeysTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -693,6 +778,7 @@
 		};
 		6FAC6AD725480DE200AA8249 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B4CF76E3ABEDC8F66941F330 /* Pods-DiceKeys-DiceKeysUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -713,6 +799,7 @@
 		};
 		6FAC6AD825480DE200AA8249 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D62952D418B79F6700259BAD /* Pods-DiceKeys-DiceKeysUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

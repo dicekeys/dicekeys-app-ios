@@ -9,6 +9,7 @@ import AssetsLibrary
 import Photos
 import QuartzCore
 import UIKit
+import ReadDiceKey
 
 class CameraController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     //    var sessionManager: SessionManger!
