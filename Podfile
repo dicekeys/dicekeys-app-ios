@@ -7,6 +7,7 @@ target 'DiceKeys' do
 
   # Pods for DiceKeys
   pod "ReadDiceKey", :path => "../read-dicekey-ios/ReadDiceKey.podspec"
+  pod 'SeededCrypto', :git => 'https://github.com/dicekeys/seeded-crypto-ios.git', :submodules => true
 
   target 'DiceKeysTests' do
     inherit! :search_paths
