@@ -6,7 +6,7 @@ target 'DiceKeys' do
   use_frameworks!
 
   # Pods for DiceKeys
-  pod "ReadDiceKey", :path => "../read-dicekey-ios/ReadDiceKey.podspec"
+  pod "ReadDiceKey", :git => 'https://github.com/dicekeys/read-dicekey-ios.git', :submodules => true
   pod 'SeededCrypto', :git => 'https://github.com/dicekeys/seeded-crypto-ios.git', :submodules => true
 
   target 'DiceKeysTests' do
