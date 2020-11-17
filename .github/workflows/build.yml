@@ -16,4 +16,4 @@ jobs:
       - name: Build workspace
         run: |
           pod install
-          xcodebuild clean build -workspace "DiceKeys.xcworkspace" -scheme 'DiceKeys' -destination 'platform=iOS Simulator,name=iPhone 11'  
+          xcodebuild clean test -workspace "DiceKeys.xcworkspace" -scheme 'DiceKeys' -destination 'platform=iOS Simulator,name=iPhone 11'  
