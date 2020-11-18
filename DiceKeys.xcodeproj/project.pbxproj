@@ -846,7 +846,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M5HDTU7792;
+				DEVELOPMENT_TEAM = PZRJ539VW8;
 				INFOPLIST_FILE = DiceKeysTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -868,7 +868,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M5HDTU7792;
+				DEVELOPMENT_TEAM = PZRJ539VW8;
 				INFOPLIST_FILE = DiceKeysTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -889,7 +889,7 @@
 			baseConfigurationReference = B4CF76E3ABEDC8F66941F330 /* Pods-DiceKeys-DiceKeysUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M5HDTU7792;
+				DEVELOPMENT_TEAM = PZRJ539VW8;
 				INFOPLIST_FILE = DiceKeysUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -909,7 +909,7 @@
 			baseConfigurationReference = D62952D418B79F6700259BAD /* Pods-DiceKeys-DiceKeysUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M5HDTU7792;
+				DEVELOPMENT_TEAM = PZRJ539VW8;
 				INFOPLIST_FILE = DiceKeysUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
