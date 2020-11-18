@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct UnsealingInstructions: AuthenticationRequirements, Codable {
     var allow: [WebBasedApplicationIdentity]?
     var requireAuthenticationHandshake: Bool?

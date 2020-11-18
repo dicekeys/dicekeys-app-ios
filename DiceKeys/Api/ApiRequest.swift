@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 func base64urlDecode(_ base64url: String) -> Data? {
     var base64 = base64url
         .replacingOccurrences(of: "-", with: "+")
@@ -41,12 +40,11 @@ enum RequestException: Error {
     case ParameterNotFound(String)
 }
 
-
 struct PackagedSealedMessageJsonObject: Decodable {
     var derivationOptionsJson: String
     var ciphertext: String
     var unsealingInstructions: String?
-    
+
     static func from(json: Data) -> PackagedSealedMessageJsonObject? {
         return try! JSONDecoder().decode(PackagedSealedMessageJsonObject.self, from: json)
     }
@@ -55,18 +53,6 @@ struct PackagedSealedMessageJsonObject: Decodable {
         return from(json: json.data(using: .utf8)!)
     }
 }
-
-
-//let CommandsTheRequireClientMayRetrieveKeyToBeSetToTrue = Set<ApiCommand>([
-//    ApiCommand.getSymmetricKey,
-//    ApiCommand.getUnsealingKey,
-//    ApiCommand.getSigningKey
-//])
-//
-//let CommandsForWhichDerivationOptionsJsonMayBeModifiedDefaultsToTrue = Set<ApiCommand>([
-//    ApiCommand.getSealingKey,
-//    ApiCommand.sealWithSymmetricKey
-//])
 
 protocol ApiRequestCommand {
     var command: ApiCommand { get }
@@ -77,43 +63,35 @@ protocol ApiRequest {
     var derivationOptions: DerivationOptions { get }
     var derivationOptionsJson: String? { get }
     var derivationOptionsJsonMayBeModified: Bool { get }
-    
+
     var allowNilEmptyDerivationOptions: Bool { get }
     var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get }
     var derivationOptionsJsonMayBeModifiedDefault: Bool { get }
 
-    func throwIfNotAuthorized() throws -> Void
+    func throwIfNotAuthorized() throws
 }
 
 extension ApiRequest {
-    
     var allowNilEmptyDerivationOptions: Bool { get { false } }
     var derivationOptionsJsonMayBeModifiedDefault: Bool { get { false } }
 
     var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
-    
+
     func throwIfNotAuthorized() throws {
         let derivationOptions = self.derivationOptions
 
-        guard (!requireClientMayRetrieveKeyToBeSetToTrue || derivationOptions.clientMayRetrieveKey == true) else {
+        guard !requireClientMayRetrieveKeyToBeSetToTrue || derivationOptions.clientMayRetrieveKey == true else {
             throw RequestException.ComamndRequiresDerivationOptionsWithClientMayRetrieveKeySetToTrue
         }
-        guard (requestContext.satisfiesAuthenticationRequirements(
+        guard requestContext.satisfiesAuthenticationRequirements(
             of: derivationOptions,
             allowNullRequirement:
                 // Okay to have null/empty derivationOptionsJson, with no authentication requirements, when getting a sealing key
                 (allowNilEmptyDerivationOptions && (derivationOptionsJson == nil || derivationOptionsJson == ""))
-        )) else {
+        ) else {
             throw RequestException.ClientNotAuthorized(AuthenticationRequirementIn.DerivationOptions)
         }
     }
-    
-//
-//    var derivationOptions: DerivationOptions {
-//        get {
-//            return derivationOptionsJson == nil ? DerivationOptions() : DerivationOptions.fromJson(derivationOptionsJson!) ?? DerivationOptions()
-//        }
-//    }
 }
 
 protocol ApiRequestParameterUnmarshaller {
@@ -122,8 +100,8 @@ protocol ApiRequestParameterUnmarshaller {
 }
 
 class UrlParameters: ApiRequestParameterUnmarshaller {
-    private let parameters: Dictionary<String, String?>
-    
+    private let parameters: [String: String?]
+
     init(url: URL) {
         var queryDictionary = [String: String?]()
         if let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems {
@@ -133,7 +111,7 @@ class UrlParameters: ApiRequestParameterUnmarshaller {
         }
         self.parameters = queryDictionary
     }
-    
+
     func optionalField(name fieldName: String) -> String? {
         return parameters[fieldName] ?? nil
     }
@@ -144,11 +122,10 @@ class UrlParameters: ApiRequestParameterUnmarshaller {
         }
         return nonNilValue
     }
-    
 }
 
 private func getDerivationOptions(json derivationOptionsJson: String?) throws -> DerivationOptions {
-    if (derivationOptionsJson == "" || derivationOptionsJson == nil) {
+    if derivationOptionsJson == "" || derivationOptionsJson == nil {
         return DerivationOptions()
     }
     guard let derivationOptions = DerivationOptions.fromJson(derivationOptionsJson!) else {
@@ -158,7 +135,6 @@ private func getDerivationOptions(json derivationOptionsJson: String?) throws ->
 }
 
 class ApiRequestWithExplicitDerivationOptions: ApiRequest {
-    
     let derivationOptions: DerivationOptions
     let derivationOptionsJson: String?
     let requestContext: RequestContext
@@ -175,7 +151,7 @@ class ApiRequestWithExplicitDerivationOptions: ApiRequest {
         self.derivationOptions = try! getDerivationOptions(json: self.derivationOptionsJson)
         try! throwIfNotAuthorized()
     }
-    
+
     init(requestContext: RequestContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
         self.requestContext = requestContext
         self.derivationOptionsJson = unmarshaller.optionalField(name: "derivationOptionsJson")
@@ -189,17 +165,16 @@ class ApiRequestWithExplicitDerivationOptions: ApiRequest {
 class ApiRequestGenerateSignature: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
     let command: ApiCommand = ApiCommand.generateSignature
     let message: Data
-    
+
     init(requestContext: RequestContext, message: Data, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool) throws {
         self.message = message
         try! super.init(requestContext: requestContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
     }
-    
+
     override init(requestContext: RequestContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
         self.message = base64urlDecode(try! unmarshaller.requiredField(name: "message"))!
         try! super.init(requestContext: requestContext, unmarshaller: unmarshaller)
     }
-
 }
 
 class ApiRequestGetPassword: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
@@ -243,7 +218,7 @@ class ApiRequestSealWithSymmetricKey: ApiRequestWithExplicitDerivationOptions, A
         self.plaintext = plaintext
         try! super.init(requestContext: requestContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
     }
-    
+
     override init(requestContext: RequestContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
         self.plaintext = base64urlDecode(try! unmarshaller.requiredField(name: "plaintext"))!
         try! super.init(requestContext: requestContext, unmarshaller: unmarshaller)
@@ -266,7 +241,6 @@ class ApiRequestUnseal: ApiRequest {
     let derivationOptionsJsonMayBeModified = false
     let requireClientMayRetrieveKeyToBeSetToTrue = false
 
-
     var derivationOptionsJson: String? { get {
         return self.packagedSealedMessage.derivationOptionsJson
     }}
@@ -285,7 +259,7 @@ class ApiRequestUnseal: ApiRequest {
         self.derivationOptions = try! getDerivationOptions(json: packagedSealedMessage.derivationOptionsJson)
         try! throwIfNotAuthorized()
     }
-    
+
     fileprivate init(requestContext: RequestContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
         self.requestContext = requestContext
         self.packagedSealedMessageJson = try! unmarshaller.requiredField(name: "packagedSealedMessageJson")
@@ -294,18 +268,18 @@ class ApiRequestUnseal: ApiRequest {
         self.derivationOptions = try! getDerivationOptions(json: packagedSealedMessage.derivationOptionsJson)
         try! throwIfNotAuthorized()
     }
-    
+
     func throwIfNotAuthorized(requestContext: RequestContext) throws {
-        guard (requestContext.satisfiesAuthenticationRequirements(
+        guard requestContext.satisfiesAuthenticationRequirements(
             of: derivationOptions,
             allowNullRequirement:
                 // Okay to have no authentication requiements in derivation options if the unsealing instructions have authentiation requirements
                 (allowNilEmptyDerivationOptions && unsealingInstructions?.allow != nil)
-        )) else {
+        ) else {
             throw RequestException.ClientNotAuthorized(AuthenticationRequirementIn.DerivationOptions)
         }
         if let unsealingInstructions = self.unsealingInstructions {
-            guard (requestContext.satisfiesAuthenticationRequirements(of: unsealingInstructions, allowNullRequirement: true)) else {
+            guard requestContext.satisfiesAuthenticationRequirements(of: unsealingInstructions, allowNullRequirement: true) else {
                 throw RequestException.ClientNotAuthorized(AuthenticationRequirementIn.UnsealingInstructions)
             }
         }
@@ -325,7 +299,7 @@ class ApiRequestUnsealWithUnsealingKey: ApiRequestUnseal, ApiRequestCommand {
  In progress
  */
 func handleApiRequest(incomingRequestUrl: URL) throws {
-    let p = UrlParameters(url: incomingRequestUrl);
+    let p = UrlParameters(url: incomingRequestUrl)
     let replyTo = try! p.requiredField(name: "replyTo")
     guard let replyToUrl = URL(string: replyTo) else {
         throw RequestException.FailedToParseReplyTo(replyTo)
@@ -334,16 +308,16 @@ func handleApiRequest(incomingRequestUrl: URL) throws {
     var validatedByAuthToken = false
     if let authTokenNonNil = authToken {
         // FIXME
-        if (authTokenNonNil == "FIXME") {
+        if authTokenNonNil == "FIXME" {
             validatedByAuthToken = true
         }
     }
-    
+
     let requestContext = RequestContext(url: replyToUrl, validatedByAuthToken: validatedByAuthToken)
     guard let command = ApiCommand(rawValue: try! p.requiredField(name: "command")) else {
         throw RequestException.InvalidCommand
     }
-    switch (command) {
+    switch command {
     case ApiCommand.generateSignature:
         try! ApiRequestGenerateSignature(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.getPassword:

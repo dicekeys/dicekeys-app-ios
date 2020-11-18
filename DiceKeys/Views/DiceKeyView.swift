@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-fileprivate struct DieLidView: View {
+private struct DieLidView: View {
     let radius: CGFloat
     let color: Color
-    
+
     var body: some View {
         return Path { path in
             path.addArc(center: CGPoint(x: radius, y: 0), radius: radius, startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 180), clockwise: false)
@@ -18,7 +18,6 @@ fileprivate struct DieLidView: View {
         .fill(color)
         .frame(width: 2 * radius, height: radius)
     }
-    
 }
 
 struct DiceKeyView: View {
@@ -28,13 +27,12 @@ struct DiceKeyView: View {
     let leaveSpaceForTab: Bool = false
     let diceBoxColor: Color = Color(red: 0x05 / 0xFF, green: 0x03 / 0xFF, blue: 0x50 / 0xFF)
 
-
     let fractionOfVerticalSpaceRequiredForTab: CGFloat = 0.1
-    
+
     var fractionOfVerticalSpaceUsedByTab: CGFloat {
-        (leaveSpaceForTab || showLidTab) ? fractionOfVerticalSpaceRequiredForTab : 0;
+        (leaveSpaceForTab || showLidTab) ? fractionOfVerticalSpaceRequiredForTab : 0
     }
-    
+
     var fractionOfVerticalSpaceUsedByBox: CGFloat {
         1 - fractionOfVerticalSpaceUsedByTab
     }
@@ -46,25 +44,22 @@ struct DiceKeyView: View {
         fractionOfVerticalSpaceUsedByTab * viewSize.height
     }
     var boxCornerRadius: CGFloat {
-        linearSizeOfBox / 50;
+        linearSizeOfBox / 50
     }
-    
+
     var width: CGFloat { linearSizeOfBox }
     var height: CGFloat { linearSizeOfBox + lidTabRadius }
     var hCenter: CGFloat { linearSizeOfBox / 2 }
     var vCenter: CGFloat { linearSizeOfBox / 2 }
-    
-//    var boxLeftEdge: CGFloat { (viewSize.width - linearSizeOfBox) / 2 }
-//    var boxTopEdge: CGFloat { (viewSize.height - linearSizeOfBox) / 2 }
 
-    let marginOfBoxEdgeAsFractionOfDieSize: CGFloat = 1/8;
+    let marginOfBoxEdgeAsFractionOfDieSize: CGFloat = 1/8
     let distanceBetweenDiceAsFractionOfDieSize: CGFloat = 0.2
     var dieSize: CGFloat { return ( linearSizeOfBox / (
       5 +
       4 * distanceBetweenDiceAsFractionOfDieSize +
       2 * marginOfBoxEdgeAsFractionOfDieSize
     ) ) }
-    
+
 //    var leftmostDieCenter: CGFloat { boxLeftEdge + marginOfBoxEdgeAsFractionOfDieSize * dieSize + dieSize / 2 }
 //    var topmostDieCenter: CGFloat { boxTopEdge + marginOfBoxEdgeAsFractionOfDieSize * dieSize + dieSize / 2 }
     var dieStepSize: CGFloat { (1 + distanceBetweenDiceAsFractionOfDieSize) * dieSize }
@@ -76,13 +71,13 @@ struct DiceKeyView: View {
         var column: Int { indexInArray % 5 }
         var row: Int { indexInArray / 5 }
     }
-    
+
     private var facePositions: [DiePosition] {
-        return Array<Int>(0...24).map { index in
+        return [Int](0...24).map { index in
             DiePosition(indexInArray: index, face: diceKey.faces[index] )
         }
     }
-    
+
     var body: some View {
         ZStack {
             // The box
@@ -90,7 +85,7 @@ struct DiceKeyView: View {
                 .size(width: linearSizeOfBox, height: linearSizeOfBox)
                 .fill(diceBoxColor)
             // The lid
-            if (showLidTab) {
+            if showLidTab {
                 DieLidView(radius: lidTabRadius, color: diceBoxColor)
                 .position(x: hCenter, y: vCenter + linearSizeOfBox/2 + lidTabRadius/2)
             }
@@ -106,13 +101,12 @@ struct DiceKeyView: View {
     }
 }
 
-
 struct DiceKeyView_Previews: PreviewProvider {
 //    let diceKey: DiceKey = DiceKey.createFromRandom()
-    
+
     static var previews: some View {
         DieLidView(radius: 300, color: Color.blue)
-        
+
         DiceKeyView(diceKey: DiceKey.createFromRandom(), viewSize: CGSize(width: 600, height: 600), showLidTab: true)
             .background(Color.yellow)
     }

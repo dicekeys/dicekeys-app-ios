@@ -47,13 +47,13 @@ func majorityOf3<T: Equatable>(_ a: T?, _ b: T?, _ c: T?) -> T? {
 }
 
 class FaceRead: Decodable {
-    let underline: Undoverline?;
-    let overline: Undoverline?;
-    let orientationAsLowercaseLetterTrbl: FaceOrientationLetterTrbl?;
-    let ocrLetterCharsFromMostToLeastLikely: String;
-    let ocrDigitCharsFromMostToLeastLikely: String;
-    let center: Point;
-    
+    let underline: Undoverline?
+    let overline: Undoverline?
+    let orientationAsLowercaseLetterTrbl: FaceOrientationLetterTrbl?
+    let ocrLetterCharsFromMostToLeastLikely: String
+    let ocrDigitCharsFromMostToLeastLikely: String
+    let center: Point
+
     var letter: FaceLetter? { get {
         return majorityOf3(
             FaceLetter(rawValue: String(ocrLetterCharsFromMostToLeastLikely.prefix(1))),
@@ -69,7 +69,7 @@ class FaceRead: Decodable {
             decodeOverline(overline)?.digit
         )
     }}
-    
+
     func toFace() -> Face? {
         if let letter = self.letter, let digit = self.digit {
             return Face(
@@ -77,9 +77,8 @@ class FaceRead: Decodable {
                 digit: digit,
                 orientationAsLowercaseLetterTrbl: orientationAsLowercaseLetterTrbl ?? FaceOrientationLetterTrbl.Top)
         }
-        return nil;
+        return nil
     }
-    
     static func fromJson(_ json: Data) -> [FaceRead]? {
         return try! JSONDecoder().decode([FaceRead].self, from: json)
     }
@@ -87,5 +86,4 @@ class FaceRead: Decodable {
     static func fromJson(_ json: String) -> [FaceRead]? {
         return fromJson(json.data(using: .utf8)!)
     }
-    
 }

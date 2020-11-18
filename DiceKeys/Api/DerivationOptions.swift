@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 enum HashFunction: String, Codable {
     case BLAKE2b, Argon2id
 }
@@ -23,7 +22,6 @@ enum WordListName: String, Codable {
 
 struct DerivationOptions: AuthenticationRequirements, Codable {
     var type: DerivationOptionsType?
-    
     var allow: [WebBasedApplicationIdentity]?
     var requireAuthenticationHandshake: Bool?
     var allowAndroidPrefixes: [String]?
@@ -61,7 +59,6 @@ struct DerivationOptions: AuthenticationRequirements, Codable {
    * whatever bits are available.)
    */
     var proofOfPriorDerivation: String?
-
 
   /**
    * Unless this value is explicitly set to _true_, the DiceKeys may prevent
@@ -101,8 +98,6 @@ struct DerivationOptions: AuthenticationRequirements, Codable {
 
     */
     var excludeOrientationOfFaces: Bool?
-    
-    
     var hashFunction: HashFunction?
     var hashFunctionMemoryLimitInBytes: Int64?
     var hashFunctionMemoryPasses: Int64?
@@ -110,7 +105,7 @@ struct DerivationOptions: AuthenticationRequirements, Codable {
     var lengthInWords: Int32?
     var lengthInBits: Int32?
     var wordList: WordListName?
-    
+
     static func fromJson(_ json: Data) -> DerivationOptions? {
         return try! JSONDecoder().decode(DerivationOptions.self, from: json)
     }
@@ -118,11 +113,8 @@ struct DerivationOptions: AuthenticationRequirements, Codable {
     static func fromJson(_ json: String) -> DerivationOptions? {
         return fromJson(json.data(using: .utf8)!)
     }
-    
+
     func toJson() -> String {
         return try! String(decoding: JSONEncoder().encode(self), as: UTF8.self)
     }
-    
 }
-
-
