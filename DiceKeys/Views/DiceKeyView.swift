@@ -52,8 +52,8 @@ struct DiceKeyView: View {
     var hCenter: CGFloat { linearSizeOfBox / 2 }
     var vCenter: CGFloat { linearSizeOfBox / 2 }
 
-    let marginOfBoxEdgeAsFractionOfDieSize: CGFloat = 1/8
-    let distanceBetweenDiceAsFractionOfDieSize: CGFloat = 0.2
+    let marginOfBoxEdgeAsFractionOfDieSize: CGFloat = 0.25
+    let distanceBetweenDiceAsFractionOfDieSize: CGFloat = 0.15
     var dieSize: CGFloat { return ( linearSizeOfBox / (
       5 +
       4 * distanceBetweenDiceAsFractionOfDieSize +
@@ -105,9 +105,11 @@ struct DiceKeyView_Previews: PreviewProvider {
 //    let diceKey: DiceKey = DiceKey.createFromRandom()
 
     static var previews: some View {
-        DieLidView(radius: 300, color: Color.blue)
+        DieLidView(radius: 100, color: Color.blue)
+            .previewLayout(PreviewLayout.fixed(width: 200, height: 100))
 
         DiceKeyView(diceKey: DiceKey.createFromRandom(), viewSize: CGSize(width: 600, height: 600), showLidTab: true)
             .background(Color.yellow)
+            .previewLayout(PreviewLayout.fixed(width: 600, height: 600))
     }
 }
