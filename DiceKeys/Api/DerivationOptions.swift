@@ -106,15 +106,21 @@ struct DerivationOptions: AuthenticationRequirements, Codable {
     var lengthInBits: Int32?
     var wordList: WordListName?
 
-    static func fromJson(_ json: Data) -> DerivationOptions? {
-        return try! JSONDecoder().decode(DerivationOptions.self, from: json)
+    static func fromJson(_ json: Data) throws -> DerivationOptions {
+        return try JSONDecoder().decode(DerivationOptions.self, from: json)
     }
 
-    static func fromJson(_ json: String) -> DerivationOptions? {
-        return fromJson(json.data(using: .utf8)!)
+    static func fromJson(_ json: String?) throws -> DerivationOptions? {
+        guard let nonNilJson = json else {
+            return DerivationOptions()
+        }
+        if nonNilJson == "" {
+            return DerivationOptions()
+        }
+        return try fromJson(nonNilJson.data(using: .utf8)!)
     }
 
-    func toJson() -> String {
-        return try! String(decoding: JSONEncoder().encode(self), as: UTF8.self)
+    func toJson() throws -> String {
+        return try String(decoding: JSONEncoder().encode(self), as: UTF8.self)
     }
 }

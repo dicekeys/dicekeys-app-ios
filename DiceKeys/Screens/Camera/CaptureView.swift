@@ -72,14 +72,34 @@ class CaptureView: UIView {
             let focus_y = aPoint.y / screenHeight
 
             do {
+                // NOTE - for future MacOS compat, follow this:
+                // https://developer.apple.com/documentation/avfoundation/avcapturedevice/1387810-lockforconfiguration
                 try device.lockForConfiguration()
-                device.focusPointOfInterest = CGPoint(x: focus_x, y: focus_y)
-                device.focusMode = .autoFocus
+                // Nikita used this, which locks focus after initially locking onto center image
+                // Stuart believes continuousAutoFocus is necessary to prevent locking into wrong distance
+                // device.focusMode = .autoFocus
+                if device.isFocusModeSupported(.continuousAutoFocus) {
+                    device.focusMode = .continuousAutoFocus
+                }
+                if device.isFocusPointOfInterestSupported {
+                    device.focusPointOfInterest = CGPoint(x: focus_x, y: focus_y)
+                }
+
+                if device.isAutoFocusRangeRestrictionSupported {
+                    device.autoFocusRangeRestriction = .near
+                }
+                // Stuart wonders if this might allow us to focus close by default
+                // https://developer.apple.com/documentation/avfoundation/avcapturedevice/1389191-focusmode
+                // device.focusMode = AVCaptureDevice.FocusMode(0)
+
                 if device.isExposureModeSupported(.autoExpose) {
                     device.exposureMode = .autoExpose
                 }
                 device.unlockForConfiguration()
             } catch {
+                do {
+                    device.unlockForConfiguration()
+                }
                 print("Unexpected error: \(error).")
             }
 

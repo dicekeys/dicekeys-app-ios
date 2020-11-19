@@ -45,12 +45,12 @@ struct PackagedSealedMessageJsonObject: Decodable {
     var ciphertext: String
     var unsealingInstructions: String?
 
-    static func from(json: Data) -> PackagedSealedMessageJsonObject? {
-        return try! JSONDecoder().decode(PackagedSealedMessageJsonObject.self, from: json)
+    static func from(json: Data) throws -> PackagedSealedMessageJsonObject {
+        return try JSONDecoder().decode(PackagedSealedMessageJsonObject.self, from: json)
     }
 
-    static func from(json: String) -> PackagedSealedMessageJsonObject? {
-        return from(json: json.data(using: .utf8)!)
+    static func from(json: String) throws -> PackagedSealedMessageJsonObject {
+        return try from(json: json.data(using: .utf8)!)
     }
 }
 
@@ -125,10 +125,7 @@ class UrlParameters: ApiRequestParameterUnmarshaller {
 }
 
 private func getDerivationOptions(json derivationOptionsJson: String?) throws -> DerivationOptions {
-    if derivationOptionsJson == "" || derivationOptionsJson == nil {
-        return DerivationOptions()
-    }
-    guard let derivationOptions = DerivationOptions.fromJson(derivationOptionsJson!) else {
+    guard let derivationOptions = try DerivationOptions.fromJson(derivationOptionsJson!) else {
         throw RequestException.InvalidDerivationOptionsJson
     }
     return derivationOptions
@@ -148,17 +145,17 @@ class ApiRequestWithExplicitDerivationOptions: ApiRequest {
         self.requestContext = requestContext
         self.derivationOptionsJson = derivationOptionsJson
         self.derivationOptionsJsonMayBeModifiedParameter = derivationOptionsJsonMayBeModified
-        self.derivationOptions = try! getDerivationOptions(json: self.derivationOptionsJson)
-        try! throwIfNotAuthorized()
+        self.derivationOptions = try getDerivationOptions(json: self.derivationOptionsJson)
+        try throwIfNotAuthorized()
     }
 
     init(requestContext: RequestContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
         self.requestContext = requestContext
         self.derivationOptionsJson = unmarshaller.optionalField(name: "derivationOptionsJson")
-        self.derivationOptions = try! getDerivationOptions(json: self.derivationOptionsJson)
+        self.derivationOptions = try getDerivationOptions(json: self.derivationOptionsJson)
         let derivationOptionsJsonMayBeModified = unmarshaller.optionalField(name: "derivationOptionsJsonMayBeModified")
         self.derivationOptionsJsonMayBeModifiedParameter = derivationOptionsJsonMayBeModified == "true" ? true : derivationOptionsJsonMayBeModified == "false" ? false : nil
-        try! throwIfNotAuthorized()
+        try throwIfNotAuthorized()
     }
 }
 
@@ -168,12 +165,12 @@ class ApiRequestGenerateSignature: ApiRequestWithExplicitDerivationOptions, ApiR
 
     init(requestContext: RequestContext, message: Data, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool) throws {
         self.message = message
-        try! super.init(requestContext: requestContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
+        try super.init(requestContext: requestContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
     }
 
     override init(requestContext: RequestContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
-        self.message = base64urlDecode(try! unmarshaller.requiredField(name: "message"))!
-        try! super.init(requestContext: requestContext, unmarshaller: unmarshaller)
+        self.message = base64urlDecode(try unmarshaller.requiredField(name: "message"))!
+        try super.init(requestContext: requestContext, unmarshaller: unmarshaller)
     }
 }
 
@@ -216,20 +213,21 @@ class ApiRequestSealWithSymmetricKey: ApiRequestWithExplicitDerivationOptions, A
 
     init(requestContext: RequestContext, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool, plaintext: Data) throws {
         self.plaintext = plaintext
-        try! super.init(requestContext: requestContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
+        try super.init(requestContext: requestContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
     }
 
     override init(requestContext: RequestContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
-        self.plaintext = base64urlDecode(try! unmarshaller.requiredField(name: "plaintext"))!
-        try! super.init(requestContext: requestContext, unmarshaller: unmarshaller)
+        self.plaintext = base64urlDecode(try unmarshaller.requiredField(name: "plaintext"))!
+        try super.init(requestContext: requestContext, unmarshaller: unmarshaller)
     }
 }
 
 private func getPackagedSealedMessage(json packagedSealedMessageJson: String) throws -> PackagedSealedMessageJsonObject {
-    guard let packagedSealedMessage = PackagedSealedMessageJsonObject.from(json: packagedSealedMessageJson) else {
+    do {
+        return try PackagedSealedMessageJsonObject.from(json: packagedSealedMessageJson)
+    } catch {
         throw RequestException.InvalidPackagedSealedMessage
     }
-    return packagedSealedMessage
 }
 
 class ApiRequestUnseal: ApiRequest {
@@ -244,32 +242,33 @@ class ApiRequestUnseal: ApiRequest {
     var derivationOptionsJson: String? { get {
         return self.packagedSealedMessage.derivationOptionsJson
     }}
-    var unsealingInstructions: UnsealingInstructions? { get {
+    func unsealingInstructions() throws -> UnsealingInstructions? {
         if let unsealingInstructionsJson = packagedSealedMessage.unsealingInstructions {
-            return UnsealingInstructions.fromJson(unsealingInstructionsJson)
+            return try? UnsealingInstructions.fromJson(unsealingInstructionsJson)
         }
         return nil
-    }}
+    }
 
     fileprivate init(requestContext: RequestContext, packagedSealedMessageJson: String) throws {
         self.requestContext = requestContext
         self.packagedSealedMessageJson = packagedSealedMessageJson
-        let packagedSealedMessage = try! getPackagedSealedMessage(json: packagedSealedMessageJson)
+        let packagedSealedMessage = try getPackagedSealedMessage(json: packagedSealedMessageJson)
         self.packagedSealedMessage = packagedSealedMessage
-        self.derivationOptions = try! getDerivationOptions(json: packagedSealedMessage.derivationOptionsJson)
-        try! throwIfNotAuthorized()
+        self.derivationOptions = try getDerivationOptions(json: packagedSealedMessage.derivationOptionsJson)
+        try throwIfNotAuthorized()
     }
 
     fileprivate init(requestContext: RequestContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
         self.requestContext = requestContext
-        self.packagedSealedMessageJson = try! unmarshaller.requiredField(name: "packagedSealedMessageJson")
-        let packagedSealedMessage = try! getPackagedSealedMessage(json: packagedSealedMessageJson)
+        self.packagedSealedMessageJson = try unmarshaller.requiredField(name: "packagedSealedMessageJson")
+        let packagedSealedMessage = try getPackagedSealedMessage(json: packagedSealedMessageJson)
         self.packagedSealedMessage = packagedSealedMessage
-        self.derivationOptions = try! getDerivationOptions(json: packagedSealedMessage.derivationOptionsJson)
-        try! throwIfNotAuthorized()
+        self.derivationOptions = try getDerivationOptions(json: packagedSealedMessage.derivationOptionsJson)
+        try throwIfNotAuthorized()
     }
 
     func throwIfNotAuthorized(requestContext: RequestContext) throws {
+        let unsealingInstructions = try self.unsealingInstructions()
         guard requestContext.satisfiesAuthenticationRequirements(
             of: derivationOptions,
             allowNullRequirement:
@@ -278,8 +277,8 @@ class ApiRequestUnseal: ApiRequest {
         ) else {
             throw RequestException.ClientNotAuthorized(AuthenticationRequirementIn.DerivationOptions)
         }
-        if let unsealingInstructions = self.unsealingInstructions {
-            guard requestContext.satisfiesAuthenticationRequirements(of: unsealingInstructions, allowNullRequirement: true) else {
+        if unsealingInstructions != nil {
+            guard requestContext.satisfiesAuthenticationRequirements(of: unsealingInstructions!, allowNullRequirement: true) else {
                 throw RequestException.ClientNotAuthorized(AuthenticationRequirementIn.UnsealingInstructions)
             }
         }
@@ -300,7 +299,7 @@ class ApiRequestUnsealWithUnsealingKey: ApiRequestUnseal, ApiRequestCommand {
  */
 func handleApiRequest(incomingRequestUrl: URL) throws {
     let p = UrlParameters(url: incomingRequestUrl)
-    let replyTo = try! p.requiredField(name: "replyTo")
+    let replyTo = try p.requiredField(name: "replyTo")
     guard let replyToUrl = URL(string: replyTo) else {
         throw RequestException.FailedToParseReplyTo(replyTo)
     }
@@ -314,31 +313,31 @@ func handleApiRequest(incomingRequestUrl: URL) throws {
     }
 
     let requestContext = RequestContext(url: replyToUrl, validatedByAuthToken: validatedByAuthToken)
-    guard let command = ApiCommand(rawValue: try! p.requiredField(name: "command")) else {
+    guard let command = ApiCommand(rawValue: try p.requiredField(name: "command")) else {
         throw RequestException.InvalidCommand
     }
     switch command {
     case ApiCommand.generateSignature:
-        try! ApiRequestGenerateSignature(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
+        try ApiRequestGenerateSignature(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.getPassword:
-        try! ApiRequestGetPassword(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
+        try ApiRequestGetPassword(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.getSealingKey:
-        try! ApiRequestGetSealingKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
+        try ApiRequestGetSealingKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.getSecret:
-        try! ApiRequestGetSecret(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
+        try ApiRequestGetSecret(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.getSigningKey:
-        try! ApiRequestGetSigningKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
+        try ApiRequestGetSigningKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.getSignatureVerificationKey:
-        try! ApiRequestGetSignatureVerificationKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
+        try ApiRequestGetSignatureVerificationKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.getSymmetricKey:
-        try! ApiRequestGetSymmetricKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
+        try ApiRequestGetSymmetricKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.getUnsealingKey:
-        try! ApiRequestGetUnsealingKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
+        try ApiRequestGetUnsealingKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.sealWithSymmetricKey:
-        try! ApiRequestSealWithSymmetricKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
+        try ApiRequestSealWithSymmetricKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.unsealWithSymmetricKey:
-        try! ApiRequestUnsealWithSymmetricKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
+        try ApiRequestUnsealWithSymmetricKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.unsealWithUnsealingKey:
-        try! ApiRequestUnsealWithUnsealingKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
+        try ApiRequestUnsealWithUnsealingKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     }
 }

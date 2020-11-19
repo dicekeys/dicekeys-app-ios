@@ -12,11 +12,11 @@ struct UnsealingInstructions: AuthenticationRequirements, Codable {
     var requireAuthenticationHandshake: Bool?
     var allowAndroidPrefixes: [String]?
 
-    static func fromJson(_ json: Data) -> UnsealingInstructions? {
-        return try! JSONDecoder().decode(UnsealingInstructions.self, from: json)
+    static func fromJson(_ json: Data) throws -> UnsealingInstructions? {
+        return try JSONDecoder().decode(UnsealingInstructions.self, from: json)
     }
 
-    static func fromJson(_ json: String) -> UnsealingInstructions? {
-        return fromJson(json.data(using: .utf8)!)
+    static func fromJson(_ json: String) throws -> UnsealingInstructions? {
+        return try fromJson(json.data(using: .utf8)!)
     }
 }

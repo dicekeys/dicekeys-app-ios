@@ -80,7 +80,7 @@ class FaceRead: Decodable {
         return nil
     }
     static func fromJson(_ json: Data) -> [FaceRead]? {
-        return try! JSONDecoder().decode([FaceRead].self, from: json)
+        return try? JSONDecoder().decode([FaceRead].self, from: json)
     }
 
     static func fromJson(_ json: String) -> [FaceRead]? {
