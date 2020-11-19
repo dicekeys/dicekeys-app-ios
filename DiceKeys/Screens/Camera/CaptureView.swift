@@ -75,6 +75,9 @@ class CaptureView: UIView {
                 // NOTE - for future MacOS compat, follow this:
                 // https://developer.apple.com/documentation/avfoundation/avcapturedevice/1387810-lockforconfiguration
                 try device.lockForConfiguration()
+                defer {
+                    device.unlockForConfiguration()
+                }
                 // Nikita used this, which locks focus after initially locking onto center image
                 // Stuart believes continuousAutoFocus is necessary to prevent locking into wrong distance
                 // device.focusMode = .autoFocus
@@ -95,11 +98,7 @@ class CaptureView: UIView {
                 if device.isExposureModeSupported(.autoExpose) {
                     device.exposureMode = .autoExpose
                 }
-                device.unlockForConfiguration()
             } catch {
-                do {
-                    device.unlockForConfiguration()
-                }
                 print("Unexpected error: \(error).")
             }
 
