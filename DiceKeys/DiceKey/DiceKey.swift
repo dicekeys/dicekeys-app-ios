@@ -32,6 +32,10 @@ enum IllegalCharacterError: Error {
 }
 
 class DiceKey {
+    enum ConstructorError: Error {
+        case emptyFace
+    }
+    
     let faces: [Face]
 
     var faceTuple: FaceTuple { get {
@@ -47,6 +51,16 @@ class DiceKey {
     init(_ faces: [Face]) {
         precondition(faces.count == 25)
         self.faces = faces
+    }
+
+    init(_ facesRead: [FaceRead]) throws {
+        precondition(facesRead.count == 25)
+        self.faces = try facesRead.map { fr -> Face in
+            guard let face = fr.toFace() else {
+                throw ConstructorError.emptyFace
+            }
+            return face
+        }
     }
 
     static func createFromRandom() -> DiceKey {

@@ -9,37 +9,24 @@
 import SwiftUI
 import UIKit
 import AVFoundation
+import ReadDiceKey
 
-
-//class VideoSessionManager: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
-//    let captureSession: AVCaptureSession
-//    let cameraPosition: AVCaptureDevice.Position
-//
-//    var block: ((CIImage) -> Void)?
-//
-//    required init(captureSession: AVCaptureSession) {
-//        super.init()
-//        do {
-//            self.captureSession = captureSession
-//
-//            let videoOutput = AVCaptureVideoDataOutput()
-//            videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "SampleBuffer", attributes: []))
-//            if captureSession.canAddOutput(videoOutput) {
-//                captureSession.addOutput(videoOutput)
-//            }
-//            captureSession.startRunning()
-//        }
-//    }
-//
-//    // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
-//
-//}
+typealias CaptureFrameHandler = (_ imageBitmap: Data, _ width: Int32, _ height: Int32) throws -> Void
 
 final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+    static let videoDispatchQueue = DispatchQueue(label: "diceKeysVideo")
+
     var captureSession: AVCaptureSession?
     var backCamera: AVCaptureDevice?
     var backCameraInput: AVCaptureDeviceInput?
     var previewLayer: AVCaptureVideoPreviewLayer?
+
+    var onFrameCaptured: CaptureFrameHandler?
+    private var _size: CGSize?
+    var size: CGSize {
+        get { _size ?? UIScreen.main.bounds.size }
+        set { _size = newValue }
+    }
 
     enum CameraControllerError: Swift.Error {
        case captureSessionAlreadyRunning
@@ -50,16 +37,41 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
        case unknown
     }
 
+    private var isProcessingFrame: Bool = false
+
+    // Runs in the "SampleBuffer" queue
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        DispatchQueue.main.async {
-            connection.videoOrientation = AVCaptureVideoOrientation(rawValue: UIWindow.orientation.rawValue)!
+        if self.onFrameCaptured == nil || self.isProcessingFrame {
+            return
+        }
 
-            guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
-                return
+        self.isProcessingFrame = true
+
+        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            self.isProcessingFrame = false
+            return
+        }
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+        let context = CIContext(options: nil)
+        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
+            self.isProcessingFrame = false
+            return
+        }
+
+        guard let bitmap = cgImage.bitmap else {
+            self.isProcessingFrame = false
+            return
+        }
+        let width = Int32(cgImage.width)
+        let height = Int32(cgImage.height)
+        // Stuart asks if this should be here
+        // connection.videoOrientation = AVCaptureVideoOrientation(rawValue: UIWindow.orientation.rawValue)!
+
+        DiceKeysCameraController.videoDispatchQueue.async {
+            defer {
+                self.isProcessingFrame = false
             }
-
-            let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
-            // FIXME
+            try? self.onFrameCaptured?(bitmap, width, height)
         }
     }
 
@@ -128,7 +140,7 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
             }
         }
 
-        DispatchQueue(label: "prepare").async {
+        DiceKeysCameraController.videoDispatchQueue.async {
             do {
                 createCaptureSession()
                 try configureCaptureDevices()
@@ -158,31 +170,31 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
     }
 }
 
-final class CameraViewController: UIViewController {
-//    var widthSet: CGFloat?
-//    var heightSet: CGFloat?
-//
-//    func setDimensions (width: CGFloat, height: CGFloat) -> CameraViewController {
-//        self.widthSet = width
-//        self.heightSet = height
-//        return self
-//    }
-//
-//    var width: CGFloat {
-//        widthSet ?? UIScreen.main.bounds.size.width
-//    }
-//    var height: CGFloat {
-//        heightSet ?? UIScreen.main.bounds.size.height
-//    }
-
+final class DiceKeysCameraUIViewController: UIViewController {
     let cameraController = DiceKeysCameraController()
+
     var previewView: UIView!
 
+    var onFrameCaptured: CaptureFrameHandler? {
+        get { return self.cameraController.onFrameCaptured }
+        set { DiceKeysCameraController.videoDispatchQueue.async {
+                self.cameraController.onFrameCaptured = newValue
+            }
+        }
+    }
+
+    var size: CGSize {
+        get { cameraController.size }
+        set { cameraController.size = newValue }
+    }
+
+    func withOnFrameCaptured(onFrameCaptured newValue: CaptureFrameHandler?) -> DiceKeysCameraUIViewController {
+        cameraController.onFrameCaptured = newValue
+        return self
+    }
+
     override func viewDidLoad() {
-//        previewView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height))
-        let screenSize = UIScreen.main.bounds.size
-        let minSize = min(screenSize.width, screenSize.height)
-        previewView = UIView(frame: CGRect(x: 0, y: 0, width: minSize, height: minSize))
+        previewView = UIView(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
         previewView.contentMode = UIView.ContentMode.scaleAspectFill
         view.addSubview(previewView)
 
@@ -196,39 +208,98 @@ final class CameraViewController: UIViewController {
     }
 }
 
-extension CameraViewController: UIViewControllerRepresentable {
-    public typealias UIViewControllerType = CameraViewController
+final class DiceKeysCamera: UIViewControllerRepresentable {
+    let size: CGSize
+    let onFrameProcessed: (() -> Void)?
+    let onRead: ((DiceKey) -> Void)?
 
-    public func makeUIViewController(context: UIViewControllerRepresentableContext<CameraViewController>) -> CameraViewController {
-        return CameraViewController()
+    private var onReadSentYet = false
+    private let processor = DKImageProcessor.create()!
+
+    init(onFrameProcessed: (() -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize = UIScreen.main.bounds.size) {
+        self.onFrameProcessed = onFrameProcessed
+        self.onRead = onRead
+        self.size = size
     }
 
-    public func updateUIViewController(_ uiViewController: CameraViewController, context: UIViewControllerRepresentableContext<CameraViewController>) {
+    public typealias UIViewControllerType = DiceKeysCameraUIViewController
+
+    func onFrameCaptured(_ imageBitmap: Data, _ width: Int32, _ height: Int32) throws {
+        processor.process(imageBitmap, width: width, height: height)
+        let json = processor.json()
+        if let facesRead = FaceRead.fromJson(json) {
+            // Render overlay image
+            if let diceKey = try? DiceKey(facesRead) {
+                if !self.onReadSentYet {
+                    self.onReadSentYet = true
+                    self.onRead?(diceKey)
+                }
+                // FIXME -- clean up better!
+            } else {
+            }
+        } else {
+            // clean overlay image
+        }
+        processor.overlay(imageBitmap, width: width, height: height)
+
+        DispatchQueue.main.async {
+            self.onFrameProcessed?()
+        }
+    }
+
+    public func makeUIViewController(context: UIViewControllerRepresentableContext<DiceKeysCamera>) -> DiceKeysCameraUIViewController {
+        let controller = DiceKeysCameraUIViewController()
+        controller.onFrameCaptured = onFrameCaptured
+        controller.size = size
+        return controller
+    }
+
+    public func updateUIViewController(_ uiViewController: DiceKeysCameraUIViewController, context: UIViewControllerRepresentableContext<DiceKeysCamera>) {
     }
 }
 
-struct SwiftUiCameraView: View {
+struct DiceKeysCameraView: View {
+//    let onFrameCaptured: CaptureFrameHandler? = nil
+
+    @State var frameCount: Int = 0
+
+    func onFrameProcessed() {
+        self.frameCount += 1
+    }
+
     var body: some View {
-//        GeometryReader { reader in
-        VStack {
-            Text("Hi, we're here")
-            CameraViewController()//.setDimensions(width: reader.size.width, height: reader.size.height)
+        Text("We've processed \(frameCount) frames")
+        GeometryReader { reader in
+            VStack {
+                DiceKeysCamera(onFrameProcessed: onFrameProcessed, size: CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)) )
+//                UIImage(cgImage: overlayCgImage)
+                //.setDimensions(width: reader.size.width, height: reader.size.height)
+            }
         }
-//        }
+    }
+}
+
+struct TestView: View {
+    var body: some View {
+        VStack {
+            Text("Test View")
+            Spacer()
+            DiceKeysCameraView()
+        }
     }
 }
 
 @main
-struct SwiftUICameraApp: App {
+struct DiceKeysCameraApp: App {
     var body: some Scene {
         WindowGroup {
-            SwiftUiCameraView()
+            TestView()
         }
     }
 }
 
-struct SwiftUICameraView_Previews: PreviewProvider {
+struct DiceKeysCameraView_Previews: PreviewProvider {
     static var previews: some View {
-        SwiftUiCameraView()
+        DiceKeysCameraView()
     }
 }
