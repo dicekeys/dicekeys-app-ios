@@ -72,7 +72,6 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
         //                    self.sessionManager.captureSession.startRunning()
         //                }
         //
-        //                // TODO: Manage flash button state
         //                // RAC(self.buttonFlash, enabled) = RACSignal combineLatest:@[
         //                //     RACObserve(self.sessionManager, flashAvailable),
         //                //     RACObserve(self, isCapturing),
@@ -176,7 +175,6 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
                     //                        }
                     //                    })
                 }
-
             }
         }
         #endif

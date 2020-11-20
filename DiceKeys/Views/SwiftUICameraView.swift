@@ -210,13 +210,13 @@ final class DiceKeysCameraUIViewController: UIViewController {
 
 final class DiceKeysCamera: UIViewControllerRepresentable {
     let size: CGSize
-    let onFrameProcessed: (() -> Void)?
+    let onFrameProcessed: ((_ facesRead: [FaceRead]?) -> Void)?
     let onRead: ((DiceKey) -> Void)?
 
     private var onReadSentYet = false
     private let processor = DKImageProcessor.create()!
 
-    init(onFrameProcessed: (() -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize = UIScreen.main.bounds.size) {
+    init(onFrameProcessed: ((_ facesRead: [FaceRead]?) -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize = UIScreen.main.bounds.size) {
         self.onFrameProcessed = onFrameProcessed
         self.onRead = onRead
         self.size = size
@@ -227,7 +227,8 @@ final class DiceKeysCamera: UIViewControllerRepresentable {
     func onFrameCaptured(_ imageBitmap: Data, _ width: Int32, _ height: Int32) throws {
         processor.process(imageBitmap, width: width, height: height)
         let json = processor.json()
-        if let facesRead = FaceRead.fromJson(json) {
+        let facesReadOrNil = FaceRead.fromJson(json)
+        if let facesRead = facesReadOrNil {
             // Render overlay image
             if let diceKey = try? DiceKey(facesRead) {
                 if !self.onReadSentYet {
@@ -243,7 +244,7 @@ final class DiceKeysCamera: UIViewControllerRepresentable {
         processor.overlay(imageBitmap, width: width, height: height)
 
         DispatchQueue.main.async {
-            self.onFrameProcessed?()
+            self.onFrameProcessed?(facesReadOrNil)
         }
     }
 
@@ -262,16 +263,21 @@ struct DiceKeysCameraView: View {
 //    let onFrameCaptured: CaptureFrameHandler? = nil
 
     @State var frameCount: Int = 0
+    @State var facesRead: [FaceRead]? = nil
 
-    func onFrameProcessed() {
+    func onFrameProcessed(_ facesRead: [FaceRead]?) {
         self.frameCount += 1
+        self.facesRead = facesRead
     }
-
+    
     var body: some View {
         Text("We've processed \(frameCount) frames")
         GeometryReader { reader in
             VStack {
                 DiceKeysCamera(onFrameProcessed: onFrameProcessed, size: CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)) )
+                
+                FacesReadOverlay(size: CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)),
+                                    facesRead: self.facesRead)
 //                UIImage(cgImage: overlayCgImage)
                 //.setDimensions(width: reader.size.width, height: reader.size.height)
             }

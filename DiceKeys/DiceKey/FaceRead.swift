@@ -11,7 +11,7 @@ import SwiftUI
 struct Point: Decodable {
     let x: CGFloat
     let y: CGFloat
-    
+
     var cgPoint: CGPoint {
         CGPoint(x: x, y: y)
     }
@@ -81,7 +81,7 @@ class FaceRead: Decodable {
             decodeOverline(overline)?.digit
         )
     }}
-    
+
     var angle: Angle? {
         let undoverline1 = underline ?? overline
         let undoverline2 = underline == nil ? nil : overline
