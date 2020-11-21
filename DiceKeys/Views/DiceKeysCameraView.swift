@@ -14,7 +14,7 @@ import ReadDiceKey
 typealias CaptureFrameHandler = (_ imageBitmap: Data, _ width: Int32, _ height: Int32) throws -> Void
 
 final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
-    static let videoDispatchQueue = DispatchQueue(label: "diceKeysVideo")
+    static let processedFrameDispatchQueue = DispatchQueue(label: "diceKeysVideo")
 
     var captureSession: AVCaptureSession?
     var backCamera: AVCaptureDevice?
@@ -38,8 +38,9 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
     }
 
     private var isProcessingFrame: Bool = false
+    private var reusableFrameDataBuffer = Data()
 
-    // Runs in the "SampleBuffer" queue
+    // Runs in the "quicklyProcessSampleBuffer" queue
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         if self.onFrameCaptured == nil || self.isProcessingFrame {
             return
@@ -47,31 +48,50 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
 
         self.isProcessingFrame = true
 
-        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+        connection.videoOrientation = AVCaptureVideoOrientation.portrait
+        guard let imageBuffer: CVPixelBuffer = sampleBuffer.imageBuffer  else {
             self.isProcessingFrame = false
             return
         }
-        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
-        let context = CIContext(options: nil)
-        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
-            self.isProcessingFrame = false
-            return
-        }
+        let ciImage = CIImage(cvPixelBuffer: imageBuffer)
 
-        guard let bitmap = cgImage.bitmap else {
+        let frameWidth = ciImage.extent.width
+        let frameHeight = ciImage.extent.height
+        let squareSize = min(frameWidth, frameHeight)
+        let width = squareSize
+        let height = squareSize
+        let centeredSquare = CGRect(
+            x: (frameWidth - squareSize) / 2,
+            y: (frameHeight - squareSize) / 2,
+            width: width, height: height
+        )
+        guard let cgImage = CIContext.init(options: nil).createCGImage(ciImage, from: centeredSquare) else {
             self.isProcessingFrame = false
             return
         }
-        let width = Int32(cgImage.width)
-        let height = Int32(cgImage.height)
-        // Stuart asks if this should be here
-        // connection.videoOrientation = AVCaptureVideoOrientation(rawValue: UIWindow.orientation.rawValue)!
-
-        DiceKeysCameraController.videoDispatchQueue.async {
+        let bytesPerRow = 4 * cgImage.width
+        let bufferLength = bytesPerRow * cgImage.height
+        if reusableFrameDataBuffer.count < bufferLength {
+            // We need a bigger buffer.  Allocate it
+            reusableFrameDataBuffer = Data(count: bufferLength)
+        }
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+        reusableFrameDataBuffer.withUnsafeMutableBytes { rawBuffer in
+            CGContext(
+                data: rawBuffer.baseAddress,
+                width: cgImage.width,
+                height: cgImage.height,
+                bitsPerComponent: 8,
+                bytesPerRow: bytesPerRow,
+                space: CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: bitmapInfo.rawValue
+            )?.draw(cgImage, in: CGRect(x: 0, y: 0, width: cgImage.width, height: cgImage.height))
+        }
+        DiceKeysCameraController.processedFrameDispatchQueue.async {
             defer {
                 self.isProcessingFrame = false
             }
-            try? self.onFrameCaptured?(bitmap, width, height)
+            try? self.onFrameCaptured?(self.reusableFrameDataBuffer, Int32(width), Int32(height))
         }
     }
 
@@ -131,7 +151,7 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
                 self.backCameraInput = backCameraInput
 
                 let videoOutput = AVCaptureVideoDataOutput()
-                videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "SampleBuffer", attributes: []))
+                videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "quicklyProcessSampleBuffer", attributes: []))
                 if captureSession.canAddOutput(videoOutput) {
                     captureSession.addOutput(videoOutput)
                 }
@@ -140,7 +160,7 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
             }
         }
 
-        DiceKeysCameraController.videoDispatchQueue.async {
+        DiceKeysCameraController.processedFrameDispatchQueue.async {
             do {
                 createCaptureSession()
                 try configureCaptureDevices()
@@ -163,7 +183,7 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
 
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        self.previewLayer?.connection?.videoOrientation = .portrait
+//        self.previewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
 
         view.layer.insertSublayer(self.previewLayer!, at: 0)
         self.previewLayer?.frame = view.frame
@@ -177,7 +197,7 @@ final class DiceKeysCameraUIViewController: UIViewController {
 
     var onFrameCaptured: CaptureFrameHandler? {
         get { return self.cameraController.onFrameCaptured }
-        set { DiceKeysCameraController.videoDispatchQueue.async {
+        set { DiceKeysCameraController.processedFrameDispatchQueue.async {
                 self.cameraController.onFrameCaptured = newValue
             }
         }
@@ -210,13 +230,13 @@ final class DiceKeysCameraUIViewController: UIViewController {
 
 final class DiceKeysCamera: UIViewControllerRepresentable {
     let size: CGSize
-    let onFrameProcessed: ((_ facesRead: [FaceRead]?) -> Void)?
+    let onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)?
     let onRead: ((DiceKey) -> Void)?
 
     private var onReadSentYet = false
     private let processor = DKImageProcessor.create()!
 
-    init(onFrameProcessed: ((_ facesRead: [FaceRead]?) -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize = UIScreen.main.bounds.size) {
+    init(onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize = UIScreen.main.bounds.size) {
         self.onFrameProcessed = onFrameProcessed
         self.onRead = onRead
         self.size = size
@@ -244,7 +264,7 @@ final class DiceKeysCamera: UIViewControllerRepresentable {
         processor.overlay(imageBitmap, width: width, height: height)
 
         DispatchQueue.main.async {
-            self.onFrameProcessed?(facesReadOrNil)
+            self.onFrameProcessed?(CGSize(width: CGFloat(width), height: CGFloat(height)), facesReadOrNil)
         }
     }
 
@@ -263,21 +283,25 @@ struct DiceKeysCameraView: View {
 //    let onFrameCaptured: CaptureFrameHandler? = nil
 
     @State var frameCount: Int = 0
-    @State var facesRead: [FaceRead]? = nil
+    @State var facesRead: [FaceRead]?
+    @State var processedImageFrameSize: CGSize?
 
-    func onFrameProcessed(_ facesRead: [FaceRead]?) {
+    func onFrameProcessed(_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) {
         self.frameCount += 1
+        self.processedImageFrameSize = processedImageFrameSize
         self.facesRead = facesRead
     }
-    
+
     var body: some View {
         Text("We've processed \(frameCount) frames")
         GeometryReader { reader in
             VStack {
                 DiceKeysCamera(onFrameProcessed: onFrameProcessed, size: CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)) )
-                
-                FacesReadOverlay(size: CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)),
-                                    facesRead: self.facesRead)
+
+                FacesReadOverlay(
+                    renderedSize: CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)),
+                    imageFrameSize: processedImageFrameSize ?? CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)),
+                    facesRead: self.facesRead)
 //                UIImage(cgImage: overlayCgImage)
                 //.setDimensions(width: reader.size.width, height: reader.size.height)
             }
