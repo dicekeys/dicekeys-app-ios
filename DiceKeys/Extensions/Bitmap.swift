@@ -21,31 +21,7 @@ public extension UIImage {
 }
 
 public extension CGImage {
-    var bitmap: Data? {
-        let bitsPerComponent = 8
-        let bytesPerRow = 4 * width
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
-
-        let bufferLength = width * height * 4
-        var buffer = [UInt8](repeating: 0, count: bufferLength)
-
-        guard let context = CGContext(
-            data: &buffer,
-            width: width,
-            height: height,
-            bitsPerComponent: bitsPerComponent,
-            bytesPerRow: bytesPerRow,
-            space: colorSpace,
-            bitmapInfo: bitmapInfo.rawValue
-        ) else {
-            return nil
-        }
-        context.draw(self, in: CGRect(x: 0, y: 0, width: width, height: height))
-        return Data(buffer)
-    }
-
-    static func make(from bitmap: Data, width: Int, height: Int) -> CGImage? {
+    static func create(from bitmap: Data, width: Int, height: Int) -> CGImage? {
         let bitsPerComponent = 8
         let bitsPerPixel = 4 * 8
         let bytesPerRow = 4 * width
