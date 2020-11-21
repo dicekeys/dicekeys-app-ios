@@ -39,9 +39,9 @@
 		17426E882565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */; };
 		17426E892565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */; };
 		17426E8A2565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */; };
-		17426E932566316100FB0FAB /* SwiftUICameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E922566316100FB0FAB /* SwiftUICameraView.swift */; };
-		17426E942566316100FB0FAB /* SwiftUICameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E922566316100FB0FAB /* SwiftUICameraView.swift */; };
-		17426E952566316100FB0FAB /* SwiftUICameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E922566316100FB0FAB /* SwiftUICameraView.swift */; };
+		17426E932566316100FB0FAB /* DiceKeysCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E922566316100FB0FAB /* DiceKeysCameraView.swift */; };
+		17426E942566316100FB0FAB /* DiceKeysCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E922566316100FB0FAB /* DiceKeysCameraView.swift */; };
+		17426E952566316100FB0FAB /* DiceKeysCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E922566316100FB0FAB /* DiceKeysCameraView.swift */; };
 		17426EB62567C03500FB0FAB /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */; };
 		17426EB72567C03500FB0FAB /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */; };
 		17426EB82567C03500FB0FAB /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */; };
@@ -107,7 +107,7 @@
 		17426E5C2564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebBasedApplicationIdentity.swift; sourceTree = "<group>"; };
 		17426E772564FB7200FB0FAB /* DiceKeyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyView.swift; sourceTree = "<group>"; };
 		17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inconsolata-Bold.otf"; sourceTree = "<group>"; };
-		17426E922566316100FB0FAB /* SwiftUICameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUICameraView.swift; sourceTree = "<group>"; };
+		17426E922566316100FB0FAB /* DiceKeysCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeysCameraView.swift; sourceTree = "<group>"; };
 		17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacesReadOverlay.swift; sourceTree = "<group>"; };
 		17426ECF2567CC7700FB0FAB /* DieFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DieFaceView.swift; sourceTree = "<group>"; };
 		2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeysTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -198,7 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				17426E772564FB7200FB0FAB /* DiceKeyView.swift */,
-				17426E922566316100FB0FAB /* SwiftUICameraView.swift */,
+				17426E922566316100FB0FAB /* DiceKeysCameraView.swift */,
 				17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */,
 				17426ECF2567CC7700FB0FAB /* DieFaceView.swift */,
 			);
@@ -612,7 +612,7 @@
 				17426E792564FB7300FB0FAB /* DiceKeyView.swift in Sources */,
 				17426E4A2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,
 				6FAC6ADE25480E6200AA8249 /* CaptureView.swift in Sources */,
-				17426E932566316100FB0FAB /* SwiftUICameraView.swift in Sources */,
+				17426E932566316100FB0FAB /* DiceKeysCameraView.swift in Sources */,
 				17426E632564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */,
 				17426E532564FAFB00FB0FAB /* ApiRequest.swift in Sources */,
 				6FAC6AE325480E7500AA8249 /* CameraController.swift in Sources */,
@@ -627,7 +627,7 @@
 				17426E432564FAB700FB0FAB /* DiceKey.swift in Sources */,
 				17426ED12567CC7700FB0FAB /* DieFaceView.swift in Sources */,
 				17426E5E2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */,
-				17426E942566316100FB0FAB /* SwiftUICameraView.swift in Sources */,
+				17426E942566316100FB0FAB /* DiceKeysCameraView.swift in Sources */,
 				17426E3B2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
 				17426E622564FB0B00FB0FAB /* PermissionChecks.swift in Sources */,
 				17426EB72567C03500FB0FAB /* FacesReadOverlay.swift in Sources */,
@@ -654,7 +654,7 @@
 				17426E2E2564FA6000FB0FAB /* Face.swift in Sources */,
 				6FAC6ACC25480DE200AA8249 /* DiceKeysUITests.swift in Sources */,
 				17426E342564FA8000FB0FAB /* FaceSpecification.swift in Sources */,
-				17426E952566316100FB0FAB /* SwiftUICameraView.swift in Sources */,
+				17426E952566316100FB0FAB /* DiceKeysCameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,7 +11,7 @@ struct AngularCoordinateSystem {
     private let zeroPoint: CGPoint
     private let cosAngle: CGFloat
     private let sinAngle: CGFloat
-    
+
     init(zeroPoint: CGPoint, angle: Angle, scalingFactor: CGFloat) {
         self.zeroPoint = zeroPoint
         self.cosAngle = CGFloat(cos(angle.radians)) * scalingFactor
@@ -33,18 +33,25 @@ struct AngularCoordinateSystem {
 }
 
 struct FaceReadOverlay: View {
+    let renderedSize: CGSize
+    let imageFrameSize: CGSize
     let faceRead: FaceRead
     let faceSizeInPixels: CGFloat
     let angle: Angle
     let fontSize: CGFloat
     let coordinateSystemFromCenterOfDie: AngularCoordinateSystem
 
-    init(faceRead: FaceRead) {
+    init(renderedSize: CGSize, imageFrameSize: CGSize, faceRead: FaceRead) {
+        self.renderedSize = renderedSize
         self.faceRead = faceRead
+        self.imageFrameSize = imageFrameSize
         faceSizeInPixels = faceRead.length ?? 0
         fontSize = faceSizeInPixels * FaceDimensionsFractional.fontSize
         angle = faceRead.angle ?? Angle(radians: 0)
-        coordinateSystemFromCenterOfDie = AngularCoordinateSystem(zeroPoint: faceRead.center.cgPoint, angle: angle, scalingFactor: faceSizeInPixels)
+        coordinateSystemFromCenterOfDie = AngularCoordinateSystem(
+            zeroPoint: CGPoint(x: renderedSize.height - faceRead.center.y, y: faceRead.center.x - 400),
+            // zeroPoint: faceRead.center.cgPoint,
+            angle: angle + Angle(degrees: 90), scalingFactor: faceSizeInPixels)
     }
 
     var letterCenter: CGPoint {
@@ -68,7 +75,7 @@ struct FaceReadOverlay: View {
                     .foregroundColor(.green)
                     .fontWeight(.bold)
                     .font(.custom("Inconsolata", size: fontSize))
-                    .rotationEffect(angle)
+                    .rotationEffect(angle + Angle(degrees: 90))
                     .position(letterCenter)
             }
             if let digit = faceRead.digit {
@@ -76,7 +83,7 @@ struct FaceReadOverlay: View {
                     .foregroundColor(.green)
                     .fontWeight(.bold)
                     .font(.custom("Inconsolata", size: fontSize))
-                    .rotationEffect(angle)
+                    .rotationEffect(angle + Angle(degrees: 90))
                     .position(digitCenter)
             }
         }
@@ -84,7 +91,9 @@ struct FaceReadOverlay: View {
 }
 
 struct FacesReadOverlay: View {
-    let size: CGSize
+    let renderedSize: CGSize
+    let imageFrameSize: CGSize
+
     let facesRead: [FaceReadIdentifiable]
 
         struct FaceReadIdentifiable: Identifiable {
@@ -93,8 +102,9 @@ struct FacesReadOverlay: View {
         var id: Int { indexInArray }
     }
 
-    init(size: CGSize, facesRead: [FaceRead]?) {
-        self.size = size
+    init(renderedSize: CGSize, imageFrameSize: CGSize, facesRead: [FaceRead]?) {
+        self.renderedSize = renderedSize
+        self.imageFrameSize = imageFrameSize
         self.facesRead = (facesRead ?? []).enumerated().map { index, faceRead in
             FaceReadIdentifiable(indexInArray: index, faceRead: faceRead)
         }
@@ -103,8 +113,8 @@ struct FacesReadOverlay: View {
     var body: some View {
         ZStack {
             ForEach(facesRead) { fri in
-                FaceReadOverlay(faceRead: fri.faceRead)
-                    .frame(width: size.width, height: size.height)
+                FaceReadOverlay(renderedSize: renderedSize, imageFrameSize: imageFrameSize, faceRead: fri.faceRead)
+                    .frame(width: renderedSize.width, height: renderedSize.height)
             }
         }
     }
@@ -117,7 +127,8 @@ let facesReadJson: String = """
 struct FacesReadOverlay_Previews: PreviewProvider {
     static var previews: some View {
         FacesReadOverlay(
-            size: CGSize(width: 600, height: 600),
+            renderedSize: CGSize(width: 600, height: 600),
+            imageFrameSize: CGSize(width: 600, height: 600),
             facesRead: FaceRead.fromJson(facesReadJson)!
         )
         .previewLayout(PreviewLayout.fixed(width: 600, height: 600))

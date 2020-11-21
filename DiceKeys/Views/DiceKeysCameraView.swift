@@ -183,7 +183,6 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
 
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-//        self.previewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
 
         view.layer.insertSublayer(self.previewLayer!, at: 0)
         self.previewLayer?.frame = view.frame
@@ -301,9 +300,8 @@ struct DiceKeysCameraView: View {
                 FacesReadOverlay(
                     renderedSize: CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)),
                     imageFrameSize: processedImageFrameSize ?? CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)),
-                    facesRead: self.facesRead)
-//                UIImage(cgImage: overlayCgImage)
-                //.setDimensions(width: reader.size.width, height: reader.size.height)
+                    facesRead: self.facesRead
+                )
             }
         }
     }
