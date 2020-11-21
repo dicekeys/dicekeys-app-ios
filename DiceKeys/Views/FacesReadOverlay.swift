@@ -94,30 +94,109 @@ struct FacesReadOverlay: View {
     let renderedSize: CGSize
     let imageFrameSize: CGSize
 
-    let facesRead: [FaceReadIdentifiable]
+    let facesRead: [FaceRead]?
 
-        struct FaceReadIdentifiable: Identifiable {
-        let indexInArray: Int
-        var faceRead: FaceRead
-        var id: Int { indexInArray }
+//        struct FaceReadIdentifiable: Identifiable {
+//        let indexInArray: Int
+//        var faceRead: FaceRead
+//        var id: Int { indexInArray }
+//    }
+
+    var renderer: UIGraphicsImageRenderer {
+        UIGraphicsImageRenderer(size: renderedSize)
+    }
+
+    private let letterColorSuccess = UIColor(red: 0, green: 1, blue: 0, alpha: 1)
+    private let letterOffset = CGPoint(
+        x: -(FaceDimensionsFractional.textRegionWidth/4 + FaceDimensionsFractional.spaceBetweenLetterAndDigit/2),
+        y: FaceDimensionsFractional.textBaselineY - 0.5 // bottom of text area to render
+    )
+    private let digitOffset = CGPoint(
+        x: (FaceDimensionsFractional.textRegionWidth/4 + FaceDimensionsFractional.spaceBetweenLetterAndDigit/2),
+        y: FaceDimensionsFractional.textBaselineY - 0.5 // bottom of text area to render
+    )
+
+    var body: some View {
+        Image(uiImage: renderer.image { context in
+            let cgContext = context.cgContext
+            let frameRect = CGRect(x: 0, y: 0, width: renderedSize.width, height: renderedSize.height)
+            cgContext.addRect(frameRect)
+            cgContext.setStrokeColor(CGColor(red: 1, green: 0, blue: 0, alpha: 1))
+            cgContext.strokePath()
+            guard let facesRead = self.facesRead else { return }
+
+            for faceRead in facesRead {
+                guard let faceSizeInFramePixels = faceRead.length else {
+                    continue
+                }
+                guard let angle = faceRead.angle else {
+                    continue
+                }
+                let faceSizeInPixels = faceSizeInFramePixels * renderedSize.width / imageFrameSize.width
+                let fontSize = faceSizeInPixels * FaceDimensionsFractional.fontSize
+                let coordinateSystemFromCenterOfDie = AngularCoordinateSystem(
+                    zeroPoint: CGPoint(
+                        x: faceRead.center.x * renderedSize.width / imageFrameSize.width,
+                        y: faceRead.center.y * renderedSize.height / imageFrameSize.height
+                    ),
+//                        faceRead.center.cgPoint,
+                    angle: angle, scalingFactor: faceSizeInPixels)
+
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.alignment = .center
+                let attrs = [
+                    NSAttributedString.Key.font: UIFont(name: "Inconsolata-Bold", size: fontSize)!,
+                    NSAttributedString.Key.paragraphStyle: paragraphStyle,
+                    NSAttributedString.Key.foregroundColor: letterColorSuccess
+                ]
+
+                if let letter = faceRead.letter {
+                    let letterCenter: CGPoint = coordinateSystemFromCenterOfDie.pointAt(offset: letterOffset)
+                    // cgContext.saveGState()
+                    cgContext.textMatrix = CGAffineTransform(translationX: letterCenter.x, y: letterCenter.y)
+                        .rotated(by: CGFloat(angle.radians))
+                        .scaledBy(x: 1, y: -1)
+                    // cgContext.move(to: letterCenter)
+                    // cgContext.rotate(by: CGFloat(angle.radians))
+                    let attrString = NSAttributedString(string: letter.rawValue, attributes: attrs)
+                    CTLineDraw(CTLineCreateWithAttributedString(attrString), cgContext)
+                    // cgContext.restoreGState()
+                }
+                if let digit = faceRead.digit {
+                    let digitCenter: CGPoint = coordinateSystemFromCenterOfDie.pointAt(offset: digitOffset)
+                    cgContext.textMatrix = CGAffineTransform(translationX: digitCenter.x, y: digitCenter.y)
+                        .rotated(by: CGFloat(angle.radians))
+                        .scaledBy(x: 1, y: -1)
+                    // cgContext.saveGState()
+                    // cgContext.move(to: digitCenter)
+                    // cgContext.rotate(by: CGFloat(angle.radians))
+                    let attrString = NSAttributedString(string: digit.rawValue, attributes: attrs)
+                    CTLineDraw(CTLineCreateWithAttributedString(attrString), cgContext)
+                    // cgContext.restoreGState()
+                }
+            }
+        })
+        .frame(width: renderedSize.width, height: renderedSize.height)
+        .position(x: renderedSize.width / 2, y: renderedSize.height / 2)
     }
 
     init(renderedSize: CGSize, imageFrameSize: CGSize, facesRead: [FaceRead]?) {
         self.renderedSize = renderedSize
         self.imageFrameSize = imageFrameSize
-        self.facesRead = (facesRead ?? []).enumerated().map { index, faceRead in
-            FaceReadIdentifiable(indexInArray: index, faceRead: faceRead)
-        }
+        self.facesRead = facesRead
+//        self.facesRead = (facesRead ?? []).enumerated().map { index, faceRead in
+//            FaceReadIdentifiable(indexInArray: index, faceRead: faceRead)
+//        }
     }
 
-    var body: some View {
-        ZStack {
-            ForEach(facesRead) { fri in
-                FaceReadOverlay(renderedSize: renderedSize, imageFrameSize: imageFrameSize, faceRead: fri.faceRead)
-                    .frame(width: renderedSize.width, height: renderedSize.height)
-            }
-        }
-    }
+//    var body: some View {
+//        ZStack {
+//            ForEach(facesRead) { fri in
+//                FaceReadOverlay(renderedSize: renderedSize, imageFrameSize: imageFrameSize, faceRead: fri.faceRead)
+//                    .frame(width: renderedSize.width, height: renderedSize.height)
+//            }
+//        }
+//    }
 }
 
 let facesReadJson: String = """

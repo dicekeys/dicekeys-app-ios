@@ -129,7 +129,7 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
                     camera.autoFocusRangeRestriction = .near
                 }
                 if camera.isExposureModeSupported(.autoExpose) {
-                    camera.exposureMode = .autoExpose
+                    camera.exposureMode = .continuousAutoExposure
                 }
             }
         }
@@ -292,16 +292,18 @@ struct DiceKeysCameraView: View {
     }
 
     var body: some View {
-        Text("We've processed \(frameCount) frames")
-        GeometryReader { reader in
-            VStack {
-                DiceKeysCamera(onFrameProcessed: onFrameProcessed, size: CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)) )
+        VStack {
+            Text("We've processed \(frameCount) frames")
+            GeometryReader { reader in
+                ZStack {
+                    DiceKeysCamera(onFrameProcessed: onFrameProcessed, size: CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)) )
 
-                FacesReadOverlay(
-                    renderedSize: CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)),
-                    imageFrameSize: processedImageFrameSize ?? CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)),
-                    facesRead: self.facesRead
-                )
+                    FacesReadOverlay(
+                        renderedSize: CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)),
+                        imageFrameSize: processedImageFrameSize ?? CGSize(width: min(reader.size.width, reader.size.height), height: min(reader.size.width, reader.size.height)),
+                        facesRead: self.facesRead
+                    )
+                }
             }
         }
     }

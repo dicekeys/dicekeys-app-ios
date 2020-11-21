@@ -44,6 +44,23 @@ func decodeUnderline(_ underline: Undoverline?) -> FaceWithUnderlineAndOverlineC
     return decodeUnderlineCode(underline?.code)
 }
 
+func averageAngles (_ angles: Angle...) -> Angle {
+    guard angles.count > 0 else {
+        return Angle(radians: 0)
+    }
+    let sumSin = angles.reduce( Double(0), { sum, angle in
+        sum + sin(angle.radians)
+    })
+    let sumCos = angles.reduce( Double(0), { sum, angle in
+        sum + cos(angle.radians)
+    })
+    if sumSin == 0 && sumCos == 0 {
+        // Corner case.  Two possible averages, pick one
+        return Angle(radians: (angles[0].radians) + Double.pi)
+    }
+    return Angle(radians: atan2(sumSin, sumCos))
+}
+
 func decodeOverlineCode(_ code: UInt8?) -> FaceWithUnderlineAndOverlineCode? {
     if let c = code {
         return overlineCodeToFaceWithUnderlineAndOverlineCode[Int(c)]
@@ -86,7 +103,7 @@ class FaceRead: Decodable {
         let undoverline1 = underline ?? overline
         let undoverline2 = underline == nil ? nil : overline
         if undoverline2 != nil {
-            return (undoverline1!.line.angle + undoverline2!.line.angle) / 2
+            return averageAngles(undoverline1!.line.angle, undoverline2!.line.angle)
         } else if undoverline1 != nil {
             return undoverline1!.line.angle
         } else {
