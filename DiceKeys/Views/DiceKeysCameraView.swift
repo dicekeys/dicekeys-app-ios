@@ -243,7 +243,7 @@ final class DiceKeysCamera: UIViewControllerRepresentable {
 
     public typealias UIViewControllerType = DiceKeysCameraUIViewController
 
-    func onFrameCaptured(_ imageBitmap: Data, _ width: Int32, _ height: Int32) throws {
+    func onFrameCaptured(_ imageBitmap: Data, _ width: Int32, _ height: Int32) {
         processor.process(imageBitmap, width: width, height: height)
         let json = processor.json()
         let facesReadOrNil = FaceRead.fromJson(json)
@@ -255,16 +255,9 @@ final class DiceKeysCamera: UIViewControllerRepresentable {
                     self.onRead?(diceKey)
                 }
                 // FIXME -- clean up better!
-            } else {
             }
-        } else {
-            // clean overlay image
         }
-        processor.overlay(imageBitmap, width: width, height: height)
-
-        DispatchQueue.main.async {
-            self.onFrameProcessed?(CGSize(width: CGFloat(width), height: CGFloat(height)), facesReadOrNil)
-        }
+        self.onFrameProcessed?(CGSize(width: CGFloat(width), height: CGFloat(height)), facesReadOrNil)
     }
 
     public func makeUIViewController(context: UIViewControllerRepresentableContext<DiceKeysCamera>) -> DiceKeysCameraUIViewController {
