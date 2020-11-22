@@ -48,7 +48,10 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
 
         self.isProcessingFrame = true
 
-        connection.videoOrientation = AVCaptureVideoOrientation.portrait
+        // Here there be dragons.
+        // This is from sample code, but it introduces a 5 second delay
+        // (maybe do from being called in the wrong thread?)
+        // connection.videoOrientation = AVCaptureVideoOrientation.portrait
         guard let imageBuffer: CVPixelBuffer = sampleBuffer.imageBuffer  else {
             self.isProcessingFrame = false
             return
