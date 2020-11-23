@@ -10,7 +10,6 @@ import UIKit
 import AVFoundation
 import ReadDiceKey
 
-
 final class DiceKeysCameraUIViewController: UIViewController {
     let cameraController = DiceKeysCameraController()
 
