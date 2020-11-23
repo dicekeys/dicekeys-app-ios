@@ -35,7 +35,7 @@ class DiceKey {
     enum ConstructorError: Error {
         case emptyFace
     }
-    
+
     let faces: [Face]
 
     var faceTuple: FaceTuple { get {

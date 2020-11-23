@@ -86,27 +86,38 @@ struct FacesReadOverlay: View {
                 guard let faceSizeInFramePixels = faceRead.length else {
                     continue
                 }
-                guard let angle = faceRead.angle else {
+                guard let angleLandscape = faceRead.angle else {
                     continue
                 }
                 let faceSizeInPixels = faceSizeInFramePixels * renderedSize.width / imageFrameSize.width
                 let fontSize = faceSizeInPixels * FaceDimensionsFractional.fontSize
                 let font = UIFont(name: "Inconsolata-Bold", size: fontSize)!
+                let centerLandscape = faceRead.center
+                let angle = angleLandscape + Angle(degrees: 90)
+                let center = CGPoint(
+                    x: imageFrameSize.height - centerLandscape.y,
+                    y: centerLandscape.x
+                )
 
                 let coordinateSystemFromCenterOfDie = AngularCoordinateSystem(
                     zeroPoint: CGPoint(
-                        x: faceRead.center.x * renderedSize.width / imageFrameSize.width,
-                        y: faceRead.center.y * renderedSize.height / imageFrameSize.height
+                        x: center.x * renderedSize.width / imageFrameSize.width,
+                        y: center.y * renderedSize.height / imageFrameSize.height
                     ),
-                    angle: angle, scalingFactor: faceSizeInPixels)
+                    angle: angle,
+                    scalingFactor: faceSizeInPixels)
 
                 if let letter = faceRead.letter {
                     let location = coordinateSystemFromCenterOfDie.pointAt(offset: letterOffset)
-                    drawCenteredString(cgContext: cgContext, string: letter.rawValue, targetCenter: location, angleClockwise: angle, font: font, color: letterColorSuccess)
+                    drawCenteredString(cgContext: cgContext, string: letter.rawValue, targetCenter: location,
+                                       angleClockwise: angle,
+                                       font: font, color: letterColorSuccess)
                 }
                 if let digit = faceRead.digit {
                     let location = coordinateSystemFromCenterOfDie.pointAt(offset: digitOffset)
-                    drawCenteredString(cgContext: cgContext, string: digit.rawValue, targetCenter: location, angleClockwise: angle, font: font, color: letterColorSuccess)
+                    drawCenteredString(cgContext: cgContext, string: digit.rawValue, targetCenter: location,
+                                       angleClockwise: angle,
+                                       font: font, color: letterColorSuccess)
                 }
             }
         })

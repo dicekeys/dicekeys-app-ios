@@ -83,19 +83,27 @@ class FaceRead: Decodable {
     let ocrDigitCharsFromMostToLeastLikely: String
     let center: Point
 
+    private var decodedUnderline: FaceWithUnderlineAndOverlineCode? {
+        decodeUnderline(underline)
+    }
+
+    private var decodedOverline: FaceWithUnderlineAndOverlineCode? {
+        decodeOverline(overline)
+    }
+
     var letter: FaceLetter? { get {
         return majorityOf3(
             FaceLetter(rawValue: String(ocrLetterCharsFromMostToLeastLikely.prefix(1))),
-            decodeUnderline(underline)?.letter,
-            decodeOverline(overline)?.letter
+            decodedUnderline?.letter,
+            decodedOverline?.letter
         )
     }}
 
     var digit: FaceDigit? { get {
         return majorityOf3(
             FaceDigit(rawValue: String(ocrDigitCharsFromMostToLeastLikely.prefix(1))),
-            decodeUnderline(underline)?.digit,
-            decodeOverline(overline)?.digit
+            decodedUnderline?.digit,
+            decodedOverline?.digit
         )
     }}
 
@@ -138,5 +146,82 @@ class FaceRead: Decodable {
 
     static func fromJson(_ json: String) -> [FaceRead]? {
         return fromJson(json.data(using: .utf8)!)
+    }
+
+    enum FaceReadErrorLocationLine {
+        case Underline, Overline
+    }
+    enum FaceReadErrorLocationCharacter {
+        case Letter, Digit
+    }
+
+    enum FaceReadError {
+        case UndoverlineBitMismatch(
+            FaceReadErrorLocationLine // , hammingDistance: Int
+        )
+        case UndoverlineMissing(
+            FaceReadErrorLocationLine
+        )
+        case UndoverlineCharacterWasOcrsSecondChoice(
+            FaceReadErrorLocationCharacter
+        )
+        case UndoverlineCharacterDidNotMatchOcrCharacter(
+            FaceReadErrorLocationCharacter
+        )
+        case NoUndoverlineOrOverlineWithWhichToLocateFace
+        case NoMajorityAgreement
+    }
+
+    var errors: [FaceReadError] {
+        var errorList: [FaceReadError] = []
+
+        let decodedUnderline = self.decodedUnderline
+        let decodedOverline = self.decodedOverline
+        let underlineLetter = decodedUnderline?.letter.rawValue
+        let underlineDigit = decodedUnderline?.digit.rawValue
+        let overlineLetter = decodedOverline?.letter.rawValue
+        let overlineDigit = decodedOverline?.digit.rawValue
+        let ocrLetter = String(ocrLetterCharsFromMostToLeastLikely.prefix(1))
+        let ocrLetter2 = String(ocrLetterCharsFromMostToLeastLikely.prefix(2).suffix(1))
+        let ocrDigit = String(ocrDigitCharsFromMostToLeastLikely.prefix(1))
+        let ocrDigit2 = String(ocrDigitCharsFromMostToLeastLikely.prefix(2).suffix(1))
+
+        if  underlineLetter != nil &&
+            underlineDigit != nil &&
+            underlineLetter == overlineLetter &&
+            underlineDigit == overlineDigit {
+            // The underline and overline map to the same face
+
+            // Check for OCR errors for the letter read
+            if underlineLetter != ocrLetter {
+                errorList.append(underlineLetter == ocrLetter2 ?
+                                    .UndoverlineCharacterWasOcrsSecondChoice(.Letter) :
+                                    .UndoverlineCharacterDidNotMatchOcrCharacter(.Letter)
+                )
+            }
+            if underlineDigit != ocrDigit {
+                errorList.append(underlineDigit == ocrDigit2 ?
+                                    .UndoverlineCharacterWasOcrsSecondChoice(.Digit) :
+                                    .UndoverlineCharacterDidNotMatchOcrCharacter(.Digit)
+                )
+            }
+        } else if underlineLetter == ocrLetter && underlineDigit == ocrDigit {
+            // The underline and the OCR-read letter & digit match, so the error is in the overline
+            errorList.append(
+                overline == nil ? .UndoverlineMissing(.Overline) : .UndoverlineBitMismatch(.Overline) // hammingDistance( underline.faceWithUndoverlineCodes && underline.faceWithUndoverlineCodes.overlineCode || 0,                        overline.code
+            )
+        } else if overlineLetter == ocrLetter && overlineDigit == ocrDigit {
+            // The overline and the OCR-read letter & digit match, so the error is in the underline
+            errorList.append(
+                underline == nil ? .UndoverlineMissing(.Underline) : .UndoverlineBitMismatch(.Underline)
+            )
+        } else if underline == nil && overline == nil {
+            // If we've made it this far down the if/then/else block, it's possible
+            // that neither and underline or overline was read
+            errorList.append(.NoUndoverlineOrOverlineWithWhichToLocateFace)
+        } else {
+            errorList.append(.NoMajorityAgreement)
+        }
+        return errorList
     }
 }

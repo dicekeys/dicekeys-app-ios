@@ -44,7 +44,7 @@
 		<key>UIURLToLaunchScreenAssociations</key>
 		<dict/>
 		<key>UIDefaultLaunchScreen</key>
-		<string>SwiftUiCameraView</string>
+		<string>AppView</string>
 	</dict>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
