@@ -8,22 +8,59 @@
 
 /* Begin PBXBuildFile section */
 		04EA543F170C770F1092B593 /* Pods_DiceKeysTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */; };
+		17426E2C2564FA6000FB0FAB /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E2B2564FA6000FB0FAB /* Face.swift */; };
+		17426E2D2564FA6000FB0FAB /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E2B2564FA6000FB0FAB /* Face.swift */; };
+		17426E2E2564FA6000FB0FAB /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E2B2564FA6000FB0FAB /* Face.swift */; };
+		17426E322564FA8000FB0FAB /* FaceSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E312564FA8000FB0FAB /* FaceSpecification.swift */; };
+		17426E332564FA8000FB0FAB /* FaceSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E312564FA8000FB0FAB /* FaceSpecification.swift */; };
+		17426E342564FA8000FB0FAB /* FaceSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E312564FA8000FB0FAB /* FaceSpecification.swift */; };
+		17426E3A2564FAAF00FB0FAB /* FaceRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E392564FAAF00FB0FAB /* FaceRead.swift */; };
+		17426E3B2564FAAF00FB0FAB /* FaceRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E392564FAAF00FB0FAB /* FaceRead.swift */; };
+		17426E3C2564FAAF00FB0FAB /* FaceRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E392564FAAF00FB0FAB /* FaceRead.swift */; };
+		17426E422564FAB700FB0FAB /* DiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E412564FAB700FB0FAB /* DiceKey.swift */; };
+		17426E432564FAB700FB0FAB /* DiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E412564FAB700FB0FAB /* DiceKey.swift */; };
+		17426E442564FAB700FB0FAB /* DiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E412564FAB700FB0FAB /* DiceKey.swift */; };
+		17426E4A2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E492564FADA00FB0FAB /* ApiInterfaces.swift */; };
+		17426E4B2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E492564FADA00FB0FAB /* ApiInterfaces.swift */; };
+		17426E4C2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E492564FADA00FB0FAB /* ApiInterfaces.swift */; };
+		17426E532564FAFB00FB0FAB /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E522564FAFB00FB0FAB /* ApiRequest.swift */; };
+		17426E542564FAFB00FB0FAB /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E522564FAFB00FB0FAB /* ApiRequest.swift */; };
+		17426E5D2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E592564FB0B00FB0FAB /* UnsealingInstructions.swift */; };
+		17426E5E2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E592564FB0B00FB0FAB /* UnsealingInstructions.swift */; };
+		17426E5F2564FB0B00FB0FAB /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5A2564FB0B00FB0FAB /* DerivationOptions.swift */; };
+		17426E602564FB0B00FB0FAB /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5A2564FB0B00FB0FAB /* DerivationOptions.swift */; };
+		17426E612564FB0B00FB0FAB /* PermissionChecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5B2564FB0B00FB0FAB /* PermissionChecks.swift */; };
+		17426E622564FB0B00FB0FAB /* PermissionChecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5B2564FB0B00FB0FAB /* PermissionChecks.swift */; };
+		17426E632564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5C2564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift */; };
+		17426E642564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5C2564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift */; };
+		17426E792564FB7300FB0FAB /* DiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E772564FB7200FB0FAB /* DiceKeyView.swift */; };
+		17426E7A2564FB7300FB0FAB /* DiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E772564FB7200FB0FAB /* DiceKeyView.swift */; };
+		17426E7B2564FB7300FB0FAB /* DiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E772564FB7200FB0FAB /* DiceKeyView.swift */; };
+		17426E882565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */; };
+		17426E892565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */; };
+		17426E8A2565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */; };
+		17426E932566316100FB0FAB /* DiceKeysCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E922566316100FB0FAB /* DiceKeysCameraView.swift */; };
+		17426E942566316100FB0FAB /* DiceKeysCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E922566316100FB0FAB /* DiceKeysCameraView.swift */; };
+		17426E952566316100FB0FAB /* DiceKeysCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E922566316100FB0FAB /* DiceKeysCameraView.swift */; };
+		17426EB62567C03500FB0FAB /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */; };
+		17426EB72567C03500FB0FAB /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */; };
+		17426EB82567C03500FB0FAB /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */; };
+		17426ED02567CC7700FB0FAB /* DieFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieFaceView.swift */; };
+		17426ED12567CC7700FB0FAB /* DieFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieFaceView.swift */; };
+		17426ED22567CC7700FB0FAB /* DieFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieFaceView.swift */; };
+		17533912256B2BCB00E090BC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533911256B2BCB00E090BC /* CameraController.swift */; };
+		17533916256B3AC500E090BC /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533915256B3AC500E090BC /* AppView.swift */; };
+		1753392E256B494600E090BC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533911256B2BCB00E090BC /* CameraController.swift */; };
+		17533931256B494700E090BC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533911256B2BCB00E090BC /* CameraController.swift */; };
 		6185ECF52F55E701A7D44A6F /* Pods_DiceKeys.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD0DF73F2796056AF2C9CA0 /* Pods_DiceKeys.framework */; };
 		6F3EE4E22549B2BB002602CD /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F3EE4E12549B2BB002602CD /* test.png */; };
 		6F846B45254AAC5200ABE33B /* Bitmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B44254AAC5200ABE33B /* Bitmap.swift */; };
-		6F846BFF254B277000ABE33B /* VideoSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846BFE254B277000ABE33B /* VideoSessionManager.swift */; };
 		6F846C04254B2BCF00ABE33B /* UIWindow+Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */; };
-		6FAC6AAA25480DE000AA8249 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AA925480DE000AA8249 /* AppDelegate.swift */; };
-		6FAC6AAC25480DE000AA8249 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AAB25480DE000AA8249 /* SceneDelegate.swift */; };
-		6FAC6AB125480DE000AA8249 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FAC6AAF25480DE000AA8249 /* Main.storyboard */; };
 		6FAC6AB325480DE200AA8249 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FAC6AB225480DE200AA8249 /* Assets.xcassets */; };
-		6FAC6AB625480DE200AA8249 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FAC6AB425480DE200AA8249 /* LaunchScreen.storyboard */; };
 		6FAC6AC125480DE200AA8249 /* DiceKeysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AC025480DE200AA8249 /* DiceKeysTests.swift */; };
 		6FAC6ACC25480DE200AA8249 /* DiceKeysUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6ACB25480DE200AA8249 /* DiceKeysUITests.swift */; };
-		6FAC6ADE25480E6200AA8249 /* CaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6ADD25480E6200AA8249 /* CaptureView.swift */; };
-		6FAC6AE325480E7500AA8249 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AE225480E7500AA8249 /* CameraController.swift */; };
-		6FAC6AE825480E7F00AA8249 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AE725480E7F00AA8249 /* SessionManager.swift */; };
 		B5D66895958DCA98A0B25D61 /* Pods_DiceKeys_DiceKeysUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FF34CD70539F7AB4106E41 /* Pods_DiceKeys_DiceKeysUITests.framework */; };
+		D3EA9809CFFADDCED4460E9F /* Pods_DiceKeys_DiceKeysUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EF10658592EB59EDF5C1CCD /* Pods_DiceKeys_DiceKeysUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,19 +94,32 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		17426E2B2564FA6000FB0FAB /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
+		17426E312564FA8000FB0FAB /* FaceSpecification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSpecification.swift; sourceTree = "<group>"; };
+		17426E392564FAAF00FB0FAB /* FaceRead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceRead.swift; sourceTree = "<group>"; };
+		17426E412564FAB700FB0FAB /* DiceKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKey.swift; sourceTree = "<group>"; };
+		17426E492564FADA00FB0FAB /* ApiInterfaces.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiInterfaces.swift; sourceTree = "<group>"; };
+		17426E522564FAFB00FB0FAB /* ApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
+		17426E592564FB0B00FB0FAB /* UnsealingInstructions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnsealingInstructions.swift; sourceTree = "<group>"; };
+		17426E5A2564FB0B00FB0FAB /* DerivationOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DerivationOptions.swift; sourceTree = "<group>"; };
+		17426E5B2564FB0B00FB0FAB /* PermissionChecks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionChecks.swift; sourceTree = "<group>"; };
+		17426E5C2564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebBasedApplicationIdentity.swift; sourceTree = "<group>"; };
+		17426E772564FB7200FB0FAB /* DiceKeyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyView.swift; sourceTree = "<group>"; };
+		17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inconsolata-Bold.otf"; sourceTree = "<group>"; };
+		17426E922566316100FB0FAB /* DiceKeysCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeysCameraView.swift; sourceTree = "<group>"; };
+		17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacesReadOverlay.swift; sourceTree = "<group>"; };
+		17426ECF2567CC7700FB0FAB /* DieFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DieFaceView.swift; sourceTree = "<group>"; };
+		17533911256B2BCB00E090BC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		17533915256B3AC500E090BC /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		1EF10658592EB59EDF5C1CCD /* Pods_DiceKeys_DiceKeysUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeysUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeysTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		336285FF67EA50C62F01AC19 /* Pods-DiceKeys.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys.release.xcconfig"; path = "Target Support Files/Pods-DiceKeys/Pods-DiceKeys.release.xcconfig"; sourceTree = "<group>"; };
 		3D5F184BC3A8DD2234A00D0F /* Pods-DiceKeysTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeysTests.debug.xcconfig"; path = "Target Support Files/Pods-DiceKeysTests/Pods-DiceKeysTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6F3EE4E12549B2BB002602CD /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 		6F846B44254AAC5200ABE33B /* Bitmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bitmap.swift; sourceTree = "<group>"; };
-		6F846BFE254B277000ABE33B /* VideoSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSessionManager.swift; sourceTree = "<group>"; };
 		6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Orientation.swift"; sourceTree = "<group>"; };
 		6FAC6AA625480DE000AA8249 /* DiceKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiceKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FAC6AA925480DE000AA8249 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6FAC6AAB25480DE000AA8249 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		6FAC6AB025480DE000AA8249 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6FAC6AB225480DE200AA8249 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		6FAC6AB525480DE200AA8249 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6FAC6AB725480DE200AA8249 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6FAC6ABC25480DE200AA8249 /* DiceKeysTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiceKeysTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FAC6AC025480DE200AA8249 /* DiceKeysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeysTests.swift; sourceTree = "<group>"; };
@@ -77,13 +127,10 @@
 		6FAC6AC725480DE200AA8249 /* DiceKeysUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiceKeysUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FAC6ACB25480DE200AA8249 /* DiceKeysUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeysUITests.swift; sourceTree = "<group>"; };
 		6FAC6ACD25480DE200AA8249 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6FAC6ADD25480E6200AA8249 /* CaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureView.swift; sourceTree = "<group>"; };
-		6FAC6AE225480E7500AA8249 /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
-		6FAC6AE725480E7F00AA8249 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		6FAC6D852548873000AA8249 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		6FAC6D862548873000AA8249 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		6FAC6DA625488BCB00AA8249 /* DiceKeys-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DiceKeys-Bridging-Header.h"; sourceTree = "<group>"; };
-		A8FF34CD70539F7AB4106E41 /* Pods_DiceKeys_DiceKeysUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeysUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8FF34CD70539F7AB4106E41 /* Pods_DiceKeys_DiceKeysUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DiceKeys_DiceKeysUITests.framework; path = "../../../Library/Developer/Xcode/DerivedData/DiceKeys-bxmaythpbltjcmfwtczrhqqwndho/Build/Products/Debug-iphoneos/Pods_DiceKeys_DiceKeysUITests.framework"; sourceTree = SOURCE_ROOT; };
 		AAD0DF73F2796056AF2C9CA0 /* Pods_DiceKeys.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4CF76E3ABEDC8F66941F330 /* Pods-DiceKeys-DiceKeysUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-DiceKeysUITests.debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys-DiceKeysUITests/Pods-DiceKeys-DiceKeysUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		D62952D418B79F6700259BAD /* Pods-DiceKeys-DiceKeysUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-DiceKeysUITests.release.xcconfig"; path = "Target Support Files/Pods-DiceKeys-DiceKeysUITests/Pods-DiceKeys-DiceKeysUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -113,12 +160,58 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5D66895958DCA98A0B25D61 /* Pods_DiceKeys_DiceKeysUITests.framework in Frameworks */,
+				D3EA9809CFFADDCED4460E9F /* Pods_DiceKeys_DiceKeysUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		17426E122564F91E00FB0FAB /* DiceKey */ = {
+			isa = PBXGroup;
+			children = (
+				17426E312564FA8000FB0FAB /* FaceSpecification.swift */,
+				17426E412564FAB700FB0FAB /* DiceKey.swift */,
+				17426E392564FAAF00FB0FAB /* FaceRead.swift */,
+				17426E2B2564FA6000FB0FAB /* Face.swift */,
+			);
+			path = DiceKey;
+			sourceTree = "<group>";
+		};
+		17426E512564FAE000FB0FAB /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				17426E522564FAFB00FB0FAB /* ApiRequest.swift */,
+				17426E5A2564FB0B00FB0FAB /* DerivationOptions.swift */,
+				17426E5B2564FB0B00FB0FAB /* PermissionChecks.swift */,
+				17426E592564FB0B00FB0FAB /* UnsealingInstructions.swift */,
+				17426E5C2564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift */,
+				17426E492564FADA00FB0FAB /* ApiInterfaces.swift */,
+			);
+			path = Api;
+			sourceTree = "<group>";
+		};
+		17426E742564FB4600FB0FAB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				17426E772564FB7200FB0FAB /* DiceKeyView.swift */,
+				17426E922566316100FB0FAB /* DiceKeysCameraView.swift */,
+				17533915256B3AC500E090BC /* AppView.swift */,
+				17533911256B2BCB00E090BC /* CameraController.swift */,
+				17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */,
+				17426ECF2567CC7700FB0FAB /* DieFaceView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		17426E8F2565E20800FB0FAB /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
 		6F3EE4E02549B2B1002602CD /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +227,7 @@
 				AAD0DF73F2796056AF2C9CA0 /* Pods_DiceKeys.framework */,
 				A8FF34CD70539F7AB4106E41 /* Pods_DiceKeys_DiceKeysUITests.framework */,
 				2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */,
+				1EF10658592EB59EDF5C1CCD /* Pods_DiceKeys_DiceKeysUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -174,14 +268,14 @@
 		6FAC6AA825480DE000AA8249 /* DiceKeys */ = {
 			isa = PBXGroup;
 			children = (
+				17426E8F2565E20800FB0FAB /* fonts */,
+				17426E742564FB4600FB0FAB /* Views */,
+				17426E512564FAE000FB0FAB /* Api */,
+				17426E122564F91E00FB0FAB /* DiceKey */,
 				6FAC6DA625488BCB00AA8249 /* DiceKeys-Bridging-Header.h */,
 				6FAC6AB725480DE200AA8249 /* Info.plist */,
-				6FAC6AA925480DE000AA8249 /* AppDelegate.swift */,
-				6FAC6AAB25480DE000AA8249 /* SceneDelegate.swift */,
 				6F846B43254AAC3100ABE33B /* Extensions */,
 				6F3EE4E02549B2B1002602CD /* Resources */,
-				6FAC6D9F254889E100AA8249 /* Screens */,
-				6FAC6D702548678400AA8249 /* Storyboards */,
 			);
 			path = DiceKeys;
 			sourceTree = "<group>";
@@ -202,34 +296,6 @@
 				6FAC6ACD25480DE200AA8249 /* Info.plist */,
 			);
 			path = DiceKeysUITests;
-			sourceTree = "<group>";
-		};
-		6FAC6ADC25480DF800AA8249 /* Camera */ = {
-			isa = PBXGroup;
-			children = (
-				6FAC6AE225480E7500AA8249 /* CameraController.swift */,
-				6FAC6ADD25480E6200AA8249 /* CaptureView.swift */,
-				6FAC6AE725480E7F00AA8249 /* SessionManager.swift */,
-				6F846BFE254B277000ABE33B /* VideoSessionManager.swift */,
-			);
-			path = Camera;
-			sourceTree = "<group>";
-		};
-		6FAC6D702548678400AA8249 /* Storyboards */ = {
-			isa = PBXGroup;
-			children = (
-				6FAC6AAF25480DE000AA8249 /* Main.storyboard */,
-				6FAC6AB425480DE200AA8249 /* LaunchScreen.storyboard */,
-			);
-			path = Storyboards;
-			sourceTree = "<group>";
-		};
-		6FAC6D9F254889E100AA8249 /* Screens */ = {
-			isa = PBXGroup;
-			children = (
-				6FAC6ADC25480DF800AA8249 /* Camera */,
-			);
-			path = Screens;
 			sourceTree = "<group>";
 		};
 		E2B878D0BDEA1D91C5A1FFAE /* Pods */ = {
@@ -356,10 +422,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FAC6AB625480DE200AA8249 /* LaunchScreen.storyboard in Resources */,
 				6FAC6AB325480DE200AA8249 /* Assets.xcassets in Resources */,
-				6FAC6AB125480DE000AA8249 /* Main.storyboard in Resources */,
 				6F3EE4E22549B2BB002602CD /* test.png in Resources */,
+				17426E882565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +432,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17426E892565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,6 +440,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17426E8A2565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,14 +572,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FAC6AAA25480DE000AA8249 /* AppDelegate.swift in Sources */,
-				6FAC6AE825480E7F00AA8249 /* SessionManager.swift in Sources */,
+				17426ED02567CC7700FB0FAB /* DieFaceView.swift in Sources */,
 				6F846C04254B2BCF00ABE33B /* UIWindow+Orientation.swift in Sources */,
+				17533916256B3AC500E090BC /* AppView.swift in Sources */,
+				17426E5F2564FB0B00FB0FAB /* DerivationOptions.swift in Sources */,
+				17426E612564FB0B00FB0FAB /* PermissionChecks.swift in Sources */,
 				6F846B45254AAC5200ABE33B /* Bitmap.swift in Sources */,
-				6F846BFF254B277000ABE33B /* VideoSessionManager.swift in Sources */,
-				6FAC6AAC25480DE000AA8249 /* SceneDelegate.swift in Sources */,
-				6FAC6ADE25480E6200AA8249 /* CaptureView.swift in Sources */,
-				6FAC6AE325480E7500AA8249 /* CameraController.swift in Sources */,
+				17426E322564FA8000FB0FAB /* FaceSpecification.swift in Sources */,
+				17426EB62567C03500FB0FAB /* FacesReadOverlay.swift in Sources */,
+				17426E3A2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
+				17426E5D2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */,
+				17426E422564FAB700FB0FAB /* DiceKey.swift in Sources */,
+				17426E2C2564FA6000FB0FAB /* Face.swift in Sources */,
+				17426E792564FB7300FB0FAB /* DiceKeyView.swift in Sources */,
+				17426E4A2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,
+				17426E932566316100FB0FAB /* DiceKeysCameraView.swift in Sources */,
+				17426E632564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */,
+				17533912256B2BCB00E090BC /* CameraController.swift in Sources */,
+				17426E532564FAFB00FB0FAB /* ApiRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,7 +597,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17426E642564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */,
+				17426E432564FAB700FB0FAB /* DiceKey.swift in Sources */,
+				17426ED12567CC7700FB0FAB /* DieFaceView.swift in Sources */,
+				17426E5E2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */,
+				17426E942566316100FB0FAB /* DiceKeysCameraView.swift in Sources */,
+				17426E3B2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
+				17426E622564FB0B00FB0FAB /* PermissionChecks.swift in Sources */,
+				17426EB72567C03500FB0FAB /* FacesReadOverlay.swift in Sources */,
+				17426E7A2564FB7300FB0FAB /* DiceKeyView.swift in Sources */,
+				17426E4B2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,
+				17426E2D2564FA6000FB0FAB /* Face.swift in Sources */,
 				6FAC6AC125480DE200AA8249 /* DiceKeysTests.swift in Sources */,
+				17426E542564FAFB00FB0FAB /* ApiRequest.swift in Sources */,
+				17426E602564FB0B00FB0FAB /* DerivationOptions.swift in Sources */,
+				1753392E256B494600E090BC /* CameraController.swift in Sources */,
+				17426E332564FA8000FB0FAB /* FaceSpecification.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,7 +620,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17426EB82567C03500FB0FAB /* FacesReadOverlay.swift in Sources */,
+				17426E442564FAB700FB0FAB /* DiceKey.swift in Sources */,
+				17426ED22567CC7700FB0FAB /* DieFaceView.swift in Sources */,
+				17426E7B2564FB7300FB0FAB /* DiceKeyView.swift in Sources */,
+				17426E3C2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
+				17426E4C2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,
+				17533931256B494700E090BC /* CameraController.swift in Sources */,
+				17426E2E2564FA6000FB0FAB /* Face.swift in Sources */,
 				6FAC6ACC25480DE200AA8249 /* DiceKeysUITests.swift in Sources */,
+				17426E342564FA8000FB0FAB /* FaceSpecification.swift in Sources */,
+				17426E952566316100FB0FAB /* DiceKeysCameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,25 +648,6 @@
 			targetProxy = 6FAC6AC825480DE200AA8249 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		6FAC6AAF25480DE000AA8249 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6FAC6AB025480DE000AA8249 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		6FAC6AB425480DE200AA8249 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6FAC6AB525480DE200AA8249 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		6FAC6ACE25480DE200AA8249 /* Debug */ = {
@@ -692,13 +775,13 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M5HDTU7792;
+				DEVELOPMENT_TEAM = PZRJ539VW8;
 				INFOPLIST_FILE = DiceKeys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys.DiceKeys;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DiceKeys/DiceKeys-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -716,13 +799,13 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M5HDTU7792;
+				DEVELOPMENT_TEAM = PZRJ539VW8;
 				INFOPLIST_FILE = DiceKeys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys.DiceKeys;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DiceKeys/DiceKeys-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -736,7 +819,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M5HDTU7792;
+				DEVELOPMENT_TEAM = PZRJ539VW8;
 				INFOPLIST_FILE = DiceKeysTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -758,7 +841,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M5HDTU7792;
+				DEVELOPMENT_TEAM = PZRJ539VW8;
 				INFOPLIST_FILE = DiceKeysTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -779,7 +862,7 @@
 			baseConfigurationReference = B4CF76E3ABEDC8F66941F330 /* Pods-DiceKeys-DiceKeysUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M5HDTU7792;
+				DEVELOPMENT_TEAM = PZRJ539VW8;
 				INFOPLIST_FILE = DiceKeysUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -799,7 +882,7 @@
 			baseConfigurationReference = D62952D418B79F6700259BAD /* Pods-DiceKeys-DiceKeysUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M5HDTU7792;
+				DEVELOPMENT_TEAM = PZRJ539VW8;
 				INFOPLIST_FILE = DiceKeysUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

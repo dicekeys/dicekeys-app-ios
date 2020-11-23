@@ -5,6 +5,8 @@ target 'DiceKeys' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
+  pod 'SwiftLint'
+
   # Pods for DiceKeys
   pod "ReadDiceKey", :git => 'https://github.com/dicekeys/read-dicekey-ios.git', :submodules => true
   pod 'SeededCrypto', :git => 'https://github.com/dicekeys/seeded-crypto-ios.git', :submodules => true
