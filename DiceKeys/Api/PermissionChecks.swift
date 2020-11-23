@@ -14,9 +14,11 @@ class RequestContext {
     let validatedByAuthToken: Bool
     let host: String
     let path: String
+    
+    let getSeedString: () -> String
 
-    init (url: URL, validatedByAuthToken: Bool = false) {
-        // self.url = url
+    init (getSeedString: @escaping () -> String, url: URL, validatedByAuthToken: Bool = false) {
+        self.getSeedString = getSeedString
         self.host = url.host ?? ""
         self.path = url.path
         self.validatedByAuthToken = validatedByAuthToken

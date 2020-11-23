@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SeededCrypto
 
 func base64urlDecode(_ base64url: String) -> Data? {
     var base64 = base64url
@@ -69,6 +70,9 @@ protocol ApiRequest {
     var derivationOptionsJsonMayBeModifiedDefault: Bool { get }
 
     func throwIfNotAuthorized() throws
+
+    func execute() throws -> [String: String]
+    func executeSafely() throws -> [String: String]
 }
 
 extension ApiRequest {
@@ -76,6 +80,13 @@ extension ApiRequest {
     var derivationOptionsJsonMayBeModifiedDefault: Bool { get { false } }
 
     var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
+
+    func execute() throws -> [String: String] { [:] }
+
+    func executeSafely() throws -> [String: String] {
+        try throwIfNotAuthorized()
+        return try execute()
+    }
 
     func throwIfNotAuthorized() throws {
         let derivationOptions = self.derivationOptions
@@ -177,7 +188,18 @@ class ApiRequestGenerateSignature: ApiRequestWithExplicitDerivationOptions, ApiR
 class ApiRequestGetPassword: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
     let command = ApiCommand.getPassword
     let requireClientMayRetrieveKeyToBeSetToTrue = false
+
+    func getPassword() -> Password {
+        Password.deriveFromSeed(withSeedString: requestContext.getSeedString(), derivationOptionsJson: self.derivationOptionsJson!)
+    }
+
+    func execute() throws -> [String: String] {
+        [
+            "password": getPassword().toJson()
+        ]
+    }
 }
+
 class ApiRequestGetSecret: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
     let command = ApiCommand.getSecret
     let requireClientMayRetrieveKeyToBeSetToTrue = false
@@ -312,7 +334,7 @@ func handleApiRequest(incomingRequestUrl: URL) throws {
         }
     }
 
-    let requestContext = RequestContext(url: replyToUrl, validatedByAuthToken: validatedByAuthToken)
+    let requestContext = RequestContext(getSeedString: { () in "FIXME" }, url: replyToUrl, validatedByAuthToken: validatedByAuthToken)
     guard let command = ApiCommand(rawValue: try p.requiredField(name: "command")) else {
         throw RequestException.InvalidCommand
     }
@@ -320,7 +342,7 @@ func handleApiRequest(incomingRequestUrl: URL) throws {
     case ApiCommand.generateSignature:
         try ApiRequestGenerateSignature(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.getPassword:
-        try ApiRequestGetPassword(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
+        try ApiRequestGetPassword(requestContext: requestContext, unmarshaller: p).executeSafely()
     case ApiCommand.getSealingKey:
         try ApiRequestGetSealingKey(requestContext: requestContext, unmarshaller: p).throwIfNotAuthorized()
     case ApiCommand.getSecret:
