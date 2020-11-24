@@ -20,14 +20,14 @@ private struct DieLidView: View {
     }
 }
 
-struct DiceKeyView: View {
+private let fractionOfVerticalSpaceRequiredForTab: CGFloat = 0.1
+
+private struct DiceKeyViewFixedSize: View {
     let diceKey: DiceKey
     let viewSize: CGSize
     let showLidTab: Bool // = false
-    let leaveSpaceForTab: Bool = false
-    let diceBoxColor: Color = Color(red: 0x05 / 0xFF, green: 0x03 / 0xFF, blue: 0x50 / 0xFF)
-
-    let fractionOfVerticalSpaceRequiredForTab: CGFloat = 0.1
+    let leaveSpaceForTab: Bool// = false
+    let diceBoxColor: Color// = Color(red: 0x05 / 0xFF, green: 0x03 / 0xFF, blue: 0x50 / 0xFF)
 
     var fractionOfVerticalSpaceUsedByTab: CGFloat {
         (leaveSpaceForTab || showLidTab) ? fractionOfVerticalSpaceRequiredForTab : 0
@@ -49,7 +49,7 @@ struct DiceKeyView: View {
 
     var width: CGFloat { linearSizeOfBox }
     var height: CGFloat { linearSizeOfBox + lidTabRadius }
-    var hCenter: CGFloat { linearSizeOfBox / 2 }
+    var hCenter: CGFloat { viewSize.width / 2 }
     var vCenter: CGFloat { linearSizeOfBox / 2 }
 
     let marginOfBoxEdgeAsFractionOfDieSize: CGFloat = 0.25
@@ -60,8 +60,6 @@ struct DiceKeyView: View {
       2 * marginOfBoxEdgeAsFractionOfDieSize
     ) ) }
 
-//    var leftmostDieCenter: CGFloat { boxLeftEdge + marginOfBoxEdgeAsFractionOfDieSize * dieSize + dieSize / 2 }
-//    var topmostDieCenter: CGFloat { boxTopEdge + marginOfBoxEdgeAsFractionOfDieSize * dieSize + dieSize / 2 }
     var dieStepSize: CGFloat { (1 + distanceBetweenDiceAsFractionOfDieSize) * dieSize }
 
     private struct DiePosition: Identifiable {
@@ -84,6 +82,8 @@ struct DiceKeyView: View {
             RoundedRectangle(cornerRadius: boxCornerRadius)
                 .size(width: linearSizeOfBox, height: linearSizeOfBox)
                 .fill(diceBoxColor)
+                .frame(width: linearSizeOfBox, height: linearSizeOfBox)
+                .position(x: hCenter, y: vCenter)
             // The lid
             if showLidTab {
                 DieLidView(radius: lidTabRadius, color: diceBoxColor)
@@ -101,6 +101,35 @@ struct DiceKeyView: View {
     }
 }
 
+struct DiceKeyView: View {
+    let diceKey: DiceKey
+    let showLidTab: Bool // = false
+    let leaveSpaceForTab: Bool = false
+    let diceBoxColor: Color = Color(red: 0x05 / 0xFF, green: 0x03 / 0xFF, blue: 0x50 / 0xFF)
+
+    var aspectRatio: CGFloat { get {
+      (showLidTab || leaveSpaceForTab) ?
+        (1 / (1 + fractionOfVerticalSpaceRequiredForTab)) :
+        1
+    } }
+
+    var body: some View {
+        HStack {
+            Spacer(minLength: 0)
+            GeometryReader { reader in
+                DiceKeyViewFixedSize(
+                    diceKey: diceKey,
+                    viewSize: reader.size,
+                    showLidTab: showLidTab,
+                    leaveSpaceForTab: leaveSpaceForTab,
+                    diceBoxColor: diceBoxColor
+                )
+            }.aspectRatio(aspectRatio, contentMode: .fit)
+            Spacer(minLength: 0)
+        }
+    }
+}
+
 struct DiceKeyView_Previews: PreviewProvider {
 //    let diceKey: DiceKey = DiceKey.createFromRandom()
 
@@ -108,8 +137,7 @@ struct DiceKeyView_Previews: PreviewProvider {
         DieLidView(radius: 100, color: Color.blue)
             .previewLayout(PreviewLayout.fixed(width: 200, height: 100))
 
-        DiceKeyView(diceKey: DiceKey.createFromRandom(), viewSize: CGSize(width: 600, height: 600), showLidTab: true)
+        DiceKeyView(diceKey: DiceKey.createFromRandom(), showLidTab: true)
             .background(Color.yellow)
-            .previewLayout(PreviewLayout.fixed(width: 600, height: 600))
     }
 }

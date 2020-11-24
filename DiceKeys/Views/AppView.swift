@@ -7,22 +7,13 @@
 
 import SwiftUI
 
-struct TestView: View {
-    @State var diceKey: DiceKey?
+class AppState: ObservableObject {
+    @Published var diceKey: DiceKey?
+}
 
-    var body: some View {
-        VStack {
-            if let diceKey = self.diceKey {
-                DiceKeyView(diceKey: diceKey, viewSize: CGSize(width: 720, height: 720), showLidTab: false)
-            } else {
-                DiceKeysCameraView(
-                    onDiceKeyRead: { diceKey in
-                        self.diceKey = diceKey
-                        print("Read diceKey with first letter \(diceKey.faces[0].letter.rawValue)")
-                    }
-                )
-            }
-        }
+struct App_Previews: PreviewProvider {
+    static var previews: some View {
+        AppMainView()
     }
 }
 
@@ -30,7 +21,13 @@ struct TestView: View {
 struct AppView: App {
     var body: some Scene {
         WindowGroup {
-            TestView()
+            AppMainView()
+                .onOpenURL { url in
+                    // FIXME -- handle deep linking API requests here
+                    print("\(url.absoluteString)")
+                }
+//                .onContinueUserActivity("put-some-activityhere", perform: { userActivity in
+//                })
         }
     }
 }
