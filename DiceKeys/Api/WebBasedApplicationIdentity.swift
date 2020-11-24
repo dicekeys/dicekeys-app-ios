@@ -19,7 +19,6 @@ struct WebBasedApplicationIdentity: Codable {
     var paths: [String]?
 }
 
-
 protocol AuthenticationRequirements {
   /**
    * On Apple platforms, applications are specified by a URL containing a domain name
@@ -49,7 +48,6 @@ protocol AuthenticationRequirements {
    */
     var requireAuthenticationHandshake: Bool? { get set }
 
-  
   /**
    * In Android, client applications are identified by their package name,
    * which must be cryptographically signed before an application can enter the

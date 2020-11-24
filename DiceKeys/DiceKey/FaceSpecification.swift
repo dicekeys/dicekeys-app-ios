@@ -24,6 +24,7 @@
 //
 
 import Foundation
+// SwiftUI required for CGFloat
 import SwiftUI
 
 enum FaceLetter: String, Codable, CaseIterable {
@@ -41,7 +42,7 @@ enum FaceDigit: String, Codable, CaseIterable {
 }
 let FaceDigits = Array(FaceDigit.allCases)
 
-let faceLetterIndexes: Dictionary<FaceLetter, UInt8> = [
+let faceLetterIndexes: [FaceLetter: UInt] = [
     FaceLetter.A: 0,
     FaceLetter.B: 1,
     FaceLetter.C: 2,
@@ -69,7 +70,7 @@ let faceLetterIndexes: Dictionary<FaceLetter, UInt8> = [
     FaceLetter.Z: 24
 ]
 
-let faceDigitIndexes: Dictionary<FaceDigit, UInt8> = [
+let faceDigitIndexes: [FaceDigit: UInt8] = [
     FaceDigit._1: 0,
     FaceDigit._2: 1,
     FaceDigit._3: 2,
@@ -78,7 +79,7 @@ let faceDigitIndexes: Dictionary<FaceDigit, UInt8> = [
     FaceDigit._6: 5
 ]
 
-let faceDigitValues: Dictionary<FaceDigit, UInt8> = [
+let faceDigitValues: [FaceDigit: UInt8] = [
     FaceDigit._1: 1,
     FaceDigit._2: 2,
     FaceDigit._3: 3,
@@ -86,7 +87,6 @@ let faceDigitValues: Dictionary<FaceDigit, UInt8> = [
     FaceDigit._5: 5,
     FaceDigit._6: 6
 ]
-
 
 enum FaceOrientationLetterTrbl: String, Codable, CaseIterable {
   case Top = "t"
@@ -96,10 +96,9 @@ enum FaceOrientationLetterTrbl: String, Codable, CaseIterable {
 }
 let FaceOrientationLettersTrbl = Array(FaceOrientationLetterTrbl.allCases)
 
-let NumberOfDotsInUndoverline: Int = 11;
-let MinNumberOfBlackDotsInUndoverline: Int = 4;
-let MinNumberOfWhiteDotsInUndoverline: Int = 4;
-
+let NumberOfDotsInUndoverline: Int = 11
+let MinNumberOfBlackDotsInUndoverline: Int = 4
+let MinNumberOfWhiteDotsInUndoverline: Int = 4
 
 struct FaceWithUnderlineAndOverlineCode {
   let letter: FaceLetter
@@ -109,33 +108,33 @@ struct FaceWithUnderlineAndOverlineCode {
 }
 
 class FaceDimensionsFractional {
-    static let size: CGFloat = 1;
-    static let margin: CGFloat = 0;
-    static let linearSizeOfFace: CGFloat = 1;
-    static let linearSizeOfFacesPrintArea: CGFloat = 1;
-    static let center: CGFloat = 0.5;
-    static let fontSize: CGFloat = 0.741935;
-    static let undoverlineLength: CGFloat = 1;
-    static let undoverlineThickness: CGFloat = 0.177419;
-    static let overlineTop: CGFloat = 0;
-    static let overlineBottom: CGFloat = 0.177419;
-    static let underlineBottom: CGFloat = 1;
-    static let underlineTop: CGFloat = 0.822581;
-    static let undoverlineMarginAtLineStartAndEnd: CGFloat = 0.056452;
-    static let undoverlineMarginAlongLength: CGFloat = 0.048387;
-    static let undoverlineLeftEdge: CGFloat = 0;
-    static let undoverlineFirstDotLeftEdge: CGFloat = 0.056452;
-    static let undoverlineDotWidth: CGFloat = 0.080645;
-    static let undoverlineDotHeight: CGFloat = 0.080645;
-    static let centerOfUndoverlineToCenterOfFace: CGFloat = 0.41129;
-    static let underlineDotTop: CGFloat = 0.870968;
-    static let overlineDotTop: CGFloat = 0.048387;
-    static let textBaselineY: CGFloat = 0.725806;
-    static let charWidth: CGFloat = 0.370968;
-    static let charHeight: CGFloat = 0.488194;
-    static let spaceBetweenLetterAndDigit: CGFloat = 0.04375;
-    static let textRegionWidth: CGFloat = 0.785685;
-    static let textRegionHeight: CGFloat = 0.488194;
+    static let size: CGFloat = 1
+    static let margin: CGFloat = 0
+    static let linearSizeOfFace: CGFloat = 1
+    static let linearSizeOfFacesPrintArea: CGFloat = 1
+    static let center: CGFloat = 0.5
+    static let fontSize: CGFloat = 0.741935
+    static let undoverlineLength: CGFloat = 1
+    static let undoverlineThickness: CGFloat = 0.177419
+    static let overlineTop: CGFloat = 0
+    static let overlineBottom: CGFloat = 0.177419
+    static let underlineBottom: CGFloat = 1
+    static let underlineTop: CGFloat = 0.822581
+    static let undoverlineMarginAtLineStartAndEnd: CGFloat = 0.056452
+    static let undoverlineMarginAlongLength: CGFloat = 0.048387
+    static let undoverlineLeftEdge: CGFloat = 0
+    static let undoverlineFirstDotLeftEdge: CGFloat = 0.056452
+    static let undoverlineDotWidth: CGFloat = 0.080645
+    static let undoverlineDotHeight: CGFloat = 0.080645
+    static let centerOfUndoverlineToCenterOfFace: CGFloat = 0.41129
+    static let underlineDotTop: CGFloat = 0.870968
+    static let overlineDotTop: CGFloat = 0.048387
+    static let textBaselineY: CGFloat = 0.725806
+    static let charWidth: CGFloat = 0.370968
+    static let charHeight: CGFloat = 0.488194
+    static let spaceBetweenLetterAndDigit: CGFloat = 0.04375
+    static let textRegionWidth: CGFloat = 0.785685
+    static let textRegionHeight: CGFloat = 0.488194
     static let dotCentersAsFractionOfUndoverline: [CGFloat] = [0.0967745, 0.1774195, 0.2580645, 0.3387095, 0.41935449999999996, 0.4999995, 0.5806445, 0.6612894999999999, 0.7419344999999999, 0.8225795, 0.9032244999999999]
 }
 

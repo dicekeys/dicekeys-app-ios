@@ -25,7 +25,6 @@ let clockwise90DegreeRotationIndexesFor5x5Grid = [
     24, 19, 14, 9, 4
 ]
 
-
 enum IllegalCharacterError: Error {
     case inLetter(position: Int)
     case inDigit(position: Int)
@@ -33,8 +32,12 @@ enum IllegalCharacterError: Error {
 }
 
 class DiceKey {
+    enum ConstructorError: Error {
+        case emptyFace
+    }
+
     let faces: [Face]
-    
+
     var faceTuple: FaceTuple { get {
         return (
             faces[0], faces[1], faces[2], faces[3], faces[4],
@@ -47,11 +50,21 @@ class DiceKey {
 
     init(_ faces: [Face]) {
         precondition(faces.count == 25)
-        self.faces = faces;
+        self.faces = faces
     }
-    
+
+    init(_ facesRead: [FaceRead]) throws {
+        precondition(facesRead.count == 25)
+        self.faces = try facesRead.map { fr -> Face in
+            guard let face = fr.toFace() else {
+                throw ConstructorError.emptyFace
+            }
+            return face
+        }
+    }
+
     static func createFromRandom() -> DiceKey {
-        return DiceKey( (1...25).map() { _ -> Face in
+        return DiceKey( (1...25).map { _ -> Face in
             return Face(
                 letter: FaceLetters[Int.random(in: 0..<(FaceLetters.count))],
                 digit: FaceDigits[Int.random(in: 0..<(FaceDigits.count))],
@@ -59,23 +72,23 @@ class DiceKey {
             )
         })
     }
-    
+
     static func createFrom(humanReadableForm: String) throws -> DiceKey {
         precondition(humanReadableForm.count == 50 || humanReadableForm.count == 75)
         let bytesPerFace = humanReadableForm.count == 75 ? 3 : 2
-        return DiceKey( try (0...24).map() { index -> Face in
+        return DiceKey( try (0...24).map { index -> Face in
             let letterIndex = bytesPerFace * index
             let letter = FaceLetter(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy: letterIndex)]))
-            if (letter == nil) {
+            if letter == nil {
                 throw IllegalCharacterError.inLetter(position: letterIndex)
             }
-            let digit = FaceDigit(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy:letterIndex+1)]))
-            if (digit == nil) {
-                throw IllegalCharacterError.inDigit(position: letterIndex+1)
+            let digit = FaceDigit(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy: letterIndex + 1)]))
+            if digit == nil {
+                throw IllegalCharacterError.inDigit(position: letterIndex + 1)
             }
-            let orientationAsLowercaseLetterTrbl = bytesPerFace == 3 ? FaceOrientationLetterTrbl(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy:letterIndex+2)])) :
+            let orientationAsLowercaseLetterTrbl = bytesPerFace == 3 ? FaceOrientationLetterTrbl(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy: letterIndex + 2)])) :
                 FaceOrientationLetterTrbl.Top
-            if (orientationAsLowercaseLetterTrbl == nil) {
+            if orientationAsLowercaseLetterTrbl == nil {
                 throw IllegalCharacterError.inOrientation(position: letterIndex+2)
             }
             return Face(
@@ -84,12 +97,11 @@ class DiceKey {
                 orientationAsLowercaseLetterTrbl: orientationAsLowercaseLetterTrbl!
             )
         })
-        
     }
-    
+
     func withoutOrientations() -> DiceKey {
         return DiceKey(
-            faces.map() {
+            faces.map {
                 Face(
                     letter: $0.letter,
                     digit: $0.digit,
@@ -98,27 +110,27 @@ class DiceKey {
             }
         )
     }
-        
+
     func rotatedClockwise90Degrees() -> DiceKey {
         return DiceKey(
-            clockwise90DegreeRotationIndexesFor5x5Grid.map() { index in
+            clockwise90DegreeRotationIndexesFor5x5Grid.map { index in
                 Face(
                     letter: faces[index].letter,
                     digit: faces[index].digit,
-                    orientationAsLowercaseLetterTrbl: faces[index].orientationAsLowercaseLetterTrbl.rotate90() )
-
+                    orientationAsLowercaseLetterTrbl: faces[index].orientationAsLowercaseLetterTrbl.rotate90()
+                )
             }
         )
     }
-    
+
     func toHumanReadableForm(includeOrientations: Bool) -> String {
-        return faces.map() { face -> String in
+        return faces.map { face -> String in
             face.letter.rawValue +
             face.digit.rawValue +
                 (includeOrientations ? face.orientationAsLowercaseLetterTrbl.rawValue : "")
         }.joined(separator: "") as String
     }
-    
+
     func rotatedToCanonicalForm(
       includeOrientations: Bool
     ) -> DiceKey {
@@ -128,18 +140,16 @@ class DiceKey {
         for _ in 1...3 {
             candidateDiceKey = candidateDiceKey.rotatedClockwise90Degrees()
             let humanReadableForm = candidateDiceKey.toHumanReadableForm(includeOrientations: includeOrientations)
-            if (humanReadableForm < earliestHumanReadableForm) {
+            if humanReadableForm < earliestHumanReadableForm {
                 earliestHumanReadableForm = humanReadableForm
                 diceKeyWithEarliestHumanReadableForm = candidateDiceKey
             }
         }
         return diceKeyWithEarliestHumanReadableForm
     }
-    
+
     func toSeed(includeOrientations: Bool) -> String {
         return rotatedToCanonicalForm(includeOrientations: includeOrientations)
             .toHumanReadableForm(includeOrientations: includeOrientations)
     }
-    
 }
-
