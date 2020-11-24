@@ -10,19 +10,24 @@ import Foundation
 let DefaultPermittedPathPrefix = "/--derived-secret-api--/"
 let DefaultPathRequirement = DefaultPermittedPathPrefix + "*"
 
-class RequestContext {
-    let validatedByAuthToken: Bool
-    let host: String
-    let path: String
-    
-    let getSeedString: () -> String
+protocol RequestContext {
+    var validatedByAuthToken: Bool { get }
+    var host: String { get }
+    var path: String { get }
 
-    init (getSeedString: @escaping () -> String, url: URL, validatedByAuthToken: Bool = false) {
-        self.getSeedString = getSeedString
-        self.host = url.host ?? ""
-        self.path = url.path
-        self.validatedByAuthToken = validatedByAuthToken
-    }
+    func satisfiesAuthenticationRequirements(
+        of requirements: AuthenticationRequirements,
+        allowNullRequirement: Bool
+    ) -> Bool
+}
+
+//    init (url: URL, validatedByAuthToken: Bool = false) {
+//        self.host = url.host ?? ""
+//        self.path = url.path
+//        self.validatedByAuthToken = validatedByAuthToken
+//    }
+
+extension RequestContext {
 
     private func satisfiesPathRequirement(of pathRequirement: String) -> Bool {
         let pathExpected = (pathRequirement.hasPrefix("/")) ? pathRequirement :
@@ -67,7 +72,7 @@ class RequestContext {
 
     func satisfiesAuthenticationRequirements(
         of requirements: AuthenticationRequirements,
-        allowNullRequirement: Bool = false
+        allowNullRequirement: Bool
     ) -> Bool {
         if requirements.requireAuthenticationHandshake == true && !validatedByAuthToken {
             // Auth token required but not present
