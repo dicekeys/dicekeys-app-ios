@@ -43,9 +43,9 @@
 		17426EB62567C03500FB0FAB /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */; };
 		17426EB72567C03500FB0FAB /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */; };
 		17426EB82567C03500FB0FAB /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */; };
-		17426ED02567CC7700FB0FAB /* DieFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieFaceView.swift */; };
-		17426ED12567CC7700FB0FAB /* DieFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieFaceView.swift */; };
-		17426ED22567CC7700FB0FAB /* DieFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieFaceView.swift */; };
+		17426ED02567CC7700FB0FAB /* DieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieView.swift */; };
+		17426ED12567CC7700FB0FAB /* DieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieView.swift */; };
+		17426ED22567CC7700FB0FAB /* DieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieView.swift */; };
 		17533912256B2BCB00E090BC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533911256B2BCB00E090BC /* CameraController.swift */; };
 		17533916256B3AC500E090BC /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533915256B3AC500E090BC /* AppView.swift */; };
 		1753392E256B494600E090BC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533911256B2BCB00E090BC /* CameraController.swift */; };
@@ -57,6 +57,7 @@
 		177FCA68256D1A5700E2FB6F /* ScanDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA5F256D193B00E2FB6F /* ScanDiceKey.swift */; };
 		177FCA76256DBB9600E2FB6F /* AssemblyInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA75256DBB9600E2FB6F /* AssemblyInstructions.swift */; };
 		177FCA7A256DBBF300E2FB6F /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA79256DBBF300E2FB6F /* Color.swift */; };
+		177FCA7E256E3B8500E2FB6F /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA7D256E3B8500E2FB6F /* View.swift */; };
 		6185ECF52F55E701A7D44A6F /* Pods_DiceKeys.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD0DF73F2796056AF2C9CA0 /* Pods_DiceKeys.framework */; };
 		6F3EE4E22549B2BB002602CD /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F3EE4E12549B2BB002602CD /* test.png */; };
 		6F846B45254AAC5200ABE33B /* Bitmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846B44254AAC5200ABE33B /* Bitmap.swift */; };
@@ -113,7 +114,7 @@
 		17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inconsolata-Bold.otf"; sourceTree = "<group>"; };
 		17426E922566316100FB0FAB /* DiceKeysCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeysCameraView.swift; sourceTree = "<group>"; };
 		17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacesReadOverlay.swift; sourceTree = "<group>"; };
-		17426ECF2567CC7700FB0FAB /* DieFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DieFaceView.swift; sourceTree = "<group>"; };
+		17426ECF2567CC7700FB0FAB /* DieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DieView.swift; sourceTree = "<group>"; };
 		17533911256B2BCB00E090BC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		17533915256B3AC500E090BC /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		177FCA55256D03DA00E2FB6F /* AppMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainView.swift; sourceTree = "<group>"; };
@@ -121,6 +122,7 @@
 		177FCA5F256D193B00E2FB6F /* ScanDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDiceKey.swift; sourceTree = "<group>"; };
 		177FCA75256DBB9600E2FB6F /* AssemblyInstructions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyInstructions.swift; sourceTree = "<group>"; };
 		177FCA79256DBBF300E2FB6F /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		177FCA7D256E3B8500E2FB6F /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		1EF10658592EB59EDF5C1CCD /* Pods_DiceKeys_DiceKeysUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeysUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeysTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		336285FF67EA50C62F01AC19 /* Pods-DiceKeys.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys.release.xcconfig"; path = "Target Support Files/Pods-DiceKeys/Pods-DiceKeys.release.xcconfig"; sourceTree = "<group>"; };
@@ -213,7 +215,7 @@
 				177FCA55256D03DA00E2FB6F /* AppMainView.swift */,
 				17533911256B2BCB00E090BC /* CameraController.swift */,
 				17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */,
-				17426ECF2567CC7700FB0FAB /* DieFaceView.swift */,
+				17426ECF2567CC7700FB0FAB /* DieView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -251,6 +253,7 @@
 			children = (
 				6F846B44254AAC5200ABE33B /* Bitmap.swift */,
 				177FCA79256DBBF300E2FB6F /* Color.swift */,
+				177FCA7D256E3B8500E2FB6F /* View.swift */,
 				6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */,
 			);
 			path = Extensions;
@@ -587,7 +590,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17426ED02567CC7700FB0FAB /* DieFaceView.swift in Sources */,
+				17426ED02567CC7700FB0FAB /* DieView.swift in Sources */,
 				6F846C04254B2BCF00ABE33B /* UIWindow+Orientation.swift in Sources */,
 				177FCA7A256DBBF300E2FB6F /* Color.swift in Sources */,
 				177FCA5A256D047300E2FB6F /* ViewsInProgress.swift in Sources */,
@@ -595,6 +598,7 @@
 				17426E5F2564FB0B00FB0FAB /* DerivationOptions.swift in Sources */,
 				17426E612564FB0B00FB0FAB /* PermissionChecks.swift in Sources */,
 				6F846B45254AAC5200ABE33B /* Bitmap.swift in Sources */,
+				177FCA7E256E3B8500E2FB6F /* View.swift in Sources */,
 				17426E322564FA8000FB0FAB /* FaceSpecification.swift in Sources */,
 				17426EB62567C03500FB0FAB /* FacesReadOverlay.swift in Sources */,
 				17426E3A2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
@@ -620,7 +624,7 @@
 				17426E642564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */,
 				17426E432564FAB700FB0FAB /* DiceKey.swift in Sources */,
 				177FCA65256D1A5600E2FB6F /* ScanDiceKey.swift in Sources */,
-				17426ED12567CC7700FB0FAB /* DieFaceView.swift in Sources */,
+				17426ED12567CC7700FB0FAB /* DieView.swift in Sources */,
 				17426E5E2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */,
 				17426E3B2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
 				17426E622564FB0B00FB0FAB /* PermissionChecks.swift in Sources */,
@@ -642,7 +646,7 @@
 			files = (
 				17426EB82567C03500FB0FAB /* FacesReadOverlay.swift in Sources */,
 				17426E442564FAB700FB0FAB /* DiceKey.swift in Sources */,
-				17426ED22567CC7700FB0FAB /* DieFaceView.swift in Sources */,
+				17426ED22567CC7700FB0FAB /* DieView.swift in Sources */,
 				17426E7B2564FB7300FB0FAB /* DiceKeyView.swift in Sources */,
 				17426E3C2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
 				17426E4C2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,

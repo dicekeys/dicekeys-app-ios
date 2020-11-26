@@ -91,7 +91,7 @@ private struct DiceKeyViewFixedSize: View {
             }
             // The dice
             ForEach(facePositions) { facePosition in
-                DieFaceView(face: facePosition.face, dieSize: dieSize)
+                DieView(face: facePosition.face, dieSize: dieSize)
                     .position(
                         x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
                         y: vCenter + CGFloat(-2 + facePosition.row) * dieStepSize
@@ -103,12 +103,12 @@ private struct DiceKeyViewFixedSize: View {
 
 struct DiceKeyView: View {
     let diceKey: DiceKey
-    let showLidTab: Bool // = false
+         var showLidTab: Bool = false
     let leaveSpaceForTab: Bool = false
     let diceBoxColor: Color = Color(red: 0x05 / 0xFF, green: 0x03 / 0xFF, blue: 0x50 / 0xFF)
 
     var aspectRatio: CGFloat { get {
-      (showLidTab || leaveSpaceForTab) ?
+      (showLidTab == true || leaveSpaceForTab == true) ?
         (1 / (1 + fractionOfVerticalSpaceRequiredForTab)) :
         1
     } }
@@ -136,6 +136,9 @@ struct DiceKeyView_Previews: PreviewProvider {
     static var previews: some View {
         DieLidView(radius: 100, color: Color.blue)
             .previewLayout(PreviewLayout.fixed(width: 200, height: 100))
+
+        DiceKeyView(diceKey: DiceKey.createFromRandom(), showLidTab: false)
+            .previewLayout(PreviewLayout.fixed(width: 500, height: 500))
 
         DiceKeyView(diceKey: DiceKey.createFromRandom(), showLidTab: true)
             .background(Color.yellow)
