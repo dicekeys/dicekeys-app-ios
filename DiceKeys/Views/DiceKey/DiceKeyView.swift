@@ -22,7 +22,7 @@ private struct DieLidView: View {
 
 private let fractionOfVerticalSpaceRequiredForTab: CGFloat = 0.1
 
-private struct DiceKeyViewFixedSize: View {
+struct DiceKeyViewFixedSize: View {
     let diceKey: DiceKey
     let viewSize: CGSize
     let showLidTab: Bool // = false
@@ -103,9 +103,9 @@ private struct DiceKeyViewFixedSize: View {
 
 struct DiceKeyView: View {
     let diceKey: DiceKey
-         var showLidTab: Bool = false
-    let leaveSpaceForTab: Bool = false
-    let diceBoxColor: Color = Color(red: 0x05 / 0xFF, green: 0x03 / 0xFF, blue: 0x50 / 0xFF)
+    var showLidTab: Bool = false
+    var leaveSpaceForTab: Bool = false
+    var diceBoxColor: Color = Colors.diceBox
 
     var aspectRatio: CGFloat { get {
       (showLidTab == true || leaveSpaceForTab == true) ?

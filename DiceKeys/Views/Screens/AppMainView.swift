@@ -7,15 +7,18 @@
 
 import SwiftUI
 
+struct KnownDiceKeys: View {
+    var body: some View {
+        Text("Known DiceKeys will go here")
+    }
+}
+
 struct AppMainView: View {
     @State var diceKey: DiceKey?
 
     var body: some View {
         NavigationView {
             VStack {
-                NavigationLink(destination: Text("Is first default?")) {
-                    Text("First")
-                }
 //                if let diceKey = self.diceKey {
 //                    DiceKeyPresent(diceKey: diceKey)
 //                } else {
