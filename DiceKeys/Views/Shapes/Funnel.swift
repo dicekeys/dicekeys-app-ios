@@ -92,8 +92,63 @@ struct Funnel: Shape {
     }
 }
 
+struct FunnelContainer<Content: View>: View {
+    var topWidth: CGFloat?
+    var bottomWidth: CGFloat?
+    var bottleneckWidth: CGFloat?
+    var paddingTop: CGFloat?
+    var paddingBottom: CGFloat?
+    var bottleneckFractionFromTop: CGFloat = 0.7
+    var curvature: CGFloat = 0.5
+
+    let content: (() -> Content)?
+
+    @State var contentSize: CGSize = .zero
+
+    init(
+        topWidth: CGFloat? = nil,
+        bottomWidth: CGFloat? = nil,
+        bottleneckWidth: CGFloat? = nil,
+        paddingTop: CGFloat? = nil,
+        paddingBottom: CGFloat? = nil,
+        bottleneckFractionFromTop: CGFloat = 0.7,
+        curvature: CGFloat = 0.5,
+        @ViewBuilder content: @escaping () -> Content = { EmptyView() as! Content }
+    ) {
+        self.topWidth = topWidth
+        self.bottomWidth = bottomWidth
+        self.bottleneckWidth = bottleneckWidth
+        self.paddingTop = paddingTop
+        self.paddingBottom = paddingBottom
+        self.bottleneckFractionFromTop = bottleneckFractionFromTop
+        self.curvature = curvature
+        self.content = content
+    }
+
+    var body: some View {
+        ZStack(alignment: .bottom) {
+            Funnel(
+                topWidth: topWidth,
+                bottomWidth: bottomWidth ?? contentSize.width,
+                bottleneckWidth: bottleneckWidth,
+                paddingTop: paddingTop,
+                paddingBottom: contentSize.height + (paddingBottom ?? 0),
+                bottleneckFractionFromTop: bottleneckFractionFromTop,
+                curvature: curvature
+            ).stroke(/*@START_MENU_TOKEN@*/Color.blue/*@END_MENU_TOKEN@*/, lineWidth: 1.0)
+            if let nonNilContent = self.content {
+                ChildSizeReader<Content>(size: $contentSize, content: nonNilContent)
+            }
+        }
+    }
+}
+
 struct Funnel_Previews: PreviewProvider {
     static var previews: some View {
         Funnel()
+
+        FunnelContainer<Text> {
+            Text("Hello Funnel")
+        }
     }
 }
