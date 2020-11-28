@@ -179,8 +179,8 @@ class ApiRequestGenerateSignature: ApiRequestWithExplicitDerivationOptions, ApiR
     }
 
     func execute(seedString: String) throws -> SuccessResponse {
-        let signingKey = SigningKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson ?? "")
-        let signature = signingKey.generateSignature(withMessage: "FIXME") // self.message) // FIXME
+        let signingKey = try SigningKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson ?? "")
+        let signature = try signingKey.generateSignature(withMessage: "FIXME") // self.message) // FIXME
         return SuccessResponse.generateSignature(signature: base64urlEncode(signature), signatureVerificationKeyJson: signingKey.signatureVerificationKey.toJson())
     }
 }
@@ -191,7 +191,7 @@ class ApiRequestGetPassword: ApiRequestWithExplicitDerivationOptions, ApiRequest
 
     func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getPassword(passwordJson:
-            Password.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            try Password.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .toJson()
         )
     }
@@ -203,7 +203,7 @@ class ApiRequestGetSecret: ApiRequestWithExplicitDerivationOptions, ApiRequestCo
 
     func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSecret(secretJson:
-            Secret.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            try Secret.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .toJson()
         )
     }
@@ -216,7 +216,7 @@ class ApiRequestGetSealingKey: ApiRequestWithExplicitDerivationOptions, ApiReque
 
     func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSealingKey(sealingKeyJson:
-            SealingKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            try SealingKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .toJson()
         )
     }
@@ -233,7 +233,7 @@ class ApiRequestGetSigningKey: ApiRequestWithExplicitDerivationOptions, ApiReque
 
     func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSigningKey(signingKeyJson:
-            SigningKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            try SigningKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .toJson()
         )
     }
@@ -244,7 +244,7 @@ class ApiRequestGetSymmetricKey: ApiRequestWithExplicitDerivationOptions, ApiReq
 
     func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSymmetricKey(symmetricKeyJson:
-            SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            try SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .toJson()
         )
     }
@@ -255,7 +255,7 @@ class ApiRequestGetUnsealingKey: ApiRequestWithExplicitDerivationOptions, ApiReq
 
     func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getUnsealingKey(unsealingKeyJson:
-            UnsealingKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            try UnsealingKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .toJson()
         )
     }
@@ -278,7 +278,7 @@ class ApiRequestSealWithSymmetricKey: ApiRequestWithExplicitDerivationOptions, A
     }
 
     func execute(seedString: String) throws -> SuccessResponse {
-        let packagedSealedMessage = SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+        let packagedSealedMessage = try SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .seal(withMessage: "FIXME")// FIXME .seal(withMessage: plaintext)
         return SuccessResponse.sealWithSymmetricKey(packagedSealedMessageJson: packagedSealedMessage.toJson())
     }
@@ -354,7 +354,7 @@ class ApiRequestUnsealWithSymmetricKey: ApiRequestUnseal, ApiRequestCommand {
     func execute(seedString: String) throws -> SuccessResponse {
         try SuccessResponse.unsealWithSymmetricKey(plaintext: base64urlEncode(
             SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
-                .unsealJsonPackagedSealedMessage(packagedSealedMessageJson)
+                .unseal(withJsonPackagedSealedMessage: packagedSealedMessageJson)
         ))
     }
 }
