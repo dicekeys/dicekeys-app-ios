@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CryptoKit
 
 typealias Tuple25<T> = (
     T, T, T, T, T,
@@ -123,7 +124,7 @@ class DiceKey {
         )
     }
 
-    func toHumanReadableForm(includeOrientations: Bool) -> String {
+    func toHumanReadableForm(includeOrientations: Bool = true) -> String {
         return faces.map { face -> String in
             face.letter.rawValue +
             face.digit.rawValue +
@@ -132,7 +133,7 @@ class DiceKey {
     }
 
     func rotatedToCanonicalForm(
-      includeOrientations: Bool
+      includeOrientations: Bool = true
     ) -> DiceKey {
         var candidateDiceKey = self
         var diceKeyWithEarliestHumanReadableForm = candidateDiceKey
@@ -146,6 +147,23 @@ class DiceKey {
             }
         }
         return diceKeyWithEarliestHumanReadableForm
+    }
+//
+//    func toFileName() -> String {
+//        SHA256.hash(data: self.toSeed(includeOrientations: true).data(using: .utf8)!)
+//            .prefix(16)
+//            .map { byte in String(format: "%02x", byte) }
+//            .joined()
+//    }
+
+    func toFileName() -> String {
+        Data(
+            SHA256.hash(data: self.toSeed(includeOrientations: true).data(using: .utf8)!)
+                .prefix(16)
+        ).base64EncodedString()
+        .replacingOccurrences(of: "/", with: "_")
+        .replacingOccurrences(of: "+", with: "-")
+        .replacingOccurrences(of: "=", with: "")
     }
 
     func toSeed(includeOrientations: Bool) -> String {

@@ -47,6 +47,7 @@
 		1742872225721A7200C3715B /* SeedHardwareSecurityKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872125721A7100C3715B /* SeedHardwareSecurityKey.swift */; };
 		1742872825721B5B00C3715B /* BackupDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872725721B5B00C3715B /* BackupDiceKey.swift */; };
 		1742872C25721E5500C3715B /* DiceKeyStorageOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */; };
+		1742873025726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872F25726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift */; };
 		17533912256B2BCB00E090BC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533911256B2BCB00E090BC /* CameraController.swift */; };
 		17533916256B3AC500E090BC /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533915256B3AC500E090BC /* App.swift */; };
 		177FCA56256D03DA00E2FB6F /* AppMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA55256D03DA00E2FB6F /* AppMainView.swift */; };
@@ -123,6 +124,7 @@
 		1742872125721A7100C3715B /* SeedHardwareSecurityKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedHardwareSecurityKey.swift; sourceTree = "<group>"; };
 		1742872725721B5B00C3715B /* BackupDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDiceKey.swift; sourceTree = "<group>"; };
 		1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyStorageOptions.swift; sourceTree = "<group>"; };
+		1742872F25726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedDiceKeyFileAccessor.swift; sourceTree = "<group>"; };
 		17533911256B2BCB00E090BC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		17533915256B3AC500E090BC /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		177FCA55256D03DA00E2FB6F /* AppMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainView.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				17426E312564FA8000FB0FAB /* FaceSpecification.swift */,
+				1742872F25726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift */,
 				17426E412564FAB700FB0FAB /* DiceKey.swift */,
 				17426E392564FAAF00FB0FAB /* FaceRead.swift */,
 				17426E2B2564FA6000FB0FAB /* Face.swift */,
@@ -687,6 +690,7 @@
 				17426E792564FB7300FB0FAB /* DiceKeyView.swift in Sources */,
 				17426E4A2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,
 				17426E932566316100FB0FAB /* DiceKeysCameraView.swift in Sources */,
+				1742873025726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift in Sources */,
 				17426E632564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */,
 				17533912256B2BCB00E090BC /* CameraController.swift in Sources */,
 				177FCA56256D03DA00E2FB6F /* AppMainView.swift in Sources */,

@@ -354,7 +354,7 @@ class ApiRequestUnsealWithSymmetricKey: ApiRequestUnseal, ApiRequestCommand {
     func execute(seedString: String) throws -> SuccessResponse {
         try SuccessResponse.unsealWithSymmetricKey(plaintext: base64urlEncode(
             SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
-                .unseal(withJsonPackagedSealedMessage: packagedSealedMessageJson)
+                .unsealJsonPackagedSealedMessage(packagedSealedMessageJson)
         ))
     }
 }

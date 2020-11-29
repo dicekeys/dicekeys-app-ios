@@ -128,7 +128,7 @@ struct DiceKeyPresent: View {
                                 Text("Backup").font(.footnote)
                             }
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
-                        NavigationLink(destination: DiceKeyStorageOptions()) {
+                        NavigationLink(destination: DiceKeyStorageOptions(diceKey: diceKey)) {
                             VStack {
                                 ZStack {
                                     Image(systemName: "iphone")
