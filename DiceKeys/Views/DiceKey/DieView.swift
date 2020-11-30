@@ -62,9 +62,10 @@ struct UndoverlineView: View {
 struct DieFaceUprightView: View {
     let face: Face
     let dieSize: CGFloat
+    let linearFractionOfFaceRenderedToDieSize: CGFloat
+
     let dieColor: Color = Color.white
 
-    let linearFractionOfFaceRenderedToDieSize: CGFloat = 5/8
     var sizeOfRenderedFace: CGFloat { dieSize * linearFractionOfFaceRenderedToDieSize }
 
     var left: CGFloat { (dieSize - sizeOfRenderedFace) / 2 }
@@ -82,8 +83,23 @@ struct DieFaceUprightView: View {
     var fontSize: CGFloat {
         FaceDimensionsFractional.fontSize * sizeOfRenderedFace
     }
+        var font: Font {
+        Font.custom("Inconsolata", size: fontSize)
+    }
+    var uiFont: UIFont {
+        UIFont(name: "Inconsolata-Bold", size: fontSize)!
+    }
     var halfTextRegionWidth: CGFloat {
         FaceDimensionsFractional.textRegionWidth * sizeOfRenderedFace / 2
+    }
+    var textCenterY: CGFloat {
+        (
+            dieSize
+            // Move down to remove region above capital letter
+            + (uiFont.capHeight - uiFont.ascender)
+            // Move up to remove region below capital letter
+            - uiFont.descender
+        ) / 2 // take center
     }
 
     var body: some View {
@@ -94,12 +110,12 @@ struct DieFaceUprightView: View {
             Text(face.letter.rawValue)
                 .font(.custom("Inconsolata", size: fontSize))
                 .fontWeight(.bold)
-                .position(x: (dieSize - halfTextRegionWidth) / 2, y: dieSize/2)
+                .position(x: (dieSize - halfTextRegionWidth) / 2, y: textCenterY)
                 .foregroundColor(.black)
             Text(face.digit.rawValue)
                 .font(.custom("Inconsolata", size: fontSize))
                 .fontWeight(.bold)
-                .position(x: (dieSize + halfTextRegionWidth) / 2, y: dieSize/2)
+                .position(x: (dieSize + halfTextRegionWidth) / 2, y: textCenterY)
                 .foregroundColor(.black)
             UndoverlineView(face: face, faceSize: sizeOfRenderedFace, isOverline: false)
                 .position(x: hCenter, y: underlineVCenter)
@@ -113,10 +129,37 @@ struct DieFaceUprightView: View {
 struct DieFaceView: View {
     let face: Face
     let dieSize: CGFloat
+    var linearFractionOfFaceRenderedToDieSize: CGFloat = CGFloat(1)
 
     var body: some View {
-        DieFaceUprightView(face: face, dieSize: dieSize)
+        DieFaceUprightView(face: face, dieSize: dieSize, linearFractionOfFaceRenderedToDieSize: linearFractionOfFaceRenderedToDieSize)
             .rotationEffect(Angle(degrees: face.orientationAsLowercaseLetterTrbl.asClockwiseDegrees), anchor: .center)
+    }
+}
+
+struct DiceKeyFaceArray: View {
+    let diceKey: DiceKey
+    let marginBetweenDiceFractional: CGFloat = 0.2
+
+    var body: some View {
+        GeometryReader { geometry in
+            HStack(alignment: .center, spacing: 0) {
+                ForEach(0..<25) { index in
+                    DieFaceView(face: diceKey.faces[index], dieSize: geometry.size.width/CGFloat(25),
+                        linearFractionOfFaceRenderedToDieSize: 1-marginBetweenDiceFractional/2)
+                }
+            }
+        }
+    }
+}
+
+struct DieView: View {
+    let face: Face
+    let dieSize: CGFloat
+    let linearFractionOfFaceRenderedToDieSize: CGFloat = CGFloat(5)/8
+
+    var body: some View {
+        DieFaceView(face: face, dieSize: dieSize, linearFractionOfFaceRenderedToDieSize: linearFractionOfFaceRenderedToDieSize)
     }
 }
 
@@ -128,7 +171,16 @@ struct DieFaceView_Previews: PreviewProvider {
         }
 
         DieFaceView(
-            face: Face(letter: FaceLetter.A, digit: FaceDigit._3, orientationAsLowercaseLetterTrbl: FaceOrientationLetterTrbl.Right),
+            face: Face(letter: FaceLetter.L, digit: FaceDigit._3, orientationAsLowercaseLetterTrbl: FaceOrientationLetterTrbl.Right),
+            dieSize: 500
+        )
+        .previewLayout(PreviewLayout.fixed(width: 500, height: 500))
+
+        DiceKeyFaceArray(diceKey: DiceKey.createFromRandom())
+        //    .previewLayout(PreviewLayout.fixed(width: 500, height: 100))
+
+        DieView(
+            face: Face(letter: FaceLetter.L, digit: FaceDigit._3, orientationAsLowercaseLetterTrbl: FaceOrientationLetterTrbl.Right),
             dieSize: 500
         )
         .previewLayout(PreviewLayout.fixed(width: 500, height: 500))

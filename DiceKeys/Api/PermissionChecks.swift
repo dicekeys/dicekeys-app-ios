@@ -28,7 +28,6 @@ protocol RequestContext {
 //    }
 
 extension RequestContext {
-
     private func satisfiesPathRequirement(of pathRequirement: String) -> Bool {
         let pathExpected = (pathRequirement.hasPrefix("/")) ? pathRequirement :
             // Paths must start with a "/".  If the path requirement didn't start with a "/",
