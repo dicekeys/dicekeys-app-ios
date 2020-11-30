@@ -34,16 +34,12 @@
 		17426E632564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5C2564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift */; };
 		17426E642564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5C2564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift */; };
 		17426E792564FB7300FB0FAB /* DiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E772564FB7200FB0FAB /* DiceKeyView.swift */; };
-		17426E7A2564FB7300FB0FAB /* DiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E772564FB7200FB0FAB /* DiceKeyView.swift */; };
-		17426E7B2564FB7300FB0FAB /* DiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E772564FB7200FB0FAB /* DiceKeyView.swift */; };
 		17426E882565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */; };
 		17426E892565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */; };
 		17426E8A2565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */; };
 		17426E932566316100FB0FAB /* DiceKeysCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E922566316100FB0FAB /* DiceKeysCameraView.swift */; };
 		17426EB62567C03500FB0FAB /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */; };
 		17426ED02567CC7700FB0FAB /* DieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieView.swift */; };
-		17426ED12567CC7700FB0FAB /* DieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieView.swift */; };
-		17426ED22567CC7700FB0FAB /* DieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieView.swift */; };
 		1742872225721A7200C3715B /* SeedHardwareSecurityKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872125721A7100C3715B /* SeedHardwareSecurityKey.swift */; };
 		1742872825721B5B00C3715B /* BackupDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872725721B5B00C3715B /* BackupDiceKey.swift */; };
 		1742872C25721E5500C3715B /* DiceKeyStorageOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */; };
@@ -721,11 +717,9 @@
 			files = (
 				17426E642564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */,
 				17426E432564FAB700FB0FAB /* DiceKey.swift in Sources */,
-				17426ED12567CC7700FB0FAB /* DieView.swift in Sources */,
 				17426E5E2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */,
 				17426E3B2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
 				17426E622564FB0B00FB0FAB /* PermissionChecks.swift in Sources */,
-				17426E7A2564FB7300FB0FAB /* DiceKeyView.swift in Sources */,
 				17426E4B2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,
 				17426E2D2564FA6000FB0FAB /* Face.swift in Sources */,
 				6FAC6AC125480DE200AA8249 /* DiceKeysTests.swift in Sources */,
@@ -740,8 +734,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				17426E442564FAB700FB0FAB /* DiceKey.swift in Sources */,
-				17426ED22567CC7700FB0FAB /* DieView.swift in Sources */,
-				17426E7B2564FB7300FB0FAB /* DiceKeyView.swift in Sources */,
 				17426E3C2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
 				17426E4C2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,
 				17426E2E2564FA6000FB0FAB /* Face.swift in Sources */,
