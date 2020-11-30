@@ -61,8 +61,14 @@ struct NicknameEditingField: View {
 }
 
 struct DiceKeyPresent: View {
-    let diceKey: DiceKey
-    @Binding var nickname: String
+    @ObservedObject var diceKeyState: DiceKeyState
+    let onForget: () -> Void
+
+//    init(diceKey: Binding<DiceKey?>) {
+//        self.diceKey = diceKey
+//        self.diceKeyState = DiceKeyState(diceKey.wrappedValue!)
+////        _diceKeyState = State(initialValue: DiceKeyState(diceKey))
+//    }
 
     @State var inNicknameEditingMode: Bool = false
 
@@ -100,9 +106,9 @@ struct DiceKeyPresent: View {
             VStack {
 //                NavigationLink(destination: RouteToDestination(destination: self.destinationToNavigateTo), isActive: $isNavigationActive) { EmptyView() }.hidden()
                 Spacer()
-                NicknameEditingField(nickname: $nickname).hideIf(!inNicknameEditingMode)
+                NicknameEditingField(nickname: $diceKeyState.nickname).hideIf(!inNicknameEditingMode)
                 Spacer()
-                DiceKeyView(diceKey: diceKey, showLidTab: true)
+                DiceKeyView(diceKey: diceKeyState.diceKey, showLidTab: true)
                 Menu {
                     Button("Password for A") { print("DQ") }
                     Button("Password for B") { print("Babies") }
@@ -122,13 +128,13 @@ struct DiceKeyPresent: View {
                                 Text("Seed Key").font(.footnote)
                             }
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
-                        NavigationLink(destination: BackupDiceKey(diceKey: diceKey)) {
+                        NavigationLink(destination: BackupDiceKey(diceKey: diceKeyState.diceKey)) {
                             VStack {
                                 Image(systemName: "doc.on.doc")
                                 Text("Backup").font(.footnote)
                             }
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
-                        NavigationLink(destination: DiceKeyStorageOptions(diceKey: diceKey)) {
+                        NavigationLink(destination: DiceKeyStorageOptions(diceKeyState: diceKeyState)) {
                             VStack {
                                 ZStack {
                                     Image(systemName: "iphone")
@@ -142,9 +148,15 @@ struct DiceKeyPresent: View {
                 }.padding(.bottom, geometry.safeAreaInsets.bottom)
                 .padding(.top, 5)
                 }.background(Color(UIColor.systemFill))
-            }.navigationTitle(nickname)
+            }
+            .navigationTitle(diceKeyState.nickname)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: ToolbarItemPlacement.navigationBarLeading) {
+                    Button(action: { self.onForget() }) {
+                        Text("Forget")
+                    }
+                }
                 ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {
                     if inNicknameEditingMode {
                         Button(action: { inNicknameEditingMode = false }, label: {
@@ -157,18 +169,17 @@ struct DiceKeyPresent: View {
                     }
                 }
             }.edgesIgnoringSafeArea(.bottom)
-        }}
+        }.navigationViewStyle(StackNavigationViewStyle())}
     }
 }
 
-let diceKey = DiceKey.createFromRandom()
 struct TestDiceKeyPresent: View {
-    @State var nickname = defaultDiceKeyName(diceKey: diceKey)
+    @State var diceKeyState: DiceKeyState = DiceKeyState(DiceKey.createFromRandom())
 
     var body: some View {
         DiceKeyPresent(
-            diceKey: diceKey,
-            nickname: $nickname
+            diceKeyState: diceKeyState,
+            onForget: {}
        )
     }
 }

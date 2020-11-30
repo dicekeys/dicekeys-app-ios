@@ -14,6 +14,28 @@ private func hexString(_ iterator: Array<UInt8>.Iterator) -> String {
     return iterator.map { String(format: "%02x", $0) }.joined()
 }
 
+class Directories {
+    private static func get(forRelativePath relativePath: String) throws -> URL {
+        let appSupportDirUrl = try FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let directoryAtRelativePath = appSupportDirUrl.appendingPathComponent(relativePath)
+        try FileManager.default.createDirectory(atPath: directoryAtRelativePath.path, withIntermediateDirectories: true, attributes: nil)
+        return directoryAtRelativePath
+    }
+
+    private static func getRawDiceKeysDirectory() throws -> URL { try Directories.get(forRelativePath: "dicekeys/raw") }
+
+    static func getPublicDiceKeysDirectory(forKeyId keyId: String) throws -> URL { try Directories.get(forRelativePath: "dicekeys/public/\(keyId)") }
+
+    // Get a file URL from an area in the system not visible to user
+    static func getRawDiceKeyFileUrl(forKeyId keyId: String) throws -> URL {
+        return try getRawDiceKeysDirectory().appendingPathComponent(keyId).appendingPathExtension("dky")
+    }
+}
+
+class PublicKeysFiles {
+    
+}
+
 class EncryptedDiceKeyFileAccessor {
     private var laContext = LAContext()
 
@@ -39,20 +61,14 @@ class EncryptedDiceKeyFileAccessor {
         }
     }
 
-    // Get a file URL from an area in the system not visible to user
-    func getFileUrl(fileName: String) throws -> URL {
-        let documentDirectoryUrl = try FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-        return documentDirectoryUrl.appendingPathComponent(fileName).appendingPathExtension("dky")
-    }
-
-    func getDiceKey(fromFileName fileName: String, _ onComplete: @escaping (Result<DiceKey, Error>) -> Void) {
+    func getDiceKey(fromFileName keyName: String, _ onComplete: @escaping (Result<DiceKey, Error>) -> Void) {
         self.authenticate { authResult in
             switch authResult {
             case .failure(let error): onComplete(.failure(error)); return
             case .success: break
             }
             do {
-                let diceKeyInHRF = try String(contentsOf: try self.getFileUrl(fileName: fileName), encoding: .utf8)
+                let diceKeyInHRF = try String(contentsOf: try Directories.getPublicDiceKeysDirectory(forKeyId: keyName), encoding: .utf8)
                 let diceKey = try DiceKey.createFrom(humanReadableForm: diceKeyInHRF)
                 onComplete(.success(diceKey))
             } catch {
@@ -62,9 +78,9 @@ class EncryptedDiceKeyFileAccessor {
         }
     }
 
-    func delete(fileName: String) -> Result<Void, Error> {
+    func delete(keyId: String) -> Result<Void, Error> {
         do {
-            try FileManager.default.removeItem(at: try self.getFileUrl(fileName: fileName))
+            try FileManager.default.removeItem(at: try Directories.getRawDiceKeyFileUrl(forKeyId: keyId))
             return .success(())
         } catch {
             return .failure(error)
@@ -72,9 +88,9 @@ class EncryptedDiceKeyFileAccessor {
         }
     }
 
-    func getDiceKey(fromFileName fileName: String) -> Future<DiceKey, Error> {
+    func getDiceKey(fromKeyId keyId: String) -> Future<DiceKey, Error> {
         return Future<DiceKey, Error> { promise in
-            self.getDiceKey(fromFileName: fileName) { result in promise(result) }
+            self.getDiceKey(fromFileName: keyId) { result in promise(result) }
         }
     }
 
@@ -85,15 +101,15 @@ class EncryptedDiceKeyFileAccessor {
             let data = diceKeyInHRF.data(using: .utf8)!
             // Create a file name by taking the first 64 bits of the SHA256 hash of
             // the canonical human-readable form
-            let fileName = diceKey.toFileName()
-            var fileUrl = try self.getFileUrl(fileName: fileName)
+            let keyId = diceKey.id
+            var fileUrl = try Directories.getRawDiceKeyFileUrl(forKeyId: keyId)
             // Write the data with the highest-level of security protection
             try data.write(to: fileUrl, options: .completeFileProtection)
             // Make sure the file is not allowed to be backed up to the cloud
             var resourceValueExcludeFromBackup = URLResourceValues()
             resourceValueExcludeFromBackup.isExcludedFromBackup = true
             try fileUrl.setResourceValues(resourceValueExcludeFromBackup)
-            onComplete(.success(fileName))
+            onComplete(.success(keyId))
         } catch {
             onComplete(.failure(error))
         }

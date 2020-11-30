@@ -148,15 +148,8 @@ class DiceKey {
         }
         return diceKeyWithEarliestHumanReadableForm
     }
-//
-//    func toFileName() -> String {
-//        SHA256.hash(data: self.toSeed(includeOrientations: true).data(using: .utf8)!)
-//            .prefix(16)
-//            .map { byte in String(format: "%02x", byte) }
-//            .joined()
-//    }
 
-    func toFileName() -> String {
+    var id: String {
         Data(
             SHA256.hash(data: self.toSeed(includeOrientations: true).data(using: .utf8)!)
                 .prefix(16)

@@ -45,9 +45,8 @@ struct ScanDiceKey: View {
     }
 }
 
-
 struct ScanDiceKey_Previews: PreviewProvider {
     static var previews: some View {
-        ScanDiceKey()
+        ScanDiceKey().previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
     }
 }

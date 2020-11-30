@@ -48,6 +48,8 @@
 		1742872825721B5B00C3715B /* BackupDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872725721B5B00C3715B /* BackupDiceKey.swift */; };
 		1742872C25721E5500C3715B /* DiceKeyStorageOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */; };
 		1742873025726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872F25726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift */; };
+		174287392574790D00C3715B /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174287382574790D00C3715B /* SettingsStore.swift */; };
+		1742874125749CA300C3715B /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742874025749CA300C3715B /* Properties.swift */; };
 		17533912256B2BCB00E090BC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533911256B2BCB00E090BC /* CameraController.swift */; };
 		17533916256B3AC500E090BC /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533915256B3AC500E090BC /* App.swift */; };
 		177FCA56256D03DA00E2FB6F /* AppMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA55256D03DA00E2FB6F /* AppMainView.swift */; };
@@ -125,6 +127,8 @@
 		1742872725721B5B00C3715B /* BackupDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDiceKey.swift; sourceTree = "<group>"; };
 		1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyStorageOptions.swift; sourceTree = "<group>"; };
 		1742872F25726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedDiceKeyFileAccessor.swift; sourceTree = "<group>"; };
+		174287382574790D00C3715B /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		1742874025749CA300C3715B /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
 		17533911256B2BCB00E090BC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		17533915256B3AC500E090BC /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		177FCA55256D03DA00E2FB6F /* AppMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainView.swift; sourceTree = "<group>"; };
@@ -245,6 +249,14 @@
 			path = fonts;
 			sourceTree = "<group>";
 		};
+		17428737257478EB00C3715B /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				174287382574790D00C3715B /* SettingsStore.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		17BBB625257061DD009AC42B /* Shapes */ = {
 			isa = PBXGroup;
 			children = (
@@ -324,6 +336,7 @@
 				177FCA79256DBBF300E2FB6F /* Color.swift */,
 				177FCA7D256E3B8500E2FB6F /* View.swift */,
 				6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */,
+				1742874025749CA300C3715B /* Properties.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -355,6 +368,7 @@
 		6FAC6AA825480DE000AA8249 /* DiceKeys */ = {
 			isa = PBXGroup;
 			children = (
+				17428737257478EB00C3715B /* Core */,
 				17BBB6982570AC75009AC42B /* Data */,
 				17426E8F2565E20800FB0FAB /* fonts */,
 				17426E742564FB4600FB0FAB /* Views */,
@@ -664,6 +678,7 @@
 				6F846C04254B2BCF00ABE33B /* UIWindow+Orientation.swift in Sources */,
 				177FCA7A256DBBF300E2FB6F /* Color.swift in Sources */,
 				177FCA5A256D047300E2FB6F /* ViewsInProgress.swift in Sources */,
+				1742874125749CA300C3715B /* Properties.swift in Sources */,
 				1742872225721A7200C3715B /* SeedHardwareSecurityKey.swift in Sources */,
 				17533916256B3AC500E090BC /* App.swift in Sources */,
 				17BBB61E256F87CD009AC42B /* Funnel.swift in Sources */,
@@ -683,6 +698,7 @@
 				17426E3A2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
 				17BBB63625706A7E009AC42B /* DiceKeyPresent.swift in Sources */,
 				177FCA60256D193B00E2FB6F /* ScanDiceKey.swift in Sources */,
+				174287392574790D00C3715B /* SettingsStore.swift in Sources */,
 				17426E5D2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */,
 				17426E422564FAB700FB0FAB /* DiceKey.swift in Sources */,
 				17BBB622256F8840009AC42B /* DerivedFromDiceKey.swift in Sources */,

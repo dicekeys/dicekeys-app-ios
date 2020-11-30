@@ -126,6 +126,6 @@ struct DerivedFromDiceKey_Previews: PreviewProvider {
 
         DerivedFromDiceKey(diceKey: DiceKey.createFromRandom()) {
             Text("some random words constitute your password and some more random words to be copied").multilineTextAlignment(.center).padding(.horizontal, 5)
-        }
+        }.previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
     }
 }
