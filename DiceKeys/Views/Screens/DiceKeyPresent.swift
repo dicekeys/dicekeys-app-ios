@@ -61,6 +61,7 @@ struct NicknameEditingField: View {
 }
 
 struct DiceKeyPresent: View {
+    let diceKey: DiceKey
     @ObservedObject var diceKeyState: DiceKeyState
     let onForget: () -> Void
 
@@ -108,7 +109,7 @@ struct DiceKeyPresent: View {
                 Spacer()
                 NicknameEditingField(nickname: $diceKeyState.nickname).hideIf(!inNicknameEditingMode)
                 Spacer()
-                DiceKeyView(diceKey: diceKeyState.diceKey, showLidTab: true)
+                DiceKeyView(diceKey: diceKey, showLidTab: true)
                 Menu {
                     Button("Password for A") { print("DQ") }
                     Button("Password for B") { print("Babies") }
@@ -124,21 +125,36 @@ struct DiceKeyPresent: View {
                         Spacer()
                         NavigationLink(destination: SeedHardwareSecurityKey()) {
                             VStack {
-                                Image(systemName: "key")
+                                Image("USB Key")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
                                 Text("Seed Key").font(.footnote)
                             }
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
-                        NavigationLink(destination: BackupDiceKey(diceKey: diceKeyState.diceKey)) {
+                        NavigationLink(destination: BackupDiceKey(diceKey: diceKey)) {
                             VStack {
-                                Image(systemName: "doc.on.doc")
+                                Image("Backup Icon")
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
                                 Text("Backup").font(.footnote)
                             }
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
-                        NavigationLink(destination: DiceKeyStorageOptions(diceKeyState: diceKeyState)) {
+                        NavigationLink(destination: DiceKeyStorageOptions(diceKey: diceKey, diceKeyState: diceKeyState)) {
                             VStack {
                                 ZStack {
                                     Image(systemName: "iphone")
-                                    Image(systemName: "checkmark").foregroundColor(.green)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
+                                    Image("DiceKey Icon")
+                                        .renderingMode(.template)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(height: min(geometry.size.width, geometry.size.height)/24, alignment: .center)
+
                                 }
                                 Text("Saved").font(.footnote)
                             }
@@ -154,7 +170,7 @@ struct DiceKeyPresent: View {
             .toolbar {
                 ToolbarItem(placement: ToolbarItemPlacement.navigationBarLeading) {
                     Button(action: { self.onForget() }) {
-                        Text("Forget")
+                        Text(diceKeyState.isDiceKeyStored ? "Close" : "Forget")
                     }
                 }
                 ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {
@@ -174,10 +190,18 @@ struct DiceKeyPresent: View {
 }
 
 struct TestDiceKeyPresent: View {
-    @State var diceKeyState: DiceKeyState = DiceKeyState(DiceKey.createFromRandom())
+    let diceKey: DiceKey //  = DiceKey.createFromRandom()
+    var diceKeyState: DiceKeyState
+
+    init() {
+        let diceKey = DiceKey.createFromRandom()
+        self.diceKey = diceKey
+        self.diceKeyState = DiceKeyState(diceKey)
+    }
 
     var body: some View {
         DiceKeyPresent(
+            diceKey: diceKey,
             diceKeyState: diceKeyState,
             onForget: {}
        )

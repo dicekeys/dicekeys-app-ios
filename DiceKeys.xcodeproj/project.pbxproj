@@ -44,10 +44,12 @@
 		1742872825721B5B00C3715B /* BackupDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872725721B5B00C3715B /* BackupDiceKey.swift */; };
 		1742872C25721E5500C3715B /* DiceKeyStorageOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */; };
 		1742873025726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872F25726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift */; };
-		174287392574790D00C3715B /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174287382574790D00C3715B /* SettingsStore.swift */; };
+		174287392574790D00C3715B /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174287382574790D00C3715B /* GlobalState.swift */; };
 		1742874125749CA300C3715B /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742874025749CA300C3715B /* Properties.swift */; };
 		17533912256B2BCB00E090BC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533911256B2BCB00E090BC /* CameraController.swift */; };
 		17533916256B3AC500E090BC /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533915256B3AC500E090BC /* App.swift */; };
+		175F393C2575A445007FAE80 /* DiceKeyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F393B2575A445007FAE80 /* DiceKeyState.swift */; };
+		175F39442575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F39432575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */; };
 		177FCA56256D03DA00E2FB6F /* AppMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA55256D03DA00E2FB6F /* AppMainView.swift */; };
 		177FCA5A256D047300E2FB6F /* ViewsInProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA59256D047300E2FB6F /* ViewsInProgress.swift */; };
 		177FCA60256D193B00E2FB6F /* ScanDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA5F256D193B00E2FB6F /* ScanDiceKey.swift */; };
@@ -123,10 +125,12 @@
 		1742872725721B5B00C3715B /* BackupDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDiceKey.swift; sourceTree = "<group>"; };
 		1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyStorageOptions.swift; sourceTree = "<group>"; };
 		1742872F25726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedDiceKeyFileAccessor.swift; sourceTree = "<group>"; };
-		174287382574790D00C3715B /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		174287382574790D00C3715B /* GlobalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalState.swift; sourceTree = "<group>"; };
 		1742874025749CA300C3715B /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
 		17533911256B2BCB00E090BC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		17533915256B3AC500E090BC /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		175F393B2575A445007FAE80 /* DiceKeyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyState.swift; sourceTree = "<group>"; };
+		175F39432575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableObjectUpdatingOnAllChangesToUserDefaults.swift; sourceTree = "<group>"; };
 		177FCA55256D03DA00E2FB6F /* AppMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainView.swift; sourceTree = "<group>"; };
 		177FCA59256D047300E2FB6F /* ViewsInProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewsInProgress.swift; sourceTree = "<group>"; };
 		177FCA5F256D193B00E2FB6F /* ScanDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDiceKey.swift; sourceTree = "<group>"; };
@@ -248,9 +252,18 @@
 		17428737257478EB00C3715B /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				174287382574790D00C3715B /* SettingsStore.swift */,
+				175F39432575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		175F393A2575A42D007FAE80 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				174287382574790D00C3715B /* GlobalState.swift */,
+				175F393B2575A445007FAE80 /* DiceKeyState.swift */,
+			);
+			path = State;
 			sourceTree = "<group>";
 		};
 		17BBB625257061DD009AC42B /* Shapes */ = {
@@ -364,6 +377,7 @@
 		6FAC6AA825480DE000AA8249 /* DiceKeys */ = {
 			isa = PBXGroup;
 			children = (
+				175F393A2575A42D007FAE80 /* State */,
 				17428737257478EB00C3715B /* Core */,
 				17BBB6982570AC75009AC42B /* Data */,
 				17426E8F2565E20800FB0FAB /* fonts */,
@@ -687,6 +701,7 @@
 				17BBB61A256F6332009AC42B /* Colors.swift in Sources */,
 				17BBB68D2570A841009AC42B /* Persistence.swift in Sources */,
 				17426E612564FB0B00FB0FAB /* PermissionChecks.swift in Sources */,
+				175F393C2575A445007FAE80 /* DiceKeyState.swift in Sources */,
 				6F846B45254AAC5200ABE33B /* Bitmap.swift in Sources */,
 				177FCA7E256E3B8500E2FB6F /* View.swift in Sources */,
 				17426E322564FA8000FB0FAB /* FaceSpecification.swift in Sources */,
@@ -694,9 +709,10 @@
 				17426E3A2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
 				17BBB63625706A7E009AC42B /* DiceKeyPresent.swift in Sources */,
 				177FCA60256D193B00E2FB6F /* ScanDiceKey.swift in Sources */,
-				174287392574790D00C3715B /* SettingsStore.swift in Sources */,
+				174287392574790D00C3715B /* GlobalState.swift in Sources */,
 				17426E5D2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */,
 				17426E422564FAB700FB0FAB /* DiceKey.swift in Sources */,
+				175F39442575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */,
 				17BBB622256F8840009AC42B /* DerivedFromDiceKey.swift in Sources */,
 				17426E2C2564FA6000FB0FAB /* Face.swift in Sources */,
 				17426E792564FB7300FB0FAB /* DiceKeyView.swift in Sources */,

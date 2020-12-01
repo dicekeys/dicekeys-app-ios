@@ -32,7 +32,7 @@ enum IllegalCharacterError: Error {
     case inOrientation(position: Int)
 }
 
-class DiceKey {
+class DiceKey: Identifiable {
     enum ConstructorError: Error {
         case emptyFace
     }

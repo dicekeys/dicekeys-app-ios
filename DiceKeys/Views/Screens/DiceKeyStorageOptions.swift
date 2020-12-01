@@ -8,21 +8,21 @@
 import SwiftUI
 
 struct DiceKeyStorageOptions: View {
+    let diceKey: DiceKey
     @StateObject var diceKeyState: DiceKeyState
 
     var body: some View {
         VStack {
-
             Spacer()
-            Button(action: { diceKeyState.whatToStore = .nicknameOnly }) {
+            Button(action: { diceKeyState.setStoreNicknameOnly() }) {
                 Text("Store only this device's nickname")
             }.disabled( diceKeyState.whatToStore == .nicknameOnly )
             Spacer()
-            Button(action: { diceKeyState.whatToStore = .publicKeys }) {
+            Button(action: { diceKeyState.setStorePublicKeys() }) {
                 Text("Store public keys")
             }.disabled( diceKeyState.whatToStore == .publicKeys )
             Spacer()
-            Button(action: { diceKeyState.whatToStore = .rawDiceKey }) {
+            Button(action: { diceKeyState.setStoreRawDiceKey(diceKey: diceKey) }) {
                 Text("Store the DiceKey on this device")
             }.disabled( diceKeyState.whatToStore == .rawDiceKey )
             Spacer()
@@ -31,10 +31,10 @@ struct DiceKeyStorageOptions: View {
 }
 
 struct DiceKeyStorageOptions_Previews: PreviewProvider {
-    // let diceKey = DiceKey.createFromRandom()
-    @StateObject static var diceKeyState = DiceKeyState(DiceKey.createFromRandom())
+    static let diceKey = DiceKey.createFromRandom()
+    @StateObject static var diceKeyState = DiceKeyState(diceKey)
 
     static var previews: some View {
-        DiceKeyStorageOptions(diceKeyState: DiceKeyStorageOptions_Previews.diceKeyState)
+        DiceKeyStorageOptions(diceKey: diceKey, diceKeyState: DiceKeyStorageOptions_Previews.diceKeyState)
     }
 }
