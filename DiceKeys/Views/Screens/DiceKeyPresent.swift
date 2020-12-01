@@ -44,11 +44,7 @@ struct NicknameEditingField: View {
             TextField(
                 "Nickname",
                  text: $nickname
-            ) // { isEditing in
-//                        // self.isEditing = isEditing
-//                    } onCommit: {
-//                        // validate(name: username)
-//                    }
+            )
             .font(Font(nicknameFieldFont))
             .multilineTextAlignment(.center)
             .border(Color(UIColor.separator))
@@ -65,12 +61,6 @@ struct DiceKeyPresent: View {
     @ObservedObject var diceKeyState: DiceKeyState
     let onForget: () -> Void
 
-//    init(diceKey: Binding<DiceKey?>) {
-//        self.diceKey = diceKey
-//        self.diceKeyState = DiceKeyState(diceKey.wrappedValue!)
-////        _diceKeyState = State(initialValue: DiceKeyState(diceKey))
-//    }
-
     @State var inNicknameEditingMode: Bool = false
 
     enum Destination {
@@ -79,23 +69,6 @@ struct DiceKeyPresent: View {
     @State private var destinationToNavigateTo: Destination?
     @State private var isNavigationActive = false
 
-//    func navigate(to destination: Destination) {
-//        destinationToNavigateTo = destination
-//        isNavigationActive = true
-//    }
-//
-//    struct RouteToDestination: View {
-//        let destination: Destination?
-//
-//        var body: some View {
-//            switch destination {
-//            case .Stickeys:
-//                BackupCard(diceKey: DiceKey.createFromRandom())
-//            default:
-//                EmptyView()
-//            }
-//        }
-//    }
     var BottomButtonCount: Int = 3
     var BottomButtonFractionalWidth: CGFloat {
         CGFloat(1) / CGFloat(BottomButtonCount + 1)
@@ -134,7 +107,7 @@ struct DiceKeyPresent: View {
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
                         NavigationLink(destination: BackupDiceKey(diceKey: diceKey)) {
                             VStack {
-                                Image("Backup Icon")
+                                Image("Backup to DiceKey")
                                     .renderingMode(.template)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
@@ -154,7 +127,6 @@ struct DiceKeyPresent: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(height: min(geometry.size.width, geometry.size.height)/24, alignment: .center)
-
                                 }
                                 Text("Saved").font(.footnote)
                             }
