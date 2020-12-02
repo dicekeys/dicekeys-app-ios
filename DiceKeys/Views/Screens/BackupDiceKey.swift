@@ -7,9 +7,27 @@
 
 import SwiftUI
 
-struct BackupToStickeysPreview {
+
+struct BackupToStickeys: View {
+    let diceKey: DiceKey
+    @State var step: Int = 0
+    var onSuccess: (() -> Void)?
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Spacer()
+            TransferSticker(diceKey: diceKey, faceIndex: step)
+            Spacer()
+            HStack {
+                Spacer()
+                Button("Previous") { step = step - 1 }.disabled( step == 0)
+                Spacer()
+                if step < 24 {
+                    Button("Next") { step = step + 1 }
+                }
+                Spacer()
+            }.padding(.bottom, 10)
+        }
     }
 }
 
@@ -25,7 +43,9 @@ struct BackupDiceKey: View {
 
     var body: some View {
         if mode == .Stickeys {
-            Text("Stickeys!")
+            BackupToStickeys(diceKey: diceKey) {
+                // on success
+            }
         } else {
 //            GeometryReader { geometry in
             HStack {
