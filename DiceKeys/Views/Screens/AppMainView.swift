@@ -49,8 +49,7 @@ struct AppMainView: View {
 //                }
                 Spacer()
             }
-//            Text("This is odd")
-        }.navigationViewStyle(StackNavigationViewStyle())//.navigationBarTitle("DiceKeys Home")
+        }.navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }

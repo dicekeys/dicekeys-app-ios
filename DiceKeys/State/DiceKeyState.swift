@@ -1,34 +1,16 @@
 //
-//  DefaultsStore.swift
+//  DiceKeyState.swift
 //  DiceKeys
 //
-//  Created by Stuart Schechter on 2020/11/30.
+//  Created by Stuart Schechter on 2020/12/03.
 //
 
 import Foundation
 import Combine
-import SwiftUI
-
-final class SettingsState: ObservableObject {
-    enum Fields: String {
-        case neverAskUserToSave
-    }
-
-    @UserDefault(Fields.neverAskUserToSave.rawValue, false) var neverAskUserToSave: Bool
-
-    let objectWillChange = ObservableObjectPublisher()
-    private var notificationSubscription: AnyCancellable?
-
-    init() {
-        notificationSubscription = NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification).sink { _ in
-            self.objectWillChange.send()
-        }
-    }
-}
 
 final class DiceKeyState: ObservableObject {
     let diceKey: DiceKey
-    
+
     enum FieldName: String {
         case nickname
         case whatToStore
@@ -93,7 +75,6 @@ final class DiceKeyState: ObservableObject {
     init(_ forDiceKey: DiceKey) {
         self.diceKey = forDiceKey
         let defaultNickname = "DiceKey with \(forDiceKey.faces[12].letter.rawValue)\(forDiceKey.faces[12].digit.rawValue) in center"
-        // self.init(forKeyId: diceKey.id, defaultNickname: "DiceKey with \(forDiceKey.faces[12].letter.rawValue)\(forDiceKey.faces[12].digit.rawValue) in center")
 
         self.keyId = diceKey.id
         self.nickname = UserDefaults.standard.string(forKey: DiceKeyState.fieldKey(.nickname, keyId)) ?? defaultNickname

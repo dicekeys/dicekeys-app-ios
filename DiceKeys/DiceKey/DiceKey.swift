@@ -159,7 +159,7 @@ class DiceKey {
         .replacingOccurrences(of: "=", with: "")
     }
 
-    func toSeed(includeOrientations: Bool) -> String {
+    func toSeed(includeOrientations: Bool = true) -> String {
         return rotatedToCanonicalForm(includeOrientations: includeOrientations)
             .toHumanReadableForm(includeOrientations: includeOrientations)
     }

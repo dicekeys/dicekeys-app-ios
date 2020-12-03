@@ -72,11 +72,8 @@ struct DiceKeyPresent: View {
 
     @State var inNicknameEditingMode: Bool = false
 
-    enum Destination {
-        case Stickeys
-    }
-    @State private var destinationToNavigateTo: Destination?
-    @State private var isNavigationActive = false
+    @State private var isDiceKeyWithDerivedValueActive = false
+    @State private var derivableName: String?
 
 //    func navigate(to destination: Destination) {
 //        destinationToNavigateTo = destination
@@ -104,19 +101,28 @@ struct DiceKeyPresent: View {
         GeometryReader { geometry in
         NavigationView {
             VStack {
-//                NavigationLink(destination: RouteToDestination(destination: self.destinationToNavigateTo), isActive: $isNavigationActive) { EmptyView() }.hidden()
+                NavigationLink(destination: DiceKeyWithDerivedValue(derivableName: $derivableName, diceKeyState: diceKeyState), isActive: $isDiceKeyWithDerivedValueActive, label: { EmptyView() }).hidden()
                 Spacer()
                 NicknameEditingField(nickname: $diceKeyState.nickname).hideIf(!inNicknameEditingMode)
                 Spacer()
                 DiceKeyView(diceKey: diceKeyState.diceKey, showLidTab: true)
-                Menu {
-                    Button("Password for A") { print("DQ") }
-                    Button("Password for B") { print("Babies") }
-                } label: { VStack {
-                    Image(systemName: "arrow.down")
-                    Image(systemName: "ellipsis.rectangle.fill")
-                    Text("Derive Secret")
-                } }
+                if let derivables = GlobalState.instance.derivables {
+                    if derivables.count > 0 {
+                        Menu {
+                            ForEach(derivables) { derivable in
+                                Button(derivable.name) {
+                                    derivableName = derivable.name
+                                    isDiceKeyWithDerivedValueActive = true
+                                }
+                            }
+                        } label: { VStack {
+                            Image(systemName: "arrow.down")
+                            Image(systemName: "ellipsis.rectangle.fill")
+                            Text("Derive Secret")
+                            }
+                        }
+                    }
+                }
                 Spacer()
                 VStack {
                 ZStack {
