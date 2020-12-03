@@ -36,3 +36,7 @@ extension Color {
 
     static let highlighter: Color = Color(CGColor(red: 1, green: 1, blue: 0, alpha: 0.5))
 }
+
+extension CGColor {
+//    static let systemBlueOpacity50 = CGColor(red: UIColor.systemBlue.ciColor.red, green: UIColor.systemBlue.ciColor.green, blue: UIColor.systemBlue.ciColor.blue, alpha: 0.50)
+}

@@ -60,6 +60,7 @@
 		177FCA7E256E3B8500E2FB6F /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA7D256E3B8500E2FB6F /* View.swift */; };
 		1788B144257719D8007F6CF9 /* StickerTargetSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B143257719D8007F6CF9 /* StickerTargetSheet.swift */; };
 		1788B15225775A56007F6CF9 /* TransferSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B15125775A56007F6CF9 /* TransferSticker.swift */; };
+		1788B15625786E70007F6CF9 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B15525786E6E007F6CF9 /* UINavigationController.swift */; };
 		17BBB61A256F6332009AC42B /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB619256F6332009AC42B /* Colors.swift */; };
 		17BBB61E256F87CD009AC42B /* Funnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB61D256F87CD009AC42B /* Funnel.swift */; };
 		17BBB622256F8840009AC42B /* DerivedFromDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB621256F8840009AC42B /* DerivedFromDiceKey.swift */; };
@@ -145,6 +146,7 @@
 		177FCA7D256E3B8500E2FB6F /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		1788B143257719D8007F6CF9 /* StickerTargetSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerTargetSheet.swift; sourceTree = "<group>"; };
 		1788B15125775A56007F6CF9 /* TransferSticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferSticker.swift; sourceTree = "<group>"; };
+		1788B15525786E6E007F6CF9 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		17BBB619256F6332009AC42B /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		17BBB61D256F87CD009AC42B /* Funnel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funnel.swift; sourceTree = "<group>"; };
 		17BBB621256F8840009AC42B /* DerivedFromDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivedFromDiceKey.swift; sourceTree = "<group>"; };
@@ -358,6 +360,7 @@
 				6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */,
 				1742874025749CA300C3715B /* Properties.swift */,
 				175F394B2577003D007FAE80 /* Size.swift */,
+				1788B15525786E6E007F6CF9 /* UINavigationController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -702,6 +705,7 @@
 				177FCA7A256DBBF300E2FB6F /* Color.swift in Sources */,
 				177FCA5A256D047300E2FB6F /* ViewsInProgress.swift in Sources */,
 				1742874125749CA300C3715B /* Properties.swift in Sources */,
+				1788B15625786E70007F6CF9 /* UINavigationController.swift in Sources */,
 				175F395025770674007FAE80 /* StickerSheet.swift in Sources */,
 				1742872225721A7200C3715B /* SeedHardwareSecurityKey.swift in Sources */,
 				17533916256B3AC500E090BC /* App.swift in Sources */,
