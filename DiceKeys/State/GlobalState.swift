@@ -7,20 +7,22 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
-final class GlobalState: ObservableObject {
+struct KnownDiceKeyIdentifiable: Identifiable {
+    let id: String
+}
+
+final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
     static private(set) var instance = GlobalState()
 
     enum Fields: String {
+        case knownDiceKeys
         case neverAskUserToSave
+        case derivablesJson
     }
-
-    @UserDefault(Fields.neverAskUserToSave.rawValue, false) var neverAskUserToSave: Bool
-
-    let objectWillChange = ObservableObjectPublisher()
-    private var notificationSubscription: AnyCancellable?
-
-    @UserDefault("DerivablesJson", "") private var derivablesJson: String
+    
+    @UserDefault(Fields.derivablesJson.rawValue, "") private var derivablesJson: String
 
     var derivables: [Derivable] {
         get {
@@ -33,9 +35,20 @@ final class GlobalState: ObservableObject {
         }
     }
 
-    init() {
-        notificationSubscription = NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification).sink { _ in
-            self.objectWillChange.send()
+    @UserDefault(Fields.knownDiceKeys.rawValue, []) private(set) var knownDiceKeys: [String]
+
+    func addKnownDiceKey(keyId: String) {
+        if !knownDiceKeys.contains(keyId) {
+            self.knownDiceKeys = knownDiceKeys + [keyId]
         }
     }
+    func removeKnownDiceKey(keyId: String) {
+        self.knownDiceKeys = knownDiceKeys.filter { $0 != keyId }
+    }
+
+    var knownDiceKeysIdentifiable: [KnownDiceKeyIdentifiable] {
+        knownDiceKeys.map { KnownDiceKeyIdentifiable(id: $0) }
+    }
+
+    @UserDefault(Fields.neverAskUserToSave.rawValue, false) var neverAskUserToSave: Bool
 }

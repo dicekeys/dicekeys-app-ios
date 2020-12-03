@@ -64,37 +64,18 @@ struct DiceKeyPresent: View {
     @ObservedObject var diceKeyState: DiceKeyState
     let onForget: () -> Void
 
-//    init(diceKey: Binding<DiceKey?>) {
-//        self.diceKey = diceKey
-//        self.diceKeyState = DiceKeyState(diceKey.wrappedValue!)
-////        _diceKeyState = State(initialValue: DiceKeyState(diceKey))
-//    }
-
     @State var inNicknameEditingMode: Bool = false
 
     @State private var isDiceKeyWithDerivedValueActive = false
     @State private var derivableName: String?
-
-//    func navigate(to destination: Destination) {
-//        destinationToNavigateTo = destination
-//        isNavigationActive = true
-//    }
-//
-//    struct RouteToDestination: View {
-//        let destination: Destination?
-//
-//        var body: some View {
-//            switch destination {
-//            case .Stickeys:
-//                BackupCard(diceKey: DiceKey.createFromRandom())
-//            default:
-//                EmptyView()
-//            }
-//        }
-//    }
+ 
     var BottomButtonCount: Int = 3
     var BottomButtonFractionalWidth: CGFloat {
         CGFloat(1) / CGFloat(BottomButtonCount + 1)
+    }
+    
+    var diceKey: DiceKey {
+        diceKeyState.diceKey!
     }
 
     var body: some View {
@@ -105,7 +86,7 @@ struct DiceKeyPresent: View {
                 Spacer()
                 NicknameEditingField(nickname: $diceKeyState.nickname).hideIf(!inNicknameEditingMode)
                 Spacer()
-                DiceKeyView(diceKey: diceKeyState.diceKey, showLidTab: true)
+                DiceKeyView(diceKey: diceKey, showLidTab: true)
                 if let derivables = GlobalState.instance.derivables {
                     if derivables.count > 0 {
                         Menu {
@@ -130,21 +111,35 @@ struct DiceKeyPresent: View {
                         Spacer()
                         NavigationLink(destination: SeedHardwareSecurityKey()) {
                             VStack {
-                                Image(systemName: "key")
+                                Image("USB Key")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
                                 Text("Seed Key").font(.footnote)
                             }
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
-                        NavigationLink(destination: BackupDiceKey(diceKey: diceKeyState.diceKey)) {
+                        NavigationLink(destination: BackupDiceKey(diceKey: diceKey)) {
                             VStack {
-                                Image(systemName: "doc.on.doc")
+                                Image("Backup to DiceKey")
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
                                 Text("Backup").font(.footnote)
                             }
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
-                        NavigationLink(destination: DiceKeyStorageOptions(diceKeyState: diceKeyState)) {
+                        NavigationLink(destination: DiceKeyStorageOptions(diceKey: diceKey, diceKeyState: diceKeyState)) {
                             VStack {
                                 ZStack {
                                     Image(systemName: "iphone")
-                                    Image(systemName: "checkmark").foregroundColor(.green)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
+                                    Image("DiceKey Icon")
+                                        .renderingMode(.template)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(height: min(geometry.size.width, geometry.size.height)/24, alignment: .center)
                                 }
                                 Text("Saved").font(.footnote)
                             }
@@ -160,7 +155,7 @@ struct DiceKeyPresent: View {
             .toolbar {
                 ToolbarItem(placement: ToolbarItemPlacement.navigationBarLeading) {
                     Button(action: { self.onForget() }) {
-                        Text("Forget")
+                        Text(diceKeyState.isDiceKeyStored ? "Close" : "Forget")
                     }
                 }
                 ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {

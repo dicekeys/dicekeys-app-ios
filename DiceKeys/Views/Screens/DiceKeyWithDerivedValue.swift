@@ -33,7 +33,7 @@ struct DiceKeyWithDerivedValue: View {
         guard derivationOptionsJson.count > 0 else {
             return ""
         }
-        return (try? Password.deriveFromSeed(withSeedString: diceKeyState.diceKey.toSeed(), derivationOptionsJson: derivationOptionsJson).password) ?? ""
+        return (try? Password.deriveFromSeed(withSeedString: diceKeyState.diceKey!.toSeed(), derivationOptionsJson: derivationOptionsJson).password) ?? ""
     }
 
     var derivables: [Derivable] {
@@ -47,7 +47,7 @@ struct DiceKeyWithDerivedValue: View {
     var body: some View {
         VStack {
             Spacer()
-            DerivedFromDiceKey(diceKey: diceKeyState.diceKey) {
+            DerivedFromDiceKey(diceKey: diceKeyState.diceKey!) {
                 VStack {
                     Text(derivedValue).multilineTextAlignment(.center)
                 }.padding(.horizontal, 10)

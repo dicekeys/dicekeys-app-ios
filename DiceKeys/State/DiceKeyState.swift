@@ -2,21 +2,19 @@
 //  DiceKeyState.swift
 //  DiceKeys
 //
-//  Created by Stuart Schechter on 2020/12/03.
+//  Created by Stuart Schechter on 2020/12/01.
 //
-
 import Foundation
 import Combine
+import SwiftUI
 
-final class DiceKeyState: ObservableObject {
-    let diceKey: DiceKey
-
+final class DiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, Identifiable {
+    let diceKey: DiceKey?
+    
     enum FieldName: String {
         case nickname
         case whatToStore
     }
-
-    private static let fileAccessor = EncryptedDiceKeyFileAccessor()
 
     enum WhatToStore: String {
         case notSpecified
@@ -28,60 +26,76 @@ final class DiceKeyState: ObservableObject {
 
     let keyId: String
 
-    @Published var nickname: String {
-        didSet {
-            UserDefaults.standard.set(nickname, forKey: DiceKeyState.fieldKey(.nickname, keyId))
-        }
+    // To comply with Identifiable protocol
+    var id: String { keyId }
+
+    @UserDefault var nickname: String
+    @UserDefault var whatToStoreRaw: String?
+
+    var whatToStore: WhatToStore {
+        WhatToStore(rawValue: whatToStoreRaw ?? "") ?? WhatToStore.nothing
     }
 
-    @Published var whatToStore: WhatToStore {
-        willSet {
-            if whatToStore == .rawDiceKey {
-                // erase diceKey
-                _  = EncryptedDiceKeyFileAccessor().delete(keyId: keyId)
-            }
+    var isDiceKeyStored: Bool {
+        whatToStore == .rawDiceKey && EncryptedDiceKeyFileAccessor.instance.hasDiceKey(forKeyId: keyId)
+    }
 
-            if whatToStore == .publicKeys {
-                // erase public keys
-            }
+    private func setWhatToStore(_ newValue: WhatToStore) {
+        // Ensure this key is on the list of Known DiceKeys
+        if newValue == .nothing {
+            GlobalState.instance.removeKnownDiceKey(keyId: keyId)
+        } else {
+            GlobalState.instance.addKnownDiceKey(keyId: keyId)
+        }
+        // Clean up previous state
+        if whatToStore == .rawDiceKey {
+            // erase diceKey
+            _  = EncryptedDiceKeyFileAccessor.instance.delete(keyId: keyId)
+        }
 
-            if newValue == .rawDiceKey {
-                DiceKeyState.fileAccessor.put(diceKey: diceKey) { result in
-                    switch result {
-                    case .failure(let error): print(error)
-                    case .success: break
-                    }
-                }
-            } else if newValue == .publicKeys {
-                //
+        if whatToStore == .publicKeys {
+            // erase public keys
+        }
+
+        // Set new state
+        self.whatToStoreRaw = newValue.rawValue
+        //
+    }
+    func setStoreRawDiceKey(diceKey: DiceKey) {
+        EncryptedDiceKeyFileAccessor.instance.put(diceKey: diceKey) { result in
+            switch result {
+            case .failure(let error): print(error)
+            case .success: break
             }
         }
-        didSet {
-            UserDefaults.standard.set(nickname, forKey: DiceKeyState.fieldKey(.nickname, keyId))
-        }
+        self.setWhatToStore(.rawDiceKey)
+    }
+    func setStoreNicknameOnly() { self.setWhatToStore(.nicknameOnly) }
+    func setStorePublicKeys() {
+        // FIXME -- write public keys
+        self.setWhatToStore(.publicKeys)
     }
 
     static func fieldKey(_ fieldName: FieldName, _ keyId: String) -> String {
         "keyId: '\(keyId)', field: '\(fieldName.rawValue)'"
     }
 
-    let objectWillChange = ObservableObjectPublisher()
-    private var notificationSubscription: AnyCancellable?
+    init(forKeyId: String) { // }, defaultNickname: String = "") {
+        self.diceKey = nil
+        self.keyId = forKeyId
+        self._nickname = UserDefault(DiceKeyState.fieldKey(.nickname, keyId), "")
+        self._whatToStoreRaw = UserDefault(DiceKeyState.fieldKey(.whatToStore, keyId), WhatToStore.nothing.rawValue)
+        super.init()
+    }
 
-//    init(forKeyId: String, defaultNickname: String = "My DiceKey FIXME") {
-//    }
-
-    // convenience
     init(_ forDiceKey: DiceKey) {
         self.diceKey = forDiceKey
-        let defaultNickname = "DiceKey with \(forDiceKey.faces[12].letter.rawValue)\(forDiceKey.faces[12].digit.rawValue) in center"
-
-        self.keyId = diceKey.id
-        self.nickname = UserDefaults.standard.string(forKey: DiceKeyState.fieldKey(.nickname, keyId)) ?? defaultNickname
-        self.whatToStore = WhatToStore(rawValue: UserDefaults.standard.string(forKey: DiceKeyState.fieldKey(.whatToStore, keyId)) ?? "") ?? WhatToStore.nothing
-
-        notificationSubscription = NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification).sink { _ in
-            self.objectWillChange.send()
-        }
+        let keyId = forDiceKey.id
+        self.keyId = keyId
+        self._nickname = UserDefault(DiceKeyState.fieldKey(.nickname, keyId), "DiceKey with \(forDiceKey.faces[12].letter.rawValue)\(forDiceKey.faces[12].digit.rawValue) in center")
+        self._whatToStoreRaw = UserDefault(DiceKeyState.fieldKey(.whatToStore, keyId), WhatToStore.nothing.rawValue)
+        super.init()
+        // Force nickname to be written to the stable store
+        self.nickname = "\(nickname)"
     }
 }

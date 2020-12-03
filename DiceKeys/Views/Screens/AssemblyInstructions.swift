@@ -141,20 +141,26 @@ private struct CreateBackup: View {
     let diceKey: DiceKey?
 
     var body: some View {
-        Instruction("Use Stickeys or another Dicekey kit to make a copy of the key you just created.")
-        Spacer()
-        Image("Assembling Stickeys").resizable().aspectRatio(contentMode: .fit)
-        Spacer()
-//        InstructionNote("If you place a sticker incorrectly, you may re-arrange your dice to match the mistake and then go back to the previous step to re-scan the dice.")
-        if let diceKey = self.diceKey {
+        VStack {
+            Instruction("Use Stickeys or another DiceKey kit to make a copy of the key you just created.")
             Spacer()
-            HStack{
-                Spacer()
-                DiceKeyView(diceKey: diceKey, showLidTab: false)
-                Spacer()
-                Text("The DiceKey you scanned in the previous step.")
-                Spacer()
+            if let diceKey = self.diceKey {
+                BackupDiceKey(diceKey: diceKey)
+            } else {
+                Image("Assembling Stickeys").resizable().aspectRatio(contentMode: .fit)
             }
+            Spacer()
+//        InstructionNote("If you place a sticker incorrectly, you may re-arrange your dice to match the mistake and then go back to the previous step to re-scan the dice.")
+//        if let diceKey = self.diceKey {
+//            Spacer()
+//            HStack {
+//                Spacer()
+//                DiceKeyView(diceKey: diceKey, showLidTab: false)
+//                Spacer()
+//                Text("The DiceKey you scanned in the previous step.")
+//                Spacer()
+//            }
+//        }
         }
     }
 }
@@ -270,21 +276,33 @@ struct AssemblyInstructions: View {
                 }.foregroundColor(.white)
                 .background(warningBackgroundColor)
                 .hideIf(!showWarning)
-            }.edgesIgnoringSafeArea(.bottom)        }
+            }.edgesIgnoringSafeArea(.bottom)}
+            .navigationTitle("Assembly Instructions")
+            .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 struct AssemblyInstructions_Previews: PreviewProvider {
     static var previews: some View {
         AppMainView()
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+        
+        CreateBackup(diceKey: DiceKey.createFromRandom())
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
 
         AssemblyInstructions(step: .Randomize)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
         AssemblyInstructions(step: .DropDice)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
         AssemblyInstructions(step: .FillEmptySlots)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
         AssemblyInstructions(step: .ScanFirstTime)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
         AssemblyInstructions(step: .CreateBackup)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
 //        AssemblyInstructions(step: .ValidateBackup)
         AssemblyInstructions(step: .SealBox)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
         // AssemblyInstructions()
     }
 }

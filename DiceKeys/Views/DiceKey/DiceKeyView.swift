@@ -7,6 +7,20 @@
 
 import SwiftUI
 
+struct DiceKeySizeModel {
+    let squareSize: CGFloat
+    
+    let marginOfBoxEdgeAsFractionOfDieSize: CGFloat = 0.25
+    let distanceBetweenFacesAsFractionOfFaceSize: CGFloat = 0.15
+    var faceSize: CGFloat { return ( squareSize / (
+      5 +
+      4 * distanceBetweenFacesAsFractionOfFaceSize +
+      2 * marginOfBoxEdgeAsFractionOfDieSize
+    ) ) }
+    
+    var stepSize: CGFloat { (1 + distanceBetweenFacesAsFractionOfFaceSize) * faceSize }
+}
+
 private struct DieLidView: View {
     let radius: CGFloat
     let color: Color
@@ -28,7 +42,6 @@ struct DiceKeyViewFixedSize: View {
     let showLidTab: Bool // = false
     let leaveSpaceForTab: Bool// = false
     let diceBoxColor: Color// = Color(red: 0x05 / 0xFF, green: 0x03 / 0xFF, blue: 0x50 / 0xFF)
-
     var fractionOfVerticalSpaceUsedByTab: CGFloat {
         (leaveSpaceForTab || showLidTab) ? fractionOfVerticalSpaceRequiredForTab : 0
     }
@@ -52,15 +65,12 @@ struct DiceKeyViewFixedSize: View {
     var hCenter: CGFloat { viewSize.width / 2 }
     var vCenter: CGFloat { linearSizeOfBox / 2 }
 
-    let marginOfBoxEdgeAsFractionOfDieSize: CGFloat = 0.25
-    let distanceBetweenDiceAsFractionOfDieSize: CGFloat = 0.15
-    var dieSize: CGFloat { return ( linearSizeOfBox / (
-      5 +
-      4 * distanceBetweenDiceAsFractionOfDieSize +
-      2 * marginOfBoxEdgeAsFractionOfDieSize
-    ) ) }
-
-    var dieStepSize: CGFloat { (1 + distanceBetweenDiceAsFractionOfDieSize) * dieSize }
+    private var sizeModel: DiceKeySizeModel {
+        DiceKeySizeModel(squareSize: linearSizeOfBox)
+    }
+    
+    var faceSize: CGFloat { sizeModel.faceSize }
+    var dieStepSize: CGFloat { sizeModel.stepSize }
 
     private struct DiePosition: Identifiable {
         let indexInArray: Int
@@ -91,7 +101,7 @@ struct DiceKeyViewFixedSize: View {
             }
             // The dice
             ForEach(facePositions) { facePosition in
-                DieView(face: facePosition.face, dieSize: dieSize)
+                DieView(face: facePosition.face, dieSize: faceSize)
                     .position(
                         x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
                         y: vCenter + CGFloat(-2 + facePosition.row) * dieStepSize
@@ -106,6 +116,7 @@ struct DiceKeyView: View {
     var showLidTab: Bool = false
     var leaveSpaceForTab: Bool = false
     var diceBoxColor: Color = Colors.diceBox
+    let dieBorderColor: Color? = nil
 
     var aspectRatio: CGFloat { get {
       (showLidTab == true || leaveSpaceForTab == true) ?

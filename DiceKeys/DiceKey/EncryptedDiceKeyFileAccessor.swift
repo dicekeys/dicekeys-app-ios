@@ -33,11 +33,17 @@ class Directories {
 }
 
 class PublicKeysFiles {
-    
+
 }
 
 class EncryptedDiceKeyFileAccessor {
-    private var laContext = LAContext()
+    private var laContext: LAContext
+
+    private init() {
+        laContext = LAContext()
+    }
+    
+    static private(set) var instance = EncryptedDiceKeyFileAccessor()
 
     func authenticate (
         reason: String = "Authenticate to access your DiceKey",
@@ -61,14 +67,14 @@ class EncryptedDiceKeyFileAccessor {
         }
     }
 
-    func getDiceKey(fromFileName keyName: String, _ onComplete: @escaping (Result<DiceKey, Error>) -> Void) {
+    func getDiceKey(fromKeyId keyId: String, _ onComplete: @escaping (Result<DiceKey, Error>) -> Void) {
         self.authenticate { authResult in
             switch authResult {
             case .failure(let error): onComplete(.failure(error)); return
             case .success: break
             }
             do {
-                let diceKeyInHRF = try String(contentsOf: try Directories.getPublicDiceKeysDirectory(forKeyId: keyName), encoding: .utf8)
+                let diceKeyInHRF = try String(contentsOf: try Directories.getRawDiceKeyFileUrl(forKeyId: keyId), encoding: .utf8)
                 let diceKey = try DiceKey.createFrom(humanReadableForm: diceKeyInHRF)
                 onComplete(.success(diceKey))
             } catch {
@@ -88,9 +94,14 @@ class EncryptedDiceKeyFileAccessor {
         }
     }
 
+    func hasDiceKey(forKeyId keyId: String) -> Bool {
+        guard let fileUrl = try? Directories.getRawDiceKeyFileUrl(forKeyId: keyId) else { return false }
+        return FileManager.default.fileExists(atPath: fileUrl.path)
+    }
+
     func getDiceKey(fromKeyId keyId: String) -> Future<DiceKey, Error> {
         return Future<DiceKey, Error> { promise in
-            self.getDiceKey(fromFileName: keyId) { result in promise(result) }
+            self.getDiceKey(fromKeyId: keyId) { result in promise(result) }
         }
     }
 
