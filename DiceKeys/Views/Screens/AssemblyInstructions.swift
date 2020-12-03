@@ -276,7 +276,9 @@ struct AssemblyInstructions: View {
                 }.foregroundColor(.white)
                 .background(warningBackgroundColor)
                 .hideIf(!showWarning)
-            }.edgesIgnoringSafeArea(.bottom)        }
+            }.edgesIgnoringSafeArea(.bottom)}
+            .navigationTitle("Assembly Instructions")
+            .navigationBarTitleDisplayMode(.inline)
     }
 }
 

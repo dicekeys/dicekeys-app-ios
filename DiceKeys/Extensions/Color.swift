@@ -32,8 +32,7 @@ extension Color {
             blue: Double(b) / 255,
             opacity: Double(a) / 255
         )
-        
     }
-    
-    
+
+    static let highlighter: Color = Color(CGColor(red: 1, green: 1, blue: 0, alpha: 0.5))
 }

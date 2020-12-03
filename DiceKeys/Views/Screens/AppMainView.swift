@@ -21,6 +21,9 @@ struct KnownDiceKeyCard: View {
 }
 
 struct AppMainView: View {
+    // Note: Navigation bar styling is controlled by the UINavigationBarController
+    // extension in the Extensions directory
+
     @State var diceKey: DiceKey?
     @State var diceKeyState: DiceKeyState?
 
@@ -77,13 +80,16 @@ struct AppMainView: View {
                 }
                 Spacer()
             }
-//            Text("This is odd")
-        }.navigationViewStyle(StackNavigationViewStyle())//.navigationBarTitle("DiceKeys Home")
+            //.navigationTitle("DiceKeys")
+            .navigationBarHidden(true)
+        }.navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }
 struct AppMainView_Previews: PreviewProvider {
     static var previews: some View {
         AppMainView().previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
+//        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
     }
 }
