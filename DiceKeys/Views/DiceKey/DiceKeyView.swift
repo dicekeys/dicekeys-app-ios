@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DiceKeySizeModel {
     let squareSize: CGFloat
-    
+
     let marginOfBoxEdgeAsFractionOfDieSize: CGFloat = 0.25
     let distanceBetweenFacesAsFractionOfFaceSize: CGFloat = 0.15
     var faceSize: CGFloat { return ( squareSize / (
@@ -17,7 +17,7 @@ struct DiceKeySizeModel {
       4 * distanceBetweenFacesAsFractionOfFaceSize +
       2 * marginOfBoxEdgeAsFractionOfDieSize
     ) ) }
-    
+
     var stepSize: CGFloat { (1 + distanceBetweenFacesAsFractionOfFaceSize) * faceSize }
 }
 
@@ -68,7 +68,7 @@ struct DiceKeyViewFixedSize: View {
     private var sizeModel: DiceKeySizeModel {
         DiceKeySizeModel(squareSize: linearSizeOfBox)
     }
-    
+
     var faceSize: CGFloat { sizeModel.faceSize }
     var dieStepSize: CGFloat { sizeModel.stepSize }
 

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct ViewsInProgress_Previews: PreviewProvider {
     static var previews: some View {
 //        Funnel(height: 100, topWidth: 200, bottomWidth: 500)

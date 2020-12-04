@@ -32,9 +32,8 @@ class Directories {
     }
 }
 
-class PublicKeysFiles {
-
-}
+//class PublicKeysFiles {
+//}
 
 class EncryptedDiceKeyFileAccessor {
     private var laContext: LAContext
@@ -42,7 +41,7 @@ class EncryptedDiceKeyFileAccessor {
     private init() {
         laContext = LAContext()
     }
-    
+
     static private(set) var instance = EncryptedDiceKeyFileAccessor()
 
     func authenticate (

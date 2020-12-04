@@ -10,7 +10,6 @@ import UIKit
 import AVFoundation
 import ReadDiceKey
 
-
 final class DiceKeysCameraView: UIViewControllerRepresentable {
     let size: CGSize
     let onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)?
@@ -53,7 +52,6 @@ final class DiceKeysCameraView: UIViewControllerRepresentable {
     public func updateUIViewController(_ uiViewController: DiceKeysCameraUIViewController, context: UIViewControllerRepresentableContext<DiceKeysCameraView>) {
     }
 }
-
 
 final class DiceKeysCameraUIViewController: UIViewController {
     let cameraController = DiceKeysCameraController()

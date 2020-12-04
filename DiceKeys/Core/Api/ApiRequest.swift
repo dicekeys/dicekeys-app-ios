@@ -515,7 +515,7 @@ class UrlRequestContext: RequestContext {
             responseDictionary["exception"] = "Unknown"
             responseDictionary["message"] = error.localizedDescription
         }
-        
+
         responseDictionary["requestID"] = self.requestId
 
         // Put all of the response values into the URL

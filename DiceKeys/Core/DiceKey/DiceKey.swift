@@ -63,6 +63,8 @@ class DiceKey: Identifiable {
             return face
         }
     }
+    
+    var centerFace: Face { faces[12] }
 
     static func createFromRandom() -> DiceKey {
         return DiceKey( (1...25).map { _ -> Face in
@@ -79,23 +81,20 @@ class DiceKey: Identifiable {
         let bytesPerFace = humanReadableForm.count == 75 ? 3 : 2
         return DiceKey( try (0...24).map { index -> Face in
             let letterIndex = bytesPerFace * index
-            let letter = FaceLetter(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy: letterIndex)]))
-            if letter == nil {
+            guard let letter = FaceLetter(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy: letterIndex)])) else {
                 throw IllegalCharacterError.inLetter(position: letterIndex)
             }
-            let digit = FaceDigit(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy: letterIndex + 1)]))
-            if digit == nil {
+            guard let digit = FaceDigit(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy: letterIndex + 1)])) else {
                 throw IllegalCharacterError.inDigit(position: letterIndex + 1)
             }
-            let orientationAsLowercaseLetterTrbl = bytesPerFace == 3 ? FaceOrientationLetterTrbl(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy: letterIndex + 2)])) :
-                FaceOrientationLetterTrbl.Top
-            if orientationAsLowercaseLetterTrbl == nil {
+            guard let orientationAsLowercaseLetterTrbl = bytesPerFace == 3 ? FaceOrientationLetterTrbl(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy: letterIndex + 2)])) :
+                FaceOrientationLetterTrbl.Top else {
                 throw IllegalCharacterError.inOrientation(position: letterIndex+2)
             }
             return Face(
-                letter: letter!,
-                digit: digit!,
-                orientationAsLowercaseLetterTrbl: orientationAsLowercaseLetterTrbl!
+                letter: letter,
+                digit: digit,
+                orientationAsLowercaseLetterTrbl: orientationAsLowercaseLetterTrbl
             )
         })
     }

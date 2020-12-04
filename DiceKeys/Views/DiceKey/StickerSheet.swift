@@ -38,7 +38,7 @@ struct StickerSheetFixedSize: View {
     var width: CGFloat {
         height * nativeWidthOverHeight
     }
-    
+
     var faceSizeModel: DiceKeySizeModel { DiceKeySizeModel(squareSize: width) }
     var faceSize: CGFloat { faceSizeModel.faceSize }
     var faceStepSize: CGFloat { faceSizeModel.stepSize }

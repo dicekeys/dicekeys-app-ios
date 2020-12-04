@@ -61,21 +61,21 @@ struct NicknameEditingField: View {
 }
 
 struct DiceKeyPresent: View {
-    @ObservedObject var diceKeyState: DiceKeyState
+    @ObservedObject var diceKeyState: UnlockedDiceKeyState
     let onForget: () -> Void
 
-    @State var inNicknameEditingMode: Bool = false
+//    @State var inNicknameEditingMode: Bool = false
 
     @State private var isDiceKeyWithDerivedValueActive = false
     @State private var derivableName: String?
- 
+
     var BottomButtonCount: Int = 3
     var BottomButtonFractionalWidth: CGFloat {
         CGFloat(1) / CGFloat(BottomButtonCount + 1)
     }
-    
+
     var diceKey: DiceKey {
-        diceKeyState.diceKey!
+        diceKeyState.diceKey
     }
 
     var body: some View {
@@ -83,8 +83,8 @@ struct DiceKeyPresent: View {
         NavigationView {
             VStack {
                 NavigationLink(destination: DiceKeyWithDerivedValue(derivableName: $derivableName, diceKeyState: diceKeyState), isActive: $isDiceKeyWithDerivedValueActive, label: { EmptyView() }).hidden()
-                Spacer()
-                NicknameEditingField(nickname: $diceKeyState.nickname).hideIf(!inNicknameEditingMode)
+//                Spacer()
+//                NicknameEditingField(nickname: $diceKeyState.nickname).hideIf(!inNicknameEditingMode)
                 Spacer()
                 DiceKeyView(diceKey: diceKey, showLidTab: true)
                 if let derivables = GlobalState.instance.derivables {
@@ -135,13 +135,15 @@ struct DiceKeyPresent: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
-                                    Image("DiceKey Icon")
-                                        .renderingMode(.template)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(height: min(geometry.size.width, geometry.size.height)/24, alignment: .center)
+                                    if (diceKeyState.isDiceKeyStored) {
+                                        Image("DiceKey Icon")
+                                            .renderingMode(.template)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(height: min(geometry.size.width, geometry.size.height)/24, alignment: .center)
+                                    }
                                 }
-                                Text("Saved").font(.footnote)
+                                Text(diceKeyState.isDiceKeyStored ? "Stored" : "Not stored").font(.footnote)
                             }
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
                         Spacer()
@@ -155,27 +157,30 @@ struct DiceKeyPresent: View {
             .toolbar {
                 ToolbarItem(placement: ToolbarItemPlacement.navigationBarLeading) {
                     Button(action: { self.onForget() }) {
-                        Text(diceKeyState.isDiceKeyStored ? "Close" : "Forget")
+                        HStack {
+                            Image(systemName: "lock")
+                            Text(diceKeyState.isDiceKeyStored ? "Lock" : "Forget")
+                        }
                     }
                 }
-                ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {
-                    if inNicknameEditingMode {
-                        Button(action: { inNicknameEditingMode = false }, label: {
-                            Image(systemName: "checkmark")
-                        })
-                    } else {
-                        Button(action: { inNicknameEditingMode = true }, label: {
-                            Image(systemName: "pencil")
-                        })
-                    }
-                }
+//                ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {
+//                    if inNicknameEditingMode {
+//                        Button(action: { inNicknameEditingMode = false }, label: {
+//                            Image(systemName: "checkmark")
+//                        })
+//                    } else {
+//                        Button(action: { inNicknameEditingMode = true }, label: {
+//                            Image(systemName: "pencil")
+//                        })
+//                    }
+//                }
             }.edgesIgnoringSafeArea(.bottom)
         }.navigationViewStyle(StackNavigationViewStyle())}
     }
 }
 
 struct TestDiceKeyPresent: View {
-    @State var diceKeyState: DiceKeyState = DiceKeyState(DiceKey.createFromRandom())
+    @State var diceKeyState: UnlockedDiceKeyState = UnlockedDiceKeyState(DiceKey.createFromRandom())
 
     var body: some View {
         DiceKeyPresent(

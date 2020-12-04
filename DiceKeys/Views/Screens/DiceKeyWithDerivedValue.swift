@@ -10,7 +10,7 @@ import SeededCrypto
 
 struct DiceKeyWithDerivedValue: View {
     @Binding var derivableName: String?
-    @ObservedObject var diceKeyState: DiceKeyState
+    @ObservedObject var diceKeyState: UnlockedDiceKeyState
 
     @State var customDerivationOptionsJson: String = ""
     @State var useCustomDerivationOptions: Bool = false
@@ -33,7 +33,7 @@ struct DiceKeyWithDerivedValue: View {
         guard derivationOptionsJson.count > 0 else {
             return ""
         }
-        return (try? Password.deriveFromSeed(withSeedString: diceKeyState.diceKey!.toSeed(), derivationOptionsJson: derivationOptionsJson).password) ?? ""
+        return (try? Password.deriveFromSeed(withSeedString: diceKeyState.diceKey.toSeed(), derivationOptionsJson: derivationOptionsJson).password) ?? ""
     }
 
     var derivables: [Derivable] {
@@ -47,7 +47,7 @@ struct DiceKeyWithDerivedValue: View {
     var body: some View {
         VStack {
             Spacer()
-            DerivedFromDiceKey(diceKey: diceKeyState.diceKey!) {
+            DerivedFromDiceKey(diceKey: diceKeyState.diceKey) {
                 VStack {
                     Text(derivedValue).multilineTextAlignment(.center)
                 }.padding(.horizontal, 10)
@@ -79,7 +79,7 @@ struct DiceKeyWithDerivedValue_Test: View {
     @State var destinationName: String? = "Microsoft"
 
     var body: some View {
-        DiceKeyWithDerivedValue(derivableName: $destinationName, diceKeyState: DiceKeyState(DiceKey.createFromRandom()))
+        DiceKeyWithDerivedValue(derivableName: $destinationName, diceKeyState: UnlockedDiceKeyState(DiceKey.createFromRandom()))
     }
 }
 

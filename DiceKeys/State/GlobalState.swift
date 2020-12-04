@@ -21,7 +21,7 @@ final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
         case neverAskUserToSave
         case derivablesJson
     }
-    
+
     @UserDefault(Fields.derivablesJson.rawValue, "") private var derivablesJson: String
 
     var derivables: [Derivable] {

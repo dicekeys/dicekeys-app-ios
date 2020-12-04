@@ -19,7 +19,7 @@ func restrictionsJson(_ hosts: String...) -> String {
 struct Derivable: Codable, Identifiable {
     let name: String
     let hosts: [String]
-    
+
     var id: String { name }
 
     init(_ name: String, _ hosts: String...) {

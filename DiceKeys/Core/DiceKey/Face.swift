@@ -36,10 +36,24 @@ extension FaceOrientationLetterTrbl {
     }
 }
 
-struct Face {
+protocol FaceIdentifier {
+    var letter: FaceLetter { get }
+    var digit: FaceDigit { get }
+}
+
+struct FaceIdentity: FaceIdentifier {
+    let letter: FaceLetter
+    let digit: FaceDigit
+}
+
+struct Face: FaceIdentifier {
     let letter: FaceLetter
     let digit: FaceDigit
     let orientationAsLowercaseLetterTrbl: FaceOrientationLetterTrbl
+
+    var humanReadableForm: String {
+        letter.rawValue + digit.rawValue + orientationAsLowercaseLetterTrbl.rawValue
+    }
 
     func rotate90() -> Face {
             return Face(letter: letter, digit: digit, orientationAsLowercaseLetterTrbl: self.orientationAsLowercaseLetterTrbl.rotate90()
@@ -73,5 +87,38 @@ struct Face {
         (1 << 9) |
         // shift the face code 1 to the left to leave the 0th bit empty
         ( UInt16(overlineCode8Bits) << 1 )
+    }
+
+    init(letter: FaceLetter,
+         digit: FaceDigit,
+         orientationAsLowercaseLetterTrbl: FaceOrientationLetterTrbl
+    ) {
+        self.letter = letter
+        self.digit = digit
+        self.orientationAsLowercaseLetterTrbl = orientationAsLowercaseLetterTrbl
+    }
+
+    enum IllegalCharacterError: Error {
+        case inLetter(position: Int)
+        case inDigit(position: Int)
+        case inOrientation(position: Int)
+    }
+
+    init(fromHumanReadableForm humanReadableForm: String, offsetErrorIndxesBy: Int = 0) throws {
+        guard let letter = FaceLetter(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy: 0)])) else {
+            throw IllegalCharacterError.inLetter(position: offsetErrorIndxesBy + 0)
+        }
+        guard let digit = FaceDigit(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy: 1)])) else {
+            throw IllegalCharacterError.inDigit(position: offsetErrorIndxesBy + 1)
+        }
+        guard let orientationAsLowercaseLetterTrbl = humanReadableForm.count > 2 ? FaceOrientationLetterTrbl(rawValue: String(humanReadableForm[humanReadableForm.index(humanReadableForm.startIndex, offsetBy: 2)])) :
+            FaceOrientationLetterTrbl.Top else {
+            throw IllegalCharacterError.inOrientation(position: offsetErrorIndxesBy + 2)
+        }
+        self.init(
+            letter: letter,
+            digit: digit,
+            orientationAsLowercaseLetterTrbl: orientationAsLowercaseLetterTrbl
+        )
     }
 }
