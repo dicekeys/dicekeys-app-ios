@@ -7,22 +7,6 @@
 
 import SwiftUI
 
-struct DiceKeyAbsent: View {
-    let diceKey: DiceKey
-
-    var body: some View {
-        DiceKeyView(diceKey: DiceKey.createFromRandom(), showLidTab: true)
-    }
-}
-
-struct DiceKeyAbsentPreview: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-
-
 struct ViewsInProgress_Previews: PreviewProvider {
     static var previews: some View {
 //        Funnel(height: 100, topWidth: 200, bottomWidth: 500)

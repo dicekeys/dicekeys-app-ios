@@ -19,6 +19,20 @@ final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
     enum Fields: String {
         case knownDiceKeys
         case neverAskUserToSave
+        case derivablesJson
+    }
+
+    @UserDefault(Fields.derivablesJson.rawValue, "") private var derivablesJson: String
+
+    var derivables: [Derivable] {
+        get {
+            return derivablesJson == "" ? PasswordDerivable :
+                (try? Derivable.listFromJson(derivablesJson)) ?? PasswordDerivable
+        } set {
+            if let derivablesJson = try? Derivable.listToJson(newValue) {
+                self.derivablesJson = derivablesJson
+            }
+        }
     }
 
     @UserDefault(Fields.knownDiceKeys.rawValue, []) private(set) var knownDiceKeys: [String]

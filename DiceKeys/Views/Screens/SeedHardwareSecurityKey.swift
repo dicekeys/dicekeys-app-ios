@@ -15,7 +15,7 @@ struct SeedHardwareSecurityKey: View {
 
 struct SeedHardwareSecurityKey_Previews: PreviewProvider {
     static var previews: some View {
-        SeedHardwareSecurityKey()            
+        SeedHardwareSecurityKey()
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
     }
 }

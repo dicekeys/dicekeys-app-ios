@@ -48,33 +48,10 @@ extension UINavigationController {
         navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         navigationBar.tintColor = UIColor.white
-        //        coloredNavAppearance.titleTextAttributes[.foregroundColor] = UIColor.white
-        ////        coloredNavAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        //        coloredNavAppearance.largeTitleTextAttributes[.foregroundColor] = UIColor.white
-
-        
-//        let standard = UINavigationBarAppearance()
-//        standard.backgroundImage = gradient.toImage()
-//
-//        let compact = UINavigationBarAppearance()
-//        compact.backgroundImage = gradient.toImage()
-//
-//        let scrollEdge = UINavigationBarAppearance()
-//        scrollEdge.backgroundImage = gradient.toImage()
-//
-//        self.navigationBar.standardAppearance = standard
-//        self.navigationBar.compactAppearance = compact
-//        self.navigationBar.scrollEdgeAppearance = scrollEdge
     }
-    
+
     override open func viewDidLoad() {
         super.viewDidLoad()
         self.setBackground()
     }
-    
-//    override open func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        super.viewWillTransition(to: size, with: coordinator)
-//        setGradient(forSize: size)
-//    }
-    
 }

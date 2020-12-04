@@ -9,12 +9,10 @@ import Foundation
 import SwiftUI
 
 extension CGSize {
-    
     var shorterSide: CGFloat {
         min(width, height)
     }
     var longerSide: CGFloat {
         min(width, height)
     }
-
 }

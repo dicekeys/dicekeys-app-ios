@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 func funnel(
     height: CGFloat,
     topWidth: CGFloat,

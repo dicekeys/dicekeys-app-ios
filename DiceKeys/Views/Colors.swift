@@ -10,5 +10,4 @@ import SwiftUI
 
 struct Colors {
     static var diceBox: Color { Color(hex: "050350") }
-
 }

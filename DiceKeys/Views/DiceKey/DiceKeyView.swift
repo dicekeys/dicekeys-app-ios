@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DiceKeySizeModel {
     let squareSize: CGFloat
-    
+
     let marginOfBoxEdgeAsFractionOfDieSize: CGFloat = 0.25
     let distanceBetweenFacesAsFractionOfFaceSize: CGFloat = 0.15
     var faceSize: CGFloat { return ( squareSize / (
@@ -17,7 +17,7 @@ struct DiceKeySizeModel {
       4 * distanceBetweenFacesAsFractionOfFaceSize +
       2 * marginOfBoxEdgeAsFractionOfDieSize
     ) ) }
-    
+
     var stepSize: CGFloat { (1 + distanceBetweenFacesAsFractionOfFaceSize) * faceSize }
 }
 
@@ -42,7 +42,6 @@ struct DiceKeyViewFixedSize: View {
     let showLidTab: Bool // = false
     let leaveSpaceForTab: Bool// = false
     let diceBoxColor: Color// = Color(red: 0x05 / 0xFF, green: 0x03 / 0xFF, blue: 0x50 / 0xFF)
-    
     var fractionOfVerticalSpaceUsedByTab: CGFloat {
         (leaveSpaceForTab || showLidTab) ? fractionOfVerticalSpaceRequiredForTab : 0
     }
@@ -69,7 +68,7 @@ struct DiceKeyViewFixedSize: View {
     private var sizeModel: DiceKeySizeModel {
         DiceKeySizeModel(squareSize: linearSizeOfBox)
     }
-    
+
     var faceSize: CGFloat { sizeModel.faceSize }
     var dieStepSize: CGFloat { sizeModel.stepSize }
 

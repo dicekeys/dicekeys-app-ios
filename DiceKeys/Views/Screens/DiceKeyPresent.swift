@@ -44,7 +44,11 @@ struct NicknameEditingField: View {
             TextField(
                 "Nickname",
                  text: $nickname
-            )
+            ) // { isEditing in
+//                        // self.isEditing = isEditing
+//                    } onCommit: {
+//                        // validate(name: username)
+//                    }
             .font(Font(nicknameFieldFont))
             .multilineTextAlignment(.center)
             .border(Color(UIColor.separator))
@@ -57,40 +61,49 @@ struct NicknameEditingField: View {
 }
 
 struct DiceKeyPresent: View {
-    let diceKey: DiceKey
-    @ObservedObject var diceKeyState: DiceKeyState
+    @ObservedObject var diceKeyState: UnlockedDiceKeyState
     let onForget: () -> Void
 
-    @State var inNicknameEditingMode: Bool = false
+//    @State var inNicknameEditingMode: Bool = false
 
-    enum Destination {
-        case Stickeys
-    }
-    @State private var destinationToNavigateTo: Destination?
-    @State private var isNavigationActive = false
+    @State private var isDiceKeyWithDerivedValueActive = false
+    @State private var derivableName: String?
 
     var BottomButtonCount: Int = 3
     var BottomButtonFractionalWidth: CGFloat {
         CGFloat(1) / CGFloat(BottomButtonCount + 1)
     }
 
+    var diceKey: DiceKey {
+        diceKeyState.diceKey
+    }
+
     var body: some View {
         GeometryReader { geometry in
         NavigationView {
             VStack {
-//                NavigationLink(destination: RouteToDestination(destination: self.destinationToNavigateTo), isActive: $isNavigationActive) { EmptyView() }.hidden()
-                Spacer()
-                NicknameEditingField(nickname: $diceKeyState.nickname).hideIf(!inNicknameEditingMode)
+                NavigationLink(destination: DiceKeyWithDerivedValue(derivableName: $derivableName, diceKeyState: diceKeyState), isActive: $isDiceKeyWithDerivedValueActive, label: { EmptyView() }).hidden()
+//                Spacer()
+//                NicknameEditingField(nickname: $diceKeyState.nickname).hideIf(!inNicknameEditingMode)
                 Spacer()
                 DiceKeyView(diceKey: diceKey, showLidTab: true)
-                Menu {
-                    Button("Password for A") { print("DQ") }
-                    Button("Password for B") { print("Babies") }
-                } label: { VStack {
-                    Image(systemName: "arrow.down")
-                    Image(systemName: "ellipsis.rectangle.fill")
-                    Text("Derive Secret")
-                } }
+                if let derivables = GlobalState.instance.derivables {
+                    if derivables.count > 0 {
+                        Menu {
+                            ForEach(derivables) { derivable in
+                                Button(derivable.name) {
+                                    derivableName = derivable.name
+                                    isDiceKeyWithDerivedValueActive = true
+                                }
+                            }
+                        } label: { VStack {
+                            Image(systemName: "arrow.down")
+                            Image(systemName: "ellipsis.rectangle.fill")
+                            Text("Derive Secret")
+                            }
+                        }
+                    }
+                }
                 Spacer()
                 VStack {
                 ZStack {
@@ -122,13 +135,15 @@ struct DiceKeyPresent: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
-                                    Image("DiceKey Icon")
-                                        .renderingMode(.template)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(height: min(geometry.size.width, geometry.size.height)/24, alignment: .center)
+                                    if (diceKeyState.isDiceKeyStored) {
+                                        Image("DiceKey Icon")
+                                            .renderingMode(.template)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(height: min(geometry.size.width, geometry.size.height)/24, alignment: .center)
+                                    }
                                 }
-                                Text("Saved").font(.footnote)
+                                Text(diceKeyState.isDiceKeyStored ? "Stored" : "Not stored").font(.footnote)
                             }
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
                         Spacer()
@@ -142,38 +157,33 @@ struct DiceKeyPresent: View {
             .toolbar {
                 ToolbarItem(placement: ToolbarItemPlacement.navigationBarLeading) {
                     Button(action: { self.onForget() }) {
-                        Text(diceKeyState.isDiceKeyStored ? "Close" : "Forget")
+                        HStack {
+                            Image(systemName: "lock")
+                            Text(diceKeyState.isDiceKeyStored ? "Lock" : "Forget")
+                        }
                     }
                 }
-                ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {
-                    if inNicknameEditingMode {
-                        Button(action: { inNicknameEditingMode = false }, label: {
-                            Image(systemName: "checkmark")
-                        })
-                    } else {
-                        Button(action: { inNicknameEditingMode = true }, label: {
-                            Image(systemName: "pencil")
-                        })
-                    }
-                }
+//                ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {
+//                    if inNicknameEditingMode {
+//                        Button(action: { inNicknameEditingMode = false }, label: {
+//                            Image(systemName: "checkmark")
+//                        })
+//                    } else {
+//                        Button(action: { inNicknameEditingMode = true }, label: {
+//                            Image(systemName: "pencil")
+//                        })
+//                    }
+//                }
             }.edgesIgnoringSafeArea(.bottom)
         }.navigationViewStyle(StackNavigationViewStyle())}
     }
 }
 
 struct TestDiceKeyPresent: View {
-    let diceKey: DiceKey //  = DiceKey.createFromRandom()
-    var diceKeyState: DiceKeyState
-
-    init() {
-        let diceKey = DiceKey.createFromRandom()
-        self.diceKey = diceKey
-        self.diceKeyState = DiceKeyState(diceKey)
-    }
+    @State var diceKeyState: UnlockedDiceKeyState = UnlockedDiceKeyState(DiceKey.createFromRandom())
 
     var body: some View {
         DiceKeyPresent(
-            diceKey: diceKey,
             diceKeyState: diceKeyState,
             onForget: {}
        )
