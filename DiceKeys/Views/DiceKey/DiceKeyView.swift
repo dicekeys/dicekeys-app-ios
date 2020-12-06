@@ -39,9 +39,12 @@ private let fractionOfVerticalSpaceRequiredForTab: CGFloat = 0.1
 struct DiceKeyViewFixedSize: View {
     let diceKey: DiceKey
     let viewSize: CGSize
-    let showLidTab: Bool // = false
-    let leaveSpaceForTab: Bool// = false
-    let diceBoxColor: Color// = Color(red: 0x05 / 0xFF, green: 0x03 / 0xFF, blue: 0x50 / 0xFF)
+    var showLidTab: Bool = false
+    var leaveSpaceForTab: Bool = false
+    var diceBoxColor: Color = Colors.diceBox
+    var diePenColor: Color = Color.black
+    var highlightIndexes: Set<Int> = Set()
+
     var fractionOfVerticalSpaceUsedByTab: CGFloat {
         (leaveSpaceForTab || showLidTab) ? fractionOfVerticalSpaceRequiredForTab : 0
     }
@@ -101,7 +104,7 @@ struct DiceKeyViewFixedSize: View {
             }
             // The dice
             ForEach(facePositions) { facePosition in
-                DieView(face: facePosition.face, dieSize: faceSize)
+                DieView(face: facePosition.face, dieSize: faceSize, penColor: diePenColor, faceColor: highlightIndexes.contains(facePosition.indexInArray) ? Color.highlighter : Color.white )
                     .position(
                         x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
                         y: vCenter + CGFloat(-2 + facePosition.row) * dieStepSize
@@ -116,7 +119,8 @@ struct DiceKeyView: View {
     var showLidTab: Bool = false
     var leaveSpaceForTab: Bool = false
     var diceBoxColor: Color = Colors.diceBox
-    let dieBorderColor: Color? = nil
+    var diePenColor: Color = Color.black
+    var highlightIndexes: Set<Int> = Set()
 
     var aspectRatio: CGFloat { get {
       (showLidTab == true || leaveSpaceForTab == true) ?
@@ -133,7 +137,9 @@ struct DiceKeyView: View {
                     viewSize: reader.size,
                     showLidTab: showLidTab,
                     leaveSpaceForTab: leaveSpaceForTab,
-                    diceBoxColor: diceBoxColor
+                    diceBoxColor: diceBoxColor,
+                    diePenColor: diePenColor,
+                    highlightIndexes: highlightIndexes
                 )
             }.aspectRatio(aspectRatio, contentMode: .fit)
             Spacer(minLength: 0)

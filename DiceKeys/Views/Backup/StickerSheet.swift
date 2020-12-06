@@ -11,14 +11,14 @@ private let nativeHeightOverWidth = CGFloat(155.0/130.0)
 private let nativeWidthOverHeight = 1/nativeHeightOverWidth
 private let lettersPerStickySheet = 5
 
-struct StickerSheetFixedSize: View {
-    let bounds: CGSize
-    let showLetter: FaceLetter
-    let highlightFaceWithDigit: FaceDigit?
+struct StickerSheet: View {
+    var showLetter: FaceLetter = FaceLetter.A
+    var highlightFaceWithDigit: FaceDigit?
     let penColorOfHighlightedFace: Color = Color(CGColor(red: 0, green: 0, blue: 0, alpha: 0.2))
 
     var maxFractionalSpace = CGFloat(0.8)
-
+    @State private var bounds: CGSize = .zero
+    
     var height: CGFloat {
         min(bounds.height,
             nativeHeightOverWidth * bounds.width
@@ -44,6 +44,7 @@ struct StickerSheetFixedSize: View {
     var faceStepSize: CGFloat { faceSizeModel.stepSize }
 
     var body: some View {
+        CalculateBounds(bounds: $bounds) {
         ZStack(alignment: .center) {
             // The sheet
             Rectangle()
@@ -66,20 +67,20 @@ struct StickerSheetFixedSize: View {
                     )
                 }
             }
-        }.frame(width: width, height: height)
+        }}.aspectRatio(nativeWidthOverHeight, contentMode: .fit)
     }
 }
 
-struct StickerSheet: View {
-    let showLetter: FaceLetter
-    var highlightFaceWithDigit: FaceDigit?
-
-    var body: some View {
-        GeometryReader { geometry in
-            StickerSheetFixedSize(bounds: geometry.size, showLetter: showLetter, highlightFaceWithDigit: highlightFaceWithDigit)
-        }
-    }
-}
+//struct StickerSheet: View {
+//    var showLetter: FaceLetter = FaceLetter.A
+//    var highlightFaceWithDigit: FaceDigit?
+//
+//    var body: some View {
+//        GeometryReader { geometry in
+//            StickerSheetFixedSize(bounds: geometry.size, showLetter: showLetter, highlightFaceWithDigit: highlightFaceWithDigit)
+//        }.aspectRatio(nativeWidthOverHeight, contentMode: .fit)
+//    }
+//}
 
 struct StickerSheet_Previews: PreviewProvider {
     static var previews: some View {

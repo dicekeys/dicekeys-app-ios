@@ -37,7 +37,7 @@ struct DiceKeyStorageOptions: View {
                         VStack {
                             ZStack {
                                 Image("Phonelet").resizable().aspectRatio(contentMode: .fit).frame(width: geometry.size.shorterSide / 2.5)
-                                DiceKeyView(diceKey: diceKey, diceBoxColor: Color.alexandrasBlue).frame(width: geometry.size.shorterSide / 3, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                DiceKeyView(diceKey: diceKey, diceBoxColor: Color.alexandrasBlue, diePenColor: Color.alexandrasBlue).frame(width: geometry.size.shorterSide / 3, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                             }
                             Text("Store the DiceKey").font(.title2).bold().padding(.top, 3)
                         }

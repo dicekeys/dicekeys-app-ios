@@ -50,7 +50,6 @@ struct AppMainView: View {
                     destination: ScanDiceKey(
                         onDiceKeyRead: { diceKey in
                             self.diceKeyState = UnlockedDiceKeyState(diceKey)
-                            print("Read diceKey with first letter \(diceKey.faces[0].letter.rawValue)")
                         })
                 ) {
                     VStack {
@@ -81,7 +80,8 @@ struct AppMainView: View {
                 Spacer()
             }
             //.navigationTitle("DiceKeys")
-            .navigationBarHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
+            //.navigationBarHidden(true)
         }.navigationViewStyle(StackNavigationViewStyle())
         }
     }

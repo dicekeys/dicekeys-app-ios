@@ -75,6 +75,16 @@ class DiceKey: Identifiable {
             )
         })
     }
+    
+    static var Example: DiceKey {
+        DiceKey((0..<25).map { index in
+            Face(
+                letter: FaceLetters[index],
+                digit: FaceDigits[index % 6],
+                orientationAsLowercaseLetterTrbl: FaceOrientationLettersTrbl[index % 4]
+            )
+        })
+    }
 
     static func createFrom(humanReadableForm: String) throws -> DiceKey {
         precondition(humanReadableForm.count == 50 || humanReadableForm.count == 75)
@@ -131,14 +141,45 @@ class DiceKey: Identifiable {
         }.joined(separator: "") as String
     }
 
+    var threeAlternateRotations: [DiceKey] {
+        var result: [DiceKey] = [ self.rotatedClockwise90Degrees() ]
+        for _ in 1...2 {
+            result.append(result[result.count-1].rotatedClockwise90Degrees())
+        }
+        return result
+    }
+
+    var allFourPossibleRotations: [DiceKey] {
+        [self] + self.threeAlternateRotations
+    }
+
+    func differencesForFixedRotation(compareTo other: DiceKey) -> Int {
+        var difference: Int = 0
+        for index in 0...24 {
+            difference += faces[index].numberOfFieldsDifferent(fromOtherFace: other.faces[index])
+        }
+        return difference
+    }
+
+    func mostSimilarRotationOf(_ other: DiceKey, maxDifferenceToRotateFor: Int = 12) -> DiceKey {
+        var rotationWithSmallestDifference = other
+        var smallestDifference = differencesForFixedRotation(compareTo: other)
+        for candidate in other.threeAlternateRotations {
+            let difference = differencesForFixedRotation(compareTo: candidate)
+            if difference < smallestDifference && difference <= maxDifferenceToRotateFor {
+                smallestDifference = difference
+                rotationWithSmallestDifference = candidate
+            }
+        }
+        return rotationWithSmallestDifference // , smallestDifference)
+    }
+
     func rotatedToCanonicalForm(
       includeOrientations: Bool = true
     ) -> DiceKey {
-        var candidateDiceKey = self
-        var diceKeyWithEarliestHumanReadableForm = candidateDiceKey
+        var diceKeyWithEarliestHumanReadableForm = self
         var earliestHumanReadableForm = diceKeyWithEarliestHumanReadableForm.toHumanReadableForm(includeOrientations: includeOrientations)
-        for _ in 1...3 {
-            candidateDiceKey = candidateDiceKey.rotatedClockwise90Degrees()
+        for candidateDiceKey in threeAlternateRotations {
             let humanReadableForm = candidateDiceKey.toHumanReadableForm(includeOrientations: includeOrientations)
             if humanReadableForm < earliestHumanReadableForm {
                 earliestHumanReadableForm = humanReadableForm
