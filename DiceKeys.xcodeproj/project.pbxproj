@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		04EA543F170C770F1092B593 /* Pods_DiceKeysTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */; };
+		17318748257DA69800A9F97A /* ValidateBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17318747257DA69700A9F97A /* ValidateBackup.swift */; };
 		17426E2C2564FA6000FB0FAB /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E2B2564FA6000FB0FAB /* Face.swift */; };
 		17426E2D2564FA6000FB0FAB /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E2B2564FA6000FB0FAB /* Face.swift */; };
 		17426E2E2564FA6000FB0FAB /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E2B2564FA6000FB0FAB /* Face.swift */; };
@@ -66,7 +67,6 @@
 		1788B1A2257A6E2B007F6CF9 /* RoundedTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B1A1257A6E2A007F6CF9 /* RoundedTextButton.swift */; };
 		1788B1C0257B277F007F6CF9 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B1BF257B277C007F6CF9 /* Instruction.swift */; };
 		1788B1C4257B58B2007F6CF9 /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B1C3257B58B0007F6CF9 /* ChildSizeReader.swift */; };
-		17BBB61A256F6332009AC42B /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB619256F6332009AC42B /* Colors.swift */; };
 		17BBB61E256F87CD009AC42B /* Funnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB61D256F87CD009AC42B /* Funnel.swift */; };
 		17BBB622256F8840009AC42B /* DerivedFromDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB621256F8840009AC42B /* DerivedFromDiceKey.swift */; };
 		17BBB63625706A7E009AC42B /* DiceKeyPresent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB63525706A7E009AC42B /* DiceKeyPresent.swift */; };
@@ -111,6 +111,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		17318747257DA69700A9F97A /* ValidateBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateBackup.swift; sourceTree = "<group>"; };
 		17426E2B2564FA6000FB0FAB /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
 		17426E312564FA8000FB0FAB /* FaceSpecification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSpecification.swift; sourceTree = "<group>"; };
 		17426E392564FAAF00FB0FAB /* FaceRead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceRead.swift; sourceTree = "<group>"; };
@@ -152,7 +153,6 @@
 		1788B1A1257A6E2A007F6CF9 /* RoundedTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextButton.swift; sourceTree = "<group>"; };
 		1788B1BF257B277C007F6CF9 /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		1788B1C3257B58B0007F6CF9 /* ChildSizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSizeReader.swift; sourceTree = "<group>"; };
-		17BBB619256F6332009AC42B /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		17BBB61D256F87CD009AC42B /* Funnel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funnel.swift; sourceTree = "<group>"; };
 		17BBB621256F8840009AC42B /* DerivedFromDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivedFromDiceKey.swift; sourceTree = "<group>"; };
 		17BBB63525706A7E009AC42B /* DiceKeyPresent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyPresent.swift; sourceTree = "<group>"; };
@@ -245,7 +245,6 @@
 				17BBB6272570623B009AC42B /* DiceKey */,
 				17BBB626257061FE009AC42B /* Screens */,
 				17BBB625257061DD009AC42B /* Shapes */,
-				17BBB619256F6332009AC42B /* Colors.swift */,
 				17533915256B3AC500E090BC /* App.swift */,
 				177FCA59256D047300E2FB6F /* ViewsInProgress.swift */,
 			);
@@ -296,6 +295,7 @@
 				1788B17525790B29007F6CF9 /* StickerSheet.swift */,
 				1788B17325790B29007F6CF9 /* TransferSticker.swift */,
 				1742872725721B5B00C3715B /* BackupDiceKey.swift */,
+				17318747257DA69700A9F97A /* ValidateBackup.swift */,
 			);
 			path = Backup;
 			sourceTree = "<group>";
@@ -719,7 +719,7 @@
 				1742872C25721E5500C3715B /* DiceKeyStorageOptions.swift in Sources */,
 				1742872825721B5B00C3715B /* BackupDiceKey.swift in Sources */,
 				17426E5F2564FB0B00FB0FAB /* DerivationOptions.swift in Sources */,
-				17BBB61A256F6332009AC42B /* Colors.swift in Sources */,
+				17318748257DA69800A9F97A /* ValidateBackup.swift in Sources */,
 				17426E612564FB0B00FB0FAB /* PermissionChecks.swift in Sources */,
 				175F393C2575A445007FAE80 /* UnlockedDiceKeyState.swift in Sources */,
 				1788B16E25790AD0007F6CF9 /* GlobalState.swift in Sources */,

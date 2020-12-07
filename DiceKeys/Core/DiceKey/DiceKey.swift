@@ -161,17 +161,36 @@ class DiceKey: Identifiable {
         return difference
     }
 
-    func mostSimilarRotationOf(_ other: DiceKey, maxDifferenceToRotateFor: Int = 12) -> DiceKey {
+    func mostSimilarRotationWithDifference(_ other: DiceKey, maxDifferenceToRotateFor: Int = 12) -> ( DiceKey, Int ) {
         var rotationWithSmallestDifference = other
         var smallestDifference = differencesForFixedRotation(compareTo: other)
+        if (smallestDifference == 0) {
+            // no need to look further
+            return (rotationWithSmallestDifference, smallestDifference)
+        }
         for candidate in other.threeAlternateRotations {
             let difference = differencesForFixedRotation(compareTo: candidate)
             if difference < smallestDifference && difference <= maxDifferenceToRotateFor {
                 smallestDifference = difference
                 rotationWithSmallestDifference = candidate
             }
+            if (smallestDifference == 0) {
+                // no need to look further
+                return (rotationWithSmallestDifference, smallestDifference)
+            }
         }
-        return rotationWithSmallestDifference // , smallestDifference)
+        return (rotationWithSmallestDifference, smallestDifference)
+    }
+
+    func mostSimilarRotationOf(_ other: DiceKey, maxDifferenceToRotateFor: Int = 12) -> DiceKey {
+        let (rotationWithSmallestDifference, _) = mostSimilarRotationWithDifference(other, maxDifferenceToRotateFor: maxDifferenceToRotateFor)
+        return rotationWithSmallestDifference
+    }
+    
+    static func rotationIndependentEquals(_ first: DiceKey?, _ second: DiceKey?) -> Bool {
+        guard let a = first, let b = second else { return false }
+        let (_, difference) = a.mostSimilarRotationWithDifference(b)
+        return difference == 0
     }
 
     func rotatedToCanonicalForm(

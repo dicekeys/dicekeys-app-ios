@@ -48,8 +48,6 @@ struct SafeAreaFooter: View {
     }
 }
 
-private let warningBackgroundColor: Color = Color(hex: "E0585B")
-
 struct SingleLineScaledText: View {
     let text: String
 
@@ -129,93 +127,6 @@ private struct ScanFirstTime: View {
     }
 }
 
-private struct ValidateBackup: View {
-    @Binding var originalDiceKey: DiceKey?
-    @State var scanningOriginal: Bool = false
-    @State var scanningCopy: Bool = false
-    @State var backupDiceKey: DiceKey?
-
-    var backupDiceKeyRotatedToMatchOriginal: DiceKey? {
-        guard let original = originalDiceKey, let backup = backupDiceKey else { return nil }
-        return original.mostSimilarRotationOf(backup)
-    }
-
-    var invalidIndexes: Set<Int> {
-        guard let original = originalDiceKey else { return Set<Int>() }
-        guard let backup = backupDiceKeyRotatedToMatchOriginal else { return Set<Int>() }
-        return Set<Int>(
-            (0..<25).filter { original.faces[$0].numberOfFieldsDifferent(fromOtherFace: backup.faces[$0]) > 0 }
-        )
-    }
-
-    var perfectMatch: Bool {
-        invalidIndexes.count == 0 && backupDiceKey != nil
-    }
-
-    var totalMismatch: Bool {
-        invalidIndexes.count > 5
-    }
-
-    var body: some View {
-        Instruction("Scan your backup to validate it.")
-        Spacer()
-        if scanningCopy || scanningOriginal {
-            ScanDiceKey { diceKeyScanned in
-                if self.scanningOriginal {
-                    self.originalDiceKey = diceKeyScanned
-                    self.scanningOriginal = false
-                } else if self.scanningCopy {
-                    self.backupDiceKey = diceKeyScanned
-                    self.scanningCopy = false
-                }
-            }
-            Spacer()
-            RoundedTextButton("Cancel") { self.scanningCopy = false }
-        } else if let backup = self.backupDiceKeyRotatedToMatchOriginal, let original = self.originalDiceKey {
-            HStack(alignment: .top) {
-                VStack {
-                    DiceKeyView(diceKey: original)
-                    RoundedTextButton("Re-scan") { self.scanningOriginal = true }
-                }
-                Spacer()
-                VStack {
-                    if totalMismatch {
-                        DiceKeyView(diceKey: self.backupDiceKey!)
-                    } else {
-                        DiceKeyView(diceKey: backup, highlightIndexes: invalidIndexes)
-                    }
-                    RoundedTextButton("Re-scan copy") { self.scanningCopy = true }
-                }
-            }
-            Spacer()
-            if perfectMatch {
-                Text("You made a perfect copy!").font(.largeTitle).foregroundColor(.green)
-            } else if totalMismatch {
-                Text("That key doesn't look at all like the key you scanned before.").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/).foregroundColor(.red)
-            } else {
-                Text("You incorrectly copied the highlighted dice. You can fix the copy to match the original, or change the original to match the copy.").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/).foregroundColor(.red)
-            }
-            Spacer()
-        } else {
-            HStack(alignment: .top) {
-                VStack {
-                    if let original = originalDiceKey {
-                        DiceKeyView(diceKey: original)
-                    } else {
-                        Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).offset(x: 0, y: -50)
-                    }
-                    RoundedTextButton("Scan original") { self.scanningOriginal = true }
-                }
-                VStack {
-                    Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).offset(x: 0, y: -50)
-                    RoundedTextButton("Scan copy") { self.scanningCopy = true }
-                }
-            }
-        }
-        Spacer()
-    }
-}
-
 private struct SealBox: View {
     var body: some View {
         Instruction("Place the box top above the base so that the hinges line up.")
@@ -224,6 +135,27 @@ private struct SealBox: View {
         Spacer()
         Instruction("Press firmly down along the edges. The box will snap together, helping to prevent accidental re-opening.")
         Spacer()
+    }
+}
+
+private struct InstructionsDone: View {
+    let createdDiceKey: Bool
+    let backedUpSuccessfully: Bool
+
+    var body: some View {
+        Instruction(createdDiceKey ? "You did it!" : "That's it!")
+        Spacer()
+        if !createdDiceKey {
+            Instruction("There's nothing more to it. Go back to try it for real and scan in your DiceKey.")
+            Spacer()
+        } else if !backedUpSuccessfully {
+            Instruction("Be sure to make a backup soon!")
+            Spacer()
+        }
+        if createdDiceKey {
+            Instruction("When you press the \"Done\" button, we'll take you to the same screen you'll see after scanning your DiceKey from the home screen.")
+            Spacer()
+        }
     }
 }
 
@@ -240,17 +172,42 @@ struct AssemblyInstructions: View {
         case CreateBackup
         case ValidateBackup
         case SealBox
+        case Done
     }
 
     @State private var diceKeyScanned: DiceKey?
-    @State private var diceKeyValidationResult: DiceKey?
+    @State private var backupScanned: DiceKey?
     @State var step: Step = Step(rawValue: 1)!
     @State var substep: Int = 0
 
+    @State var userChoseToAllowSkipScanningStep: Bool = false
+    @State var userChoseToAllowSkipBackupStep: Bool = false
+
+    var maySkipBackupStep: Bool {
+        userChoseToAllowSkipScanningStep || userChoseToAllowSkipBackupStep
+    }
+
+    var showSkipOption: Bool {
+        (step == .ScanFirstTime && !userChoseToAllowSkipScanningStep) ||
+        (step == .ValidateBackup && !maySkipBackupStep)
+    }
+
+    func onUserChoseToSkipThisStep() {
+        if step == .ScanFirstTime {
+            userChoseToAllowSkipScanningStep = true
+        } else if step == .ValidateBackup {
+            userChoseToAllowSkipBackupStep = true
+        }
+    }
+
     private let first = Step.Randomize.rawValue
-    private let last = Step.SealBox.rawValue
+    private let last = Step.Done.rawValue
 
     let numberOfBackupSubsteps = 26
+    
+    var backupSuccessful: Bool {
+        DiceKey.rotationIndependentEquals(diceKeyScanned, backupScanned)
+    }
 
     private var isPrevStepSubstep: Bool {
         step == .CreateBackup && substep > 0
@@ -266,9 +223,8 @@ struct AssemblyInstructions: View {
     } }
 
     private var showSkipButton: Bool { get {
-        ( step == .ScanFirstTime && diceKeyScanned == nil )
-//            ||
-//        ( step == .ValidateBackup && diceKeyValidationResult == nil ) // FIXE != diceKeyScanned )
+        ( step == .ScanFirstTime && diceKeyScanned == nil && !userChoseToAllowSkipScanningStep ) ||
+            ( step == .ValidateBackup && !maySkipBackupStep && !backupSuccessful ) // FIXE != diceKeyScanned )
     }}
 
     func fullStepBack() {
@@ -294,7 +250,7 @@ struct AssemblyInstructions: View {
             }
             self.presentationMode.wrappedValue.dismiss()
         } else {
-            step = Step(rawValue: step.rawValue + 1) ?? Step.SealBox
+            step = Step(rawValue: step.rawValue + 1) ?? Step.Done
             if step == .CreateBackup && diceKeyScanned == nil {
                 step = Step(rawValue: step.rawValue + 1)!
             }
@@ -321,12 +277,21 @@ struct AssemblyInstructions: View {
                     case .ScanFirstTime: ScanFirstTime(diceKey: self.$diceKeyScanned)
                     case .CreateBackup: BackupToStickeys(diceKey: self.diceKeyScanned ?? DiceKey.Example, step: $substep)
     //                case .CreateBackup: BackupDiceKey(diceKey: self.diceKeyScanned ?? DiceKey.Example)
-                    case .ValidateBackup: ValidateBackup(originalDiceKey: self.$diceKeyScanned)
+                    case .ValidateBackup: ValidateBackup(originalDiceKey: self.$diceKeyScanned, backupScanned: self.$backupScanned)
                     case .SealBox: SealBox()
+                    case .Done: InstructionsDone(createdDiceKey: diceKeyScanned != nil, backedUpSuccessfully: backupSuccessful)
                     }
                 }.padding(.horizontal, 15)
                 Spacer()
                 // Forward / Back nav
+                HStack {
+                    Spacer()
+                    Button(
+                        action: { onUserChoseToSkipThisStep() },
+                        label: { Text("Let me skip this step").font(.footnote) }
+                    ).padding(.bottom, 7).showIf(showSkipButton)
+                    Spacer()
+                }
                 HStack {
                     Spacer()
                     Button { fullStepBack() } label: {
@@ -342,10 +307,10 @@ struct AssemblyInstructions: View {
                     Spacer()
                     Button { next() } label: {
                         HStack {
-                            Text(step.rawValue == last ? "Done" : showSkipButton ? "Skip": "Next").font(.title3)
+                            Text(step.rawValue == last ? "Done" : "Next").font(.title3)
                             Image(systemName: "chevron.forward")
-                       }
-                    }
+                        }
+                    }.disabled(showSkipButton)
                     Spacer()
                     Button { fullStepForward() } label: {
                         Image(systemName: "chevron.forward.2")
@@ -357,7 +322,7 @@ struct AssemblyInstructions: View {
                         .padding(.vertical, 5)
                     HStack {}.frame(height: geometry.safeAreaInsets.bottom)
                 }.foregroundColor(.white)
-                .background(warningBackgroundColor)
+                .background(Color.warningBackground)
                 .showIf(showWarning)
             }.edgesIgnoringSafeArea(.bottom)}
             .navigationTitle("Assembly Instructions")

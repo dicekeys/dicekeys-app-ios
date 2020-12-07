@@ -41,7 +41,7 @@ struct DiceKeyViewFixedSize: View {
     let viewSize: CGSize
     var showLidTab: Bool = false
     var leaveSpaceForTab: Bool = false
-    var diceBoxColor: Color = Colors.diceBox
+    var diceBoxColor: Color = Color.diceBox
     var diePenColor: Color = Color.black
     var highlightIndexes: Set<Int> = Set()
 
@@ -118,7 +118,7 @@ struct DiceKeyView: View {
     let diceKey: DiceKey
     var showLidTab: Bool = false
     var leaveSpaceForTab: Bool = false
-    var diceBoxColor: Color = Colors.diceBox
+    var diceBoxColor: Color = Color.diceBox
     var diePenColor: Color = Color.black
     var highlightIndexes: Set<Int> = Set()
 
