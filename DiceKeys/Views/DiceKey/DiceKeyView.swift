@@ -41,8 +41,10 @@ struct DiceKeyView: View {
     var showLidTab: Bool = false
     var leaveSpaceForTab: Bool = false
     var diceBoxColor: Color = Color.diceBox
+    var diceBoxDieSlotColor: Color = Color.diceBoxDieSlot
     var diePenColor: Color = Color.black
     var highlightIndexes: Set<Int> = Set()
+    var showDiceAtindexes: Set<Int> = Set(0..<25)
 
     @State private var viewSize: CGSize = CGSize.zero
 
@@ -51,7 +53,6 @@ struct DiceKeyView: View {
         (1 / (1 + fractionOfVerticalSpaceRequiredForTab)) :
         1
     } }
-
 
     var fractionOfVerticalSpaceUsedByTab: CGFloat {
         (leaveSpaceForTab || showLidTab) ? fractionOfVerticalSpaceRequiredForTab : 0
@@ -113,44 +114,26 @@ struct DiceKeyView: View {
             }
             // The dice
             ForEach(facePositions) { facePosition in
-                DieView(face: facePosition.face, dieSize: faceSize, penColor: diePenColor, faceColor: highlightIndexes.contains(facePosition.indexInArray) ? Color.highlighter : Color.white )
-                    .position(
-                        x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
-                        y: vCenter + CGFloat(-2 + facePosition.row) * dieStepSize
-                    )
+                if showDiceAtindexes.contains(facePosition.id) {
+                    DieView(face: facePosition.face, dieSize: faceSize, penColor: diePenColor, faceColor: highlightIndexes.contains(facePosition.indexInArray) ? Color.highlighter : Color.white )
+                        .position(
+                            x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
+                            y: vCenter + CGFloat(-2 + facePosition.row) * dieStepSize
+                        )
+                } else {
+                    RoundedRectangle(cornerRadius: faceSize / 8)
+                        .size(width: faceSize, height: faceSize)
+                        .fill(diceBoxDieSlotColor)
+                        .frame(width: faceSize, height: faceSize)
+                        .position(
+                            x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
+                            y: vCenter + CGFloat(-2 + facePosition.row) * dieStepSize
+                        )
+                }
             }
         }}.aspectRatio(aspectRatio, contentMode: .fit)
     }
 }
-//
-//struct DiceKeyView: View {
-//    let diceKey: DiceKey
-//    var showLidTab: Bool = false
-//    var leaveSpaceForTab: Bool = false
-//    var diceBoxColor: Color = Color.diceBox
-//    var diePenColor: Color = Color.black
-//    var highlightIndexes: Set<Int> = Set()
-//
-//    var aspectRatio: CGFloat { get {
-//      (showLidTab == true || leaveSpaceForTab == true) ?
-//        (1 / (1 + fractionOfVerticalSpaceRequiredForTab)) :
-//        1
-//    } }
-//
-//    var body: some View {
-//        GeometryReader { reader in
-//            DiceKeyViewFixedSize(
-//                diceKey: diceKey,
-//                viewSize: reader.size,
-//                showLidTab: showLidTab,
-//                leaveSpaceForTab: leaveSpaceForTab,
-//                diceBoxColor: diceBoxColor,
-//                diePenColor: diePenColor,
-//                highlightIndexes: highlightIndexes
-//            )
-//        }.aspectRatio(aspectRatio, contentMode: .fit)
-//    }
-//}
 
 struct DiceKeyView_Previews: PreviewProvider {
 //    let diceKey: DiceKey = DiceKey.createFromRandom()
@@ -160,6 +143,9 @@ struct DiceKeyView_Previews: PreviewProvider {
             .previewLayout(PreviewLayout.fixed(width: 200, height: 100))
 
         DiceKeyView(diceKey: DiceKey.createFromRandom(), showLidTab: false)
+            .previewLayout(PreviewLayout.fixed(width: 500, height: 500))
+
+        DiceKeyView(diceKey: DiceKey.createFromRandom(), showDiceAtindexes: Set<Int>(0..<12))
             .previewLayout(PreviewLayout.fixed(width: 500, height: 500))
 
         DiceKeyView(diceKey: DiceKey.createFromRandom(), showLidTab: true)

@@ -7,58 +7,41 @@
 
 import SwiftUI
 
-struct BackupToStickeysIntro: View {
-    let diceKey: DiceKey
-
-    var body: some View {
-//        GeometryReader { geometry in
-        VStack {
-            Instruction("Unwrap your Stickeys Kit")
-            Spacer()
-            HStack {
-                VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
-                    Text("5 Sticker Sheets").font(.title2)
-                    StickerSheet()
-                }
-                Spacer()
-                VStack(alignment: .center, spacing: 0) {
-                    Text("1 Target Sheet").font(.title2)
-                    StickerTargetSheet(diceKey: diceKey)
-                }
-            }
-            Spacer()
-            Instruction("Next, you will create a copy of your DiceKey on the target sheet by placing stickers.")
-            HStack(alignment: .center, spacing: 0) {
-                Spacer()
-                Text("Out of Stickeys? You can ")
-                Link("order more", destination: URL(string: "https://dicekeys.com/store")!)
-                Text(".")
-            }.padding(.top, 30)
-            Spacer()
-        }
-        }
-//    }
+enum BackupTarget: String {
+    case DiceKey
+    case Stickeys
 }
 
-struct BackupToStickeysSteps: View {
+struct BackupSteps: View {
     let diceKey: DiceKey
+    let target: BackupTarget
     @Binding var step: Int
+
+    var faceIndex: Int { step - 1 }
 
     var body: some View {
         if step == 0 {
-            BackupToStickeysIntro(diceKey: diceKey)
+            switch target {
+            case .Stickeys: BackupToStickeysIntroduction(diceKey: diceKey)
+            case .DiceKey: BackupToDiceKeysKitIntroduction(diceKey: diceKey)
+            }
         } else if step >= 1 && step <= 25 {
             Instruction("Construct your Backup")
             Spacer()
-//            Button(action: { self.next() }, label: {
-//            })
-            TransferSticker(diceKey: diceKey, faceIndex: step - 1)
+            switch target {
+            case .Stickeys: TransferSticker(diceKey: diceKey, faceIndex: faceIndex)
+            case .DiceKey: TransferDie(diceKey: diceKey, faceIndex: faceIndex)
+            }
+
             ZStack(alignment: Alignment(horizontal: .leading, vertical: .top)) {
                 // To ensure consistent spacing as we walk through instructions
                 // render instructions for all 25 dice and hide the 24 not being
                 // shown right now
                 ForEach(0..<25) { index in
-                    TransferStickerInstructions(diceKey: diceKey, faceIndex: index).if( index != step - 1 ) { $0.hidden() }
+                    switch target {
+                    case .Stickeys: TransferStickerInstructions(diceKey: diceKey, faceIndex: index).if( index != faceIndex ) { $0.hidden() }
+                    case .DiceKey: TransferDieInstructions(diceKey: diceKey, faceIndex: index).if( index != faceIndex) { $0.hidden() }
+                    }
                 }
             }.padding(.top, 20)
             Spacer()
@@ -68,19 +51,35 @@ struct BackupToStickeysSteps: View {
     }
 }
 
-struct BackupToStickeys: View {
+struct BackupToTarget: View {
+    let target: BackupTarget
+    let onComplete: () -> Void
     @Binding var originalDiceKey: DiceKey
+    @Binding var step: Int
     @State var backupScanned: DiceKey?
-    @State var step: Int = 0
+    @State var maySkipValidationStep = false
 
-    let last = 26
+    var validationRequired: Bool {
+        step == validationStep && !DiceKey.rotationIndependentEquals(originalDiceKey, backupScanned) && !maySkipValidationStep
+    }
+
+    private let validationStep = 26
+    private let lastStep = 26
 
     var body: some View {
         VStack {
             if step < 26, let diceKey = originalDiceKey {
-                BackupToStickeysSteps(diceKey: diceKey, step: self.$step)
+                BackupSteps(diceKey: diceKey, target: target, step: self.$step)
             } else {
-                ValidateBackup(originalDiceKey: self.$originalDiceKey, backupScanned: self.$backupScanned)
+                ValidateBackup(target: target, originalDiceKey: self.$originalDiceKey, backupScanned: self.$backupScanned)
+            }
+            HStack {
+                Spacer()
+                Button(
+                    action: { maySkipValidationStep = true },
+                    label: { Text("Let me skip this step").font(.footnote) }
+                ).padding(.bottom, 7).showIf( validationRequired )
+                Spacer()
             }
             HStack {
                 Spacer()
@@ -91,18 +90,24 @@ struct BackupToStickeys: View {
                 Button { step -= 1 } label: {
                     HStack {
                         Image(systemName: "chevron.backward")
-                        Text("Previous").font(.title3)
+                        Text("Previous").font(.title2)
                     }
                 }.showIf( step > 1 )
                 Spacer()
-                Button { step += 1 } label: {
+                Button {
+                    if step < lastStep {
+                        step += 1
+                    } else {
+                        onComplete()
+                    }
+                } label: {
                     HStack {
-                        Text( step == last ? "Done" : "Next").font(.title3)
+                        Text( step == lastStep ? "Done" : "Next").font(.title2)
                         Image(systemName: "chevron.forward")
                     }
-                }
+                }.disabled( validationRequired )
                 Spacer()
-                Button { step = 26 } label: {
+                Button { step = validationStep } label: {
                     Image(systemName: "chevron.forward.2")
                 }.showIf( step < 26 )
                 Spacer()
@@ -113,84 +118,57 @@ struct BackupToStickeys: View {
 
 struct BackupDiceKey: View {
     @Binding var diceKey: DiceKey
-    @State var mode: Mode?
-//    @State var step: Int = 0
-
-    enum Mode {
-        case Stickeys
-        case DiceKey
-        case Words
-    }
+    let onComplete: () -> Void
+    @State var mode: BackupTarget?
+    @State var step: Int = 0
 
     var body: some View {
-        if mode == .Stickeys {
-            BackupToStickeys(originalDiceKey: self.$diceKey)
+        if let target = mode {
+            BackupToTarget(target: target, onComplete: onComplete, originalDiceKey: self.$diceKey, step: $step)
         } else {
-//            GeometryReader { geometry in
-            HStack {
+            VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/) {
                 Spacer()
-                VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/) {
-                    Spacer()
-                    NavigationLink(
-                        destination: BackupToStickeys(originalDiceKey: self.$diceKey),
-                        label: {
-                            VStack {
-                                HStack(alignment: .center, spacing: 0) {
-                                    Spacer()
-                                    DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue)
-                                        .frame(minWidth: 0, maxWidth: .infinity)
-                                    Image(systemName: "arrow.right.circle.fill")
-                                        .renderingMode(.template)
-                                        .foregroundColor(Color.alexandrasBlue)
-                                        .scaleEffect(2.0)
-                                        .padding(.horizontal, 20)
-                                    StickerTargetSheet(diceKey: diceKey, showLettersBeforeIndex: 12, highlightAtIndex: 12, foregroundColor: Color.alexandrasBlue, orientation: .portrait)
-                                        .frame(minWidth: 0, maxWidth: .infinity)
-                                    Spacer()
-                                }
-                                Text("Create a Backup using Stickeys").font(.title).foregroundColor(.alexandrasBlue)
+                Button(action: { mode = .Stickeys },
+                    label: {
+                        VStack {
+                            HStack(alignment: .center, spacing: 0) {
+                                Spacer()
+                                DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue)
+                                    .frame(minWidth: 0, maxWidth: .infinity)
+                                Image(systemName: "arrow.right.circle.fill")
+                                    .renderingMode(.template)
+                                    .foregroundColor(Color.alexandrasBlue)
+                                    .scaleEffect(2.0)
+                                    .padding(.horizontal, 20)
+                                StickerTargetSheet(diceKey: diceKey, showLettersBeforeIndex: 12, atDieIndex: 12, foregroundColor: Color.alexandrasBlue, orientation: .portrait)
+                                    .frame(minWidth: 0, maxWidth: .infinity)
+                                Spacer()
                             }
+                            Text("Use a Stickeys Kit").font(.title).foregroundColor(.alexandrasBlue)
                         }
-                    )
-//                    HStack {
-//                        Text("Don't have Stickies?").font(.footnote)
-//                        Link("Order a set", destination: URL(string: "https://dicekeys.com/store")!).font(.footnote)
-//                    }.padding(.top, 5)
-                    Spacer()
-                    NavigationLink(
-                        destination: BackupToStickeys(originalDiceKey: $diceKey),
-                        label: {
-                            VStack {
-                                HStack {
-                                    Spacer()
-                                    DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue)
-                                    Image(systemName: "arrow.right.circle.fill")
-                                        .renderingMode(.template)
-                                        .foregroundColor(Color.alexandrasBlue)
-                                        .scaleEffect(2.0)
-                                        .padding(.horizontal, 20)
-                                    DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue)
-                                    Spacer()
-                                }
-                                Text("Create a Backup DiceKey").font(.title).foregroundColor(.alexandrasBlue)
-                            }
-                        }
-                    )
-//                    HStack {
-//                        Text("Need another DiceKey?").font(.footnote)
-//                        Link("Order one", destination: URL(string: "https://dicekeys.com/store")!).font(.footnote)
-//                    }.padding(.top, 5)
-                    /*
-                    Spacer()
-                    Button(action: { mode = .Stickeys }) {
-                        Text("Write 30 Words")
                     }
-                     */
-                    Spacer()
-                }
+                )
                 Spacer()
-            }.padding(.horizontal, 10)
-//            }
+                Button(action: { mode = .DiceKey },
+                    label: {
+                        VStack {
+                            HStack {
+                                Spacer()
+                                DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue)
+                                Image(systemName: "arrow.right.circle.fill")
+                                    .renderingMode(.template)
+                                    .foregroundColor(Color.alexandrasBlue)
+                                    .scaleEffect(2.0)
+                                    .padding(.horizontal, 20)
+                                DiceKeyCopyInProgress(diceKey: diceKey, atDieIndex: 12, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue)
+                                Spacer()
+                            }
+                            Text("Use a DiceKey Kit").font(.title).foregroundColor(.alexandrasBlue)
+                        }
+                    }
+                )
+                Spacer()
+            }.navigationBarTitle("Create a backup").padding(.horizontal, 10)
         }
     }
 }
@@ -199,7 +177,7 @@ private struct TestBackupDiceKey: View {
     @State var diceKey: DiceKey = DiceKey.createFromRandom()
 
     var body: some View {
-        BackupDiceKey(diceKey: $diceKey)
+        BackupDiceKey(diceKey: $diceKey, onComplete: {})
     }
 }
 

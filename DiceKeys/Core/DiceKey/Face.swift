@@ -34,6 +34,15 @@ extension FaceOrientationLetterTrbl {
         case FaceOrientationLetterTrbl.Left: return 270
         }
     }
+    
+    var asFacingString: String {
+        switch self {
+        case .Top: return "upright"
+        case .Right: return "right"
+        case .Bottom: return "down"
+        case .Left: return "left"
+        }
+    }
 }
 
 protocol FaceIdentifier {

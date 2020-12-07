@@ -7,29 +7,29 @@
 
 import SwiftUI
 
-struct ChooseValueToDerive: View {
-    let diceKey: DiceKey
+//struct ChooseValueToDerive: View {
+//    let diceKey: DiceKey
+//
+//    var body: some View {
+//        NavigationView {
+//            VStack {
+//                DiceKeyView(diceKey: diceKey, showLidTab: true)
+//
+//                NavigationLink(
+//                    destination: Text("Derive Value"),
+//                    label: {
+//                        Text("Derive value for")
+//                    })
+//            }
+//        }
+//    }
+//}
 
-    var body: some View {
-        NavigationView {
-            VStack {
-                DiceKeyView(diceKey: diceKey, showLidTab: true)
-
-                NavigationLink(
-                    destination: Text("Derive Value"),
-                    label: {
-                        Text("Derive value for")
-                    })
-            }
-        }
-    }
-}
-
-private func defaultDiceKeyName(diceKey: DiceKey) -> String {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    return "DiceKey with  \(diceKey.faces[12].letter.rawValue)\(diceKey.faces[12].digit.rawValue) in center (\(formatter.string(from: Date())))"
-}
+//private func defaultDiceKeyName(diceKey: DiceKey) -> String {
+//    let formatter = DateFormatter()
+//    formatter.dateStyle = .short
+//    return "DiceKey with  \(diceKey.faces[12].letter.rawValue)\(diceKey.faces[12].digit.rawValue) in center (\(formatter.string(from: Date())))"
+//}
 
 struct DiceKeyPresent: View {
     @Binding var diceKey: DiceKey {
@@ -52,6 +52,7 @@ struct DiceKeyPresent: View {
 
     @State private var isDiceKeyWithDerivedValueActive = false
     @State private var derivableName: String?
+    @State private var isBackupActive = false
 
     var BottomButtonCount: Int = 3
     var BottomButtonFractionalWidth: CGFloat {
@@ -66,9 +67,10 @@ struct DiceKeyPresent: View {
         GeometryReader { geometry in
         NavigationView {
             VStack {
-                NavigationLink(destination: DiceKeyWithDerivedValue(diceKey: diceKey, derivableName: $derivableName), isActive: $isDiceKeyWithDerivedValueActive, label: { EmptyView() }).hidden()
-//                Spacer()
-//                NicknameEditingField(nickname: $diceKeyState.nickname).hideIf(!inNicknameEditingMode)
+                NavigationLink(destination: DiceKeyWithDerivedValue(diceKey: diceKey, derivableName: $derivableName), isActive: $isDiceKeyWithDerivedValueActive, label: { EmptyView() })
+                    .position(x: 0, y: 0).frame(width: 0, height: 0).hidden()
+                NavigationLink(destination: BackupDiceKey(diceKey: $diceKey, onComplete: { isBackupActive = false }), isActive: $isBackupActive, label: { EmptyView() })
+                    .position(x: 0, y: 0).frame(width: 0, height: 0).hidden()
                 Spacer()
                 DiceKeyView(diceKey: diceKey, showLidTab: true)
                 if let derivables = GlobalState.instance.derivables {
@@ -102,7 +104,7 @@ struct DiceKeyPresent: View {
                                 Text("Seed Key").font(.footnote)
                             }
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
-                        NavigationLink(destination: BackupDiceKey(diceKey: $diceKey)) {
+                        Button(action: { isBackupActive = true }, label: {
                             VStack {
                                 Image("Backup to DiceKey")
                                     .renderingMode(.template)
@@ -111,15 +113,15 @@ struct DiceKeyPresent: View {
                                     .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
                                 Text("Backup").font(.footnote)
                             }
-                        }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
+                        }).frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
                         NavigationLink(destination: DiceKeyStorageOptions(diceKey: diceKey)) {
                             VStack {
                                 ZStack {
-                                    Image(systemName: "iphone")
+                                    Image("Phonelet")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
-                                    if (diceKeyState.isDiceKeyStored) {
+                                    if diceKeyState.isDiceKeyStored {
                                         Image("DiceKey Icon")
                                             .renderingMode(.template)
                                             .resizable()

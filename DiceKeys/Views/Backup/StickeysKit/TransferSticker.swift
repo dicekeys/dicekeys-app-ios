@@ -7,27 +7,6 @@
 
 import SwiftUI
 
-struct StickerSheetForFace {
-    let face: Face
-
-    private var letterIndexOfFirstColumn: Int {
-        Int((faceLetterIndexes[face.letter]! / 5) * 5)
-    }
-    var firstLetter: FaceLetter {
-        FaceLetters[ letterIndexOfFirstColumn ]
-    }
-    var lastLetter: FaceLetter {
-        FaceLetters[ letterIndexOfFirstColumn + 4 ]
-    }
-
-    var column: CGFloat {
-        CGFloat(faceLetterIndexes[face.letter]! % 5)
-    }
-    var row: CGFloat {
-        CGFloat(faceDigitIndexes[face.digit]!)
-    }
-}
-
 struct TransferStickerInstructions: View {
     let diceKey: DiceKey
     var faceIndex: Int
@@ -39,25 +18,12 @@ struct TransferStickerInstructions: View {
     var stickerSheet: StickerSheetForFace {
         StickerSheetForFace(face: face)
     }
-
-    var faceIdentifier: String {
-        face.letter.rawValue + face.digit.rawValue
-    }
-
-    var topFacing: String {
-        switch face.orientationAsLowercaseLetterTrbl {
-        case .Top: return "upright"
-        case .Right: return "right"
-        case .Bottom: return "down"
-        case .Left: return "left"
-        }
-    }
-
+    
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Remove the \(faceIdentifier) sticker from the sheet with letters \(stickerSheet.firstLetter.rawValue) through \(stickerSheet.lastLetter.rawValue).").font(.title)
+            Text("Remove the \(face.letterAndDigit) sticker from the sheet with letters \(stickerSheet.firstLetter.rawValue) through \(stickerSheet.lastLetter.rawValue).").font(.title)
             if face.orientationAsLowercaseLetterTrbl != .Top {
-                Text("Rotate it so the top faces to the \(topFacing).").font(.title).padding(.top, 3)
+                Text("Rotate it so the top faces to the \(face.orientationAsLowercaseLetterTrbl.asFacingString).").font(.title).padding(.top, 3)
             }
             Text("Place it squarely covering the target rectangle\( faceIndex == 0 ? " at the top left of the target sheet" : "")."
             ).font(.title).padding(.top, 3)
@@ -77,7 +43,7 @@ struct TransferSticker: View {
         2 * sideMarginFraction +
         2 * centerMarginFraction
     }
-    
+
     var fractionalWidthOfPortraitSheet: CGFloat {
         ( CGFloat(1) - (2 * sideMarginFraction + centerMarginFraction) ) / 2
     }
@@ -111,23 +77,6 @@ struct TransferSticker: View {
     }
     var keyRow: Int {
         Int(faceIndex / 5)
-    }
-
-    let rowOrderNames = [
-        "top row", "second row from the top",
-        "third row from the top", "fourth row from the top", "bottom row"
-    ]
-    let columnOrderNames = [
-        "left-most column",
-        "second column from left",
-        "third column from the left",
-        "fourth column from the left",
-        "right-most column"
-    ]
-    var locationDescriptor: String {
-        faceIndex == 0 ?
-           "top left" :
-           (rowOrderNames[keyRow] + ", " + columnOrderNames[keyColumn])
     }
 
     var lineStart: CGPoint {
@@ -173,7 +122,7 @@ struct TransferSticker: View {
             HStack(alignment: .center, spacing: 0) {
                 StickerSheet(showLetter: face.letter, highlightFaceWithDigit: face.digit)//.frame(width: portraitSheetSize.width, height: portraitSheetSize.height)
                 Spacer().frame(maxWidth: bounds.width * centerMarginFraction)
-                StickerTargetSheet(diceKey: diceKey, showLettersBeforeIndex: faceIndex, highlightAtIndex: faceIndex)//.frame(width: portraitSheetSize.width, height: portraitSheetSize.height)
+                StickerTargetSheet(diceKey: diceKey, showLettersBeforeIndex: faceIndex, atDieIndex: faceIndex)//.frame(width: portraitSheetSize.width, height: portraitSheetSize.height)
             }.overlay(
                 Path { path in
                     path.move(to: lineStart)

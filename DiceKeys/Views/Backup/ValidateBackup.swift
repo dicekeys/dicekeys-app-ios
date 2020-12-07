@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ValidateBackup: View {
+    let target: BackupTarget
+
     @Binding var originalDiceKey: DiceKey
     @Binding var backupScanned: DiceKey?
 
@@ -107,7 +109,7 @@ private struct TestValidateBackup: View {
     @State var backupScanned: DiceKey?
 
     var body: some View {
-        ValidateBackup(originalDiceKey: self.$originalDiceKey, backupScanned: self.$backupScanned)
+        ValidateBackup(target: .DiceKey, originalDiceKey: self.$originalDiceKey, backupScanned: self.$backupScanned)
     }
 }
 

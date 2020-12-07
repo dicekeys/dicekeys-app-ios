@@ -16,7 +16,7 @@ struct StickerTargetSheetSpecification {
 struct StickerTargetSheet: View {
     let diceKey: DiceKey?
     var showLettersBeforeIndex: Int = 0
-    var highlightAtIndex: Int?
+    var atDieIndex: Int?
     var foregroundColor: Color?
 
     @State private var bounds: CGSize = .zero
@@ -47,9 +47,7 @@ struct StickerTargetSheet: View {
             )
         )
     }
-    var frameTo: CGSize {
-        CGSize(width: width, height: height)
-    }
+
     var shorterSideSize: CGFloat {
         min(width, height)
     }
@@ -106,13 +104,13 @@ struct StickerTargetSheet: View {
                     .offset(self.offset(forFaceIndex: faceIndex))
                 }
             }
-            if let highlightAtIndex = self.highlightAtIndex {
-                if highlightAtIndex < 25 && highlightAtIndex >= 0 {
+            if let atDieIndex = self.atDieIndex {
+                if atDieIndex < 25 && atDieIndex >= 0 {
                     // Highlight-colored box
                     RoundedRectangle(cornerRadius: faceSize / 8)
                         .size(width: faceSize * 1.2, height: faceSize * 1.2)
                         .fill(Color.highlighter)
-                        .offset(self.offset(forFaceIndex: highlightAtIndex))
+                        .offset(self.offset(forFaceIndex: atDieIndex))
                         .frame(width: faceSize * 1.2, height: faceSize * 1.2)
                     // Hand image
                     Image("Hand with Sticker")
@@ -121,12 +119,12 @@ struct StickerTargetSheet: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: width, height: height)
                         .offset(handImageOffsetToCenterOfDie)
-                        .offset(self.offset(forFaceIndex: highlightAtIndex))
+                        .offset(self.offset(forFaceIndex: atDieIndex))
                         //.mask(foregroundColor)
                     // Face being placed
                     if let diceKey = self.diceKey {
-                        DieView(face: diceKey.faces[highlightAtIndex], dieSize: faceSize, penColor: foregroundColor ?? Color.black, faceColor: Color.clear)
-                            .offset(self.offset(forFaceIndex: highlightAtIndex))
+                        DieView(face: diceKey.faces[atDieIndex], dieSize: faceSize, penColor: foregroundColor ?? Color.black, faceColor: Color.clear)
+                            .offset(self.offset(forFaceIndex: atDieIndex))
                     }
                 }
             }
@@ -152,14 +150,14 @@ struct StickerTargetSheet: View {
 
 struct StickerTargetSheet_Previews: PreviewProvider {
     static var previews: some View {
-        BackupToStickeysIntro(diceKey: DiceKey.createFromRandom())
+        BackupToStickeysIntroduction(diceKey: DiceKey.createFromRandom())
                 .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
 
         GeometryReader { _ in
                 StickerTargetSheet(
                     diceKey: DiceKey.createFromRandom(),
                     showLettersBeforeIndex: 13,
-                    highlightAtIndex: 13
+                    atDieIndex: 13
                 ).scaledToFit()
         }.previewDevice(PreviewDevice(rawValue: "iPhone 8"))
 

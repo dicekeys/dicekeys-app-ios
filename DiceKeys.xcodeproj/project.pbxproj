@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		04EA543F170C770F1092B593 /* Pods_DiceKeysTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */; };
 		17318748257DA69800A9F97A /* ValidateBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17318747257DA69700A9F97A /* ValidateBackup.swift */; };
+		1731874E257E27C500A9F97A /* DiceKeyCopyInProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1731874D257E27C300A9F97A /* DiceKeyCopyInProgress.swift */; };
+		17318752257E545000A9F97A /* BackupToStickeysIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17318751257E545000A9F97A /* BackupToStickeysIntroduction.swift */; };
+		17318757257E555B00A9F97A /* StickerSheetForFace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17318756257E555B00A9F97A /* StickerSheetForFace.swift */; };
+		17318760257E55BB00A9F97A /* TransferDie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1731875F257E55BB00A9F97A /* TransferDie.swift */; };
+		17318766257E562600A9F97A /* BackupToDiceKeysKitIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17318765257E562600A9F97A /* BackupToDiceKeysKitIntroduction.swift */; };
 		17426E2C2564FA6000FB0FAB /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E2B2564FA6000FB0FAB /* Face.swift */; };
 		17426E2D2564FA6000FB0FAB /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E2B2564FA6000FB0FAB /* Face.swift */; };
 		17426E2E2564FA6000FB0FAB /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E2B2564FA6000FB0FAB /* Face.swift */; };
@@ -112,6 +117,11 @@
 
 /* Begin PBXFileReference section */
 		17318747257DA69700A9F97A /* ValidateBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateBackup.swift; sourceTree = "<group>"; };
+		1731874D257E27C300A9F97A /* DiceKeyCopyInProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyCopyInProgress.swift; sourceTree = "<group>"; };
+		17318751257E545000A9F97A /* BackupToStickeysIntroduction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupToStickeysIntroduction.swift; sourceTree = "<group>"; };
+		17318756257E555B00A9F97A /* StickerSheetForFace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerSheetForFace.swift; sourceTree = "<group>"; };
+		1731875F257E55BB00A9F97A /* TransferDie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferDie.swift; sourceTree = "<group>"; };
+		17318765257E562600A9F97A /* BackupToDiceKeysKitIntroduction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupToDiceKeysKitIntroduction.swift; sourceTree = "<group>"; };
 		17426E2B2564FA6000FB0FAB /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
 		17426E312564FA8000FB0FAB /* FaceSpecification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSpecification.swift; sourceTree = "<group>"; };
 		17426E392564FAAF00FB0FAB /* FaceRead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceRead.swift; sourceTree = "<group>"; };
@@ -210,6 +220,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		17318755257E552000A9F97A /* StickeysKit */ = {
+			isa = PBXGroup;
+			children = (
+				17318751257E545000A9F97A /* BackupToStickeysIntroduction.swift */,
+				1788B17525790B29007F6CF9 /* StickerSheet.swift */,
+				1788B17425790B29007F6CF9 /* StickerTargetSheet.swift */,
+				1788B17325790B29007F6CF9 /* TransferSticker.swift */,
+				17318756257E555B00A9F97A /* StickerSheetForFace.swift */,
+			);
+			path = StickeysKit;
+			sourceTree = "<group>";
+		};
+		1731875C257E557E00A9F97A /* DiceKeyKit */ = {
+			isa = PBXGroup;
+			children = (
+				17318765257E562600A9F97A /* BackupToDiceKeysKitIntroduction.swift */,
+				1731874D257E27C300A9F97A /* DiceKeyCopyInProgress.swift */,
+				1731875F257E55BB00A9F97A /* TransferDie.swift */,
+			);
+			name = DiceKeyKit;
+			path = Stickeys;
+			sourceTree = "<group>";
+		};
 		17426E122564F91E00FB0FAB /* DiceKey */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,11 +324,10 @@
 		1788B1BC257B0781007F6CF9 /* Backup */ = {
 			isa = PBXGroup;
 			children = (
-				1788B17425790B29007F6CF9 /* StickerTargetSheet.swift */,
-				1788B17525790B29007F6CF9 /* StickerSheet.swift */,
-				1788B17325790B29007F6CF9 /* TransferSticker.swift */,
-				1742872725721B5B00C3715B /* BackupDiceKey.swift */,
+				1731875C257E557E00A9F97A /* DiceKeyKit */,
+				17318755257E552000A9F97A /* StickeysKit */,
 				17318747257DA69700A9F97A /* ValidateBackup.swift */,
+				1742872725721B5B00C3715B /* BackupDiceKey.swift */,
 			);
 			path = Backup;
 			sourceTree = "<group>";
@@ -713,7 +745,9 @@
 				177FCA5A256D047300E2FB6F /* ViewsInProgress.swift in Sources */,
 				1788B18225790EDB007F6CF9 /* DiceKeyWithDerivedValue.swift in Sources */,
 				1742874125749CA300C3715B /* Properties.swift in Sources */,
+				17318757257E555B00A9F97A /* StickerSheetForFace.swift in Sources */,
 				1742872225721A7200C3715B /* SeedHardwareSecurityKey.swift in Sources */,
+				17318766257E562600A9F97A /* BackupToDiceKeysKitIntroduction.swift in Sources */,
 				17533916256B3AC500E090BC /* App.swift in Sources */,
 				17BBB61E256F87CD009AC42B /* Funnel.swift in Sources */,
 				1742872C25721E5500C3715B /* DiceKeyStorageOptions.swift in Sources */,
@@ -734,6 +768,7 @@
 				1788B1C0257B277F007F6CF9 /* Instruction.swift in Sources */,
 				1788B1C4257B58B2007F6CF9 /* ChildSizeReader.swift in Sources */,
 				1788B17725790B29007F6CF9 /* StickerTargetSheet.swift in Sources */,
+				17318760257E55BB00A9F97A /* TransferDie.swift in Sources */,
 				175F39442575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */,
 				1788B19E257A4D33007F6CF9 /* UINavigationController.swift in Sources */,
 				17426E5D2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */,
@@ -742,6 +777,7 @@
 				17426E2C2564FA6000FB0FAB /* Face.swift in Sources */,
 				17426E792564FB7300FB0FAB /* DiceKeyView.swift in Sources */,
 				17426E4A2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,
+				1731874E257E27C500A9F97A /* DiceKeyCopyInProgress.swift in Sources */,
 				17426E932566316100FB0FAB /* DiceKeysCameraView.swift in Sources */,
 				1742873025726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift in Sources */,
 				1788B17625790B29007F6CF9 /* TransferSticker.swift in Sources */,
@@ -749,6 +785,7 @@
 				17533912256B2BCB00E090BC /* CameraController.swift in Sources */,
 				177FCA56256D03DA00E2FB6F /* AppMainView.swift in Sources */,
 				177FCA76256DBB9600E2FB6F /* AssemblyInstructions.swift in Sources */,
+				17318752257E545000A9F97A /* BackupToStickeysIntroduction.swift in Sources */,
 				17426E532564FAFB00FB0FAB /* ApiRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -39,7 +39,7 @@ extension Color {
     static let DiceKeysNavigationForeground = Color(UIColor.DiceKeysNavigationForeground)
     static let warningBackground = Color(hex: "E0585B")
     static var diceBox = Color(hex: "050350")
-
+    static var diceBoxDieSlot = Color(hex: "040240")
 }
 
 extension UIColor {

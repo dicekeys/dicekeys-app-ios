@@ -179,6 +179,7 @@ struct AssemblyInstructions: View {
     @State private var backupScanned: DiceKey?
     @State var step: Step = Step(rawValue: 1)!
     @State var substep: Int = 0
+    @State var backupTarget: BackupTarget = .Stickeys
 
     @State var userChoseToAllowSkipScanningStep: Bool = false
     @State var userChoseToAllowSkipBackupStep: Bool = false
@@ -280,10 +281,10 @@ struct AssemblyInstructions: View {
                     case .DropDice: DropDice()
                     case .FillEmptySlots: FillEmptySlots()
                     case .ScanFirstTime: ScanFirstTime(diceKey: self.$diceKeyScanned)
-                    case .CreateBackup: BackupToStickeysSteps(diceKey: self.diceKeyScanned ?? DiceKey.Example, step: $substep)
-                    case .ValidateBackup: ValidateBackup(originalDiceKey: Binding<DiceKey>(
-                        get: {diceKeyScanned ?? DiceKey.Example},
-                        set: {newValue in diceKeyScanned = newValue}
+                    case .CreateBackup: BackupSteps(diceKey: self.diceKeyScanned ?? DiceKey.Example, target: .Stickeys, step: $substep)
+                    case .ValidateBackup: ValidateBackup(target: backupTarget, originalDiceKey: Binding<DiceKey>(
+                        get: { diceKeyScanned ?? DiceKey.Example },
+                        set: { newValue in diceKeyScanned = newValue }
                     ), backupScanned: self.$backupScanned)
                     case .SealBox: SealBox()
                     case .Done: InstructionsDone(createdDiceKey: diceKeyScanned != nil, backedUpSuccessfully: backupSuccessful)

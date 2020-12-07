@@ -164,7 +164,7 @@ class DiceKey: Identifiable {
     func mostSimilarRotationWithDifference(_ other: DiceKey, maxDifferenceToRotateFor: Int = 12) -> ( DiceKey, Int ) {
         var rotationWithSmallestDifference = other
         var smallestDifference = differencesForFixedRotation(compareTo: other)
-        if (smallestDifference == 0) {
+        if smallestDifference == 0 {
             // no need to look further
             return (rotationWithSmallestDifference, smallestDifference)
         }
@@ -174,7 +174,7 @@ class DiceKey: Identifiable {
                 smallestDifference = difference
                 rotationWithSmallestDifference = candidate
             }
-            if (smallestDifference == 0) {
+            if smallestDifference == 0 {
                 // no need to look further
                 return (rotationWithSmallestDifference, smallestDifference)
             }

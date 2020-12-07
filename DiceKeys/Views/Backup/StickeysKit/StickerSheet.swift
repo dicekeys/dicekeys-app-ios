@@ -71,17 +71,6 @@ struct StickerSheet: View {
     }
 }
 
-//struct StickerSheet: View {
-//    var showLetter: FaceLetter = FaceLetter.A
-//    var highlightFaceWithDigit: FaceDigit?
-//
-//    var body: some View {
-//        GeometryReader { geometry in
-//            StickerSheetFixedSize(bounds: geometry.size, showLetter: showLetter, highlightFaceWithDigit: highlightFaceWithDigit)
-//        }.aspectRatio(nativeWidthOverHeight, contentMode: .fit)
-//    }
-//}
-
 struct StickerSheet_Previews: PreviewProvider {
     static var previews: some View {
         StickerSheet(showLetter: FaceLetter.Z, highlightFaceWithDigit: FaceDigit._2)
