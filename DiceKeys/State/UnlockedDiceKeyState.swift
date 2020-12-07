@@ -101,10 +101,15 @@ final class UnlockedDiceKeyState: KnownDiceKeyState {
                 _  = EncryptedDiceKeyFileAccessor.instance.delete(keyId: keyId)
                 self.protectedCacheOfIsDiceKeyStored = false
             }
+            self.objectWillChange.send()
         }
     }
 
-    init(_ forDiceKey: DiceKey) {
+    var isDiceKeyStoredBinding: Binding<Bool> { Binding<Bool>(
+        get: { self.isDiceKeyStored }, set: { self.isDiceKeyStored = $0 })
+    }
+
+    private init(_ forDiceKey: DiceKey) {
         self.diceKey = forDiceKey
         super.init(forDiceKey.id)
         // Force default nickname to be written to stable store
@@ -113,5 +118,19 @@ final class UnlockedDiceKeyState: KnownDiceKeyState {
             // Set the default value for this field if no value has ever been set
             self.isCenterFaceStored = true
         }
+    }
+
+    private static var known: [String: UnlockedDiceKeyState] = [:]
+
+    static func forDiceKey(_ diceKey: DiceKey) -> UnlockedDiceKeyState {
+        guard let existingRecord = known[diceKey.id] else {
+            let result = UnlockedDiceKeyState(diceKey)
+            known[diceKey.id] = result
+            return result
+        }
+        return existingRecord
+    }
+    static func forget(diceKey: DiceKey) {
+        UnlockedDiceKeyState.known.removeValue(forKey: diceKey.id)
     }
 }

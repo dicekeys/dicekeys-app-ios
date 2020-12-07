@@ -9,7 +9,12 @@ import SwiftUI
 
 struct DiceKeyStorageOptions: View {
     let diceKey: DiceKey
-    @StateObject var diceKeyState: UnlockedDiceKeyState
+    @ObservedObject var diceKeyState: UnlockedDiceKeyState
+
+    init(diceKey: DiceKey) {
+        self.diceKey = diceKey
+        self._diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey))
+    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -31,7 +36,7 @@ struct DiceKeyStorageOptions: View {
 //                    }
 //                }
 //                Spacer()
-                Toggle(isOn: $diceKeyState.isDiceKeyStored ) {
+                Toggle(isOn: diceKeyState.isDiceKeyStoredBinding ) {
                     HStack {
                         Spacer()
                         VStack {
@@ -58,10 +63,10 @@ struct DiceKeyStorageOptions: View {
 
 struct DiceKeyStorageOptions_Previews: PreviewProvider {
     static let diceKey = DiceKey.createFromRandom()
-    @StateObject static var diceKeyState = UnlockedDiceKeyState(diceKey)
+    @StateObject static var diceKeyState = UnlockedDiceKeyState.forDiceKey(diceKey)
 
     static var previews: some View {
-        DiceKeyStorageOptions(diceKey: diceKey, diceKeyState: DiceKeyStorageOptions_Previews.diceKeyState)
+        DiceKeyStorageOptions(diceKey: diceKey)
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
     }
 }

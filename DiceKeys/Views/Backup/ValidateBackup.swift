@@ -8,22 +8,21 @@
 import SwiftUI
 
 struct ValidateBackup: View {
-    @Binding var originalDiceKey: DiceKey?
+    @Binding var originalDiceKey: DiceKey
     @Binding var backupScanned: DiceKey?
 
     @State var scanningOriginal: Bool = false
     @State var scanningCopy: Bool = false
 
     var backupDiceKeyRotatedToMatchOriginal: DiceKey? {
-        guard let original = originalDiceKey, let backup = backupScanned else { return nil }
-        return original.mostSimilarRotationOf(backup)
+        guard let backup = backupScanned else { return nil }
+        return originalDiceKey.mostSimilarRotationOf(backup)
     }
 
     var invalidIndexes: Set<Int> {
-        guard let original = originalDiceKey else { return Set<Int>() }
         guard let backup = backupDiceKeyRotatedToMatchOriginal else { return Set<Int>() }
         return Set<Int>(
-            (0..<25).filter { original.faces[$0].numberOfFieldsDifferent(fromOtherFace: backup.faces[$0]) > 0 }
+            (0..<25).filter { originalDiceKey.faces[$0].numberOfFieldsDifferent(fromOtherFace: backup.faces[$0]) > 0 }
         )
     }
 
@@ -50,10 +49,10 @@ struct ValidateBackup: View {
             }
             Spacer()
             RoundedTextButton("Cancel") { self.scanningCopy = false }
-        } else if let backup = self.backupDiceKeyRotatedToMatchOriginal, let original = self.originalDiceKey {
+        } else if let backup = self.backupDiceKeyRotatedToMatchOriginal {
             HStack(alignment: .top) {
                 VStack {
-                    DiceKeyView(diceKey: original)
+                    DiceKeyView(diceKey: originalDiceKey)
                     RoundedTextButton("Re-scan") { self.scanningOriginal = true }.hideIf(perfectMatch)
                 }
                 Spacer()
@@ -104,7 +103,7 @@ struct ValidateBackup: View {
 }
 
 private struct TestValidateBackup: View {
-    @State var originalDiceKey: DiceKey?
+    @State var originalDiceKey: DiceKey
     @State var backupScanned: DiceKey?
 
     var body: some View {
@@ -114,6 +113,6 @@ private struct TestValidateBackup: View {
 
 struct ValidateBackup_Previews: PreviewProvider {
     static var previews: some View {
-        TestValidateBackup()
+        TestValidateBackup(originalDiceKey: DiceKey.createFromRandom())
     }
 }

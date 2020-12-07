@@ -183,6 +183,11 @@ struct AssemblyInstructions: View {
     @State var userChoseToAllowSkipScanningStep: Bool = false
     @State var userChoseToAllowSkipBackupStep: Bool = false
 
+//    let diceKeyScannedNonNil = Binding<DiceKey>(
+//        get: {diceKeyScanned ?? DiceKey.Example},
+//        set: {newValue in diceKeyScanned = newValue}
+//    )
+
     var maySkipBackupStep: Bool {
         userChoseToAllowSkipScanningStep || userChoseToAllowSkipBackupStep
     }
@@ -204,7 +209,7 @@ struct AssemblyInstructions: View {
     private let last = Step.Done.rawValue
 
     let numberOfBackupSubsteps = 26
-    
+
     var backupSuccessful: Bool {
         DiceKey.rotationIndependentEquals(diceKeyScanned, backupScanned)
     }
@@ -275,9 +280,11 @@ struct AssemblyInstructions: View {
                     case .DropDice: DropDice()
                     case .FillEmptySlots: FillEmptySlots()
                     case .ScanFirstTime: ScanFirstTime(diceKey: self.$diceKeyScanned)
-                    case .CreateBackup: BackupToStickeys(diceKey: self.diceKeyScanned ?? DiceKey.Example, step: $substep)
-    //                case .CreateBackup: BackupDiceKey(diceKey: self.diceKeyScanned ?? DiceKey.Example)
-                    case .ValidateBackup: ValidateBackup(originalDiceKey: self.$diceKeyScanned, backupScanned: self.$backupScanned)
+                    case .CreateBackup: BackupToStickeysSteps(diceKey: self.diceKeyScanned ?? DiceKey.Example, step: $substep)
+                    case .ValidateBackup: ValidateBackup(originalDiceKey: Binding<DiceKey>(
+                        get: {diceKeyScanned ?? DiceKey.Example},
+                        set: {newValue in diceKeyScanned = newValue}
+                    ), backupScanned: self.$backupScanned)
                     case .SealBox: SealBox()
                     case .Done: InstructionsDone(createdDiceKey: diceKeyScanned != nil, backedUpSuccessfully: backupSuccessful)
                     }

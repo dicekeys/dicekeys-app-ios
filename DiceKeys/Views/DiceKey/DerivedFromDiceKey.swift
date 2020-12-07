@@ -43,13 +43,16 @@ struct DiceKeyFunnel: View {
         HStack {
             Spacer()
                 VStack(alignment: .center, spacing: 0) {
-                    DiceKeyViewFixedSize(
+                    DiceKeyView(
                         diceKey: diceKey ?? DiceKey.createFromRandom(),
-                        viewSize: CGSize(width: diceKeySize, height: diceKeySize),
                         showLidTab: false,
                         leaveSpaceForTab: false,
                         diceBoxColor: Color.diceBox
-                    ).frame(height: diceKeySize - verticalOverlap, alignment: .top)
+                    )
+                    // Frame to size
+                    .frame(width: diceKeySize, height: diceKeySize)
+                    // Remove the part to hide
+                    .frame(height: diceKeySize - verticalOverlap, alignment: .top).clipped()
                     ZStack {
                         Funnel(topWidth: diceKeySize, bottomWidth: bottomWidth, bottleneckWidth: bottleneckWidth, paddingBottom: contentHeight, bottleneckFractionFromTop: bottleneckFractionFromTop)
                             .fill(LinearGradient(gradient: Gradient(colors: [Color.diceBox, .white]), startPoint: .top, endPoint: .bottom))

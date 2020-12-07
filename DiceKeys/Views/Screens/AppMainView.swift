@@ -12,17 +12,25 @@ struct AppMainView: View {
     // extension in the Extensions directory
 
 //    @State var diceKey: DiceKey?
-    @State var diceKeyState: UnlockedDiceKeyState?
+    @State var diceKey: DiceKey?
+//    @State var diceKeyState: UnlockedDiceKeyState?
 
     var knownDiceKeysState: [KnownDiceKeyState] {
         GlobalState.instance.knownDiceKeys.map { KnownDiceKeyState($0) }.filter { $0.isDiceKeyStored }
     }
-
+    
     var body: some View {
-        if let diceKeyState = self.diceKeyState {
-            DiceKeyPresent(diceKeyState: diceKeyState, onForget: {
-                self.diceKeyState = nil
-            })
+        if let diceKey: DiceKey = self.diceKey {
+            DiceKeyPresent(
+                diceKey: Binding<DiceKey>(
+                    get: { self.diceKey ?? DiceKey.Example },
+                    set: { self.diceKey = $0 }
+                ),
+                onForget: {
+                    UnlockedDiceKeyState.forget(diceKey: diceKey)
+                    self.diceKey = nil
+                }
+            )
         } else {
         NavigationView {
             VStack {
@@ -32,7 +40,7 @@ struct AppMainView: View {
                         EncryptedDiceKeyFileAccessor.instance.getDiceKey(fromKeyId: knownDiceKeyState.id) { result in
                                 switch result {
                                 case .success(let diceKey):
-                                    self.diceKeyState = UnlockedDiceKeyState(diceKey)
+                                    self.diceKey = diceKey
                                 default: ()
                             }
                         }
@@ -49,7 +57,7 @@ struct AppMainView: View {
                 NavigationLink(
                     destination: ScanDiceKey(
                         onDiceKeyRead: { diceKey in
-                            self.diceKeyState = UnlockedDiceKeyState(diceKey)
+                            self.diceKey = diceKey
                         })
                 ) {
                     VStack {
@@ -59,7 +67,7 @@ struct AppMainView: View {
                 }
                 Spacer()
                 NavigationLink(
-                    destination: AssemblyInstructions(onSuccess: { self.diceKeyState = UnlockedDiceKeyState($0) })) {
+                    destination: AssemblyInstructions(onSuccess: { self.diceKey = $0 })) {
                     VStack {
                         HStack {
                             Spacer()
@@ -73,7 +81,7 @@ struct AppMainView: View {
                         Text("Assemble your First DiceKey").font(.title2)
                     }
                 }
-                if let diceKey = self.diceKeyState?.diceKey {
+                if let diceKey = self.diceKey {
                     Spacer()
                     DiceKeyView(diceKey: diceKey, showLidTab: false)
                 }

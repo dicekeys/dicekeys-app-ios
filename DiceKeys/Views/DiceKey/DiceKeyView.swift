@@ -36,14 +36,22 @@ private struct DieLidView: View {
 
 private let fractionOfVerticalSpaceRequiredForTab: CGFloat = 0.1
 
-struct DiceKeyViewFixedSize: View {
+struct DiceKeyView: View {
     let diceKey: DiceKey
-    let viewSize: CGSize
     var showLidTab: Bool = false
     var leaveSpaceForTab: Bool = false
     var diceBoxColor: Color = Color.diceBox
     var diePenColor: Color = Color.black
     var highlightIndexes: Set<Int> = Set()
+
+    @State private var viewSize: CGSize = CGSize.zero
+
+    var aspectRatio: CGFloat { get {
+      (showLidTab == true || leaveSpaceForTab == true) ?
+        (1 / (1 + fractionOfVerticalSpaceRequiredForTab)) :
+        1
+    } }
+
 
     var fractionOfVerticalSpaceUsedByTab: CGFloat {
         (leaveSpaceForTab || showLidTab) ? fractionOfVerticalSpaceRequiredForTab : 0
@@ -90,6 +98,7 @@ struct DiceKeyViewFixedSize: View {
     }
 
     var body: some View {
+        CalculateBounds(bounds: self.$viewSize) {
         ZStack {
             // The box
             RoundedRectangle(cornerRadius: boxCornerRadius)
@@ -110,42 +119,38 @@ struct DiceKeyViewFixedSize: View {
                         y: vCenter + CGFloat(-2 + facePosition.row) * dieStepSize
                     )
             }
-        }.frame(width: width, height: height)
+        }}.aspectRatio(aspectRatio, contentMode: .fit)
     }
 }
-
-struct DiceKeyView: View {
-    let diceKey: DiceKey
-    var showLidTab: Bool = false
-    var leaveSpaceForTab: Bool = false
-    var diceBoxColor: Color = Color.diceBox
-    var diePenColor: Color = Color.black
-    var highlightIndexes: Set<Int> = Set()
-
-    var aspectRatio: CGFloat { get {
-      (showLidTab == true || leaveSpaceForTab == true) ?
-        (1 / (1 + fractionOfVerticalSpaceRequiredForTab)) :
-        1
-    } }
-
-    var body: some View {
-        HStack {
-            Spacer(minLength: 0)
-            GeometryReader { reader in
-                DiceKeyViewFixedSize(
-                    diceKey: diceKey,
-                    viewSize: reader.size,
-                    showLidTab: showLidTab,
-                    leaveSpaceForTab: leaveSpaceForTab,
-                    diceBoxColor: diceBoxColor,
-                    diePenColor: diePenColor,
-                    highlightIndexes: highlightIndexes
-                )
-            }.aspectRatio(aspectRatio, contentMode: .fit)
-            Spacer(minLength: 0)
-        }
-    }
-}
+//
+//struct DiceKeyView: View {
+//    let diceKey: DiceKey
+//    var showLidTab: Bool = false
+//    var leaveSpaceForTab: Bool = false
+//    var diceBoxColor: Color = Color.diceBox
+//    var diePenColor: Color = Color.black
+//    var highlightIndexes: Set<Int> = Set()
+//
+//    var aspectRatio: CGFloat { get {
+//      (showLidTab == true || leaveSpaceForTab == true) ?
+//        (1 / (1 + fractionOfVerticalSpaceRequiredForTab)) :
+//        1
+//    } }
+//
+//    var body: some View {
+//        GeometryReader { reader in
+//            DiceKeyViewFixedSize(
+//                diceKey: diceKey,
+//                viewSize: reader.size,
+//                showLidTab: showLidTab,
+//                leaveSpaceForTab: leaveSpaceForTab,
+//                diceBoxColor: diceBoxColor,
+//                diePenColor: diePenColor,
+//                highlightIndexes: highlightIndexes
+//            )
+//        }.aspectRatio(aspectRatio, contentMode: .fit)
+//    }
+//}
 
 struct DiceKeyView_Previews: PreviewProvider {
 //    let diceKey: DiceKey = DiceKey.createFromRandom()

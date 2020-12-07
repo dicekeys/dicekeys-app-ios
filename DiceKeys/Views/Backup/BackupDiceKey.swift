@@ -40,7 +40,7 @@ struct BackupToStickeysIntro: View {
 //    }
 }
 
-struct BackupToStickeys: View {
+struct BackupToStickeysSteps: View {
     let diceKey: DiceKey
     @Binding var step: Int
 
@@ -68,10 +68,53 @@ struct BackupToStickeys: View {
     }
 }
 
-struct BackupDiceKey: View {
-    let diceKey: DiceKey
-    @State var mode: Mode?
+struct BackupToStickeys: View {
+    @Binding var originalDiceKey: DiceKey
+    @State var backupScanned: DiceKey?
     @State var step: Int = 0
+
+    let last = 26
+
+    var body: some View {
+        VStack {
+            if step < 26, let diceKey = originalDiceKey {
+                BackupToStickeysSteps(diceKey: diceKey, step: self.$step)
+            } else {
+                ValidateBackup(originalDiceKey: self.$originalDiceKey, backupScanned: self.$backupScanned)
+            }
+            HStack {
+                Spacer()
+                Button { step = 0 } label: {
+                    Image(systemName: "chevron.backward.2")
+                }.showIf( step > 1)
+                Spacer()
+                Button { step -= 1 } label: {
+                    HStack {
+                        Image(systemName: "chevron.backward")
+                        Text("Previous").font(.title3)
+                    }
+                }.showIf( step > 1 )
+                Spacer()
+                Button { step += 1 } label: {
+                    HStack {
+                        Text( step == last ? "Done" : "Next").font(.title3)
+                        Image(systemName: "chevron.forward")
+                    }
+                }
+                Spacer()
+                Button { step = 26 } label: {
+                    Image(systemName: "chevron.forward.2")
+                }.showIf( step < 26 )
+                Spacer()
+            }
+        }.padding(.horizontal, 10).padding(.bottom, 10)
+    }
+}
+
+struct BackupDiceKey: View {
+    @Binding var diceKey: DiceKey
+    @State var mode: Mode?
+//    @State var step: Int = 0
 
     enum Mode {
         case Stickeys
@@ -81,7 +124,7 @@ struct BackupDiceKey: View {
 
     var body: some View {
         if mode == .Stickeys {
-            BackupToStickeys(diceKey: diceKey, step: self.$step)
+            BackupToStickeys(originalDiceKey: self.$diceKey)
         } else {
 //            GeometryReader { geometry in
             HStack {
@@ -89,17 +132,23 @@ struct BackupDiceKey: View {
                 VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/) {
                     Spacer()
                     NavigationLink(
-                        destination: BackupToStickeys(diceKey: diceKey, step: self.$step),
+                        destination: BackupToStickeys(originalDiceKey: self.$diceKey),
                         label: {
                             VStack {
-                                HStack {
+                                HStack(alignment: .center, spacing: 0) {
                                     Spacer()
-                                    DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue).scaleEffect(0.825)
+                                    DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue)
+                                        .frame(minWidth: 0, maxWidth: .infinity)
+                                    Image(systemName: "arrow.right.circle.fill")
+                                        .renderingMode(.template)
+                                        .foregroundColor(Color.alexandrasBlue)
+                                        .scaleEffect(2.0)
+                                        .padding(.horizontal, 20)
+                                    StickerTargetSheet(diceKey: diceKey, showLettersBeforeIndex: 12, highlightAtIndex: 12, foregroundColor: Color.alexandrasBlue, orientation: .portrait)
+                                        .frame(minWidth: 0, maxWidth: .infinity)
                                     Spacer()
-                                    StickerTargetSheet(diceKey: diceKey, showLettersBeforeIndex: 12, highlightAtIndex: 12).aspectRatio(contentMode: .fit)
                                 }
-                                Text("Create a Backup using Stickeys").font(.title2)
-                                    .foregroundColor(Color.black)
+                                Text("Create a Backup using Stickeys").font(.title).foregroundColor(.alexandrasBlue)
                             }
                         }
                     )
@@ -109,23 +158,21 @@ struct BackupDiceKey: View {
 //                    }.padding(.top, 5)
                     Spacer()
                     NavigationLink(
-                        destination: BackupToStickeys(diceKey: diceKey, step: self.$step),
+                        destination: BackupToStickeys(originalDiceKey: $diceKey),
                         label: {
                             VStack {
                                 HStack {
                                     Spacer()
-                                    DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue).scaleEffect(0.825)
-                                    Spacer()
-                                    DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue).scaleEffect(0.825)
+                                    DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue)
+                                    Image(systemName: "arrow.right.circle.fill")
+                                        .renderingMode(.template)
+                                        .foregroundColor(Color.alexandrasBlue)
+                                        .scaleEffect(2.0)
+                                        .padding(.horizontal, 20)
+                                    DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue)
                                     Spacer()
                                 }
-
-                                //                                Image("Backup to DiceKey")
-//                                    .renderingMode(.template)
-//                                    .resizable()
-//                                    .aspectRatio(contentMode: .fit)
-//                                    .foregroundColor(Color.blue)
-                                Text("Create a Backup DiceKey").font(.title2)                  .foregroundColor(Color.black)
+                                Text("Create a Backup DiceKey").font(.title).foregroundColor(.alexandrasBlue)
                             }
                         }
                     )
@@ -142,26 +189,36 @@ struct BackupDiceKey: View {
                     Spacer()
                 }
                 Spacer()
-            }
+            }.padding(.horizontal, 10)
 //            }
         }
     }
 }
 
+private struct TestBackupDiceKey: View {
+    @State var diceKey: DiceKey = DiceKey.createFromRandom()
+
+    var body: some View {
+        BackupDiceKey(diceKey: $diceKey)
+    }
+}
+
 struct BackupDiceKey_Previews: PreviewProvider {
     static var previews: some View {
-
-        BackupToStickeysIntro(diceKey: DiceKey.createFromRandom())
-                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-
-        BackupDiceKey(diceKey: DiceKey.createFromRandom())
+        TestBackupDiceKey()
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
 
-
-        AssemblyInstructions()
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-        
-        AppMainView()
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+        TestBackupDiceKey()
+            .previewLayout(.fixed(width: 1024, height: 768))
+//        BackupToStickeysIntro(diceKey: DiceKey.createFromRandom())
+//                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+//
+//
+//
+//        AssemblyInstructions()
+//            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+//
+//        AppMainView()
+//            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
     }
 }

@@ -31,38 +31,22 @@ private func defaultDiceKeyName(diceKey: DiceKey) -> String {
     return "DiceKey with  \(diceKey.faces[12].letter.rawValue)\(diceKey.faces[12].digit.rawValue) in center (\(formatter.string(from: Date())))"
 }
 
-struct NicknameEditingField: View {
-    @Binding var nickname: String
-
-    let nicknameFieldFont =  UIFont.preferredFont(forTextStyle: .title2)
-    let nicknameFieldIdealSize = NSString("A reasonably long nickname").size(withAttributes: [ NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .title2)]).width
-    let nicknameFieldMaxSize = NSString("A truly unreasonably gigantic nickname").size(withAttributes: [ NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .title2)]).width
-
-    var body: some View {
-        HStack {
-            Spacer()
-            TextField(
-                "Nickname",
-                 text: $nickname
-            ) // { isEditing in
-//                        // self.isEditing = isEditing
-//                    } onCommit: {
-//                        // validate(name: username)
-//                    }
-            .font(Font(nicknameFieldFont))
-            .multilineTextAlignment(.center)
-            .border(Color(UIColor.separator))
-            .frame(
-                maxWidth: min(nicknameFieldMaxSize, UIScreen.main.bounds.size.width * 0.9)
-            )
-            Spacer()
+struct DiceKeyPresent: View {
+    @Binding var diceKey: DiceKey {
+        mutating didSet {
+            _diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey))
         }
     }
-}
 
-struct DiceKeyPresent: View {
-    @ObservedObject var diceKeyState: UnlockedDiceKeyState
     let onForget: () -> Void
+
+    @ObservedObject var diceKeyState: UnlockedDiceKeyState
+
+    init(diceKey: Binding<DiceKey>, onForget: @escaping () -> Void) {
+        self._diceKey = diceKey
+        self.onForget = onForget
+        self._diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey.wrappedValue))
+    }
 
 //    @State var inNicknameEditingMode: Bool = false
 
@@ -74,15 +58,15 @@ struct DiceKeyPresent: View {
         CGFloat(1) / CGFloat(BottomButtonCount + 1)
     }
 
-    var diceKey: DiceKey {
-        diceKeyState.diceKey
-    }
+//    var diceKey: DiceKey {
+//        diceKeyState.diceKey
+//    }
 
     var body: some View {
         GeometryReader { geometry in
         NavigationView {
             VStack {
-                NavigationLink(destination: DiceKeyWithDerivedValue(derivableName: $derivableName, diceKeyState: diceKeyState), isActive: $isDiceKeyWithDerivedValueActive, label: { EmptyView() }).hidden()
+                NavigationLink(destination: DiceKeyWithDerivedValue(diceKey: diceKey, derivableName: $derivableName), isActive: $isDiceKeyWithDerivedValueActive, label: { EmptyView() }).hidden()
 //                Spacer()
 //                NicknameEditingField(nickname: $diceKeyState.nickname).hideIf(!inNicknameEditingMode)
                 Spacer()
@@ -118,7 +102,7 @@ struct DiceKeyPresent: View {
                                 Text("Seed Key").font(.footnote)
                             }
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
-                        NavigationLink(destination: BackupDiceKey(diceKey: diceKey)) {
+                        NavigationLink(destination: BackupDiceKey(diceKey: $diceKey)) {
                             VStack {
                                 Image("Backup to DiceKey")
                                     .renderingMode(.template)
@@ -128,7 +112,7 @@ struct DiceKeyPresent: View {
                                 Text("Backup").font(.footnote)
                             }
                         }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
-                        NavigationLink(destination: DiceKeyStorageOptions(diceKey: diceKey, diceKeyState: diceKeyState)) {
+                        NavigationLink(destination: DiceKeyStorageOptions(diceKey: diceKey)) {
                             VStack {
                                 ZStack {
                                     Image(systemName: "iphone")
@@ -156,7 +140,9 @@ struct DiceKeyPresent: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: ToolbarItemPlacement.navigationBarLeading) {
-                    Button(action: { self.onForget() }) {
+                    Button(action: {
+                        self.onForget()
+                    }) {
                         HStack {
                             Image(systemName: "lock")
                             Text(diceKeyState.isDiceKeyStored ? "Lock" : "Forget")
@@ -180,11 +166,13 @@ struct DiceKeyPresent: View {
 }
 
 struct TestDiceKeyPresent: View {
-    @State var diceKeyState: UnlockedDiceKeyState = UnlockedDiceKeyState(DiceKey.createFromRandom())
+//    @State var diceKeyState: UnlockedDiceKeyState = UnlockedDiceKeyState(DiceKey.createFromRandom())
+    @State var diceKey = DiceKey.createFromRandom()
 
     var body: some View {
         DiceKeyPresent(
-            diceKeyState: diceKeyState,
+//            diceKeyState: diceKeyState,
+            diceKey: $diceKey,
             onForget: {}
        )
     }
