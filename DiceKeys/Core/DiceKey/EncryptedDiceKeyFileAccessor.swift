@@ -36,30 +36,27 @@ class Directories {
 //}
 
 class EncryptedDiceKeyFileAccessor {
-    private var laContext: LAContext
-
-    private init() {
-        laContext = LAContext()
-    }
-
     static private(set) var instance = EncryptedDiceKeyFileAccessor()
 
+    let defaultReason = "Unlock your DiceKey"
+
     func authenticate (
-        reason: String = "Authenticate to access your DiceKey",
+        reason: String? = nil,
         _ onComplete: @escaping (_ wasAuthenticated: Result<Void, LAError>) -> Void
     ) {
         var error: NSError?
-        guard self.laContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
+        let laContext = LAContext()
+        guard laContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
             onComplete(.failure(LAError(_nsError: error!)))
             return
         }
-        self.laContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason ) { success, error in
+        laContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason ?? defaultReason ) { success, error in
             onComplete(success ? .success(()) : .failure(LAError(LAError.Code(rawValue: error!._code)!)))
         }
     }
 
     func authenticate (
-        reason: String = "Authenticate to access your DiceKey"
+        reason: String?
     ) -> Future<Void, LAError> {
         return Future<Void, LAError> { promise in
             self.authenticate(reason: reason) { result in promise(result) }
