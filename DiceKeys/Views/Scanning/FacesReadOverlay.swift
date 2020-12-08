@@ -76,10 +76,11 @@ struct FacesReadOverlay: View {
     var body: some View {
         Image(uiImage: renderer.image { context in
             let cgContext = context.cgContext
-            let frameRect = CGRect(x: 0, y: 0, width: renderedSize.width, height: renderedSize.height)
-            cgContext.addRect(frameRect)
-            cgContext.setStrokeColor(CGColor(red: 1, green: 0, blue: 0, alpha: 1))
-            cgContext.strokePath()
+            // Add a red frame rect for debugging bounds
+//            let frameRect = CGRect(x: 0, y: 0, width: renderedSize.width, height: renderedSize.height)
+//            cgContext.addRect(frameRect)
+//            cgContext.setStrokeColor(CGColor(red: 1, green: 0, blue: 0, alpha: 1))
+//            cgContext.strokePath()
             guard let facesRead = self.facesRead else { return }
 
             for faceRead in facesRead {

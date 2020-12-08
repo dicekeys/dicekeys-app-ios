@@ -18,7 +18,7 @@ struct StickerSheet: View {
 
     var maxFractionalSpace = CGFloat(0.8)
     @State private var bounds: CGSize = .zero
-    
+
     var height: CGFloat {
         min(bounds.height,
             nativeHeightOverWidth * bounds.width
@@ -39,7 +39,7 @@ struct StickerSheet: View {
         height * nativeWidthOverHeight
     }
 
-    var faceSizeModel: DiceKeySizeModel { DiceKeySizeModel(squareSize: width) }
+    var faceSizeModel: DiceKeySizeModel { DiceKeySizeModel(width) }
     var faceSize: CGFloat { faceSizeModel.faceSize }
     var faceStepSize: CGFloat { faceSizeModel.stepSize }
 
@@ -59,7 +59,7 @@ struct StickerSheet: View {
                         face: Face(letter: FaceLetters[firstLetterIndex + letterIndexOnPage], digit: FaceDigits[digitIndex], orientationAsLowercaseLetterTrbl: FaceOrientationLetterTrbl.Top),
                         dieSize: faceSize,
                         penColor: (showLetter == FaceLetters[firstLetterIndex + letterIndexOnPage] && highlightFaceWithDigit == FaceDigits[digitIndex]) ? penColorOfHighlightedFace : Color.black,
-                        faceColor: (showLetter == FaceLetters[firstLetterIndex + letterIndexOnPage] && highlightFaceWithDigit == FaceDigits[digitIndex]) ? Color.highlighter : Color.white,
+                        faceSurfaceColor: (showLetter == FaceLetters[firstLetterIndex + letterIndexOnPage] && highlightFaceWithDigit == FaceDigits[digitIndex]) ? Color.highlighter : Color.white,
                         faceBorderColor: Color.gray
                     ).offset(
                         x: CGFloat(-2 + (letterIndexOnPage)) * faceStepSize,

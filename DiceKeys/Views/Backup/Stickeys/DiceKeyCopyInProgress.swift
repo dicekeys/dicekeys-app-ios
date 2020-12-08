@@ -16,16 +16,13 @@ struct DiceKeyCopyInProgress: View {
     var diePenColor: Color = Color.black
 
     @State var bounds: CGSize = .zero
+    var faceSizeModel: DiceKeySizeModel { DiceKeySizeModel(bounds) }
 
     var indexestoShow: Set<Int> {
         guard let atDieIndex = self.atDieIndex else { return Set() }
         return Set<Int>(0..<atDieIndex)
     }
 
-    var width: CGFloat { bounds.shorterSide }
-    var height: CGFloat { bounds.shorterSide }
-
-    var faceSizeModel: DiceKeySizeModel { DiceKeySizeModel(squareSize: bounds.shorterSide) }
     var faceSize: CGFloat { faceSizeModel.faceSize }
     var faceStepSize: CGFloat { faceSizeModel.stepSize }
 
@@ -55,7 +52,7 @@ struct DiceKeyCopyInProgress: View {
 
     var body: some View {
         CalculateBounds(bounds: $bounds) { ZStack(alignment: .center) {
-            DiceKeyView(diceKey: diceKey, diceBoxColor: diceBoxColor, diePenColor: diePenColor, showDiceAtindexes: indexestoShow)
+            DiceKeyView(diceKey: diceKey, diceBoxColor: diceBoxColor, diePenColor: diePenColor, showDiceAtIndexes: indexestoShow)
             if let atDieIndex = self.atDieIndex, atDieIndex < 25 && atDieIndex >= 0 {
                 // Highlight-colored box
                 RoundedRectangle(cornerRadius: faceSize / 8)
@@ -68,13 +65,13 @@ struct DiceKeyCopyInProgress: View {
                     .resizable()
                     .frame(width: handImageWidth, height: handImageHeight)
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: width, height: height)
+                    .frame(width: faceSizeModel.width, height: faceSizeModel.height)
                     .offset(handImageOffsetToCenterOfDie)
                     .offset(self.offset(forFaceIndex: atDieIndex))
                     //.mask(foregroundColor)
                 // Face being placed
                 if let diceKey = self.diceKey {
-                    DieView(face: diceKey.faces[atDieIndex], dieSize: faceSize, penColor: diePenColor, faceColor: Color.clear)
+                    DieView(face: diceKey.faces[atDieIndex], dieSize: faceSize, penColor: diePenColor, faceSurfaceColor: Color.clear)
                         .offset(self.offset(forFaceIndex: atDieIndex))
                 }
             }

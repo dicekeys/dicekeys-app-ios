@@ -52,7 +52,8 @@ struct StickerTargetSheet: View {
         min(width, height)
     }
 
-    var faceSizeModel: DiceKeySizeModel { DiceKeySizeModel(squareSize: shorterSideSize) }
+    var faceSizeModel: DiceKeySizeModel { DiceKeySizeModel(shorterSideSize) }
+
     var faceSize: CGFloat { faceSizeModel.faceSize }
     var faceStepSize: CGFloat { faceSizeModel.stepSize }
 
@@ -123,7 +124,7 @@ struct StickerTargetSheet: View {
                         //.mask(foregroundColor)
                     // Face being placed
                     if let diceKey = self.diceKey {
-                        DieView(face: diceKey.faces[atDieIndex], dieSize: faceSize, penColor: foregroundColor ?? Color.black, faceColor: Color.clear)
+                        DieView(face: diceKey.faces[atDieIndex], dieSize: faceSize, penColor: foregroundColor ?? Color.black, faceSurfaceColor: Color.clear)
                             .offset(self.offset(forFaceIndex: atDieIndex))
                     }
                 }

@@ -60,7 +60,7 @@ struct TransferSticker: View {
         portraitSheetSize.width / fractionalWidthOfPortraitSheet
     }
 
-    var faceSizeModel: DiceKeySizeModel { DiceKeySizeModel(squareSize: portraitSheetSize.width) }
+    var faceSizeModel: DiceKeySizeModel { DiceKeySizeModel(portraitSheetSize.width) }
     var faceSize: CGFloat { faceSizeModel.faceSize }
     var faceStepSize: CGFloat { faceSizeModel.stepSize }
 

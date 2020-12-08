@@ -15,7 +15,7 @@ struct BackupToDiceKeysKitIntroduction: View {
             Spacer()
             Instruction("Open your DiceKey kit and take out the box bottom and the 25 dice.")
             Spacer()
-            DiceKeyView(diceKey: diceKey, showDiceAtindexes: Set()).padding(.horizontal, UIScreen.main.bounds.size.shorterSide / 6)
+            DiceKeyView(diceKey: diceKey, showDiceAtIndexes: Set()).padding(.horizontal, UIScreen.main.bounds.size.shorterSide / 6)
             Spacer()
             Instruction("Next, you will replicate the first DiceKey by copying the arrangement of dice.")
             HStack(alignment: .center, spacing: 0) {

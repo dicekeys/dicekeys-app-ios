@@ -18,7 +18,7 @@ struct AppMainView: View {
     var knownDiceKeysState: [KnownDiceKeyState] {
         GlobalState.instance.knownDiceKeys.map { KnownDiceKeyState($0) }.filter { $0.isDiceKeyStored }
     }
-    
+
     var body: some View {
         if let diceKey: DiceKey = self.diceKey {
             DiceKeyPresent(
@@ -47,7 +47,13 @@ struct AppMainView: View {
                     }, label: {
                         VStack {
                             if let centerFace = knownDiceKeyState.centerFace {
-                                DieView(face: centerFace, dieSize: UIScreen.main.bounds.size.shorterSide / 5, faceBorderColor: Color.gray)
+                                HStack {
+                                    Spacer()
+                                    DiceKeyCenterFaceOnlyView(centerFace: centerFace)
+                                    Spacer()
+                                }.frame(
+                                    maxHeight: UIScreen.main.bounds.size.height / 5
+                                )
                             }
                             Text("Unlock " + knownDiceKeyState.nickname).font(.title2)
                         }

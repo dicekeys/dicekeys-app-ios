@@ -51,8 +51,12 @@ struct SafeAreaFooter: View {
 struct SingleLineScaledText: View {
     let text: String
 
+    init (_ text: String) {
+        self.text = text
+    }
+
     var body: some View {
-        Text(text)
+        Text(text).font(Font.system(size: 500, weight: Font.Weight.bold))
         .minimumScaleFactor(0.01)
         .scaledToFit()
         .lineLimit(1)
@@ -143,7 +147,7 @@ private struct InstructionsDone: View {
     let backedUpSuccessfully: Bool
 
     var body: some View {
-        Instruction(createdDiceKey ? "You did it!" : "That's it!")
+        SingleLineScaledText(createdDiceKey ? "You did it!" : "That's it!")
         Spacer()
         if !createdDiceKey {
             Instruction("There's nothing more to it. Go back to try it for real and scan in your DiceKey.")
