@@ -9,7 +9,12 @@ import SwiftUI
 
 struct DiceKeyStorageOptions: View {
     let diceKey: DiceKey
-    @StateObject var diceKeyState: UnlockedDiceKeyState
+    @ObservedObject var diceKeyState: UnlockedDiceKeyState
+
+    init(diceKey: DiceKey) {
+        self.diceKey = diceKey
+        self._diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey))
+    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -31,13 +36,13 @@ struct DiceKeyStorageOptions: View {
 //                    }
 //                }
 //                Spacer()
-                Toggle(isOn: $diceKeyState.isDiceKeyStored ) {
+                Toggle(isOn: diceKeyState.isDiceKeyStoredBinding ) {
                     HStack {
                         Spacer()
                         VStack {
                             ZStack {
                                 Image("Phonelet").resizable().aspectRatio(contentMode: .fit).frame(width: geometry.size.shorterSide / 2.5)
-                                DiceKeyView(diceKey: diceKey, diceBoxColor: Color.alexandrasBlue).frame(width: geometry.size.shorterSide / 3, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                DiceKeyView(diceKey: diceKey, diceBoxColor: Color.alexandrasBlue, diePenColor: Color.alexandrasBlue).frame(width: geometry.size.shorterSide / 3, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                             }
                             Text("Store the DiceKey").font(.title2).bold().padding(.top, 3)
                         }
@@ -58,10 +63,10 @@ struct DiceKeyStorageOptions: View {
 
 struct DiceKeyStorageOptions_Previews: PreviewProvider {
     static let diceKey = DiceKey.createFromRandom()
-    @StateObject static var diceKeyState = UnlockedDiceKeyState(diceKey)
+    @StateObject static var diceKeyState = UnlockedDiceKeyState.forDiceKey(diceKey)
 
     static var previews: some View {
-        DiceKeyStorageOptions(diceKey: diceKey, diceKeyState: DiceKeyStorageOptions_Previews.diceKeyState)
+        DiceKeyStorageOptions(diceKey: diceKey)
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
     }
 }

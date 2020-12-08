@@ -67,7 +67,7 @@ struct DieFaceUprightView: View {
     let linearFractionOfFaceRenderedToDieSize: CGFloat
 
     var penColor: Color = Color.black
-    var faceColor: Color = Color.white
+    var faceSurfaceColor: Color = Color.white
     var faceBorderColor: Color?
 
     var sizeOfRenderedFace: CGFloat { dieSize * linearFractionOfFaceRenderedToDieSize }
@@ -110,7 +110,7 @@ struct DieFaceUprightView: View {
         ZStack {
             RoundedRectangle(cornerRadius: dieSize / 8)
                 .size(width: dieSize, height: dieSize)
-                .fill(faceColor)
+                .fill(faceSurfaceColor)
             if let faceBorderColor = self.faceBorderColor {
                 RoundedRectangle(cornerRadius: dieSize / 8)
                     .size(width: dieSize, height: dieSize)
@@ -126,9 +126,9 @@ struct DieFaceUprightView: View {
                 .fontWeight(.bold)
                 .position(x: (dieSize + halfTextRegionWidth) / 2, y: textCenterY)
                 .foregroundColor(penColor)
-            UndoverlineView(face: face, faceSize: sizeOfRenderedFace, isOverline: false, penColor: penColor)
+            UndoverlineView(face: face, faceSize: sizeOfRenderedFace, isOverline: false, penColor: penColor, holeColor: faceSurfaceColor)
                 .position(x: hCenter, y: underlineVCenter)
-            UndoverlineView(face: face, faceSize: sizeOfRenderedFace, isOverline: true, penColor: penColor)
+            UndoverlineView(face: face, faceSize: sizeOfRenderedFace, isOverline: true, penColor: penColor, holeColor: faceSurfaceColor)
                 .position(x: hCenter, y: overlineVCenter)
         }
         .frame(width: dieSize, height: dieSize)
@@ -140,7 +140,7 @@ struct DieFaceView: View {
     let dieSize: CGFloat
     var linearFractionOfFaceRenderedToDieSize: CGFloat = CGFloat(1)
     var penColor: Color = Color.black
-    var faceColor: Color = Color.white
+    var faceSurfaceColor: Color = Color.white
     var faceBorderColor: Color?
 
     var body: some View {
@@ -149,7 +149,7 @@ struct DieFaceView: View {
             dieSize: dieSize,
             linearFractionOfFaceRenderedToDieSize: linearFractionOfFaceRenderedToDieSize,
             penColor: penColor,
-            faceColor: faceColor,
+            faceSurfaceColor: faceSurfaceColor,
             faceBorderColor: faceBorderColor
         ).rotationEffect(Angle(degrees: face.orientationAsLowercaseLetterTrbl.asClockwiseDegrees), anchor: .center)
     }
@@ -176,11 +176,11 @@ struct DieView: View {
     let dieSize: CGFloat
     let linearFractionOfFaceRenderedToDieSize: CGFloat = CGFloat(5)/8
     var penColor: Color = Color.black
-    var faceColor: Color = Color.white
+    var faceSurfaceColor: Color = Color.white
     var faceBorderColor: Color?
 
     var body: some View {
-        DieFaceView(face: face, dieSize: dieSize, linearFractionOfFaceRenderedToDieSize: linearFractionOfFaceRenderedToDieSize, penColor: penColor, faceColor: faceColor, faceBorderColor: faceBorderColor)
+        DieFaceView(face: face, dieSize: dieSize, linearFractionOfFaceRenderedToDieSize: linearFractionOfFaceRenderedToDieSize, penColor: penColor, faceSurfaceColor: faceSurfaceColor, faceBorderColor: faceBorderColor)
     }
 }
 

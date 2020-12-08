@@ -33,7 +33,7 @@ extension UINavigationController {
             var blue: CGFloat = 0
             var alpha: CGFloat = 0
             UIColor.systemBlue.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-            return UIColor(red: red, green: green, blue: blue, alpha: alpha * 0.25)
+            return UIColor(red: red, green: green, blue: blue, alpha: alpha * 0.50)
         }()
 //        let blue = UIColor(red: UIColor.systemBlue.ciColor.red, green: UIColor.systemBlue.ciColor.green, blue: UIColor.systemBlue.ciColor.blue, alpha: 1)
         gradient.colors = [UIColor.systemBlue.cgColor, lighterBlue.cgColor]
@@ -45,8 +45,8 @@ extension UINavigationController {
             navigationBar.setBackgroundImage(image, for: UIBarMetrics.default)
         }
 
-        navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationBar.titleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
+        navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
         navigationBar.tintColor = UIColor.white
     }
 

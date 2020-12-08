@@ -9,8 +9,12 @@ import SwiftUI
 import SeededCrypto
 
 struct DiceKeyWithDerivedValue: View {
+    let diceKey: DiceKey
     @Binding var derivableName: String?
-    @ObservedObject var diceKeyState: UnlockedDiceKeyState
+
+    var diceKeyState: UnlockedDiceKeyState {
+        UnlockedDiceKeyState.forDiceKey(diceKey)
+    }
 
     @State var customDerivationOptionsJson: String = ""
     @State var useCustomDerivationOptions: Bool = false
@@ -79,7 +83,7 @@ struct DiceKeyWithDerivedValue_Test: View {
     @State var destinationName: String? = "Microsoft"
 
     var body: some View {
-        DiceKeyWithDerivedValue(derivableName: $destinationName, diceKeyState: UnlockedDiceKeyState(DiceKey.createFromRandom()))
+        DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivableName: $destinationName)
     }
 }
 

@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct ScanDiceKey: View {
+    var stickers: Bool = false
     let onDiceKeyRead: ((_ diceKey: DiceKey) -> Void)?
 
-    init(onDiceKeyRead: ((_ diceKey: DiceKey) -> Void)? = nil) {
+    init(stickers: Bool = false, onDiceKeyRead: ((_ diceKey: DiceKey) -> Void)? = nil) {
+        self.stickers = stickers
         self.onDiceKeyRead = onDiceKeyRead
     }
 
@@ -28,19 +30,26 @@ struct ScanDiceKey: View {
     }
 
     var body: some View {
-        VStack {
-            Text("\(frameCount) frames processed")
-            GeometryReader { reader in
-                ZStack {
-                    DiceKeysCameraView(onFrameProcessed: onFrameProcessed, size: reader.size)
+        VStack(alignment: .center, spacing: 0) {
+            Text("Place the DiceKey so that the \(stickers ? "stickers" : "dice") fill the camera view. Then hold steady.").font(.title2)
+            VStack(alignment: .center, spacing: 0) {
+                HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
+                    Spacer()
+                        GeometryReader { reader in
+                            ZStack {
+                                DiceKeysCameraView(onFrameProcessed: onFrameProcessed, size: reader.size)
 
-                    FacesReadOverlay(
-                        renderedSize: reader.size,
-                        imageFrameSize: processedImageFrameSize ?? reader.size,
-                        facesRead: self.facesRead
-                    )
+                                FacesReadOverlay(
+                                    renderedSize: reader.size,
+                                    imageFrameSize: processedImageFrameSize ?? reader.size,
+                                    facesRead: self.facesRead
+                                )
+                            }
+                        }.aspectRatio(1, contentMode: .fit)
+                    Spacer()
                 }
-            }.aspectRatio(1, contentMode: .fit)
+                Text("\(frameCount) frames processed").font(.footnote).foregroundColor(.white).padding(.top, 3)
+            }.background(Color.black).padding(.vertical, 5)
         }
     }
 }

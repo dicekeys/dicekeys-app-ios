@@ -36,4 +36,14 @@ extension Color {
 
     static let highlighter: Color = Color(CGColor(red: 1, green: 1, blue: 0, alpha: 0.5))
     static let alexandrasBlue: Color = Color(hex: "5576C5")
+    static let alexandrasBlueLighter: Color = Color(hex: "607BCA")
+    static let DiceKeysNavigationForeground = Color(UIColor.DiceKeysNavigationForeground)
+    static let warningBackground = Color(hex: "E0585B")
+    static var diceBox = Color(hex: "050350")
+    static var diceBoxDieSlot = Color(hex: "040240")
+}
+
+extension UIColor {
+    static let DiceKeysNavigationForeground = UIColor.white
+    static let alexandrasBlue = UIColor(Color.alexandrasBlue)
 }

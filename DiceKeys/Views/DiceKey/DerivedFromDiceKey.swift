@@ -7,26 +7,6 @@
 
 import SwiftUI
 
-struct ChildSizeReader<Content: View>: View {
-    @Binding var size: CGSize
-    let content: () -> Content
-
-    var body: some View {
-        ZStack {
-            content()
-                .background(
-                    GeometryReader { geometry in
-                        Color.clear
-                            .preference(key: SizePreferenceKey.self, value: geometry.size)
-                    }
-                )
-        }
-        .onPreferenceChange(SizePreferenceKey.self) { preferences in
-            self.size = preferences
-        }
-    }
-}
-
 struct SizePreferenceKey: PreferenceKey {
     typealias Value = CGSize
     static var defaultValue: Value = .zero
@@ -63,20 +43,23 @@ struct DiceKeyFunnel: View {
         HStack {
             Spacer()
                 VStack(alignment: .center, spacing: 0) {
-                    DiceKeyViewFixedSize(
+                    DiceKeyView(
                         diceKey: diceKey ?? DiceKey.createFromRandom(),
-                        viewSize: CGSize(width: diceKeySize, height: diceKeySize),
                         showLidTab: false,
                         leaveSpaceForTab: false,
-                        diceBoxColor: Colors.diceBox
-                    ).frame(height: diceKeySize - verticalOverlap, alignment: .top)
+                        diceBoxColor: Color.diceBox
+                    )
+                    // Frame to size
+                    .frame(width: diceKeySize, height: diceKeySize)
+                    // Remove the part to hide
+                    .frame(height: diceKeySize - verticalOverlap, alignment: .top).clipped()
                     ZStack {
                         Funnel(topWidth: diceKeySize, bottomWidth: bottomWidth, bottleneckWidth: bottleneckWidth, paddingBottom: contentHeight, bottleneckFractionFromTop: bottleneckFractionFromTop)
-                            .fill(LinearGradient(gradient: Gradient(colors: [Colors.diceBox, .white]), startPoint: .top, endPoint: .bottom))
+                            .fill(LinearGradient(gradient: Gradient(colors: [Color.diceBox, .white]), startPoint: .top, endPoint: .bottom))
                             .frame(width: width, height: totalFunnelHeight, alignment: .center)
                         Funnel(topWidth: diceKeySize, bottomWidth: bottomWidth, bottleneckWidth: bottleneckWidth, paddingBottom: contentHeight, bottleneckFractionFromTop: bottleneckFractionFromTop)
                             .stroke(lineWidth: 1)
-                            .foregroundColor(Colors.diceBox)
+                            .foregroundColor(Color.diceBox)
                             .frame(width: width, height: totalFunnelHeight, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                         Image(systemName: "arrow.down").resizable().frame(width: arrowSize, height: arrowSize, alignment: .bottom).foregroundColor(.yellow)
                             .offset(x: 0, y: -contentHeight/2 )

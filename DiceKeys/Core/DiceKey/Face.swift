@@ -34,6 +34,15 @@ extension FaceOrientationLetterTrbl {
         case FaceOrientationLetterTrbl.Left: return 270
         }
     }
+    
+    var asFacingString: String {
+        switch self {
+        case .Top: return "upright"
+        case .Right: return "right"
+        case .Bottom: return "down"
+        case .Left: return "left"
+        }
+    }
 }
 
 protocol FaceIdentifier {
@@ -51,6 +60,10 @@ struct Face: FaceIdentifier {
     let digit: FaceDigit
     let orientationAsLowercaseLetterTrbl: FaceOrientationLetterTrbl
 
+    var letterAndDigit: String {
+        letter.rawValue + digit.rawValue
+    }
+    
     var humanReadableForm: String {
         letter.rawValue + digit.rawValue + orientationAsLowercaseLetterTrbl.rawValue
     }
@@ -58,6 +71,20 @@ struct Face: FaceIdentifier {
     func rotate90() -> Face {
             return Face(letter: letter, digit: digit, orientationAsLowercaseLetterTrbl: self.orientationAsLowercaseLetterTrbl.rotate90()
         )
+    }
+
+    func numberOfFieldsDifferent(fromOtherFace other: Face) -> Int {
+        var numberOfFields: Int = 0
+        if letter != other.letter {
+            numberOfFields += 1
+        }
+        if digit != other.digit {
+            numberOfFields += 1
+        }
+        if orientationAsLowercaseLetterTrbl != other.orientationAsLowercaseLetterTrbl {
+            numberOfFields += 1
+        }
+        return numberOfFields
     }
 
     private var faceWithUnderlineAndOverlineCode: FaceWithUnderlineAndOverlineCode {

@@ -11,13 +11,13 @@ private let nativeHeightOverWidth = CGFloat(155.0/130.0)
 private let nativeWidthOverHeight = 1/nativeHeightOverWidth
 private let lettersPerStickySheet = 5
 
-struct StickerSheetFixedSize: View {
-    let bounds: CGSize
-    let showLetter: FaceLetter
-    let highlightFaceWithDigit: FaceDigit?
+struct StickerSheet: View {
+    var showLetter: FaceLetter = FaceLetter.A
+    var highlightFaceWithDigit: FaceDigit?
     let penColorOfHighlightedFace: Color = Color(CGColor(red: 0, green: 0, blue: 0, alpha: 0.2))
 
     var maxFractionalSpace = CGFloat(0.8)
+    @State private var bounds: CGSize = .zero
 
     var height: CGFloat {
         min(bounds.height,
@@ -39,11 +39,12 @@ struct StickerSheetFixedSize: View {
         height * nativeWidthOverHeight
     }
 
-    var faceSizeModel: DiceKeySizeModel { DiceKeySizeModel(squareSize: width) }
+    var faceSizeModel: DiceKeySizeModel { DiceKeySizeModel(width) }
     var faceSize: CGFloat { faceSizeModel.faceSize }
     var faceStepSize: CGFloat { faceSizeModel.stepSize }
 
     var body: some View {
+        CalculateBounds(bounds: $bounds) {
         ZStack(alignment: .center) {
             // The sheet
             Rectangle()
@@ -58,7 +59,7 @@ struct StickerSheetFixedSize: View {
                         face: Face(letter: FaceLetters[firstLetterIndex + letterIndexOnPage], digit: FaceDigits[digitIndex], orientationAsLowercaseLetterTrbl: FaceOrientationLetterTrbl.Top),
                         dieSize: faceSize,
                         penColor: (showLetter == FaceLetters[firstLetterIndex + letterIndexOnPage] && highlightFaceWithDigit == FaceDigits[digitIndex]) ? penColorOfHighlightedFace : Color.black,
-                        faceColor: (showLetter == FaceLetters[firstLetterIndex + letterIndexOnPage] && highlightFaceWithDigit == FaceDigits[digitIndex]) ? Color.highlighter : Color.white,
+                        faceSurfaceColor: (showLetter == FaceLetters[firstLetterIndex + letterIndexOnPage] && highlightFaceWithDigit == FaceDigits[digitIndex]) ? Color.highlighter : Color.white,
                         faceBorderColor: Color.gray
                     ).offset(
                         x: CGFloat(-2 + (letterIndexOnPage)) * faceStepSize,
@@ -66,18 +67,7 @@ struct StickerSheetFixedSize: View {
                     )
                 }
             }
-        }.frame(width: width, height: height)
-    }
-}
-
-struct StickerSheet: View {
-    let showLetter: FaceLetter
-    var highlightFaceWithDigit: FaceDigit?
-
-    var body: some View {
-        GeometryReader { geometry in
-            StickerSheetFixedSize(bounds: geometry.size, showLetter: showLetter, highlightFaceWithDigit: highlightFaceWithDigit)
-        }
+        }}.aspectRatio(nativeWidthOverHeight, contentMode: .fit)
     }
 }
 
