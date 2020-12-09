@@ -55,6 +55,7 @@
 		17533916256B3AC500E090BC /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533915256B3AC500E090BC /* App.swift */; };
 		175F393C2575A445007FAE80 /* UnlockedDiceKeyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F393B2575A445007FAE80 /* UnlockedDiceKeyState.swift */; };
 		175F39442575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F39432575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */; };
+		1778C120258093B2004EFC03 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1778C11F258093B2004EFC03 /* UIViewController.swift */; };
 		177FCA56256D03DA00E2FB6F /* AppMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA55256D03DA00E2FB6F /* AppMainView.swift */; };
 		177FCA5A256D047300E2FB6F /* ViewsInProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA59256D047300E2FB6F /* ViewsInProgress.swift */; };
 		177FCA60256D193B00E2FB6F /* ScanDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA5F256D193B00E2FB6F /* ScanDiceKey.swift */; };
@@ -147,6 +148,7 @@
 		17533915256B3AC500E090BC /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		175F393B2575A445007FAE80 /* UnlockedDiceKeyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockedDiceKeyState.swift; sourceTree = "<group>"; };
 		175F39432575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableObjectUpdatingOnAllChangesToUserDefaults.swift; sourceTree = "<group>"; };
+		1778C11F258093B2004EFC03 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		177FCA55256D03DA00E2FB6F /* AppMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainView.swift; sourceTree = "<group>"; };
 		177FCA59256D047300E2FB6F /* ViewsInProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewsInProgress.swift; sourceTree = "<group>"; };
 		177FCA5F256D193B00E2FB6F /* ScanDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDiceKey.swift; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 				1788B18125790EDB007F6CF9 /* DiceKeyWithDerivedValue.swift */,
 				1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */,
 				1742872125721A7100C3715B /* SeedHardwareSecurityKey.swift */,
+				1778C11F258093B2004EFC03 /* UIViewController.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -786,6 +789,7 @@
 				1742873025726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift in Sources */,
 				1788B17625790B29007F6CF9 /* TransferSticker.swift in Sources */,
 				17426E632564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */,
+				1778C120258093B2004EFC03 /* UIViewController.swift in Sources */,
 				17533912256B2BCB00E090BC /* CameraController.swift in Sources */,
 				177FCA56256D03DA00E2FB6F /* AppMainView.swift in Sources */,
 				177FCA76256DBB9600E2FB6F /* AssemblyInstructions.swift in Sources */,

@@ -46,4 +46,13 @@ extension Color {
 extension UIColor {
     static let DiceKeysNavigationForeground = UIColor.white
     static let alexandrasBlue = UIColor(Color.alexandrasBlue)
+
+    static let lighterBlue: UIColor = {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        UIColor.systemBlue.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        return UIColor(red: red, green: green, blue: blue, alpha: alpha * 0.50)
+    }()
 }

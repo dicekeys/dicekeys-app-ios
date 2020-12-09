@@ -10,7 +10,7 @@ import SeededCrypto
 
 struct DiceKeyWithDerivedValue: View {
     let diceKey: DiceKey
-    @Binding var derivableName: String?
+    @State var derivableName: String?
 
     var diceKeyState: UnlockedDiceKeyState {
         UnlockedDiceKeyState.forDiceKey(diceKey)
@@ -80,10 +80,9 @@ struct DiceKeyWithDerivedValue: View {
 }
 
 struct DiceKeyWithDerivedValue_Test: View {
-    @State var destinationName: String? = "Microsoft"
 
     var body: some View {
-        DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivableName: $destinationName)
+        DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom())
     }
 }
 
