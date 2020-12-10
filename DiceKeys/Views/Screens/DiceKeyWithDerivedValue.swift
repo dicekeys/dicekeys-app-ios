@@ -7,10 +7,12 @@
 
 import SwiftUI
 import SeededCrypto
+import Combine
 
 struct DiceKeyWithDerivedValue: View {
     let diceKey: DiceKey
     @State var derivableName: String?
+    @State var iterationString: String = "1"
 
     var diceKeyState: UnlockedDiceKeyState {
         UnlockedDiceKeyState.forDiceKey(diceKey)
@@ -50,6 +52,49 @@ struct DiceKeyWithDerivedValue: View {
 
     var body: some View {
         VStack {
+            HStack {
+                Spacer()
+                if let derivables = self.derivables {
+                    Spacer()
+                    if derivables.count > 0 {
+                        Menu {
+                            ForEach(derivables) { derivable in
+                                Button(derivable.name) { derivableName = derivable.name }
+                            }
+                        } label: { VStack {
+                            Image(systemName: "arrow.down")
+                            Image(systemName: "ellipsis.rectangle.fill")
+                            Text(derivableName ?? "Derive...")
+                        } }
+                    }
+                }
+                Spacer()
+                TextField("Iteration", text: $iterationString).font(.title)
+                    .keyboardType(.numberPad)
+                    .onReceive(Just(iterationString)) { newValue in
+                            let filtered = newValue.filter { "0123456789".contains($0) }
+                            if filtered != newValue {
+                                self.iterationString = filtered
+                            }
+                    }.multilineTextAlignment(.center).frame(maxWidth: 30)
+                VStack {
+                    Button(action: { iterationString = String((Int(iterationString) ?? 0) + 1) },
+                        label: {
+                            Image(systemName: "arrow.up.square")
+//                                .scaleEffect(2)
+//                                .aspectRatio(contentMode: .fit)
+                        }
+                    ).padding(.bottom, 3)
+                    Button(action: { iterationString = String(max(1, (Int(iterationString) ?? 0) - 1)) },
+                        label: {
+                            Image(systemName: "arrow.down.square")
+//                                .resizable()
+//                                .aspectRatio(contentMode: .fit)
+                        }
+                    )
+                }.aspectRatio(contentMode: .fit)
+                Spacer()
+            }
             Spacer()
             DerivedFromDiceKey(diceKey: diceKeyState.diceKey) {
                 VStack {
@@ -62,25 +107,11 @@ struct DiceKeyWithDerivedValue: View {
             Spacer()
             Text(derivationOptionsJson)
             Spacer()
-            if let derivables = self.derivables {
-                if derivables.count > 0 {
-                    Menu {
-                        ForEach(derivables) { derivable in
-                            Button(derivable.name) { derivableName = derivable.name }
-                        }
-                    } label: { VStack {
-                        Image(systemName: "arrow.down")
-                        Image(systemName: "ellipsis.rectangle.fill")
-                        Text(derivableName ?? "Derive...")
-                    } }
-                }
-            }
         }
     }
 }
 
 struct DiceKeyWithDerivedValue_Test: View {
-
     var body: some View {
         DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom())
     }
@@ -89,5 +120,6 @@ struct DiceKeyWithDerivedValue_Test: View {
 struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
     static var previews: some View {
         DiceKeyWithDerivedValue_Test()
+            .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
     }
 }

@@ -75,11 +75,11 @@ struct DiceKeyPresentNavigationFooter: View {
     var body: some View {
         VStack {
         ZStack {
-            NavigationLink(destination: BackupDiceKey(diceKey: $diceKey, onComplete: { isBackupActive = false }), isActive: $isBackupActive, label: { EmptyView() })
+            NavigationLink(destination: BackupDiceKey(diceKey: $diceKey, onComplete: { isBackupActive = false }).navigationBarTitleDisplayMode(.inline).navigationBarDiceKeyStyle(), isActive: $isBackupActive, label: { EmptyView() })
                 .position(x: 0, y: 0).frame(width: 0, height: 0).hidden()
             HStack(alignment: .top) {
                 Spacer()
-                NavigationLink(destination: SeedHardwareSecurityKey()) {
+                NavigationLink(destination: SeedHardwareSecurityKey().navigationBarTitleDisplayMode(.inline).navigationBarDiceKeyStyle()) {
                     VStack {
                         Image("USB Key")
                             .resizable()
@@ -88,7 +88,7 @@ struct DiceKeyPresentNavigationFooter: View {
                         Text("Seed a Hardware Key").multilineTextAlignment(.center).font(.footnote)
                     }
                 }.frame(width: size.width * BottomButtonFractionalWidth, alignment: .center)
-                NavigationLink(destination: DiceKeyWithDerivedValue(diceKey: diceKey)) {
+                NavigationLink(destination: DiceKeyWithDerivedValue(diceKey: diceKey).navigationBarTitleDisplayMode(.inline).navigationBarDiceKeyStyle()) {
                     VStack {
                         VStack {
                         Image(systemName: "arrow.down")
@@ -139,9 +139,11 @@ struct DiceKeyPresentNavigationFooter: View {
 //                }.frame(width: size.width * BottomButtonFractionalWidth, alignment: .center)
                 Spacer()
             }
-        }.padding(.bottom, geometry.safeAreaInsets.bottom)
+        }
+        .padding(.bottom, geometry.safeAreaInsets.bottom)
         .padding(.top, 5)
         }.background(Color(UIColor.systemFill))
+        
     }
 }
 
@@ -166,13 +168,8 @@ struct DiceKeyPresent: View {
 //    @State private var derivableName: String?
     @State private var navBarHeight: CGFloat = 0
 
-    @State private var geometry: GeometryProxy?
-    var size: CGSize {
-        geometry?.size ?? CGSize(width: 0, height: 0)
-    }
-
     var storageButton: some View {
-        NavigationLink(destination: DiceKeyStorageOptions(diceKey: diceKey)) {
+        NavigationLink(destination: DiceKeyStorageOptions(diceKey: diceKey).navigationBarTitleDisplayMode(.inline).navigationBarDiceKeyStyle()) {
             VStack(alignment: .center, spacing: 0) {
                 ZStack(alignment: .center, content: {
                     Image("Phonelet")
@@ -222,11 +219,12 @@ struct DiceKeyPresent: View {
 //                }
                 Spacer()
                 DiceKeyPresentNavigationFooter(diceKey: $diceKey, diceKeyState: diceKeyState, geometry: geometry)
-            }
+            }.edgesIgnoringSafeArea(.bottom)
 //        }.navigationViewStyle(StackNavigationViewStyle())}
         }.navigationViewStyle(StackNavigationViewStyle())
         .navigationTitle(diceKeyState.nickname)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarDiceKeyStyle()
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: ToolbarItemPlacement.navigationBarLeading) {
@@ -242,7 +240,7 @@ struct DiceKeyPresent: View {
             ToolbarItem(placement: .primaryAction) {
                 storageButton
             }
-        }.edgesIgnoringSafeArea(.bottom)
+        }
         .background(
             NavBarAccessor { navBar in self.navBarHeight = navBar.bounds.height }
         )
@@ -267,6 +265,7 @@ struct DiceKeyPresent_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             TestDiceKeyPresent()
+                .navigationBarDiceKeyStyle()
         }.previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
 //
 //        DerivedFromDiceKey(diceKey: diceKey) {

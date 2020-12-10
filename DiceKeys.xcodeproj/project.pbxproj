@@ -56,6 +56,9 @@
 		175F393C2575A445007FAE80 /* UnlockedDiceKeyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F393B2575A445007FAE80 /* UnlockedDiceKeyState.swift */; };
 		175F39442575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F39432575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */; };
 		1778C120258093B2004EFC03 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1778C11F258093B2004EFC03 /* UIViewController.swift */; };
+		1778C12425810FAA004EFC03 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1778C12325810FAA004EFC03 /* NavigationBar.swift */; };
+		1778C12B258198B6004EFC03 /* KeyScanningIllustration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1778C12A258198B6004EFC03 /* KeyScanningIllustration.swift */; };
+		1778C13125819976004EFC03 /* DiceKeyMedium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1778C13025819976004EFC03 /* DiceKeyMedium.swift */; };
 		177FCA56256D03DA00E2FB6F /* AppMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA55256D03DA00E2FB6F /* AppMainView.swift */; };
 		177FCA5A256D047300E2FB6F /* ViewsInProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA59256D047300E2FB6F /* ViewsInProgress.swift */; };
 		177FCA60256D193B00E2FB6F /* ScanDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA5F256D193B00E2FB6F /* ScanDiceKey.swift */; };
@@ -69,7 +72,6 @@
 		1788B17E25790C47007F6CF9 /* Derivables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B17D25790C47007F6CF9 /* Derivables.swift */; };
 		1788B18225790EDB007F6CF9 /* DiceKeyWithDerivedValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B18125790EDB007F6CF9 /* DiceKeyWithDerivedValue.swift */; };
 		1788B1982579E6A1007F6CF9 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B1972579E6A1007F6CF9 /* Size.swift */; };
-		1788B19E257A4D33007F6CF9 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B19D257A4D33007F6CF9 /* UINavigationController.swift */; };
 		1788B1A2257A6E2B007F6CF9 /* RoundedTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B1A1257A6E2A007F6CF9 /* RoundedTextButton.swift */; };
 		1788B1C0257B277F007F6CF9 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B1BF257B277C007F6CF9 /* Instruction.swift */; };
 		1788B1C4257B58B2007F6CF9 /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B1C3257B58B0007F6CF9 /* ChildSizeReader.swift */; };
@@ -149,6 +151,9 @@
 		175F393B2575A445007FAE80 /* UnlockedDiceKeyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockedDiceKeyState.swift; sourceTree = "<group>"; };
 		175F39432575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableObjectUpdatingOnAllChangesToUserDefaults.swift; sourceTree = "<group>"; };
 		1778C11F258093B2004EFC03 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		1778C12325810FAA004EFC03 /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
+		1778C12A258198B6004EFC03 /* KeyScanningIllustration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyScanningIllustration.swift; sourceTree = "<group>"; };
+		1778C13025819976004EFC03 /* DiceKeyMedium.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyMedium.swift; sourceTree = "<group>"; };
 		177FCA55256D03DA00E2FB6F /* AppMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainView.swift; sourceTree = "<group>"; };
 		177FCA59256D047300E2FB6F /* ViewsInProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewsInProgress.swift; sourceTree = "<group>"; };
 		177FCA5F256D193B00E2FB6F /* ScanDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDiceKey.swift; sourceTree = "<group>"; };
@@ -162,7 +167,6 @@
 		1788B17D25790C47007F6CF9 /* Derivables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Derivables.swift; sourceTree = "<group>"; };
 		1788B18125790EDB007F6CF9 /* DiceKeyWithDerivedValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyWithDerivedValue.swift; sourceTree = "<group>"; };
 		1788B1972579E6A1007F6CF9 /* Size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
-		1788B19D257A4D33007F6CF9 /* UINavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		1788B1A1257A6E2A007F6CF9 /* RoundedTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextButton.swift; sourceTree = "<group>"; };
 		1788B1BF257B277C007F6CF9 /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		1788B1C3257B58B0007F6CF9 /* ChildSizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSizeReader.swift; sourceTree = "<group>"; };
@@ -255,6 +259,7 @@
 				17426E412564FAB700FB0FAB /* DiceKey.swift */,
 				17426E392564FAAF00FB0FAB /* FaceRead.swift */,
 				17426E2B2564FA6000FB0FAB /* Face.swift */,
+				1778C13025819976004EFC03 /* DiceKeyMedium.swift */,
 			);
 			path = DiceKey;
 			sourceTree = "<group>";
@@ -276,6 +281,7 @@
 		17426E742564FB4600FB0FAB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1778C129258198A5004EFC03 /* Illustrations */,
 				1788B1BC257B0781007F6CF9 /* Backup */,
 				1788B1A5257A6E36007F6CF9 /* Components */,
 				17BBB62825706291009AC42B /* Scanning */,
@@ -315,12 +321,21 @@
 			path = State;
 			sourceTree = "<group>";
 		};
+		1778C129258198A5004EFC03 /* Illustrations */ = {
+			isa = PBXGroup;
+			children = (
+				1778C12A258198B6004EFC03 /* KeyScanningIllustration.swift */,
+			);
+			path = Illustrations;
+			sourceTree = "<group>";
+		};
 		1788B1A5257A6E36007F6CF9 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				1788B1C3257B58B0007F6CF9 /* ChildSizeReader.swift */,
 				1788B1A1257A6E2A007F6CF9 /* RoundedTextButton.swift */,
 				1788B1BF257B277C007F6CF9 /* Instruction.swift */,
+				1778C12325810FAA004EFC03 /* NavigationBar.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -405,7 +420,6 @@
 			children = (
 				177FCA79256DBBF300E2FB6F /* Color.swift */,
 				1788B1972579E6A1007F6CF9 /* Size.swift */,
-				1788B19D257A4D33007F6CF9 /* UINavigationController.swift */,
 				177FCA7D256E3B8500E2FB6F /* View.swift */,
 				6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */,
 				1742874025749CA300C3715B /* Properties.swift */,
@@ -750,6 +764,7 @@
 				177FCA7A256DBBF300E2FB6F /* Color.swift in Sources */,
 				177FCA5A256D047300E2FB6F /* ViewsInProgress.swift in Sources */,
 				1788B18225790EDB007F6CF9 /* DiceKeyWithDerivedValue.swift in Sources */,
+				1778C13125819976004EFC03 /* DiceKeyMedium.swift in Sources */,
 				1742874125749CA300C3715B /* Properties.swift in Sources */,
 				17318757257E555B00A9F97A /* StickerSheetForFace.swift in Sources */,
 				1742872225721A7200C3715B /* SeedHardwareSecurityKey.swift in Sources */,
@@ -770,6 +785,7 @@
 				17426E3A2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
 				17F4DF72257F31E20088D1D7 /* DiceKeyCenterFaceOnlyView.swift in Sources */,
 				17BBB63625706A7E009AC42B /* DiceKeyPresent.swift in Sources */,
+				1778C12425810FAA004EFC03 /* NavigationBar.swift in Sources */,
 				177FCA60256D193B00E2FB6F /* ScanDiceKey.swift in Sources */,
 				17426E422564FAB700FB0FAB /* DiceKey.swift in Sources */,
 				1788B1C0257B277F007F6CF9 /* Instruction.swift in Sources */,
@@ -777,7 +793,6 @@
 				1788B17725790B29007F6CF9 /* StickerTargetSheet.swift in Sources */,
 				17318760257E55BB00A9F97A /* TransferDie.swift in Sources */,
 				175F39442575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */,
-				1788B19E257A4D33007F6CF9 /* UINavigationController.swift in Sources */,
 				17426E5D2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */,
 				1788B17825790B29007F6CF9 /* StickerSheet.swift in Sources */,
 				17BBB622256F8840009AC42B /* DerivedFromDiceKey.swift in Sources */,
@@ -786,6 +801,7 @@
 				17426E4A2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,
 				1731874E257E27C500A9F97A /* DiceKeyCopyInProgress.swift in Sources */,
 				17426E932566316100FB0FAB /* DiceKeysCameraView.swift in Sources */,
+				1778C12B258198B6004EFC03 /* KeyScanningIllustration.swift in Sources */,
 				1742873025726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift in Sources */,
 				1788B17625790B29007F6CF9 /* TransferSticker.swift in Sources */,
 				17426E632564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */,

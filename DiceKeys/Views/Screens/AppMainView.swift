@@ -118,10 +118,12 @@ struct AppMainView: View {
                     destination: ScanDiceKey(
                         onDiceKeyRead: { diceKey in
                             self.diceKey = diceKey
-                        })
+                        }).navigationBarTitleDisplayMode(.inline)
+                        .navigationBarDiceKeyStyle()
                 ) {
-                    VStack {
-                        Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).frame(maxHeight: UIScreen.main.bounds.size.shorterSide / 4)
+                    VStack(alignment: .center) {
+                        KeyScanningIllustration(.Dice).aspectRatio(contentMode: .fit).frame(maxHeight: 0.3 * UIScreen.main.bounds.size.shorterSide)
+                        //Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).frame(maxHeight: UIScreen.main.bounds.size.shorterSide / 4)
                         Text("Read your DiceKey").font(.title2)
                     }
                 }

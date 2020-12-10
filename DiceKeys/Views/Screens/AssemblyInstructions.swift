@@ -344,6 +344,7 @@ struct AssemblyInstructions: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarDiceKeyStyle()
     }
 }
 
