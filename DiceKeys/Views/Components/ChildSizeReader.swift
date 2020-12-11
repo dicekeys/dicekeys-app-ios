@@ -8,6 +8,57 @@
 import Foundation
 import SwiftUI
 
+//struct GeometryPreferenceKey: PreferenceKey {
+//    typealias Value = GeometryProxy
+//    static var defaultValue: Value = GeometryProxy.
+//
+//    static func reduce(value _: inout Value, nextValue: () -> Value) {
+//        _ = nextValue()
+//    }
+//}
+//
+//struct WithGeometry<Content: View>: View {
+//    @Binding var geometry: GeometryProxy
+//    let contentBuilder: () -> Content
+//
+//    init(
+//        geometry: Binding<GeometryProxy>,
+//        @ViewBuilder contentBuilder: @escaping () -> Content
+//    ) {
+//        self._geometry = geometry
+//        self.contentBuilder = contentBuilder
+//    }
+//
+//    var body: some View {
+//        GeometryReader { geometry in
+//            contentBuilder()
+//                .preference(key: SizePreferenceKey.self, value: geometry)
+//                .onPreferenceChange(SizePreferenceKey.self) { preferences in
+//                    self.geometry = preferences
+//                }
+//        }
+//    }
+//}
+
+//struct SideEffectView: View {
+//    init(_ actionWithSideEffects: () -> Void) {
+//        actionWithSideEffects()
+//    }
+//    
+//    var body: some View {
+//        EmptyView()
+//    }
+//}
+
+struct SizePreferenceKey: PreferenceKey {
+    typealias Value = CGSize
+    static var defaultValue: Value = .zero
+
+    static func reduce(value _: inout Value, nextValue: () -> Value) {
+        _ = nextValue()
+    }
+}
+
 struct CalculateBounds<Content: View>: View {
     @Binding var bounds: CGSize
     let contentBuilder: () -> Content

@@ -10,44 +10,33 @@ import SwiftUI
 import UIKit
 
 extension UINavigationController {
-    private func getImageFrom(gradientLayer: CAGradientLayer) -> UIImage? {
-        var gradientImage: UIImage?
-        UIGraphicsBeginImageContext(gradientLayer.frame.size)
-        if let context = UIGraphicsGetCurrentContext() {
-            gradientLayer.render(in: context)
-            gradientImage = UIGraphicsGetImageFromCurrentImageContext()?.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch)
-        }
-        UIGraphicsEndImageContext()
-        return gradientImage
-    }
-
-    func setBackground() {
+    private func getGradientImage(forBounds bounds: CGRect) -> UIImage? {
         let gradient = CAGradientLayer()
 
-        var bounds = navigationBar.bounds
-        bounds.size.height += UIApplication.shared.statusBarFrame.size.height
         gradient.frame = bounds
-        let lighterBlue: UIColor = {
-            var red: CGFloat = 0
-            var green: CGFloat = 0
-            var blue: CGFloat = 0
-            var alpha: CGFloat = 0
-            UIColor.systemBlue.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-            return UIColor(red: red, green: green, blue: blue, alpha: alpha * 0.50)
-        }()
-//        let blue = UIColor(red: UIColor.systemBlue.ciColor.red, green: UIColor.systemBlue.ciColor.green, blue: UIColor.systemBlue.ciColor.blue, alpha: 1)
-        gradient.colors = [UIColor.systemBlue.cgColor, lighterBlue.cgColor]
+        gradient.colors = [UIColor.systemBlue.cgColor, UIColor.lighterBlue.cgColor]
         gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
         gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
 
-        // navigationBar.backgroundColor = .systemBlue
-        if let image = getImageFrom(gradientLayer: gradient) {
-            navigationBar.setBackgroundImage(image, for: UIBarMetrics.default)
+        UIGraphicsBeginImageContext(gradient.frame.size)
+        defer {
+            UIGraphicsEndImageContext()
         }
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        gradient.render(in: context)
+        return UIGraphicsGetImageFromCurrentImageContext()?.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch)
+    }
 
-        navigationBar.titleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
-        navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
-        navigationBar.tintColor = UIColor.white
+    func setBackground() {
+        if let image = getGradientImage(forBounds: navigationBar.bounds) {
+//        if let image = getGradientImage(forBounds: CGRect(origin: CGPoint(x: 0, y: 0), size: navigationBarSize)) {
+            navigationBar.setBackgroundImage(image, for: UIBarMetrics.default)
+            navigationBar.setBackgroundImage(image, for: UIBarMetrics.compact)
+            navigationBar.standardAppearance.backgroundImage = image
+            navigationBar.titleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
+            navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
+            navigationBar.tintColor = UIColor.DiceKeysNavigationForeground
+        }
     }
 
     override open func viewDidLoad() {

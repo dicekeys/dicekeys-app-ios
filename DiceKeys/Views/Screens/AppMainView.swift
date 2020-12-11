@@ -14,30 +14,84 @@ struct AppMainView: View {
 //    @State var diceKey: DiceKey?
     @State var diceKey: DiceKey?
 //    @State var diceKeyState: UnlockedDiceKeyState?
+//
+//    private func getGradientImage(forBounds: CGRect) -> UIImage? {
+//        let gradient = CAGradientLayer()
+//
+//        gradient.frame = bounds
+//        gradient.colors = [UIColor.systemBlue.cgColor, UIColor.lighterBlue.cgColor]
+//        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
+//        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+//
+//        UIGraphicsBeginImageContext(gradient.frame.size)
+//        defer {
+//            UIGraphicsEndImageContext()
+//        }
+//        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+//        gradient.render(in: context)
+//        gradientImage = UIGraphicsGetImageFromCurrentImageContext()?.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch)
+//        return gradientImage
+//    }
+//
+//    init() {
+//        let navigationBar = UINavigationBar.appearance()
+//
+//        // navigationBar.backgroundColor = .systemBlue
+//        if let image = getImageFrom(gradientLayer: gradient) {
+//            navigationBar.setBackground(forBounds: UIBarMetrics.compact)
+//            navigationBar.setBackgroundImage(image, for: UIBarMetrics.)
+//            navigationBar.titleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
+//            navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
+//            navigationBar.tintColor = UIColor.white
+//        }
+//        
+//        navigationBar.titleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
+//        navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
+//        navigationBar.tintColor = UIColor.white
+//        
+//        UINavigationBar.appearance().backgroundImage(for: <#T##UIBarMetrics#>)
+//    }
 
     var knownDiceKeysState: [KnownDiceKeyState] {
         GlobalState.instance.knownDiceKeys.map { KnownDiceKeyState($0) }.filter { $0.isDiceKeyStored }
     }
 
-    var body: some View {
-        if let diceKey: DiceKey = self.diceKey {
-            DiceKeyPresent(
+    var hiddenNavigationLinkToDiceKeyPresent: some View {
+        NavigationLink(
+            destination: DiceKeyPresent(
                 diceKey: Binding<DiceKey>(
                     get: { self.diceKey ?? DiceKey.Example },
                     set: { self.diceKey = $0 }
                 ),
                 onForget: {
-                    UnlockedDiceKeyState.forget(diceKey: diceKey)
+                    if let diceKey = diceKey {
+                        UnlockedDiceKeyState.forget(diceKey: diceKey)
+                    }
                     self.diceKey = nil
                 }
-            )
-        } else {
+            ),
+            isActive: Binding<Bool>(
+                get: { diceKey != nil },
+                set: { shouldBeActive in
+                    if !shouldBeActive {
+                        self.diceKey = nil
+                    }
+                }
+            ),
+            label: { EmptyView() }
+        )
+        .frame(width: 0, height: 0)
+        .position(x: 0, y: 0)
+        .hidden()
+    }
+
+    var body: some View {
         NavigationView {
             VStack {
                 Spacer()
                 ForEach(knownDiceKeysState) { knownDiceKeyState in
                     Button(action: {
-                        EncryptedDiceKeyFileAccessor.instance.getDiceKey(fromKeyId: knownDiceKeyState.id) { result in
+                        EncryptedDiceKeyFileAccessor.instance.getDiceKey(fromKeyId: knownDiceKeyState.id, centerFace: knownDiceKeyState.centerFace) { result in
                                 switch result {
                                 case .success(let diceKey):
                                     self.diceKey = diceKey
@@ -87,17 +141,16 @@ struct AppMainView: View {
                         Text("Assemble your First DiceKey").font(.title2)
                     }
                 }
-                if let diceKey = self.diceKey {
-                    Spacer()
-                    DiceKeyView(diceKey: diceKey, showLidTab: false)
-                }
                 Spacer()
-            }
-            //.navigationTitle("DiceKeys")
-            .navigationBarTitleDisplayMode(.inline)
-            //.navigationBarHidden(true)
+            }.background( ZStack {
+                hiddenNavigationLinkToDiceKeyPresent
+                    .frame(width: 0, height: 0)
+                    .position(x: 0, y: 0)
+                    .hidden()
+            })
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
         }.navigationViewStyle(StackNavigationViewStyle())
-        }
     }
 }
 struct AppMainView_Previews: PreviewProvider {

@@ -40,6 +40,13 @@ class EncryptedDiceKeyFileAccessor {
 
     let defaultReason = "Unlock your DiceKey"
 
+    func getReason(forCenterFace centerFace: Face?) -> String {
+        if let face = centerFace {
+            return "Unlock DiceKey with \(face.letterAndDigit) in Center"
+        }
+        return defaultReason
+    }
+
     func authenticate (
         reason: String? = nil,
         _ onComplete: @escaping (_ wasAuthenticated: Result<Void, LAError>) -> Void
@@ -63,8 +70,8 @@ class EncryptedDiceKeyFileAccessor {
         }
     }
 
-    func getDiceKey(fromKeyId keyId: String, _ onComplete: @escaping (Result<DiceKey, Error>) -> Void) {
-        self.authenticate { authResult in
+    func getDiceKey(fromKeyId keyId: String, centerFace: Face? = nil, _ onComplete: @escaping (Result<DiceKey, Error>) -> Void) {
+        self.authenticate(reason: getReason(forCenterFace: centerFace)) { authResult in
             switch authResult {
             case .failure(let error): onComplete(.failure(error)); return
             case .success: break
