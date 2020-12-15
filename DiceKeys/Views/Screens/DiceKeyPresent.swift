@@ -7,29 +7,6 @@
 
 import SwiftUI
 
-//struct ChooseValueToDerive: View {
-//    let diceKey: DiceKey
-//
-//    var body: some View {
-//        NavigationView {
-//            VStack {
-//                DiceKeyView(diceKey: diceKey, showLidTab: true)
-//
-//                NavigationLink(
-//                    destination: Text("Derive Value"),
-//                    label: {
-//                        Text("Derive value for")
-//                    })
-//            }
-//        }
-//    }
-//}
-
-//private func defaultDiceKeyName(diceKey: DiceKey) -> String {
-//    let formatter = DateFormatter()
-//    formatter.dateStyle = .short
-//    return "DiceKey with  \(diceKey.faces[12].letter.rawValue)\(diceKey.faces[12].digit.rawValue) in center (\(formatter.string(from: Date())))"
-//}
 
 struct NavBarAccessor: UIViewControllerRepresentable {
     var callback: (UINavigationBar) -> Void
@@ -58,12 +35,18 @@ struct NavBarAccessor: UIViewControllerRepresentable {
     }
 }
 
-struct DiceKeyPresentNavigationFooter: View {
-    @Binding var diceKey: DiceKey
-    var diceKeyState: UnlockedDiceKeyState
-    var geometry: GeometryProxy
+enum DiceKeyPresentPageContent: Equatable {
+    case Backup
+    case SeedHardwareKey
+    case Derive(DerivationRecipeBuilderType)
+    case Store
+    case Default
+}
 
-    var size: CGSize { geometry.size }
+struct DiceKeyPresentNavigationFooter: View {
+    let pageContent: DiceKeyPresentPageContent
+    let navigateTo: (DiceKeyPresentPageContent) -> Void
+    let geometry: GeometryProxy
 
     @State private var isBackupActive = false
 
@@ -75,20 +58,21 @@ struct DiceKeyPresentNavigationFooter: View {
     var body: some View {
         VStack {
         ZStack {
-            NavigationLink(destination: BackupDiceKey(diceKey: $diceKey, onComplete: { isBackupActive = false }).navigationBarTitleDisplayMode(.inline).navigationBarDiceKeyStyle(), isActive: $isBackupActive, label: { EmptyView() })
-                .position(x: 0, y: 0).frame(width: 0, height: 0).hidden()
             HStack(alignment: .top) {
                 Spacer()
-                NavigationLink(destination: SeedHardwareSecurityKey().navigationBarTitleDisplayMode(.inline).navigationBarDiceKeyStyle()) {
+                Button(action: { navigateTo(.SeedHardwareKey) }) {
                     VStack {
                         Image("USB Key")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(height: min(size.width, size.height)/10, alignment: .center)
+                            .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
                         Text("Seed a Hardware Key").multilineTextAlignment(.center).font(.footnote)
                     }
-                }.frame(width: size.width * BottomButtonFractionalWidth, alignment: .center)
-                NavigationLink(destination: DiceKeyWithDerivedValue(diceKey: diceKey).navigationBarTitleDisplayMode(.inline).navigationBarDiceKeyStyle()) {
+                }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
+                .if( pageContent == .SeedHardwareKey ) { $0.colorInvert() }
+                DerivationRecipeMenu({ newPageContent in
+                    navigateTo(newPageContent)
+                }) {
                     VStack {
                         VStack {
                         Image(systemName: "arrow.down")
@@ -97,53 +81,40 @@ struct DiceKeyPresentNavigationFooter: View {
                         Image(systemName: "ellipsis.rectangle.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                        }.frame(height: min(size.width, size.height)/10, alignment: .center)
+                        }.frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
                         Text("Derive a Secret or Password").multilineTextAlignment(.center).font(.footnote)
+                    }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
+                }.if( {
+                    switch pageContent {
+                    case .Derive : return true
+                    default: return false
                     }
-                }.frame(width: size.width * BottomButtonFractionalWidth, alignment: .center)
-                Button(action: { isBackupActive = true }, label: {
+                }() ) { $0.colorInvert() }
+                Button(action: { navigateTo(.Backup) }, label: {
                     VStack {
                         Image("Backup to DiceKey")
                             .renderingMode(.template)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(
-                                maxWidth: size.width * BottomButtonFractionalWidth,
-                                maxHeight: min(size.width, size.height)/10,
+                                maxWidth: geometry.size.width * BottomButtonFractionalWidth,
+                                maxHeight: min(geometry.size.width, geometry.size.height)/10,
                                 alignment: .center
                             )
                         Text("Backup this Key").multilineTextAlignment(.center).font(.footnote)
                     }
-                }).frame(width: size.width * BottomButtonFractionalWidth, alignment: .center)
-//                NavigationLink(destination: DiceKeyStorageOptions(diceKey: diceKey)) {
-//                    VStack {
-//                        ZStack {
-//                            Image("Phonelet")
-//                                .resizable()
-//                                .aspectRatio(contentMode: .fit)
-//                                .frame(height: min(size.width, size.height)/10, alignment: .center)
-//                            if diceKeyState.isDiceKeyStored {
-//                                Image("DiceKey Icon")
-//                                    .renderingMode(.template)
-//                                    .resizable()
-//                                    .aspectRatio(contentMode: .fit)
-//                                    .frame(height: min(size.width, size.height)/24, alignment: .center)
-//                            }
-//                        }
-//                        if diceKeyState.isDiceKeyStored {
-//                            Text("Key is Stored on this Device").multilineTextAlignment(.center).font(.footnote)
-//                        } else {
-//                            Text("Store Key on this Device").multilineTextAlignment(.center).font(.footnote)
-//                        }
-//                    }
-//                }.frame(width: size.width * BottomButtonFractionalWidth, alignment: .center)
+                }).frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
+                .if( pageContent == .Backup ) { $0.colorInvert() }
                 Spacer()
             }
         }
         .padding(.bottom, geometry.safeAreaInsets.bottom)
         .padding(.top, 5)
         }.background(Color(UIColor.systemFill))
-        
+//        .background(
+//            NavigationLink(destination: DiceKeyWithDerivedValue(diceKey: diceKey, menuOptionChosen: derivationRecipeMenuOptionChosen), isActive: $shouldNavigateToDiceKeyWithDerivedValue, label: { EmptyView() })
+//                .position(x: 0, y: 0).frame(width: 0, height: 0).hidden()
+//        )
     }
 }
 
@@ -153,6 +124,7 @@ struct DiceKeyPresent: View {
             _diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey))
         }
     }
+    @State var pageContent: DiceKeyPresentPageContent = .Default
 
     let onForget: () -> Void
 
@@ -164,12 +136,10 @@ struct DiceKeyPresent: View {
         self._diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey.wrappedValue))
     }
 
-//    @State private var isDiceKeyWithDerivedValueActive = false
-//    @State private var derivableName: String?
     @State private var navBarHeight: CGFloat = 0
 
     var storageButton: some View {
-        NavigationLink(destination: DiceKeyStorageOptions(diceKey: diceKey).navigationBarTitleDisplayMode(.inline).navigationBarDiceKeyStyle()) {
+        Button(action: { navigate(to: .Store) }) {
             VStack(alignment: .center, spacing: 0) {
                 ZStack(alignment: .center, content: {
                     Image("Phonelet")
@@ -189,39 +159,34 @@ struct DiceKeyPresent: View {
                 }).aspectRatio(contentMode: .fit)
                 Text(diceKeyState.isDiceKeyStored ? "Stored" : "Store")
             }.frame(maxHeight: navBarHeight)
+            .if( pageContent == .Store ) { $0.colorInvert() }
         }
+    }
+
+    func navigate(to destination: DiceKeyPresentPageContent) {
+           if pageContent == destination {
+               pageContent = .Default
+           } else {
+               self.pageContent = destination
+           }
     }
 
     var body: some View {
         GeometryReader { geometry in
-//        NavigationView {
             VStack {
-//                NavigationLink(destination: DiceKeyWithDerivedValue(diceKey: diceKey, derivableName: $derivableName), isActive: $isDiceKeyWithDerivedValueActive, label: { EmptyView() })
-//                    .position(x: 0, y: 0).frame(width: 0, height: 0).hidden()
                 Spacer()
-                DiceKeyView(diceKey: diceKey, showLidTab: true)
-//                if let derivables = GlobalState.instance.derivables {
-//                    if derivables.count > 0 {
-//                        Menu {
-//                            ForEach(derivables) { derivable in
-//                                Button(derivable.name) {
-//                                    derivableName = derivable.name
-//                                    isDiceKeyWithDerivedValueActive = true
-//                                }
-//                            }
-//                        } label: { VStack {
-//                            Image(systemName: "arrow.down")
-//                            Image(systemName: "ellipsis.rectangle.fill")
-//                            Text("Derive Secret")
-//                            }
-//                        }
-//                    }
-//                }
+                switch self.pageContent {
+                case .Store: DiceKeyStorageOptions(diceKey: diceKey)
+                case .Derive(let derivationRecipeBuilder): DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)
+                case .Backup: BackupDiceKey(diceKey: $diceKey, onComplete: { navigate(to: .Default) })
+                case .SeedHardwareKey: SeedHardwareSecurityKey()
+                default: DiceKeyView(diceKey: diceKey, showLidTab: true)
+                }
                 Spacer()
-                DiceKeyPresentNavigationFooter(diceKey: $diceKey, diceKeyState: diceKeyState, geometry: geometry)
-            }.edgesIgnoringSafeArea(.bottom)
-//        }.navigationViewStyle(StackNavigationViewStyle())}
-        }.navigationViewStyle(StackNavigationViewStyle())
+                DiceKeyPresentNavigationFooter(pageContent: pageContent, navigateTo: navigate, geometry: geometry)
+            }.ignoresSafeArea(.all, edges: .bottom)
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
         .navigationTitle(diceKeyState.nickname)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarDiceKeyStyle()
@@ -257,8 +222,8 @@ struct TestDiceKeyPresent: View {
                 diceKey: $diceKey,
                 onForget: {}
             )
-        }
-//    }
+//        }
+    }
 }
 
 struct DiceKeyPresent_Previews: PreviewProvider {

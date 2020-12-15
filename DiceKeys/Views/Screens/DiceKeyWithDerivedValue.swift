@@ -11,115 +11,116 @@ import Combine
 
 struct DiceKeyWithDerivedValue: View {
     let diceKey: DiceKey
-    @State var derivableName: String?
-    @State var iterationString: String = "1"
+    let derivationRecipeBuilder: DerivationRecipeBuilderType
+
+    @StateObject var recipeBuilderState = RecipeBuilderState()
 
     var diceKeyState: UnlockedDiceKeyState {
         UnlockedDiceKeyState.forDiceKey(diceKey)
     }
 
-    @State var customDerivationOptionsJson: String = ""
-    @State var useCustomDerivationOptions: Bool = false
-    @State var iteration: Int = 1
+//    var derivationRecipeBuilder: DerivationRecipeBuilderType? {
+//        switch pageContent {
+//        case .Derive(let derivationBuilder): return derivationBuilder
+//        default: return nil
+//        }
+//    }
 
-    var derivable: Derivable? {
-        get {
-            GlobalState.instance.derivables.first(where: { $0.name == derivableName })
+    var derivationRecipe: DerivationRecipe? {
+//        guard let derivationRecipeBuilder = derivationRecipeBuilder else { return nil }
+        switch derivationRecipeBuilder {
+        case .recipe(let chosenRecipe): return chosenRecipe
+        default: return recipeBuilderState.derivationRecipe
         }
     }
 
-    var derivationOptionsJson: String {
-        useCustomDerivationOptions ?
-            customDerivationOptionsJson :
-            derivable?.getDerivationOptionsJson(iteration: iteration) ?? ""
+    var derivationOptionsJson: String? {
+        derivationRecipe?.derivationOptionsJson
     }
 
-    var derivedPassword: String {
-        let derivationOptionsJson = self.derivationOptionsJson
-        guard derivationOptionsJson.count > 0 else {
-            return ""
-        }
-        return (try? Password.deriveFromSeed(withSeedString: diceKeyState.diceKey.toSeed(), derivationOptionsJson: derivationOptionsJson).password) ?? ""
+    @StateObject private var globalState = GlobalState.instance
+
+    private var savedRecipes: [DerivationRecipe] {
+        globalState.savedDerivationRecipes
     }
 
-    var derivables: [Derivable] {
-        GlobalState.instance.derivables
+    private var recipeCanBeSaved: Bool {
+        guard let recipe = derivationRecipe else { return false }
+        // Requires saving if no saved recipe has the same id
+        return savedRecipes.allSatisfy({ $0.id != recipe.id })
     }
 
-    var derivedValue: String {
-        derivedPassword
+    private var recipeCanBeDeleted: Bool {
+        guard let recipe = derivationRecipe else { return false }
+        return savedRecipes.contains { $0.id == recipe.id }
+    }
+
+    var derivedPassword: String? {
+        guard derivationRecipe?.type == .Password else { return nil }
+        guard let derivationOptionsJson = self.derivationOptionsJson, derivationOptionsJson.count > 0 else { return nil }
+        return (try? Password.deriveFromSeed(withSeedString: diceKeyState.diceKey.toSeed(), derivationOptionsJson: derivationOptionsJson).password)
+    }
+
+    var derivedValue: String? {
+        derivedPassword ?? "(nothing derived)"
     }
 
     var body: some View {
         VStack {
-            HStack {
-                Spacer()
-                if let derivables = self.derivables {
-                    Spacer()
-                    if derivables.count > 0 {
-                        Menu {
-                            ForEach(derivables) { derivable in
-                                Button(derivable.name) { derivableName = derivable.name }
-                            }
-                        } label: { VStack {
-                            Image(systemName: "arrow.down")
-                            Image(systemName: "ellipsis.rectangle.fill")
-                            Text(derivableName ?? "Derive...")
-                        } }
-                    }
+//            DerivationRecipeMenu({ menuOptionChosen in self.menuOptionChosen = menuOptionChosen }) { Text(derivationRecipe?.name ?? "Derive...") }
+            if let derivationRecipeBuilder = self.derivationRecipeBuilder {
+                DerivedFromDiceKey(diceKey: diceKeyState.diceKey) {
+                    VStack {
+                        Text(derivedValue ?? "").multilineTextAlignment(.center)
+                    }.padding(.horizontal, 10)
+                }//.aspectRatio(contentMode: .fit)
+                if derivedValue != "" {
+                    Button("Copy") { UIPasteboard.general.string = derivedValue }
                 }
                 Spacer()
-                TextField("Iteration", text: $iterationString).font(.title)
-                    .keyboardType(.numberPad)
-                    .onReceive(Just(iterationString)) { newValue in
-                            let filtered = newValue.filter { "0123456789".contains($0) }
-                            if filtered != newValue {
-                                self.iterationString = filtered
+                Form {
+                    Section(header: Text("")
+//                        DerivationRecipeMenu({ menuOptionChosen in self.menuOptionChosen = menuOptionChosen }) { Text(derivationRecipe?.name ?? "Derive...")
+//                            .multilineTextAlignment(.leading)
+//                            .frame(minWidth: 2000)
+//                        }
+                    ) {
+                        VStack {
+                            DerivationRecipeBuilder(derivableMenuChoice: derivationRecipeBuilder, recipeBuilderState: recipeBuilderState)
+                            if let derivationRecipe = derivationRecipe { //} recipeBuilderState.derivationRecipe {
+                                Divider()
+                                DerivationRecipeView(recipe: derivationRecipe)
                             }
-                    }.multilineTextAlignment(.center).frame(maxWidth: 30)
-                VStack {
-                    Button(action: { iterationString = String((Int(iterationString) ?? 0) + 1) },
-                        label: {
-                            Image(systemName: "arrow.up.square")
-//                                .scaleEffect(2)
-//                                .aspectRatio(contentMode: .fit)
+                            Divider()
+                            if recipeCanBeSaved {
+                                Button(action: { globalState.saveRecipe(derivationRecipe) },
+                                   label: { Text("Save recipe in the menu") })//.buttonStyle(PlainButtonStyle())
+                            }
+                            if recipeCanBeDeleted {
+                                Button(action: { globalState.removeRecipe(derivationRecipe) },
+                                   label: { Text("Remove recipe from menu") })
+                            }
                         }
-                    ).padding(.bottom, 3)
-                    Button(action: { iterationString = String(max(1, (Int(iterationString) ?? 0) - 1)) },
-                        label: {
-                            Image(systemName: "arrow.down.square")
-//                                .resizable()
-//                                .aspectRatio(contentMode: .fit)
-                        }
-                    )
-                }.aspectRatio(contentMode: .fit)
-                Spacer()
+                    }
+                }
             }
-            Spacer()
-            DerivedFromDiceKey(diceKey: diceKeyState.diceKey) {
-                VStack {
-                    Text(derivedValue).multilineTextAlignment(.center)
-                }.padding(.horizontal, 10)
-            }
-            if derivedValue != "" {
-                Button("Copy") { UIPasteboard.general.string = derivedValue }
-            }
-            Spacer()
-            Text(derivationOptionsJson)
+            // Spacer()
+
             Spacer()
         }
-    }
-}
-
-struct DiceKeyWithDerivedValue_Test: View {
-    var body: some View {
-        DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom())
+        .navigationBarDiceKeyStyle()
     }
 }
 
 struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
+    init() {
+        GlobalState.instance.savedDerivationRecipes = []
+    }
     static var previews: some View {
-        DiceKeyWithDerivedValue_Test()
-            .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+        NavigationView {
+            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
+        }
+        .navigationBarDiceKeyStyle()
+        .previewDevice(PreviewDevice(rawValue: "iPhone 11 Max"))
     }
 }

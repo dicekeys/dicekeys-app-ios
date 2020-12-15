@@ -19,19 +19,40 @@ final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
     enum Fields: String {
         case knownDiceKeys
         case neverAskUserToSave
-        case derivablesJson
+        case savedDerivationRecipes
     }
 
-    @UserDefault(Fields.derivablesJson.rawValue, "") private var derivablesJson: String
+    @UserDefault(Fields.savedDerivationRecipes.rawValue, "") private var savedDerivationRecipesJson: String
 
-    var derivables: [Derivable] {
+    var savedDerivationRecipes: [DerivationRecipe] {
         get {
-            return derivablesJson == "" ? PasswordDerivable :
-                (try? Derivable.listFromJson(derivablesJson)) ?? PasswordDerivable
+            return savedDerivationRecipesJson == "" ? [] :
+                (try? DerivationRecipe.listFromJson(savedDerivationRecipesJson)) ?? []
         } set {
-            if let derivablesJson = try? Derivable.listToJson(newValue) {
-                self.derivablesJson = derivablesJson
+            if let derivablesJson = try? DerivationRecipe.listToJson(newValue) {
+                self.savedDerivationRecipesJson = derivablesJson
+                self.objectWillChange.send()
             }
+        }
+    }
+
+    func saveRecipe(_ recipeToSave: DerivationRecipe?) {
+        guard let recipe = recipeToSave else { return }
+        if savedDerivationRecipes.allSatisfy({ $0.id != recipe.id }) {
+            self.savedDerivationRecipes = (
+                self.savedDerivationRecipes + [recipe]
+            )
+            .sorted(by: { a, b in a.id < b.id })
+            self.objectWillChange.send()
+        }
+    }
+
+    func removeRecipe(_ recipeId: String) {
+        self.savedDerivationRecipes = savedDerivationRecipes.filter { $0.id != recipeId }
+    }
+    func removeRecipe(_ recipe: DerivationRecipe?) {
+        if let recipeId = recipe?.id {
+            removeRecipe(recipeId)
         }
     }
 

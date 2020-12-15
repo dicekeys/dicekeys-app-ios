@@ -52,7 +52,6 @@ struct NavigationBarModifierDiceKeysStyle: ViewModifier {
                         Color(.alexandrasBlue)
                         .frame(height: geometry.safeAreaInsets.top)
                         .edgesIgnoringSafeArea(.top)
-                        Text("Uh oh")
                     }
                     Spacer()
                 }
