@@ -60,13 +60,13 @@ struct DiceKeySizeModel {
     }
 
     var centerY: CGFloat {
-        height / 2
+        bounds.height / 2
     }
     var boxCenterY: CGFloat {
         centerY + offsetToBoxCenterY
     }
     var centerX: CGFloat {
-        width / 2
+        bounds.width / 2
     }
 
     let marginOfBoxEdgeAsFractionOfDieSize: CGFloat = 0.25
@@ -107,6 +107,7 @@ struct DiceKeyView: View {
     var faceSurfaceColor: Color = Color.white
     var highlightIndexes: Set<Int> = Set()
     var showDiceAtIndexes: Set<Int>?
+    var aspectRatioMatchStickeys: Bool = false
 
     @State private var viewSize: CGSize = CGSize.zero
 
@@ -166,38 +167,39 @@ struct DiceKeyView: View {
 
     var body: some View {
         CalculateBounds(bounds: self.$viewSize) {
-        ZStack {
-            // The box
-            RoundedRectangle(cornerRadius: sizeModel.boxCornerRadius)
-                .size(width: linearSizeOfBox, height: linearSizeOfBox)
-                .fill(diceBoxColor)
-                .frame(width: linearSizeOfBox, height: linearSizeOfBox)
-                .position(x: hCenter, y: vCenterOfBox)
-            // The lid
-            if showLidTab {
-                DieLidView(radius: sizeModel.lidTabRadius, color: diceBoxColor)
-                    .position(x: hCenter, y: vCenterOfBox + sizeModel.linearSizeOfBox/2 + sizeModel.lidTabRadius/2)
-            }
-            // The dice
-            ForEach(facePositions) { facePosition in
-                if computedShowDiceAtIndexes.contains(facePosition.id) {
-                    DieView(face: facePosition.face, dieSize: faceSize, penColor: diePenColor, faceSurfaceColor: highlightIndexes.contains(facePosition.indexInArray) ? Color.highlighter : faceSurfaceColor )
-                        .position(
-                            x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
-                            y: vCenterOfBox + CGFloat(-2 + facePosition.row) * dieStepSize
-                        )
-                } else {
-                    RoundedRectangle(cornerRadius: sizeModel.faceRadius)
-                        .size(width: faceSize, height: faceSize)
-                        .fill(diceBoxDieSlotColor)
-                        .frame(width: faceSize, height: faceSize)
-                        .position(
-                            x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
-                            y: vCenterOfBox + CGFloat(-2 + facePosition.row) * dieStepSize
-                        )
+            ZStack(alignment: .center) {
+                // The box
+                RoundedRectangle(cornerRadius: sizeModel.boxCornerRadius)
+                    .size(width: linearSizeOfBox, height: linearSizeOfBox)
+                    .fill(diceBoxColor)
+                    .frame(width: linearSizeOfBox, height: linearSizeOfBox)
+                    .position(x: hCenter, y: vCenterOfBox)
+                // The lid
+                if showLidTab {
+                    DieLidView(radius: sizeModel.lidTabRadius, color: diceBoxColor)
+                        .position(x: hCenter, y: vCenterOfBox + sizeModel.linearSizeOfBox/2 + sizeModel.lidTabRadius/2)
+                }
+                // The dice
+                ForEach(facePositions) { facePosition in
+                    if computedShowDiceAtIndexes.contains(facePosition.id) {
+                        DieView(face: facePosition.face, dieSize: faceSize, penColor: diePenColor, faceSurfaceColor: highlightIndexes.contains(facePosition.indexInArray) ? Color.highlighter : faceSurfaceColor )
+                            .position(
+                                x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
+                                y: vCenterOfBox + CGFloat(-2 + facePosition.row) * dieStepSize
+                            )
+                    } else {
+                        RoundedRectangle(cornerRadius: sizeModel.faceRadius)
+                            .size(width: faceSize, height: faceSize)
+                            .fill(diceBoxDieSlotColor)
+                            .frame(width: faceSize, height: faceSize)
+                            .position(
+                                x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
+                                y: vCenterOfBox + CGFloat(-2 + facePosition.row) * dieStepSize
+                            )
+                    }
                 }
             }
-        }}.aspectRatio(sizeModel.aspectRatio, contentMode: .fit)
+        }.aspectRatio(aspectRatioMatchStickeys ? 130/155 : sizeModel.aspectRatio, contentMode: .fit)
     }
 }
 

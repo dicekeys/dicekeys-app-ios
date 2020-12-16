@@ -8,52 +8,29 @@
 import SwiftUI
 
 struct AppMainView: View {
-    // Note: Navigation bar styling is controlled by the UINavigationBarController
-    // extension in the Extensions directory
-
-//    @State var diceKey: DiceKey?
     @State var diceKey: DiceKey?
-//    @State var diceKeyState: UnlockedDiceKeyState?
-//
-//    private func getGradientImage(forBounds: CGRect) -> UIImage? {
-//        let gradient = CAGradientLayer()
-//
-//        gradient.frame = bounds
-//        gradient.colors = [UIColor.systemBlue.cgColor, UIColor.lighterBlue.cgColor]
-//        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
-//        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
-//
-//        UIGraphicsBeginImageContext(gradient.frame.size)
-//        defer {
-//            UIGraphicsEndImageContext()
-//        }
-//        guard let context = UIGraphicsGetCurrentContext() else { return nil }
-//        gradient.render(in: context)
-//        gradientImage = UIGraphicsGetImageFromCurrentImageContext()?.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch)
-//        return gradientImage
-//    }
-//
-//    init() {
-//        let navigationBar = UINavigationBar.appearance()
-//
-//        // navigationBar.backgroundColor = .systemBlue
-//        if let image = getImageFrom(gradientLayer: gradient) {
-//            navigationBar.setBackground(forBounds: UIBarMetrics.compact)
-//            navigationBar.setBackgroundImage(image, for: UIBarMetrics.)
-//            navigationBar.titleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
-//            navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
-//            navigationBar.tintColor = UIColor.white
-//        }
-//        
-//        navigationBar.titleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
-//        navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.DiceKeysNavigationForeground]
-//        navigationBar.tintColor = UIColor.white
-//        
-//        UINavigationBar.appearance().backgroundImage(for: <#T##UIBarMetrics#>)
-//    }
+    @StateObject var globalState = GlobalState.instance
 
     var knownDiceKeysState: [KnownDiceKeyState] {
-        GlobalState.instance.knownDiceKeys.map { KnownDiceKeyState($0) }.filter { $0.isDiceKeyStored }
+        globalState.knownDiceKeys.map { KnownDiceKeyState($0) }.filter { $0.isDiceKeyStored }
+    }
+
+    @State var scanDiceKeyIsActive: Bool = false
+
+    var hiddenNavigationLinkToScanDiceKey: some View {
+        NavigationLink(
+            destination: ScanDiceKey(
+                onDiceKeyRead: { diceKey in
+                    self.diceKey = diceKey
+                    scanDiceKeyIsActive = false
+                }).navigationBarTitleDisplayMode(.inline)
+                .navigationBarDiceKeyStyle(),
+            isActive: $scanDiceKeyIsActive,
+            label: { EmptyView() }
+        )
+        .frame(width: 0, height: 0)
+        .position(x: 0, y: 0)
+        .hidden()
     }
 
     var hiddenNavigationLinkToDiceKeyPresent: some View {
@@ -72,11 +49,7 @@ struct AppMainView: View {
             ),
             isActive: Binding<Bool>(
                 get: { diceKey != nil },
-                set: { shouldBeActive in
-                    if !shouldBeActive {
-                        self.diceKey = nil
-                    }
-                }
+                set: { _ in }
             ),
             label: { EmptyView() }
         )
@@ -114,14 +87,20 @@ struct AppMainView: View {
                     })
                     Spacer()
                 }
-                NavigationLink(
-                    destination: ScanDiceKey(
-                        onDiceKeyRead: { diceKey in
-                            self.diceKey = diceKey
-                        })
+                Button(action: { scanDiceKeyIsActive = true }//,
+//                       label: {
+//                    /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
+//                })
+//                NavigationLink(
+//                    destination: ScanDiceKey(
+//                        onDiceKeyRead: { diceKey in
+//                            self.diceKey = diceKey
+//                        }).navigationBarTitleDisplayMode(.inline)
+//                        .navigationBarDiceKeyStyle()
                 ) {
-                    VStack {
-                        Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).frame(maxHeight: UIScreen.main.bounds.size.shorterSide / 4)
+                    VStack(alignment: .center) {
+                        KeyScanningIllustration(.Dice).aspectRatio(contentMode: .fit).frame(maxHeight: 0.3 * UIScreen.main.bounds.size.shorterSide)
+                        //Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).frame(maxHeight: UIScreen.main.bounds.size.shorterSide / 4)
                         Text("Read your DiceKey").font(.title2)
                     }
                 }
@@ -144,9 +123,7 @@ struct AppMainView: View {
                 Spacer()
             }.background( ZStack {
                 hiddenNavigationLinkToDiceKeyPresent
-                    .frame(width: 0, height: 0)
-                    .position(x: 0, y: 0)
-                    .hidden()
+                hiddenNavigationLinkToScanDiceKey
             })
             .navigationBarTitle("")
             .navigationBarHidden(true)

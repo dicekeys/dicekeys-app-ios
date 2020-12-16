@@ -9,15 +9,24 @@ import SwiftUI
 
 struct DiceKeyFunnel: View {
     var diceKey: DiceKey?
-    let diceKeySize: CGFloat
+    @State var bounds: CGSize = .zero
+
     var bottomWidth: CGFloat
     var contentHeight: CGFloat
 
-    var funnelTopPadding: CGFloat { diceKeySize / 40 }
-    var funnelHeight: CGFloat { diceKeySize * 0.3 }
-    var verticalOverlap: CGFloat { diceKeySize / 30 }
-    var totalFunnelHeight: CGFloat { funnelHeight + funnelTopPadding + contentHeight }
-    var totalHeight: CGFloat { diceKeySize + totalFunnelHeight - verticalOverlap }
+    var verticalOverlapAsFractionOfDiceKeySize: CGFloat = 1/30
+    var funnelHeightAsFractionOfDiceKeySize: CGFloat = 0.3
+    var maxDiceKeySizeAsFractionOfVerticalSpaceAboveContent: CGFloat { 1.0 / (1 + funnelHeightAsFractionOfDiceKeySize -  verticalOverlapAsFractionOfDiceKeySize) }
+    var diceKeySize: CGFloat { max(0, min(
+        bounds.width * 0.75,
+        maxDiceKeySizeAsFractionOfVerticalSpaceAboveContent * (bounds.height - contentHeight - funnelBottomPadding) ) )
+    }
+    var funnelBottomPadding: CGFloat { 5 }
+
+    var funnelHeight: CGFloat { diceKeySize * funnelHeightAsFractionOfDiceKeySize }
+    var verticalOverlap: CGFloat { verticalOverlapAsFractionOfDiceKeySize * diceKeySize }
+    var totalFunnelHeight: CGFloat { funnelHeight + funnelBottomPadding + contentHeight }
+    var totalHeight: CGFloat { max(0, diceKeySize + totalFunnelHeight - verticalOverlap) }
 
     var bottleneckFractionFromTop: CGFloat = 0.75
 
@@ -31,6 +40,7 @@ struct DiceKeyFunnel: View {
     var arrowSize: CGFloat { min( funnelHeight, bottleneckWidth * 0.8 ) }
 
     var body: some View {
+        CalculateBounds(bounds: $bounds) {
         HStack {
             Spacer()
                 VStack(alignment: .center, spacing: 0) {
@@ -57,63 +67,61 @@ struct DiceKeyFunnel: View {
                     }
                 }.frame(height: totalHeight)
             Spacer()
-        }.frame(height: totalHeight)
+        }.frame(height: totalHeight)}
     }
 }
 
 struct DerivedFromDiceKey<Content: View>: View {
     let diceKey: DiceKey
-    let diceKeySize: CGFloat?
-    let diceKeySizeFraction: CGFloat
     let content: () -> Content
 
-//    @State var funnelSize: CGSize = .zero
     @State var contentSize: CGSize = .zero
-    @State var funnelSize: CGSize = .zero // UIScreen.main.bounds.size
 
-    var frameSize: CGSize {
-        if contentSize == .zero || funnelSize == .zero {
-            return UIScreen.main.bounds.size
-        } else {
-            return funnelSize
-        }
-    }
-
-    init(diceKey: DiceKey, diceKeySize: CGFloat? = nil, diceKeySizeFraction: CGFloat = 0.75, @ViewBuilder content: @escaping () -> Content) {
+    init(diceKey: DiceKey, @ViewBuilder content: @escaping () -> Content) {
         self.diceKey = diceKey
-        self.diceKeySize = diceKeySize
-        self.diceKeySizeFraction = diceKeySizeFraction
         self.content = content
     }
 
     var body: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .bottom) {
-                ChildSizeReader<DiceKeyFunnel>(size: $funnelSize) {
-                    DiceKeyFunnel(diceKey: diceKey, diceKeySize: diceKeySize ?? (geometry.size.width  * diceKeySizeFraction), bottomWidth: contentSize.width, contentHeight: contentSize.height)
-                }
+        DiceKeyFunnel(diceKey: diceKey, bottomWidth: contentSize.width, contentHeight: contentSize.height)
+        .overlay(
+            VStack(alignment: .center, spacing: 0) {
+                Spacer()
                 ChildSizeReader<Content>(size: $contentSize, content: content)
             }
-        }.frame(width: frameSize.width, height: frameSize.height)
+        ).aspectRatio(contentMode: .fit)
     }
 }
 
 struct DerivedFromDiceKey_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
+        VStack(alignment: .center, spacing: 0) {
             Spacer()
-            DiceKeyFunnel(diceKeySize: 600, bottomWidth: 1000, contentHeight: 100)
+            DiceKeyFunnel(bottomWidth: 794, contentHeight: 100)
+                .aspectRatio(contentMode: .fit)
                 .previewLayout(.fixed(width: 1000, height: 1000))
                 .background(Color.green)
             Spacer()
         }.background(Color.yellow).previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
 
         VStack {
-            DerivedFromDiceKey(diceKey: DiceKey.createFromRandom(), diceKeySizeFraction: 0.5) {
+            Spacer()
+            DerivedFromDiceKey(diceKey: DiceKey.createFromRandom()) {
                     Text("Somethign short").multilineTextAlignment(.center).padding(.horizontal, 5)
             }.background(Color.green)
             Spacer()
-        }.background(Color.yellow).previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+        }.frame(maxWidth: 200)
+        .clipped()
+        .background(Color.yellow)
+        .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+
+        VStack {
+            Spacer()
+            DerivedFromDiceKey(diceKey: DiceKey.createFromRandom()) {
+                    Text("Somethign short").multilineTextAlignment(.center).padding(.horizontal, 5)
+            }.background(Color.green)
+            Spacer()
+        }.frame(maxHeight: 200).clipped().background(Color.yellow).previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
 
         VStack {
             DerivedFromDiceKey(diceKey: DiceKey.createFromRandom()) {

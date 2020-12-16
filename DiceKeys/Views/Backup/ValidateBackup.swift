@@ -84,7 +84,7 @@ struct ValidateBackup: View {
             }
             Spacer()
         } else {
-            HStack(alignment: .top) {
+            HStack(alignment: .center) {
                 VStack {
                     if let original = originalDiceKey {
                         DiceKeyView(diceKey: original)
@@ -95,7 +95,9 @@ struct ValidateBackup: View {
                     }
                 }
                 VStack {
-                    Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).offset(x: 0, y: -50)
+                    KeyScanningIllustration(target == BackupTarget.Stickeys ? .Stickers : .Dice)
+                    // Image("Scanning Side View").resizable()
+                        .aspectRatio(contentMode: .fit).offset(x: 0, y: -50)
                     RoundedTextButton("Scan copy to validate") { self.scanningCopy = true }
                 }
             }
@@ -109,12 +111,14 @@ private struct TestValidateBackup: View {
     @State var backupScanned: DiceKey?
 
     var body: some View {
-        ValidateBackup(target: .DiceKey, originalDiceKey: self.$originalDiceKey, backupScanned: self.$backupScanned)
+        ValidateBackup(target: .Stickeys, originalDiceKey: self.$originalDiceKey, backupScanned: self.$backupScanned)
     }
 }
 
 struct ValidateBackup_Previews: PreviewProvider {
     static var previews: some View {
-        TestValidateBackup(originalDiceKey: DiceKey.createFromRandom())
+        NavigationView {
+            TestValidateBackup(originalDiceKey: DiceKey.createFromRandom())
+        }
     }
 }
