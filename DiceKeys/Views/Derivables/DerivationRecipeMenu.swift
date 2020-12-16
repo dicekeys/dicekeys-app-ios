@@ -23,7 +23,7 @@ struct DerivationRecipeMenu<Content: View>: View {
         self.label = label
     }
 
-    @ObservedObject private var globalState = GlobalState.instance
+    @StateObject private var globalState = GlobalState.instance
 
     var savedRecipes: [DerivationRecipe] {
         globalState.savedDerivationRecipes
@@ -53,7 +53,7 @@ struct DerivationRecipeMenu<Content: View>: View {
                     }
                 }.scaleEffect(x: 1, y: -1, anchor: .center)
             }, label: {
-                Label("Common password recipes", image: "ellipses")
+                Label("Common password recipes", image: "ellipsis.rectangle")
             })
             Menu(content: {
                 VStack {
@@ -61,7 +61,7 @@ struct DerivationRecipeMenu<Content: View>: View {
                     Button("Other derived value") { choose(.custom) }
                 }.scaleEffect(x: 1, y: -1, anchor: .center)
             }, label: {
-                Label("Custom recipe", image: "ellipses")
+                Label("Custom recipe", image: "ellipsis")
             })
         }, label: label)
     }

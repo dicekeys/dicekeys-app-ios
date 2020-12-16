@@ -150,7 +150,8 @@ private struct InstructionsDone: View {
         SingleLineScaledText(createdDiceKey ? "You did it!" : "That's it!")
         Spacer()
         if !createdDiceKey {
-            Instruction("There's nothing more to it. Go back to try it for real and scan in your DiceKey.")
+            Instruction("There's nothing more to it.")
+            Instruction("Go back to assemble and scan in a real DiceKey.").padding(.top, 5)
             Spacer()
         } else if !backedUpSuccessfully {
             Instruction("Be sure to make a backup soon!")
@@ -174,7 +175,7 @@ struct AssemblyInstructions: View {
         case FillEmptySlots
         case ScanFirstTime
         case CreateBackup
-        case ValidateBackup
+//        case ValidateBackup
         case SealBox
         case Done
     }
@@ -182,98 +183,22 @@ struct AssemblyInstructions: View {
     @State private var diceKeyScanned: DiceKey?
     @State private var backupScanned: DiceKey?
     @State var step: Step = Step(rawValue: 1)!
-    @State var substep: Int = 0
-    @State var backupTarget: BackupTarget = .Stickeys
+
+    @StateObject var backupDiceKeyState = BackupDiceKeyState(target: .Stickeys)
 
     @State var userChoseToAllowSkipScanningStep: Bool = false
-    @State var userChoseToAllowSkipBackupStep: Bool = false
-
-//    let diceKeyScannedNonNil = Binding<DiceKey>(
-//        get: {diceKeyScanned ?? DiceKey.Example},
-//        set: {newValue in diceKeyScanned = newValue}
-//    )
-
-    var maySkipBackupStep: Bool {
-        userChoseToAllowSkipScanningStep || userChoseToAllowSkipBackupStep
-    }
-
-    var showSkipOption: Bool {
-        (step == .ScanFirstTime && !userChoseToAllowSkipScanningStep) ||
-        (step == .ValidateBackup && !maySkipBackupStep)
-    }
-
-    func onUserChoseToSkipThisStep() {
-        if step == .ScanFirstTime {
-            userChoseToAllowSkipScanningStep = true
-        } else if step == .ValidateBackup {
-            userChoseToAllowSkipBackupStep = true
-        }
-    }
 
     private let first = Step.Randomize.rawValue
     private let last = Step.Done.rawValue
 
-    let numberOfBackupSubsteps = 26
-
     var backupSuccessful: Bool {
         DiceKey.rotationIndependentEquals(diceKeyScanned, backupScanned)
-    }
-
-    private var isPrevStepSubstep: Bool {
-        step == .CreateBackup && substep > 0
-    }
-
-    private var isNextStepSubstep: Bool {
-        step == .CreateBackup && substep < numberOfBackupSubsteps - 1
     }
 
     private var showWarning: Bool { get {
         step.rawValue > Step.Randomize.rawValue &&
         step.rawValue < Step.SealBox.rawValue
     } }
-
-    private var showSkipButton: Bool { get {
-        ( step == .ScanFirstTime && diceKeyScanned == nil && !userChoseToAllowSkipScanningStep ) ||
-            ( step == .ValidateBackup && !maySkipBackupStep && !backupSuccessful ) // FIXE != diceKeyScanned )
-    }}
-
-    func fullStepBack() {
-        step = Step(rawValue: step.rawValue - 1) ?? Step.Randomize
-        if step == .CreateBackup && diceKeyScanned == nil {
-            step = Step(rawValue: step.rawValue - 1)!
-        }
-    }
-
-    func prev() {
-        if isPrevStepSubstep {
-            substep -= 1
-        } else {
-            fullStepBack()
-        }
-    }
-
-    func fullStepForward() {
-        if step.rawValue == last {
-            // exit navigation layer
-            if let diceKey = self.diceKeyScanned {
-                onSuccess?(diceKey)
-            }
-            self.presentationMode.wrappedValue.dismiss()
-        } else {
-            step = Step(rawValue: step.rawValue + 1) ?? Step.Done
-            if step == .CreateBackup && diceKeyScanned == nil {
-                step = Step(rawValue: step.rawValue + 1)!
-            }
-        }
-    }
-
-    func next() {
-        if isNextStepSubstep {
-            substep += 1
-        } else {
-            fullStepForward()
-        }
-    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -285,50 +210,41 @@ struct AssemblyInstructions: View {
                     case .DropDice: DropDice()
                     case .FillEmptySlots: FillEmptySlots()
                     case .ScanFirstTime: ScanFirstTime(diceKey: self.$diceKeyScanned)
-                    case .CreateBackup: BackupSteps(diceKey: self.diceKeyScanned ?? DiceKey.Example, target: .Stickeys, step: $substep)
-                    case .ValidateBackup: ValidateBackup(target: backupTarget, originalDiceKey: Binding<DiceKey>(
-                        get: { diceKeyScanned ?? DiceKey.Example },
-                        set: { newValue in diceKeyScanned = newValue }
-                    ), backupScanned: self.$backupScanned)
+                    case .CreateBackup: BackupDiceKey(
+                        onComplete: { self.step = Step(rawValue: step.rawValue + 1)! },
+                        onBackedOut: { self.step = Step(rawValue: step.rawValue - 1)! },
+                        thereAreMoreStepsAfterBackup: true,
+                        diceKey: Binding<DiceKey>(
+                                get: { diceKeyScanned ?? DiceKey.Example },
+                                set: { newValue in diceKeyScanned = newValue }
+                            ),
+                        backupDiceKeyState: backupDiceKeyState
+                        )
                     case .SealBox: SealBox()
                     case .Done: InstructionsDone(createdDiceKey: diceKeyScanned != nil, backedUpSuccessfully: backupSuccessful)
                     }
                 }.padding(.horizontal, 15)
                 Spacer()
                 // Forward / Back nav
-                HStack {
-                    Spacer()
-                    Button(
-                        action: { onUserChoseToSkipThisStep() },
-                        label: { Text("Let me skip this step").font(.footnote) }
-                    ).padding(.bottom, 7).showIf(showSkipButton)
-                    Spacer()
+                if step != .CreateBackup {
+                    StepFooterView(
+                        goTo: {
+                            if let newStep = Step(rawValue: $0) {
+                                step = newStep
+                            } else {
+                                if let diceKey = self.diceKeyScanned, $0 > last {
+                                    onSuccess?(diceKey)
+                                }
+                                self.presentationMode.wrappedValue.dismiss()
+                            }
+                        },
+                        step: step.rawValue,
+                        prev: step.rawValue > 0 ? step.rawValue - 1 : nil,
+                        next: step.rawValue + 1,
+                        setMaySkip: step == .ScanFirstTime && !userChoseToAllowSkipScanningStep ? { userChoseToAllowSkipScanningStep = true } : nil,
+                        isLastStep: step == .Done
+                    )
                 }
-                HStack {
-                    Spacer()
-                    Button { fullStepBack() } label: {
-                        Image(systemName: "chevron.backward.2")
-                    }.showIf( isPrevStepSubstep)
-                    Spacer()
-                    Button { prev() } label: {
-                        HStack {
-                            Image(systemName: "chevron.backward")
-                            Text("Previous").font(.title3)
-                        }
-                    }.showIf(step.rawValue != first)
-                    Spacer()
-                    Button { next() } label: {
-                        HStack {
-                            Text(step.rawValue == last ? "Done" : "Next").font(.title3)
-                            Image(systemName: "chevron.forward")
-                        }
-                    }.disabled(showSkipButton)
-                    Spacer()
-                    Button { fullStepForward() } label: {
-                        Image(systemName: "chevron.forward.2")
-                    }.showIf( isNextStepSubstep )
-                    Spacer()
-                }.padding(.bottom, 10)
                 VStack {
                     Warning(message: "Do not close the box before the final Step.")
                         .padding(.vertical, 5)

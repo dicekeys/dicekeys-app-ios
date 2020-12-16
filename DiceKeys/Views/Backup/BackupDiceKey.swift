@@ -6,26 +6,87 @@
 //
 
 import SwiftUI
+import Combine
 
 enum BackupTarget: String {
     case DiceKey
     case Stickeys
 }
 
-struct BackupSteps: View {
-    let diceKey: DiceKey
-    let target: BackupTarget
-    @Binding var step: Int
-
-    var faceIndex: Int { step - 1 }
+struct ChooseBackupTarget: View {
+    var diceKey: DiceKey
+    let choice: (BackupTarget) -> Void
 
     var body: some View {
-        if step == 0 {
+        VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/) {
+            Spacer()
+            Button(action: { choice(.Stickeys) },
+                label: {
+                    VStack {
+                        HStack(alignment: .center, spacing: 0) {
+                            Spacer()
+                            DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue,
+                                aspectRatioMatchStickeys: true
+                            ).frame(minWidth: 0, maxWidth: .infinity)
+                            Image(systemName: "arrow.right.circle.fill")
+                                .renderingMode(.template)
+                                .foregroundColor(Color.alexandrasBlue)
+                                .scaleEffect(2.0)
+                                .padding(.horizontal, 20)
+                            StickerTargetSheet(diceKey: diceKey, showLettersBeforeIndex: 12, atDieIndex: 12, foregroundColor: Color.alexandrasBlue, orientation: .portrait)
+                                .frame(minWidth: 0, maxWidth: .infinity)
+                            Spacer()
+                        }
+                        Text("Use a Stickeys Kit").font(.title).foregroundColor(.alexandrasBlue)
+                    }
+                }
+            ).frame(minHeight: 0, maxHeight: .infinity)
+            Spacer(minLength: 20)
+            Button(action: { choice(.DiceKey) },
+                label: {
+                    VStack {
+                        HStack(alignment: .center, spacing: 0) {
+                            Spacer()
+                            DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue,
+                                aspectRatioMatchStickeys: true
+                            ).frame(minWidth: 0, maxWidth: .infinity)
+                            Image(systemName: "arrow.right.circle.fill")
+                                .renderingMode(.template)
+                                .foregroundColor(Color.alexandrasBlue)
+                                .scaleEffect(2.0)
+                                .padding(.horizontal, 20)
+                            DiceKeyCopyInProgress(diceKey: diceKey, atDieIndex: 12, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue
+                            ).frame(minWidth: 0, maxWidth: .infinity)
+                            Spacer()
+                        }
+                        Text("Use a DiceKey Kit").font(.title).foregroundColor(.alexandrasBlue)
+                    }
+                }
+            ).frame(minHeight: 0, maxHeight: .infinity)
+            Spacer()
+        }
+    }
+}
+
+private struct BackupSteps: View {
+    let diceKey: DiceKey
+    let target: BackupTarget
+
+    // Step 0: choose backup target
+    // Step 1: Introduction
+    // Step 2-26, assign key
+    // Step 27, validate
+    let step: Int
+
+    var faceIndex: Int { step - 2 }
+
+    var body: some View {
+        if step == 1 {
             switch target {
             case .Stickeys: BackupToStickeysIntroduction(diceKey: diceKey)
             case .DiceKey: BackupToDiceKeysKitIntroduction(diceKey: diceKey)
             }
-        } else if step >= 1 && step <= 25 {
+        } else if step >= 2 && step <= 26 {
             Instruction("Construct your Backup")
             Spacer()
             switch target {
@@ -51,138 +112,95 @@ struct BackupSteps: View {
     }
 }
 
-struct BackupToTarget: View {
-    let target: BackupTarget
-    let onComplete: () -> Void
-    @Binding var originalDiceKey: DiceKey
-    @Binding var step: Int
-    @State var backupScanned: DiceKey?
-    @State var maySkipValidationStep = false
+class BackupDiceKeyState: ObservableObject {
+    let objectWillChange = ObservableObjectPublisher()
+    private var notificationSubscription: AnyCancellable?
 
-    var validationRequired: Bool {
-        step == validationStep && !DiceKey.rotationIndependentEquals(originalDiceKey, backupScanned) && !maySkipValidationStep
+    init(target: BackupTarget? = nil) {
+        self.target = target
+        notificationSubscription = NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification).sink { _ in
+            self.objectWillChange.send()
+        }
     }
 
-    private let validationStep = 26
-    private let lastStep = 26
-
-    var body: some View {
-        VStack {
-            if step < 26, let diceKey = originalDiceKey {
-                BackupSteps(diceKey: diceKey, target: target, step: self.$step)
-            } else {
-                ValidateBackup(target: target, originalDiceKey: self.$originalDiceKey, backupScanned: self.$backupScanned)
-            }
-            HStack {
-                Spacer()
-                Button(
-                    action: { maySkipValidationStep = true },
-                    label: { Text("Let me skip this step").font(.footnote) }
-                ).padding(.bottom, 7).showIf( validationRequired )
-                Spacer()
-            }
-            HStack {
-                Spacer()
-                Button { step = 0 } label: {
-                    Image(systemName: "chevron.backward.2")
-                }.showIf( step > 1)
-                Spacer()
-                Button { step -= 1 } label: {
-                    HStack {
-                        Image(systemName: "chevron.backward")
-                        Text("Previous").font(.title2)
-                    }
-                }.showIf( step > 1 )
-                Spacer()
-                Button {
-                    if step < lastStep {
-                        step += 1
-                    } else {
-                        onComplete()
-                    }
-                } label: {
-                    HStack {
-                        Text( step == lastStep ? "Done" : "Next").font(.title2)
-                        Image(systemName: "chevron.forward")
-                    }
-                }.disabled( validationRequired )
-                Spacer()
-                Button { step = validationStep } label: {
-                    Image(systemName: "chevron.forward.2")
-                }.showIf( step < 26 )
-                Spacer()
-            }
-        }.padding(.horizontal, 10).padding(.bottom, 10)
+    @Published var step: Int = 0 {
+        willSet { objectWillChange.send() }
+    }
+    @Published var target: BackupTarget? {
+        willSet { objectWillChange.send() }
     }
 }
 
 struct BackupDiceKey: View {
-    @Binding var diceKey: DiceKey
     let onComplete: () -> Void
-    @State var mode: BackupTarget?
-    @State var step: Int = 0
+    var onBackedOut: (() -> Void)?
+    var thereAreMoreStepsAfterBackup: Bool = false
+    @Binding var diceKey: DiceKey
+    @StateObject var backupDiceKeyState = BackupDiceKeyState()
+
+    @State var backupScanned: DiceKey?
+    @State var maySkipValidationStep = false
+
+    var step: Int { backupDiceKeyState.step }
+    var target: BackupTarget? { backupDiceKeyState.target }
+
+    var validationRequired: Bool {
+        step == validationStep && !DiceKey.rotationIndependentEquals(diceKey, backupScanned) && !maySkipValidationStep
+    }
+
+    private let validationStep = 27
+    private let lastStep = 27
 
     var body: some View {
-        if let target = mode {
-            BackupToTarget(target: target, onComplete: onComplete, originalDiceKey: self.$diceKey, step: $step)
-        } else {
-            VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/) {
-                Spacer()
-                Button(action: { mode = .Stickeys },
-                    label: {
-                        VStack {
-                            HStack(alignment: .center, spacing: 0) {
-                                Spacer()
-                                DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue)
-                                    .frame(minWidth: 0, maxWidth: .infinity)
-                                Image(systemName: "arrow.right.circle.fill")
-                                    .renderingMode(.template)
-                                    .foregroundColor(Color.alexandrasBlue)
-                                    .scaleEffect(2.0)
-                                    .padding(.horizontal, 20)
-                                StickerTargetSheet(diceKey: diceKey, showLettersBeforeIndex: 12, atDieIndex: 12, foregroundColor: Color.alexandrasBlue, orientation: .portrait)
-                                    .frame(minWidth: 0, maxWidth: .infinity)
-                                Spacer()
-                            }
-                            Text("Use a Stickeys Kit").font(.title).foregroundColor(.alexandrasBlue)
-                        }
+        VStack {
+            if let target = self.target, step > 0 {
+                if step < validationStep, let diceKey = diceKey {
+                    BackupSteps(diceKey: diceKey, target: target, step: step)
+                } else {
+                    ValidateBackup(target: target, originalDiceKey: self.$diceKey, backupScanned: self.$backupScanned)
+                }
+            } else {
+                ChooseBackupTarget(diceKey: diceKey, choice: {
+                    backupDiceKeyState.target = $0
+                    backupDiceKeyState.step = 1
+                })
+            }
+            StepFooterView(
+                goTo: {
+                    if $0 < 0 {
+                        onBackedOut?()
+                    } else if $0 <= lastStep {
+                        backupDiceKeyState.step = $0
+                    } else {
+                        onComplete()
                     }
-                )
-                Spacer()
-                Button(action: { mode = .DiceKey },
-                    label: {
-                        VStack {
-                            HStack {
-                                Spacer()
-                                DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue)
-                                Image(systemName: "arrow.right.circle.fill")
-                                    .renderingMode(.template)
-                                    .foregroundColor(Color.alexandrasBlue)
-                                    .scaleEffect(2.0)
-                                    .padding(.horizontal, 20)
-                                DiceKeyCopyInProgress(diceKey: diceKey, atDieIndex: 12, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue)
-                                Spacer()
-                            }
-                            Text("Use a DiceKey Kit").font(.title).foregroundColor(.alexandrasBlue)
-                        }
-                    }
-                )
-                Spacer()
-            }.navigationBarTitle("Create a backup").padding(.horizontal, 10)
-        }
+                },
+                step: step,
+                prevPrev: 1,
+                prev: (step > 0 || onBackedOut != nil) ? step - 1 : nil,
+                next: step == 0 ? nil : step + 1,
+                nextNext: validationStep,
+                setMaySkip: validationRequired ? { maySkipValidationStep = true } : nil,
+                isLastStep: step == lastStep && !thereAreMoreStepsAfterBackup
+            )
+        }.padding(.horizontal, 10).padding(.bottom, 10)
     }
 }
 
 private struct TestBackupDiceKey: View {
     @State var diceKey: DiceKey = DiceKey.createFromRandom()
+    @StateObject var backupDiceKeyState = BackupDiceKeyState()
 
     var body: some View {
-        BackupDiceKey(diceKey: $diceKey, onComplete: {})
+        BackupDiceKey(onComplete: {}, diceKey: $diceKey, backupDiceKeyState: backupDiceKeyState)
     }
 }
 
 struct BackupDiceKey_Previews: PreviewProvider {
     static var previews: some View {
+        TestBackupDiceKey()
+            .previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
+
         TestBackupDiceKey()
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
 

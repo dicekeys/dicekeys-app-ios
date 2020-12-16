@@ -66,7 +66,7 @@ struct DiceKeyPresentNavigationFooter: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
-                        Text("Seed a Hardware Key").multilineTextAlignment(.center).font(.footnote)
+                        Text("Seed a SoloKey").multilineTextAlignment(.center).font(.footnote)
                     }
                 }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
                 .if( pageContent == .SeedHardwareKey ) { $0.colorInvert() }
@@ -82,7 +82,7 @@ struct DiceKeyPresentNavigationFooter: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                         }.frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
-                        Text("Derive a Secret or Password").multilineTextAlignment(.center).font(.footnote)
+                        Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
                     }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
                 }.if( {
                     switch pageContent {
@@ -124,9 +124,11 @@ struct DiceKeyPresent: View {
             _diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey))
         }
     }
-    @State var pageContent: DiceKeyPresentPageContent = .Default
-
     let onForget: () -> Void
+
+    @State var pageContent: DiceKeyPresentPageContent = .Default
+    
+    @StateObject var backupDiceKeyState = BackupDiceKeyState()
 
     @ObservedObject var diceKeyState: UnlockedDiceKeyState
 
@@ -171,16 +173,18 @@ struct DiceKeyPresent: View {
            }
     }
 
+    let defaultContentPadding: CGFloat = 15
+
     var body: some View {
         GeometryReader { geometry in
             VStack {
                 Spacer()
                 switch self.pageContent {
-                case .Store: DiceKeyStorageOptions(diceKey: diceKey)
+                case .Store: DiceKeyStorageOptions(diceKey: diceKey, done: { self.pageContent = .Default }).padding(.horizontal, defaultContentPadding)
                 case .Derive(let derivationRecipeBuilder): DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)
-                case .Backup: BackupDiceKey(diceKey: $diceKey, onComplete: { navigate(to: .Default) })
-                case .SeedHardwareKey: SeedHardwareSecurityKey()
-                default: DiceKeyView(diceKey: diceKey, showLidTab: true)
+                case .Backup: BackupDiceKey(onComplete: { navigate(to: .Default) }, diceKey: $diceKey, backupDiceKeyState: backupDiceKeyState)
+                case .SeedHardwareKey: SeedHardwareSecurityKey().padding(.horizontal, defaultContentPadding)
+                default: DiceKeyView(diceKey: diceKey, showLidTab: true).padding(.horizontal, defaultContentPadding)
                 }
                 Spacer()
                 DiceKeyPresentNavigationFooter(pageContent: pageContent, navigateTo: navigate, geometry: geometry)

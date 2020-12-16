@@ -9,7 +9,11 @@ import SwiftUI
 
 struct SeedHardwareSecurityKey: View {
     var body: some View {
-        Text("I'm afraid you can't do this on an iOS yet.")
+        VStack(alignment: .leading) {
+            Text("Apple prevents apps on iPhones and iPads from writing to USB devices.").font(.title)
+            
+            Text("To seed a SoloKey, you will need to use this app on a Mac, Android device, or PC.").font(.title).padding(.top, 10)
+        }
     }
 }
 

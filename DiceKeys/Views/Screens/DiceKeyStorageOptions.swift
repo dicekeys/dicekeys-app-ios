@@ -10,54 +10,45 @@ import SwiftUI
 struct DiceKeyStorageOptions: View {
     let diceKey: DiceKey
     @ObservedObject var diceKeyState: UnlockedDiceKeyState
+    let done: (() -> Void)?
 
-    init(diceKey: DiceKey) {
+    init(diceKey: DiceKey, done: (() -> Void)? = nil) {
         self.diceKey = diceKey
+        self.done = done
         self._diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey))
     }
 
     var body: some View {
-        GeometryReader { geometry in
-        HStack {
-            Spacer(minLength: 20)
+        HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
+            Spacer()
             VStack {
                 Spacer()
-
-//                Toggle(isOn: $diceKeyState.isCenterFaceStored ) {
-//                    HStack {
-//                        Spacer()
-//                        VStack {
-//                            DieView(face: diceKey.centerFace,
-//                                        dieSize: geometry.size.shorterSide / 3, faceBorderColor: Color.gray)
-//                            Text("Store the Center Die").font(.title2).bold().padding(.top, 3).padding(.top, 3)
-//                            Text("This app will display it on its home screen.").font(.footnote).padding(.top, 3)
-//                        }
-//                        Spacer()
-//                    }
-//                }
-//                Spacer()
                 Toggle(isOn: diceKeyState.isDiceKeyStoredBinding ) {
                     HStack {
                         Spacer()
                         VStack {
                             ZStack {
-                                Image("Phonelet").resizable().aspectRatio(contentMode: .fit).frame(width: geometry.size.shorterSide / 2.5)
-                                DiceKeyView(diceKey: diceKey, diceBoxColor: Color.alexandrasBlue, diePenColor: Color.alexandrasBlue).frame(width: geometry.size.shorterSide / 3, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                Image("Phonelet").resizable().aspectRatio(contentMode: .fit)
+                                //.frame(width: geometry.size.shorterSide / 2.5)
+                                .background(
+                                    DiceKeyView(diceKey: diceKey, diceBoxColor: Color.alexandrasBlue, diePenColor: Color.alexandrasBlue).scaleEffect(0.8)
+                                )
                             }
-                            Text("Store the DiceKey").font(.title2).bold().padding(.top, 3)
-                        }
+                            Text("Store the DiceKey").font(.title).bold().padding(.top, 3)
+                            VStack(alignment: .leading) {
+                                Text("The center die will appear in the home screen.").font(.title2)
+                                Text("The other 24 dice will be encrypted, and your TouchID, FaceID, or PIN will unlock them.").font(.title2)
+                                    .padding(.top, 5)
+                            }.padding(.vertical, 5)
+                        }.padding(.vertical, 10)
                         Spacer()
                     }
                 }
-                VStack(alignment: .leading) {
-                    Text("The center die will appear in the home screen.").font(.body)
-                    Text("The other 24 dice will be encrypted, and your TouchID, FaceID, or PIN will unlock them.").font(.body)
-                    .padding(.top, 10)
-                }.padding(.top, 3)
                 Spacer()
             }
-            Spacer(minLength: 20)
-        }}
+            Spacer()
+        }
+        Button(action: { done?() }, label: { Text("Done") }).padding(.bottom, 20)
     }
 }
 

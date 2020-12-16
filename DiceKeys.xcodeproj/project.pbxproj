@@ -51,6 +51,7 @@
 		1742872C25721E5500C3715B /* DiceKeyStorageOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */; };
 		1742873025726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872F25726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift */; };
 		1742874125749CA300C3715B /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742874025749CA300C3715B /* Properties.swift */; };
+		1749B52B2589A11300065E28 /* StepFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1749B52A2589A11300065E28 /* StepFooter.swift */; };
 		17533912256B2BCB00E090BC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533911256B2BCB00E090BC /* CameraController.swift */; };
 		17533916256B3AC500E090BC /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533915256B3AC500E090BC /* App.swift */; };
 		175F393C2575A445007FAE80 /* UnlockedDiceKeyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F393B2575A445007FAE80 /* UnlockedDiceKeyState.swift */; };
@@ -147,6 +148,7 @@
 		1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyStorageOptions.swift; sourceTree = "<group>"; };
 		1742872F25726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedDiceKeyFileAccessor.swift; sourceTree = "<group>"; };
 		1742874025749CA300C3715B /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
+		1749B52A2589A11300065E28 /* StepFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepFooter.swift; sourceTree = "<group>"; };
 		17533911256B2BCB00E090BC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		17533915256B3AC500E090BC /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		175F393B2575A445007FAE80 /* UnlockedDiceKeyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockedDiceKeyState.swift; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 				1788B1A1257A6E2A007F6CF9 /* RoundedTextButton.swift */,
 				1788B1BF257B277C007F6CF9 /* Instruction.swift */,
 				1778C12325810FAA004EFC03 /* NavigationBar.swift */,
+				1749B52A2589A11300065E28 /* StepFooter.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -774,6 +777,7 @@
 				6F846C04254B2BCF00ABE33B /* UIWindow+Orientation.swift in Sources */,
 				177FCA7A256DBBF300E2FB6F /* Color.swift in Sources */,
 				1788B18225790EDB007F6CF9 /* DiceKeyWithDerivedValue.swift in Sources */,
+				1749B52B2589A11300065E28 /* StepFooter.swift in Sources */,
 				1778C13125819976004EFC03 /* DiceKeyMedium.swift in Sources */,
 				1742874125749CA300C3715B /* Properties.swift in Sources */,
 				17318757257E555B00A9F97A /* StickerSheetForFace.swift in Sources */,
