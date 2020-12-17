@@ -23,23 +23,24 @@ struct SequenceNumberView: View {
 
     var body: some View {
         HStack {
-            TextField("Sequence Number", text: sequenceNumberString)
-                .font(.title)
-                .keyboardType(.numberPad)
-                .multilineTextAlignment(.center).frame(maxWidth: 40).padding(.leading, 10)
+            VStack(alignment: .center) {
+                TextField("Sequence Number", text: sequenceNumberString)
+                    .font(.title)
+                    .keyboardType(.numberPad)
+                    .multilineTextAlignment(.center).frame(maxWidth: 40).padding(.leading, 10)
+                Text("Sequence Number").font(.footnote).foregroundColor(.gray)
+            }
             VStack {
                 Button(action: { sequenceNumber += 1 },
                     label: {
                         Image(systemName: "arrow.up.square")
-    //                                .scaleEffect(2)
-    //                                .aspectRatio(contentMode: .fit)
+                            .resizable().aspectRatio(contentMode: .fit).frame(height: 32)
                     }
                 ).buttonStyle(PlainButtonStyle())
                 Button(action: { sequenceNumber = max(1, sequenceNumber - 1) },
                     label: {
                         Image(systemName: "arrow.down.square")
-    //                                .resizable()
-    //                                .aspectRatio(contentMode: .fit)
+                            .resizable().aspectRatio(contentMode: .fit).frame(height: 32)
                     }
                 ).buttonStyle(PlainButtonStyle())
             }
@@ -47,22 +48,41 @@ struct SequenceNumberView: View {
     }
 }
 
-struct FieldCard<Content: View>: View {
-    let label: String
-    let field: () -> Content
+struct RoundedRectCard<Content: View>: View {
+    var backgroundRectColor: Color = Color.white
+    var radius: CGFloat?
+    var horizontalMargin: CGFloat = 10
+    var verticalMargin: CGFloat = 5
+    let content: () -> Content
 
-    init(_ label: String, @ViewBuilder field: @escaping () -> Content) {
-        self.label = label
-        self.field = field
+    var calculatedRadius: CGFloat {
+        radius ?? max(horizontalMargin, verticalMargin)
     }
-
+    
     var body: some View {
-        VStack(alignment: .center) {
-            field()
-            Text(label).font(.footnote)
-        }
+        content()
+            .padding(.horizontal, horizontalMargin)
+            .padding(.vertical, verticalMargin)
+        .background( RoundedRectangle(cornerSize: CGSize(width: calculatedRadius, height: calculatedRadius), style: .circular).foregroundColor(backgroundRectColor) )
     }
 }
+
+//struct FieldCard<Content: View>: View {
+//    let label: String
+//    let field: () -> Content
+//
+//    init(_ label: String, @ViewBuilder field: @escaping () -> Content) {
+//        self.label = label
+//        self.field = field
+//    }
+//
+//    var body: some View {
+//        VStack(alignment: .center) {
+//            field()
+//            Text(label).font(.footnote)
+//        }
+//    }
+//}
 
 //private struct RecipePassiveEmptyView: View {
 //    init(derivationRecipe: Binding<DerivationRecipe?>, recipe: DerivationRecipe) {
@@ -108,8 +128,13 @@ struct DerivationRecipeBuilderForTemplate: View {
         // X before, but you'll need to add this option if you use
         // the DiceKeys app on another device
         VStack {
-            Text("If you need more than one password for the same service, change the sequence number.").multilineTextAlignment(.leading)
-            FieldCard("Sequence Number") { SequenceNumberView(sequenceNumber: $model.sequenceNumber) }
+            HStack {
+                RoundedRectCard { SequenceNumberView(sequenceNumber: $model.sequenceNumber) }
+                Spacer(minLength: 15)
+                Text("If you need more than one password for the same website or service, change the sequence number. A different password is generated for each sequence number.")
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+            }
         }
     }
 }
@@ -204,7 +229,7 @@ struct DerivationRecipeView: View {
     var body: some View {
         VStack {
             Text(recipe.derivationOptionsJson)
-                .font(.footnote)
+                .font(Font.system(.footnote, design: .monospaced))
                 .minimumScaleFactor(0.01)
                 .scaledToFit()
                 .lineLimit(1)

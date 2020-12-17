@@ -12,6 +12,23 @@ enum DerivationRecipeBuilderType: Equatable {
     case template(DerivationRecipeTemplate)
     case customFromUrl(DerivationOptionsType)
     case custom
+    
+    var isRecipe: Bool {
+        switch(self) {
+        case .recipe: return true
+        default: return false
+        }
+    }
+    
+    var isBuilder: Bool {
+        switch(self) {
+        case .template: return true
+        case .customFromUrl: return true
+        case .custom: return true
+        default: return false
+        }
+
+    }
 }
 
 struct DerivationRecipeMenu<Content: View>: View {
@@ -53,7 +70,7 @@ struct DerivationRecipeMenu<Content: View>: View {
                     }
                 }.scaleEffect(x: 1, y: -1, anchor: .center)
             }, label: {
-                Label("Common password recipes", image: "ellipsis.rectangle")
+                Label("Common password recipes", systemImage: "ellipsis.rectangle")
             })
             Menu(content: {
                 VStack {
@@ -61,7 +78,7 @@ struct DerivationRecipeMenu<Content: View>: View {
                     Button("Other derived value") { choose(.custom) }
                 }.scaleEffect(x: 1, y: -1, anchor: .center)
             }, label: {
-                Label("Custom recipe", image: "ellipsis")
+                Label("Custom recipe", systemImage: "ellipsis")
             })
         }, label: label)
     }

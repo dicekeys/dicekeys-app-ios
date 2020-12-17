@@ -22,7 +22,7 @@ func restrictionsJson(_ hosts: String...) -> String {
 }
 
 func getDerivationOptionsJson(hosts: [String], sequenceNumber: Int = 1) -> String {
-    return "{\"allow\":[\(getHostRestrictionsArrayAsString(hosts))]\(sequenceNumber == 1 ? "" : ",\"#\":\(String(sequenceNumber))" )}"
+    return "{\"allow\":\(getHostRestrictionsArrayAsString(hosts))\(sequenceNumber == 1 ? "" : ",\"#\":\(String(sequenceNumber))" )}"
 }
 
 func getDerivationOptionsJson(_ hosts: String..., sequenceNumber: Int = 1) -> String {
@@ -94,9 +94,9 @@ struct DerivationRecipe: DerivationRecipeIdentifiable, Equatable {
 
     init(template: DerivationRecipeTemplate, sequenceNumber: Int) {
         self.type = template.type
-        self.name = sequenceNumber == 1 ?
-            template.name :
-            "\(template.name) (\(String(sequenceNumber)))"
+        let typeSuffix = template.type == .Password ? " Password" : template.type == .SymmetricKey ? " Key" : template.type == .UnsealingKey ? " Key Pair" : ""
+        let sequenceSuffix = sequenceNumber == 1 ? "" : " (\(String(sequenceNumber)))"
+        self.name = template.name + typeSuffix + sequenceSuffix
         self.derivationOptionsJson =
             addSequenceNumberToDerivationOptionsJson(template.derivationOptionsJson, sequenceNumber: sequenceNumber)
     }
