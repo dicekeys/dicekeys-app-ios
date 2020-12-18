@@ -11,23 +11,23 @@ enum DerivationRecipeBuilderType: Equatable {
     case recipe(DerivationRecipe)
     case template(DerivationRecipeTemplate)
     case customFromUrl(DerivationOptionsType)
-    case custom
-    
+//    case custom
+
     var isRecipe: Bool {
-        switch(self) {
+        switch self {
         case .recipe: return true
         default: return false
         }
     }
-    
+
     var isBuilder: Bool {
-        switch(self) {
+        switch self {
         case .template: return true
         case .customFromUrl: return true
-        case .custom: return true
-        default: return false
+//        case .custom: return true
+        case .recipe: return false
+//        default: return false
         }
-
     }
 }
 
@@ -74,8 +74,8 @@ struct DerivationRecipeMenu<Content: View>: View {
             })
             Menu(content: {
                 VStack {
-                    Button("Website password") { choose(.customFromUrl(.Password)) }
-                    Button("Other derived value") { choose(.custom) }
+                    Button("Online password") { choose(.customFromUrl(.Password)) }
+//                    Button("Other derived value") { choose(.custom) }
                 }.scaleEffect(x: 1, y: -1, anchor: .center)
             }, label: {
                 Label("Custom recipe", systemImage: "ellipsis")

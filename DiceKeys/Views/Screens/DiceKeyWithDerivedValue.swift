@@ -66,71 +66,96 @@ struct DiceKeyWithDerivedValue: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
 //            DerivationRecipeMenu({ menuOptionChosen in self.menuOptionChosen = menuOptionChosen }) { Text(derivationRecipe?.name ?? "Derive...") }
             if let derivationRecipeBuilder = self.derivationRecipeBuilder {
-                DerivedFromDiceKey(diceKey: diceKeyState.diceKey) {
-                    VStack {
-                        Text(derivedValue ?? "").multilineTextAlignment(.center)
-                    }.padding(.horizontal, 10)
-                }//.aspectRatio(contentMode: .fit)
-                if derivedValue != "" {
-                    Button("Copy") { UIPasteboard.general.string = derivedValue }
-                }
-                Spacer()
                 FormCard(title: "Recipe\( derivationRecipe == nil ? "" : " for \( derivationRecipe?.name ?? "" )")") {
                     VStack(alignment: .leading) {
                         if derivationRecipeBuilder.isBuilder {
-                            Section(header: Text("Settings").font(.title2) ) {
-                                DerivationRecipeBuilder(derivableMenuChoice: derivationRecipeBuilder, recipeBuilderState: recipeBuilderState)
-                            }
+//                            Section(header: Text("Settings").font(.title2) ) {
+                            DerivationRecipeBuilder(derivableMenuChoice: derivationRecipeBuilder, recipeBuilderState: recipeBuilderState)
+//                            }
                         }
-                        if let derivationRecipe = derivationRecipe { //} recipeBuilderState.derivationRecipe {
-                            Divider()
-                            Section(header: Text("Internal representation of your recipe").font(.title3) ) {
-                                DerivationRecipeView(recipe: derivationRecipe)
-                            }
-                        }
+                        Divider().hideIf(derivationRecipe == nil)
+                        Text("Internal representation of your recipe").hideIf(derivationRecipe == nil)
+                            .font(.title3)
+                            .scaledToFit()
+                            .minimumScaleFactor(0.01)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                        DerivationRecipeView(recipe: derivationRecipe).padding(.top, 3).hideIf(derivationRecipe == nil)
                         Divider()
                         HStack {
                             Spacer()
-                            if recipeCanBeSaved {
-                                Button(action: { globalState.saveRecipe(derivationRecipe) },
-                                   label: { Text("Save recipe in the menu") })//.buttonStyle(PlainButtonStyle())
-                            }
-                            if recipeCanBeDeleted {
-                                Button(action: { globalState.removeRecipe(derivationRecipe) },
-                                   label: { Text("Remove recipe from menu") })
-                            }
+                            Button(action: {
+                                if recipeCanBeDeleted {
+                                    globalState.removeRecipe(derivationRecipe)
+                                } else if (recipeCanBeSaved) {
+                                    globalState.saveRecipe(derivationRecipe)
+                                }
+                            }, label: { Text(recipeCanBeDeleted ? "Remove recipe from menu" : "Save recipe in the menu")
+                            }).showIf(recipeCanBeSaved || recipeCanBeDeleted)
                             Spacer()
                         }
                     }
                 }.padding(.horizontal, 10).padding(.vertical, 10)
+                .layoutPriority(1)
+                Spacer()
+                VStack(alignment: .center, spacing: 0) {
+                    DerivedFromDiceKey(diceKey: diceKeyState.diceKey, content: {
+                            Text(derivedValue ?? "")
+                                .font(.body)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(2)
+    //                            .scaledToFit()
+                                .minimumScaleFactor(0.1)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .padding(.horizontal, 5)
+                    }).padding(.horizontal, 5).layoutPriority(-1)
+                    if derivedValue != "" {
+                        Button("Copy\( derivationRecipe?.type == .Password ? " Password" : "" )") { UIPasteboard.general.string = derivedValue }
+                    }
+                }.hideIf(derivationRecipe == nil)
+                Spacer()
             }
             // Spacer()
 
             Spacer()
-        }
+        }.padding(.vertical, 5)
         .navigationBarDiceKeyStyle()
     }
 }
 
 struct FormCard<Content: View, TitleContent: View>: View {
-    let title: () -> TitleContent
     let content: () -> Content
 
+    private var titleViewBuilder: (() -> TitleContent)?
+    private var titleString: String?
+
     init(title: @escaping () -> TitleContent, content: @escaping () -> Content) {
-        self.title = title
+        self.titleViewBuilder = title
         self.content = content
     }
 
     var body: some View {
-        RoundedRectCard(backgroundRectColor: Color.formHeadingBackground, radius: 10, horizontalMargin: 5, verticalMargin: 5) {
+        RoundedRectCard(backgroundRectColor: Color.formHeadingBackground, radius: 10 //, // topMargin: 0, bottomMargin: 10, horizontalMargin: 5
+        ) {
             VStack(alignment: .leading, spacing: 0) {
-                title().padding(.leading, 10)
-                RoundedRectCard(backgroundRectColor: Color.formContentBackground, radius: 10, horizontalMargin: 10, verticalMargin: 6) {
+                if let titleViewBuilder = self.titleViewBuilder {
+                    titleViewBuilder().padding(.leading, 10)
+                } else if let titleString = self.titleString {
+                    Text(titleString)
+                        .font(.title)
+                        .foregroundColor(Color.formHeadingForeground)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.01)
+                        .scaledToFit()
+                        .padding(.horizontal, 10)
+                }
+                RoundedRectCard(backgroundRectColor: Color.formContentBackground, radius: 10 //, topMargin: 2, bottomMargin: 5, horizontalMargin: 10
+                ) {
                     content()
-                }.padding(.all, 5)
+                }
             }
         }
     }
@@ -138,19 +163,17 @@ struct FormCard<Content: View, TitleContent: View>: View {
 
 extension FormCard where TitleContent == Text {
     init(title: String, content: @escaping () -> Content) {
-        self.init(title: { Text(title).font(.title).foregroundColor(Color.formHeadingForeground) }, content: content)
+        self.titleString = title
+        self.content = content
     }
 }
 
 struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
-    init() {
-        GlobalState.instance.savedDerivationRecipes = []
-    }
     static var previews: some View {
-        NavigationView {
-            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
-        }
-        .navigationBarDiceKeyStyle()
+//        NavigationView {
+            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
+//        }
+//        .navigationBarDiceKeyStyle()
         .previewDevice(PreviewDevice(rawValue: "iPhone 11 Max"))
     }
 }

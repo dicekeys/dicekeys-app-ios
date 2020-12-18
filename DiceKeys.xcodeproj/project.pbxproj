@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		04EA543F170C770F1092B593 /* Pods_DiceKeysTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */; };
+		171D5D81258C0955005DEF10 /* RoundedRectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171D5D80258C0955005DEF10 /* RoundedRectCard.swift */; };
+		171D5D85258C7C5C005DEF10 /* SequenceNumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171D5D84258C7C5C005DEF10 /* SequenceNumberField.swift */; };
 		17318748257DA69800A9F97A /* ValidateBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17318747257DA69700A9F97A /* ValidateBackup.swift */; };
 		1731874E257E27C500A9F97A /* DiceKeyCopyInProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1731874D257E27C300A9F97A /* DiceKeyCopyInProgress.swift */; };
 		17318752257E545000A9F97A /* BackupToStickeysIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17318751257E545000A9F97A /* BackupToStickeysIntroduction.swift */; };
@@ -122,6 +124,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		171D5D80258C0955005DEF10 /* RoundedRectCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedRectCard.swift; sourceTree = "<group>"; };
+		171D5D84258C7C5C005DEF10 /* SequenceNumberField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceNumberField.swift; sourceTree = "<group>"; };
 		17318747257DA69700A9F97A /* ValidateBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateBackup.swift; sourceTree = "<group>"; };
 		1731874D257E27C300A9F97A /* DiceKeyCopyInProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyCopyInProgress.swift; sourceTree = "<group>"; };
 		17318751257E545000A9F97A /* BackupToStickeysIntroduction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupToStickeysIntroduction.swift; sourceTree = "<group>"; };
@@ -338,6 +342,7 @@
 			children = (
 				177CF42525830D630071F845 /* DerivationRecipeMenu.swift */,
 				177CF429258330200071F845 /* DerivationRecipeBuilders.swift */,
+				171D5D84258C7C5C005DEF10 /* SequenceNumberField.swift */,
 			);
 			path = Derivables;
 			sourceTree = "<group>";
@@ -350,6 +355,7 @@
 				1788B1BF257B277C007F6CF9 /* Instruction.swift */,
 				1778C12325810FAA004EFC03 /* NavigationBar.swift */,
 				1749B52A2589A11300065E28 /* StepFooter.swift */,
+				171D5D80258C0955005DEF10 /* RoundedRectCard.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -785,6 +791,7 @@
 				17318766257E562600A9F97A /* BackupToDiceKeysKitIntroduction.swift in Sources */,
 				17533916256B3AC500E090BC /* App.swift in Sources */,
 				17BBB61E256F87CD009AC42B /* Funnel.swift in Sources */,
+				171D5D85258C7C5C005DEF10 /* SequenceNumberField.swift in Sources */,
 				1742872C25721E5500C3715B /* DiceKeyStorageOptions.swift in Sources */,
 				1742872825721B5B00C3715B /* BackupDiceKey.swift in Sources */,
 				17426E5F2564FB0B00FB0FAB /* DerivationOptions.swift in Sources */,
@@ -797,6 +804,7 @@
 				1788B1A2257A6E2B007F6CF9 /* RoundedTextButton.swift in Sources */,
 				17426EB62567C03500FB0FAB /* FacesReadOverlay.swift in Sources */,
 				17426E3A2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
+				171D5D81258C0955005DEF10 /* RoundedRectCard.swift in Sources */,
 				17F4DF72257F31E20088D1D7 /* DiceKeyCenterFaceOnlyView.swift in Sources */,
 				17BBB63625706A7E009AC42B /* DiceKeyPresent.swift in Sources */,
 				1778C12425810FAA004EFC03 /* NavigationBar.swift in Sources */,
