@@ -36,4 +36,11 @@ extension View {
             self.hidden()
         }
     }
+    
+    @ViewBuilder func previewLayoutMinSupported() -> some View {
+        // https://28b.co.uk/ios-device-dimensions-reference-table/
+        // iPhone SE: 568 x 320
+        // iphone 7: 667 × 375
+        self.previewLayout(PreviewLayout.fixed(width: 320, height: 568))
+    }
 }
