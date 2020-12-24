@@ -151,6 +151,7 @@ private struct InstructionsDone: View {
         Spacer()
         if !createdDiceKey {
             Instruction("There's nothing more to it.")
+            Spacer()
             Instruction("Go back to assemble and scan in a real DiceKey.").padding(.top, 5)
             Spacer()
         } else if !backedUpSuccessfully {
@@ -187,6 +188,7 @@ struct AssemblyInstructions: View {
     @StateObject var backupDiceKeyState = BackupDiceKeyState(target: .Stickeys)
 
     @State var userChoseToAllowSkipScanningStep: Bool = false
+    @State var userChoseToAllowSkippingBackupStep: Bool = false
 
     private let first = Step.Randomize.rawValue
     private let last = Step.Done.rawValue
@@ -241,7 +243,9 @@ struct AssemblyInstructions: View {
                         step: step.rawValue,
                         prev: step.rawValue > 0 ? step.rawValue - 1 : nil,
                         next: step.rawValue + 1,
-                        setMaySkip: step == .ScanFirstTime && !userChoseToAllowSkipScanningStep ? { userChoseToAllowSkipScanningStep = true } : nil,
+                        setMaySkip: step == .ScanFirstTime && !userChoseToAllowSkipScanningStep ? { userChoseToAllowSkipScanningStep = true
+                        } :
+                            nil,
                         isLastStep: step == .Done
                     )
                 }

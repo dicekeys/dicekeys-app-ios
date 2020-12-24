@@ -19,6 +19,7 @@ struct ChooseBackupTarget: View {
 
     var body: some View {
         VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/) {
+            Instruction("Make a backup of your DiceKey by copying it.")
             Spacer()
             Button(action: { choice(.Stickeys) },
                 label: {
@@ -180,7 +181,9 @@ struct BackupDiceKey: View {
                 prev: (step > 0 || onBackedOut != nil) ? step - 1 : nil,
                 next: step == 0 ? nil : step + 1,
                 nextNext: validationStep,
-                setMaySkip: validationRequired ? { maySkipValidationStep = true } : nil,
+                setMaySkip: validationRequired ? { maySkipValidationStep = true } :
+                    step == 0 && thereAreMoreStepsAfterBackup ? { onComplete() } :
+                    nil,
                 isLastStep: step == lastStep && !thereAreMoreStepsAfterBackup
             )
         }.padding(.horizontal, 10).padding(.bottom, 10)
