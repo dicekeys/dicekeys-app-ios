@@ -7,14 +7,17 @@
 
 import SwiftUI
 
-struct DiceKeyFunnel: View {
+struct DerivedFromDiceKey<Content: View>: View {
     var diceKey: DiceKey?
+    let content: () -> Content
+
     @State var bounds: CGSize = .zero
+    @State var contentSize: CGSize = .zero
 
-    var bottomWidth: CGFloat
-    var contentHeight: CGFloat
+    var bottomWidth: CGFloat { max(bounds.width, contentSize.width) }
+    var contentHeight: CGFloat { contentSize.height }
 
-    var verticalOverlapAsFractionOfDiceKeySize: CGFloat = 1/30
+    var verticalOverlapAsFractionOfDiceKeySize: CGFloat = 1/40
     var funnelHeightAsFractionOfDiceKeySize: CGFloat = 0.3
     var maxDiceKeySizeAsFractionOfVerticalSpaceAboveContent: CGFloat { 1.0 / (1 + funnelHeightAsFractionOfDiceKeySize -  verticalOverlapAsFractionOfDiceKeySize) }
     var diceKeySize: CGFloat { max(0, min(
@@ -28,6 +31,17 @@ struct DiceKeyFunnel: View {
     var totalFunnelHeight: CGFloat { funnelHeight + funnelBottomPadding + contentHeight }
     var totalHeight: CGFloat { max(0, diceKeySize + totalFunnelHeight - verticalOverlap) }
 
+    var frameHeight: CGFloat {
+        // To debounce changes in height...
+        if totalHeight < bounds.height - 10 {
+            // there is a significant reduction in height, so shrink the frame to match
+            return ceil(totalHeight)
+        } else {
+            // Don't tweak the height down because a resize shaved pixel or two off that may grow back
+            return bounds.height
+        }
+    }
+
     var bottleneckFractionFromTop: CGFloat = 0.75
 
     var topWidth: CGFloat { self.diceKeySize }
@@ -35,14 +49,16 @@ struct DiceKeyFunnel: View {
         max(topWidth, bottomWidth)
     }
 
+    var aspectRatio: CGFloat? { bounds == .zero || totalHeight == 0 ? nil :  width / frameHeight }
+
     var bottleneckWidth: CGFloat { diceKeySize / 4 }
 
     var arrowSize: CGFloat { min( funnelHeight, bottleneckWidth * 0.8 ) }
 
     var body: some View {
         CalculateBounds(bounds: $bounds) {
-        HStack {
-            Spacer()
+//        HStack(alignment: .center, spacing: 0) {
+//            Spacer()
                 VStack(alignment: .center, spacing: 0) {
                     DiceKeyView(
                         diceKey: diceKey ?? DiceKey.createFromRandom(),
@@ -54,7 +70,7 @@ struct DiceKeyFunnel: View {
                     .frame(width: diceKeySize, height: diceKeySize)
                     // Remove the part to hide
                     .frame(height: diceKeySize - verticalOverlap, alignment: .top).clipped()
-                    ZStack {
+                    ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
                         Funnel(topWidth: diceKeySize, bottomWidth: bottomWidth, bottleneckWidth: bottleneckWidth, paddingBottom: contentHeight, bottleneckFractionFromTop: bottleneckFractionFromTop)
                             .fill(LinearGradient(gradient: Gradient(colors: [Color.diceBox, .white]), startPoint: .top, endPoint: .bottom))
                             .frame(width: width, height: totalFunnelHeight, alignment: .center)
@@ -62,47 +78,33 @@ struct DiceKeyFunnel: View {
                             .stroke(lineWidth: 1)
                             .foregroundColor(Color.diceBox)
                             .frame(width: width, height: totalFunnelHeight, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                        Image(systemName: "arrow.down").resizable().frame(width: arrowSize, height: arrowSize, alignment: .bottom).foregroundColor(.yellow)
-                            .offset(x: 0, y: -contentHeight/2 )
-                    }
-                }.frame(height: totalHeight)
-            Spacer()
-        }.frame(height: totalHeight)}
-    }
-}
-
-struct DerivedFromDiceKey<Content: View>: View {
-    let diceKey: DiceKey
-    let content: () -> Content
-
-    @State var contentSize: CGSize = .zero
-
-    init(diceKey: DiceKey, @ViewBuilder content: @escaping () -> Content) {
-        self.diceKey = diceKey
-        self.content = content
-    }
-
-    var body: some View {
-        DiceKeyFunnel(diceKey: diceKey, bottomWidth: contentSize.width, contentHeight: contentSize.height)
-        .overlay(
-            VStack(alignment: .center, spacing: 0) {
-                Spacer()
-                ChildSizeReader<Content>(size: $contentSize, content: content)
-            }
-        ).aspectRatio(contentMode: .fit)
+                        Image(systemName: "arrow.down").resizable().frame(width: arrowSize, height: arrowSize).foregroundColor(.yellow)
+                            .offset(
+                                x: 0,
+                                y: -contentHeight - funnelBottomPadding + (arrowSize - funnelHeight) / 2
+                            )
+                        ChildSizeReader<Content>(size: $contentSize, content: content)
+                            .frame(maxWidth: bounds.width > 0 ? bounds.width : CGFloat.infinity)
+                            .offset(x: 0, y: -funnelBottomPadding )
+//                        Text("ContentHight: \(contentHeight), fh:\(totalFunnelHeight) height: \(totalHeight)").foregroundColor(.red).background(Color.black)
+                    }.if(aspectRatio != nil) { $0.frame(height: funnelHeight + contentHeight) }
+                }.if(aspectRatio != nil) { $0.frame(height: totalHeight) }
+//            Spacer()
+//        }
+    }.if(aspectRatio != nil) { $0.frame(height: frameHeight).aspectRatio(aspectRatio, contentMode: .fit) }
     }
 }
 
 struct DerivedFromDiceKey_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(alignment: .center, spacing: 0) {
-            Spacer()
-            DiceKeyFunnel(bottomWidth: 794, contentHeight: 100)
-                .aspectRatio(contentMode: .fit)
-                .previewLayout(.fixed(width: 1000, height: 1000))
-                .background(Color.green)
-            Spacer()
-        }.background(Color.yellow).previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
+//        VStack(alignment: .center, spacing: 0) {
+//            Spacer()
+//            DiceKeyFunnel(bottomWidth: 794, contentHeight: 100)
+//                .aspectRatio(contentMode: .fit)
+//                .previewLayout(.fixed(width: 1000, height: 1000))
+//                .background(Color.green)
+//            Spacer()
+//        }.background(Color.yellow).previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
 
         VStack {
             Spacer()

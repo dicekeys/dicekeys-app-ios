@@ -7,70 +7,6 @@
 
 import SwiftUI
 
-struct SequenceNumberView: View {
-    @Binding var sequenceNumber: Int
-
-    var sequenceNumberString: Binding<String> {
-        return Binding<String>(
-            get: { String(sequenceNumber) },
-            set: { newValue in
-                if let newIntValue = Int(newValue.filter { "0123456789".contains($0) }) {
-                    sequenceNumber = newIntValue
-                }
-            }
-        )
-    }
-
-    var body: some View {
-        HStack {
-            TextField("Sequence Number", text: sequenceNumberString)
-                .font(.title)
-                .keyboardType(.numberPad)
-                .multilineTextAlignment(.center).frame(maxWidth: 40).padding(.leading, 10)
-            VStack {
-                Button(action: { sequenceNumber += 1 },
-                    label: {
-                        Image(systemName: "arrow.up.square")
-    //                                .scaleEffect(2)
-    //                                .aspectRatio(contentMode: .fit)
-                    }
-                ).buttonStyle(PlainButtonStyle())
-                Button(action: { sequenceNumber = max(1, sequenceNumber - 1) },
-                    label: {
-                        Image(systemName: "arrow.down.square")
-    //                                .resizable()
-    //                                .aspectRatio(contentMode: .fit)
-                    }
-                ).buttonStyle(PlainButtonStyle())
-            }
-        }
-    }
-}
-
-struct FieldCard<Content: View>: View {
-    let label: String
-    let field: () -> Content
-
-    init(_ label: String, @ViewBuilder field: @escaping () -> Content) {
-        self.label = label
-        self.field = field
-    }
-
-    var body: some View {
-        VStack(alignment: .center) {
-            field()
-            Text(label).font(.footnote)
-        }
-    }
-}
-
-//private struct RecipePassiveEmptyView: View {
-//    init(derivationRecipe: Binding<DerivationRecipe?>, recipe: DerivationRecipe) {
-//        derivationRecipe.wrappedValue = recipe
-//    }
-//
-//    var body: some View { EmptyView() }
-//}
 
 class RecipeBuilderState: ObservableObject {
     @Published var derivationRecipe: DerivationRecipe?
@@ -108,26 +44,45 @@ struct DerivationRecipeBuilderForTemplate: View {
         // X before, but you'll need to add this option if you use
         // the DiceKeys app on another device
         VStack {
-            Text("If you need more than one password for the same service, change the sequence number.").multilineTextAlignment(.leading)
-            FieldCard("Sequence Number") { SequenceNumberView(sequenceNumber: $model.sequenceNumber) }
+            SequenceNumberField(sequenceNumber: $model.sequenceNumber)
         }
     }
 }
 
 private class DerivationRecipeForFromUrlModel: ObservableObject {
     @ObservedObject var recipeBuilderState: RecipeBuilderState
-    @Published var urlString: String = "" { didSet { update() } }
+    @Published var urlString: String = "https://example.com" { didSet { update() } }
     @Published var sequenceNumber: Int = 1 { didSet { update() } }
     let type: DerivationOptionsType
 
-    var host: String? { URL(string: urlString)?.host }
-    var name: String { host ?? "" }
+    var hosts: [String] {
+        if let host = URL(string: urlString)?.host, host != "example.com" {
+            // The field contains a valid URL from which to take a host
+            return [host]
+        } else if urlString.contains("/") || urlString.contains(":") {
+            // The field was an invalid URL and not a list of URLs
+            return []
+        } else {
+            // Assume the field was meant to be a URL or list of URLs
+            return urlString
+                .split(whereSeparator: {$0 == "/" || $0 == " " })
+                .map {
+                    // Use built-in URL parser to parse domain name, returning empty string if it fails
+                    URL(string: "https://\( $0.trimmingCharacters(in: .whitespacesAndNewlines) )")?.host ?? ""
+                }
+                .filter {
+                    // filter out the empty strings
+                    $0.count > 0
+                }
+        }
+    }
+    var name: String { hosts.joined(separator: ", ") }
 
     func update() {
-        guard let host = host else { recipeBuilderState.derivationRecipe = nil; return }
+        guard hosts.count > 0 else { recipeBuilderState.derivationRecipe = nil; return }
         self.recipeBuilderState.derivationRecipe = DerivationRecipe(
             type: type, name: name,
-            derivationOptionsJson: getDerivationOptionsJson(host, sequenceNumber: sequenceNumber))
+            derivationOptionsJson: getDerivationOptionsJson(hosts: hosts, sequenceNumber: sequenceNumber))
     }
 
     init(_ type: DerivationOptionsType, _ recipeBuilderState: RecipeBuilderState) {
@@ -146,7 +101,14 @@ struct DerivationRecipeForFromUrl: View {
 
     var body: some View {
         VStack {
-            Text("FIXME")
+            VStack(alignment: .center, spacing: 0) {
+                TextField("https://somecrazyurl.com", text: $model.urlString)
+                    .font(.body)
+                    .keyboardType(.numberPad)
+                    .multilineTextAlignment(.center)
+                Text("URL or comma-separated list of domains").font(.footnote).foregroundColor(.gray)
+            }
+            SequenceNumberField(sequenceNumber: $model.sequenceNumber)
         }
     }
 }
@@ -191,35 +153,36 @@ struct DerivationRecipeBuilder: View {
         switch derivableMenuChoice {
         case .template(let template): DerivationRecipeBuilderForTemplate(recipeBuilderState: recipeBuilderState, template: template)
         case .customFromUrl(let secretType): DerivationRecipeForFromUrl(type: secretType, recipeBuilderState: recipeBuilderState)
-        case .custom: DerivationRecipeForFromDerivationOptionsJson(recipeBuilderState: recipeBuilderState)
-//        case .none: EmptyView()
-        default: EmptyView()
+//        case .custom: DerivationRecipeForFromDerivationOptionsJson(recipeBuilderState: recipeBuilderState)
+        case .recipe: EmptyView()
         }
     }
 }
 
 struct DerivationRecipeView: View {
-    let recipe: DerivationRecipe
+    let recipe: DerivationRecipe?
 
     var body: some View {
         VStack {
-            Text(recipe.derivationOptionsJson)
-                .font(.footnote)
-                .minimumScaleFactor(0.01)
+            Text(recipe?.derivationOptionsJson ?? "{}")
+                .font(Font.system(.footnote, design: .monospaced))
                 .scaledToFit()
+                .minimumScaleFactor(0.01)
+                .fixedSize(horizontal: false, vertical: true)
                 .lineLimit(1)
         }
     }
 }
 
-//struct DerivationRecipeBuilders: View {
-//    var body: some View {
-//        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-//    }
-//}
-//
 struct DerivationRecipeBuilders_Previews: PreviewProvider {
     static var previews: some View {
+        NavigationView {
+            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .customFromUrl(.Password))
+        }
+        .navigationBarDiceKeyStyle()
+        .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+
+        
         NavigationView {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
         }

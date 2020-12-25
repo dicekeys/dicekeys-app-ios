@@ -41,6 +41,10 @@ extension Color {
     static let warningBackground = Color(hex: "E0585B")
     static var diceBox = Color(hex: "050350")
     static var diceBoxDieSlot = Color(hex: "040240")
+    
+    static var formHeadingBackground = Color(hex: "080808")
+    static var formHeadingForeground = Color(hex: "FFFFFF")
+    static var formContentBackground = Color(hex: "F8F8F8")
 }
 
 extension UIColor {
