@@ -1,13 +1,14 @@
 //
-//  DiceKeysUITests.swift
-//  DiceKeysUITests
+//  Tests_macOS.swift
+//  Tests macOS
 //
-//  Created by Nikita Titov on 27.10.2020.
+//  Created by bakhtiyor on 17/12/20.
 //
 
 import XCTest
 
-class DiceKeysUITests: XCTestCase {
+class Tests_macOS: XCTestCase {
+
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 

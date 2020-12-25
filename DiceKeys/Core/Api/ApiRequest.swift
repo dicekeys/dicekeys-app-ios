@@ -410,7 +410,6 @@ class AuthenticationTokens {
 }
 
 class UrlRequestContext: RequestContext {
-    private let uiApplication: UIApplication
     private let getSeedString: () throws -> String
 
     let requestParameters: UrlParameters
@@ -424,8 +423,7 @@ class UrlRequestContext: RequestContext {
 
     var responseUrl: URLComponents
 
-    init(uiApplication: UIApplication, getSeedString: @escaping () throws -> String, incomingRequestUrl: URL) throws {
-        self.uiApplication = uiApplication
+    init(getSeedString: @escaping () throws -> String, incomingRequestUrl: URL) throws {
         self.getSeedString = getSeedString
         // Create an accessor for the requests parameters to process them
         self.requestParameters = UrlParameters(url: incomingRequestUrl)
@@ -525,9 +523,14 @@ class UrlRequestContext: RequestContext {
         guard let url = self.responseUrl.url else {
             return
         }
+        
+        #if os(iOS)
         // Transmit the response
-        uiApplication.open(url, options: [UIApplication.OpenExternalURLOptionsKey.universalLinksOnly: false]) { success in
+        UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey.universalLinksOnly: false]) { success in
             print("Response via URL completion handler returned \(success)")
         }
+        #else
+        NSWorkspace.shared.open(url)
+        #endif
     }
 }

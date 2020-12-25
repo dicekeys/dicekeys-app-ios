@@ -14,10 +14,6 @@
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Inconsolata-Bold.otf</string>
-	</array>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -28,23 +24,27 @@
 	<string>This app requires to access your camera to scan DiceKeys</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app requires to access your photo library to show image on profile and send via chat</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Inconsolata-Bold.otf</string>
+	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchScreens</key>
 	<dict>
+		<key>UIDefaultLaunchScreen</key>
+		<string>AppView</string>
 		<key>UILaunchScreenDefinitions</key>
 		<array>
 			<dict>
-				<key>UILaunchScreenIdentifier</key>
-				<string></string>
 				<key>UIImageName</key>
+				<string></string>
+				<key>UILaunchScreenIdentifier</key>
 				<string></string>
 			</dict>
 		</array>
 		<key>UIURLToLaunchScreenAssociations</key>
 		<dict/>
-		<key>UIDefaultLaunchScreen</key>
-		<string>AppView</string>
 	</dict>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

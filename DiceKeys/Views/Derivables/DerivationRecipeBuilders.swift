@@ -23,10 +23,16 @@ struct SequenceNumberView: View {
 
     var body: some View {
         HStack {
+            #if os(iOS)
             TextField("Sequence Number", text: sequenceNumberString)
                 .font(.title)
                 .keyboardType(.numberPad)
                 .multilineTextAlignment(.center).frame(maxWidth: 40).padding(.leading, 10)
+            #else
+            TextField("Sequence Number", text: sequenceNumberString)
+                .font(.title)
+                .multilineTextAlignment(.center).frame(maxWidth: 40).padding(.leading, 10)
+            #endif
             VStack {
                 Button(action: { sequenceNumber += 1 },
                     label: {
@@ -220,6 +226,7 @@ struct DerivationRecipeView: View {
 //
 struct DerivationRecipeBuilders_Previews: PreviewProvider {
     static var previews: some View {
+        #if os(iOS)
         NavigationView {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
         }
@@ -232,5 +239,10 @@ struct DerivationRecipeBuilders_Previews: PreviewProvider {
         .navigationViewStyle(StackNavigationViewStyle())
         .navigationBarDiceKeyStyle()
         .previewDevice(PreviewDevice(rawValue: "iPad Air (4th generation)"))
+        #else
+        NavigationView {
+            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
+        }
+        #endif
     }
 }

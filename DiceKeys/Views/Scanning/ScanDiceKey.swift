@@ -37,13 +37,17 @@ struct ScanDiceKey: View {
                     Spacer()
                         GeometryReader { reader in
                             ZStack {
+                                #if os(iOS)
                                 DiceKeysCameraView(onFrameProcessed: onFrameProcessed, size: reader.size)
-
                                 FacesReadOverlay(
                                     renderedSize: reader.size,
                                     imageFrameSize: processedImageFrameSize ?? reader.size,
                                     facesRead: self.facesRead
                                 )
+                                #else
+                                //TODO: implement
+                                Text("TODO: Implement for macOS")
+                                #endif
                             }
                         }.aspectRatio(1, contentMode: .fit)
                     Spacer()

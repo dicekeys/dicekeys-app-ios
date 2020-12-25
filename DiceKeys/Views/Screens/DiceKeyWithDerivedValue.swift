@@ -66,7 +66,7 @@ struct DiceKeyWithDerivedValue: View {
     }
 
     var body: some View {
-        VStack {
+        let view = VStack {
 //            DerivationRecipeMenu({ menuOptionChosen in self.menuOptionChosen = menuOptionChosen }) { Text(derivationRecipe?.name ?? "Derive...") }
             if let derivationRecipeBuilder = self.derivationRecipeBuilder {
                 DerivedFromDiceKey(diceKey: diceKeyState.diceKey) {
@@ -74,8 +74,14 @@ struct DiceKeyWithDerivedValue: View {
                         Text(derivedValue ?? "").multilineTextAlignment(.center)
                     }.padding(.horizontal, 10)
                 }//.aspectRatio(contentMode: .fit)
-                if derivedValue != "" {
-                    Button("Copy") { UIPasteboard.general.string = derivedValue }
+                if let derivedValue = derivedValue, derivedValue != "" {
+                    Button("Copy") {
+                        #if os(iOS)
+                        UIPasteboard.general.string = derivedValue
+                        #else
+                        NSPasteboard.general.setString(derivedValue, forType: .string)
+                        #endif
+                    }
                 }
                 Spacer()
                 Form {
@@ -108,7 +114,10 @@ struct DiceKeyWithDerivedValue: View {
 
             Spacer()
         }
-        .navigationBarDiceKeyStyle()
+        #if os(iOS)
+        view.navigationBarDiceKeyStyle()
+        #endif
+        return view
     }
 }
 
@@ -117,10 +126,12 @@ struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
         GlobalState.instance.savedDerivationRecipes = []
     }
     static var previews: some View {
-        NavigationView {
+        let view = NavigationView {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
         }
-        .navigationBarDiceKeyStyle()
-        .previewDevice(PreviewDevice(rawValue: "iPhone 11 Max"))
+        #if os(iOS)
+        view.navigationBarDiceKeyStyle().previewDevice(PreviewDevice(rawValue: "iPhone 11 Max"))
+        #endif
+        return view
     }
 }

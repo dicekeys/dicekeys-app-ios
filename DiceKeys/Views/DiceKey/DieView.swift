@@ -90,9 +90,15 @@ struct DieFaceUprightView: View {
         var font: Font {
         Font.custom("Inconsolata", size: fontSize)
     }
+    #if os(iOS)
     var uiFont: UIFont {
         UIFont(name: "Inconsolata-Bold", size: fontSize)!
     }
+    #else
+    var uiFont: NSFont {
+        NSFont(name: "Inconsolata-Bold", size: fontSize)!
+    }
+    #endif
     var halfTextRegionWidth: CGFloat {
         FaceDimensionsFractional.textRegionWidth * sizeOfRenderedFace / 2
     }

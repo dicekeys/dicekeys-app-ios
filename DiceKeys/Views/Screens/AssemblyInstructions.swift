@@ -201,7 +201,7 @@ struct AssemblyInstructions: View {
     } }
 
     var body: some View {
-        GeometryReader { geometry in
+        let reader = GeometryReader { geometry in
             VStack {
                 Spacer()
                 VStack(alignment: .center) {
@@ -259,13 +259,16 @@ struct AssemblyInstructions: View {
                     Text("Step \(step.rawValue) of \(Step.SealBox.rawValue)").foregroundColor(Color.DiceKeysNavigationForeground).font(.body)
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarDiceKeyStyle()
+#if os(iOS)
+        reader.navigationBarTitleDisplayMode(.inline).navigationBarDiceKeyStyle()
+#endif
+        return reader
     }
 }
 
 struct AssemblyInstructions_Previews: PreviewProvider {
     static var previews: some View {
+        #if os(iOS)
         AppMainView()
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
 
@@ -286,5 +289,12 @@ struct AssemblyInstructions_Previews: PreviewProvider {
         AssemblyInstructions(step: .SealBox)
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
         // AssemblyInstructions()
+        #else
+        AssemblyInstructions(step: .Randomize)
+        AssemblyInstructions(step: .DropDice)
+        AssemblyInstructions(step: .FillEmptySlots)
+        AssemblyInstructions(step: .ScanFirstTime)
+        AssemblyInstructions(step: .CreateBackup)
+        #endif
     }
 }
