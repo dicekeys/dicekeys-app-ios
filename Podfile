@@ -27,8 +27,7 @@ target 'DiceKeys (macOS)' do
   pod 'SwiftLint'
 
   # Pods for DiceKeys
-  pod 'SeededCrypto', :path => '~/Projects/UpWork/dicekeys/SeededCrypto'
+  pod 'SeededCrypto', :git => 'https://github.com/dicekeys/seeded-crypto-ios.git', :branch => 'mac'
   pod 'OpenCVXF', :git => 'https://github.com/bakhtiyork/opencv-xf.git'
-  pod "ReadDiceKey", :path => '~/Projects/UpWork/dicekeys/read-dicekey-ios'
-
+  pod "ReadDiceKey", :git => 'https://github.com/dicekeys/read-dicekey-ios.git', :branch => 'mac'
 end
