@@ -9,10 +9,12 @@ import SwiftUI
 
 struct AppMainView: View {
     @State var diceKey: DiceKey?
-    @StateObject var globalState = GlobalState.instance
+    @ObservedObject var globalState = GlobalState.instance
 
     var knownDiceKeysState: [KnownDiceKeyState] {
-        globalState.knownDiceKeys.map { KnownDiceKeyState($0) }.filter { $0.isDiceKeyStored }
+        GlobalState.instance.knownDiceKeys.map { KnownDiceKeyState($0) }.filter {
+            $0.isDiceKeyStored
+        }
     }
 
     @State var scanDiceKeyIsActive: Bool = false

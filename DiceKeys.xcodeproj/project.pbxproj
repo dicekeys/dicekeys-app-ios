@@ -122,6 +122,10 @@
 		EC5092D0259482F5007D2B91 /* DiceKeyCopyInProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50928B259482F4007D2B91 /* DiceKeyCopyInProgress.swift */; };
 		EC5092D1259482F5007D2B91 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50928C259482F4007D2B91 /* App.swift */; };
 		EC5092D2259482F5007D2B91 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50928C259482F4007D2B91 /* App.swift */; };
+		EC50932B2595BD03007D2B91 /* SequenceNumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50932A2595BD03007D2B91 /* SequenceNumberField.swift */; };
+		EC50932C2595BD03007D2B91 /* SequenceNumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50932A2595BD03007D2B91 /* SequenceNumberField.swift */; };
+		EC5093322595C043007D2B91 /* RoundedRectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5093312595C043007D2B91 /* RoundedRectCard.swift */; };
+		EC5093332595C043007D2B91 /* RoundedRectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5093312595C043007D2B91 /* RoundedRectCard.swift */; };
 		EC561299258B827300A056B8 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC561298258B827300A056B8 /* Tests_iOS.swift */; };
 		EC5612A4258B827300A056B8 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5612A3258B827300A056B8 /* Tests_macOS.swift */; };
 /* End PBXBuildFile section */
@@ -210,6 +214,8 @@
 		EC50928B259482F4007D2B91 /* DiceKeyCopyInProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyCopyInProgress.swift; sourceTree = "<group>"; };
 		EC50928C259482F4007D2B91 /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		EC5092D72594830F007D2B91 /* DiceKeys-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DiceKeys-Bridging-Header.h"; sourceTree = "<group>"; };
+		EC50932A2595BD03007D2B91 /* SequenceNumberField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceNumberField.swift; sourceTree = "<group>"; };
+		EC5093312595C043007D2B91 /* RoundedRectCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedRectCard.swift; sourceTree = "<group>"; };
 		EC561284258B827300A056B8 /* DiceKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiceKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC561287258B827300A056B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC56128C258B827300A056B8 /* DiceKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiceKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -423,6 +429,7 @@
 		EC509276259482F4007D2B91 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				EC5093312595C043007D2B91 /* RoundedRectCard.swift */,
 				EC509277259482F4007D2B91 /* NavigationBar.swift */,
 				EC509278259482F4007D2B91 /* Instruction.swift */,
 				EC509279259482F4007D2B91 /* ChildSizeReader.swift */,
@@ -435,6 +442,7 @@
 		EC50927C259482F4007D2B91 /* Derivables */ = {
 			isa = PBXGroup;
 			children = (
+				EC50932A2595BD03007D2B91 /* SequenceNumberField.swift */,
 				EC50927D259482F4007D2B91 /* DerivationRecipeBuilders.swift */,
 				EC50927E259482F4007D2B91 /* DerivationRecipeMenu.swift */,
 			);
@@ -821,6 +829,7 @@
 				EC5092C7259482F5007D2B91 /* ValidateBackup.swift in Sources */,
 				EC50928D259482F4007D2B91 /* KeyScanningIllustration.swift in Sources */,
 				EC5092CF259482F5007D2B91 /* DiceKeyCopyInProgress.swift in Sources */,
+				EC5093322595C043007D2B91 /* RoundedRectCard.swift in Sources */,
 				EC5092A7259482F5007D2B91 /* DiceKeyStorageOptions.swift in Sources */,
 				EC5092AB259482F5007D2B91 /* DiceKeyWithDerivedValue.swift in Sources */,
 				EC5092BD259482F5007D2B91 /* StickerSheetForFace.swift in Sources */,
@@ -837,6 +846,7 @@
 				EC50929F259482F4007D2B91 /* DiceKeysCameraView.swift in Sources */,
 				EC5092C9259482F5007D2B91 /* BackupDiceKey.swift in Sources */,
 				EC50928F259482F4007D2B91 /* Funnel.swift in Sources */,
+				EC50932B2595BD03007D2B91 /* SequenceNumberField.swift in Sources */,
 				EC50920B25948124007D2B91 /* Face.swift in Sources */,
 				EC5092A5259482F5007D2B91 /* SeedHardwareSecurityKey.swift in Sources */,
 				EC509299259482F4007D2B91 /* CameraController.swift in Sources */,
@@ -867,6 +877,7 @@
 				EC5092B6259482F5007D2B91 /* StepFooter.swift in Sources */,
 				EC509296259482F4007D2B91 /* DieView.swift in Sources */,
 				EC5092302594818F007D2B91 /* UIWindow+Orientation.swift in Sources */,
+				EC50932C2595BD03007D2B91 /* SequenceNumberField.swift in Sources */,
 				EC50921025948124007D2B91 /* DiceKey.swift in Sources */,
 				EC5092B8259482F5007D2B91 /* RoundedTextButton.swift in Sources */,
 				EC5092BC259482F5007D2B91 /* DerivationRecipeMenu.swift in Sources */,
@@ -903,6 +914,7 @@
 				EC5091F2259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */,
 				EC5092C4259482F5007D2B91 /* StickerTargetSheet.swift in Sources */,
 				EC509294259482F4007D2B91 /* DiceKeyView.swift in Sources */,
+				EC5093332595C043007D2B91 /* RoundedRectCard.swift in Sources */,
 				EC5092A4259482F4007D2B91 /* AppMainView.swift in Sources */,
 				EC5092CE259482F5007D2B91 /* TransferDie.swift in Sources */,
 				EC50920A25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift in Sources */,

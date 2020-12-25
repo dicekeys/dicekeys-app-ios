@@ -58,7 +58,6 @@ class KnownDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, Ide
 
     init(_ forKeyId: String) {
         self.keyId = forKeyId
-//        self._nickname = UserDefault(DiceKeyState.fieldKey(.nickname, keyId), "")
         self._centerFaceInHumanReadableForm = UserDefault(UnlockedDiceKeyState.fieldKey(.centerFace, keyId), "?")
         super.init()
     }
@@ -97,9 +96,11 @@ final class UnlockedDiceKeyState: KnownDiceKeyState {
                         self.protectedCacheOfIsDiceKeyStored = true
                     }
                 }
+                GlobalState.instance.addKnownDiceKey(keyId: diceKey.id)
             } else {
                 _  = EncryptedDiceKeyFileAccessor.instance.delete(keyId: keyId)
                 self.protectedCacheOfIsDiceKeyStored = false
+                GlobalState.instance.removeKnownDiceKey(keyId: diceKey.id)
             }
             self.objectWillChange.send()
         }
@@ -112,12 +113,6 @@ final class UnlockedDiceKeyState: KnownDiceKeyState {
     private init(_ forDiceKey: DiceKey) {
         self.diceKey = forDiceKey
         super.init(forDiceKey.id)
-        // Force default nickname to be written to stable store
-        // self.nickname = "\(nickname)"
-        if centerFaceInHumanReadableForm == "?" {
-            // Set the default value for this field if no value has ever been set
-            self.isCenterFaceStored = true
-        }
     }
 
     private static var known: [String: UnlockedDiceKeyState] = [:]
