@@ -13,7 +13,7 @@ struct AppMainView: View {
 
     var knownDiceKeysState: [KnownDiceKeyState] {
         GlobalState.instance.knownDiceKeys.map { KnownDiceKeyState($0) }.filter {
-            $0.isDiceKeyStored
+            $0.isDiceKeySaved
         }
     }
 

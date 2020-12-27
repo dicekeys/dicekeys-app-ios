@@ -59,7 +59,7 @@ struct SequenceNumberField: View {
             SequenceNumberView(sequenceNumber: $sequenceNumber)
             Spacer(minLength: 30)
             Text("If you need multiple passwords for a single website or service, change the sequence number to create additional passwords.")
-                .foregroundColor(.gray)
+                .foregroundColor(Color.formInstructions)
                 .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
                 .minimumScaleFactor(0.01)

@@ -90,7 +90,7 @@ struct DiceKeyWithDerivedValue: View {
                             Button(action: {
                                 if recipeCanBeDeleted {
                                     globalState.removeRecipe(derivationRecipe)
-                                } else if (recipeCanBeSaved) {
+                                } else if recipeCanBeSaved {
                                     globalState.saveRecipe(derivationRecipe)
                                 }
                             }, label: { Text(recipeCanBeDeleted ? "Remove recipe from menu" : "Save recipe in the menu")

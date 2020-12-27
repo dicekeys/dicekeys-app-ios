@@ -39,7 +39,7 @@ enum DiceKeyPresentPageContent: Equatable {
     case Backup
     case SeedHardwareKey
     case Derive(DerivationRecipeBuilderType)
-    case Store
+    case Save
     case Default
 }
 
@@ -141,7 +141,7 @@ struct DiceKeyPresent: View {
     @State private var navBarHeight: CGFloat = 0
 
     var storageButton: some View {
-        Button(action: { navigate(to: .Store) }) {
+        Button(action: { navigate(to: .Save) }) {
             VStack(alignment: .center, spacing: 0) {
                 ZStack(alignment: .center, content: {
                     Image("Phonelet")
@@ -149,7 +149,7 @@ struct DiceKeyPresent: View {
                         .renderingMode(.template)
                         .foregroundColor(Color.DiceKeysNavigationForeground)
                         .aspectRatio(contentMode: .fit)
-                    if diceKeyState.isDiceKeyStored {
+                    if diceKeyState.isDiceKeySaved {
                         Image("DiceKey Icon")
                             .renderingMode(.template)
                             .resizable()
@@ -159,9 +159,9 @@ struct DiceKeyPresent: View {
                             .scaleEffect(2/3)
                     }
                 }).aspectRatio(contentMode: .fit)
-                Text(diceKeyState.isDiceKeyStored ? "Stored" : "Store")
+                Text(diceKeyState.isDiceKeySaved ? "Saved" : "Save")
             }.frame(maxHeight: navBarHeight)
-            .if( pageContent == .Store ) { $0.colorInvert() }
+            .if( pageContent == .Save ) { $0.colorInvert() }
         }
     }
 
@@ -180,7 +180,7 @@ struct DiceKeyPresent: View {
             VStack {
                 Spacer()
                 switch self.pageContent {
-                case .Store: DiceKeyStorageOptions(diceKey: diceKey, done: { self.pageContent = .Default }).padding(.horizontal, defaultContentPadding)
+                case .Save: DiceKeyStorageOptions(diceKey: diceKey, done: { self.pageContent = .Default }).padding(.horizontal, defaultContentPadding)
                 case .Derive(let derivationRecipeBuilder): DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)
                 case .Backup: BackupDiceKey(onComplete: { navigate(to: .Default) }, diceKey: $diceKey, backupDiceKeyState: backupDiceKeyState)
                 case .SeedHardwareKey: SeedHardwareSecurityKey().padding(.horizontal, defaultContentPadding)
@@ -202,7 +202,7 @@ struct DiceKeyPresent: View {
                 }) {
                     VStack {
                         Image(systemName: "lock")
-                        Text(diceKeyState.isDiceKeyStored ? "Lock" : "Forget")
+                        Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget")
                     }
                 }
             }

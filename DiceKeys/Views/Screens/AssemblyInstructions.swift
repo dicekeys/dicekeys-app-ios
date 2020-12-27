@@ -272,6 +272,7 @@ struct AssemblyInstructions_Previews: PreviewProvider {
     static var previews: some View {
         AppMainView()
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+            .environment(\.colorScheme, .dark)
 
 //        CreateBackup(diceKey: DiceKey.createFromRandom())
 //            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))

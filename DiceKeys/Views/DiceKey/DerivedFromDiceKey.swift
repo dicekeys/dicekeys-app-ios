@@ -72,7 +72,7 @@ struct DerivedFromDiceKey<Content: View>: View {
                     .frame(height: diceKeySize - verticalOverlap, alignment: .top).clipped()
                     ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
                         Funnel(topWidth: diceKeySize, bottomWidth: bottomWidth, bottleneckWidth: bottleneckWidth, paddingBottom: contentHeight, bottleneckFractionFromTop: bottleneckFractionFromTop)
-                            .fill(LinearGradient(gradient: Gradient(colors: [Color.diceBox, .white]), startPoint: .top, endPoint: .bottom))
+                            .fill(LinearGradient(gradient: Gradient(colors: [Color.diceBox, Color.funnelBackground]), startPoint: .top, endPoint: .bottom))
                             .frame(width: width, height: totalFunnelHeight, alignment: .center)
                         Funnel(topWidth: diceKeySize, bottomWidth: bottomWidth, bottleneckWidth: bottleneckWidth, paddingBottom: contentHeight, bottleneckFractionFromTop: bottleneckFractionFromTop)
                             .stroke(lineWidth: 1)
@@ -116,7 +116,8 @@ struct DerivedFromDiceKey_Previews: PreviewProvider {
         .clipped()
         .background(Color.yellow)
         .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-
+        .environment(\.colorScheme, .dark)
+        
         VStack {
             Spacer()
             DerivedFromDiceKey(diceKey: DiceKey.createFromRandom()) {
@@ -124,7 +125,8 @@ struct DerivedFromDiceKey_Previews: PreviewProvider {
             }.background(Color.green)
             Spacer()
         }.frame(maxHeight: 200).clipped().background(Color.yellow).previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-
+        .environment(\.colorScheme, .dark)
+        
         VStack {
             DerivedFromDiceKey(diceKey: DiceKey.createFromRandom()) {
                 Text("some random words constitute your password and some more random words to be copied").multilineTextAlignment(.center).padding(.horizontal, 5)
