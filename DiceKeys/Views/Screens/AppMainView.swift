@@ -10,6 +10,7 @@ import SwiftUI
 struct AppMainView: View {
     @State var diceKey: DiceKey?
     @ObservedObject var globalState = GlobalState.instance
+    @State var showAssembleInstructions = false
 
     var knownDiceKeysState: [KnownDiceKeyState] {
         GlobalState.instance.knownDiceKeys.map { KnownDiceKeyState($0) }.filter {
@@ -79,8 +80,8 @@ struct AppMainView: View {
     let screenShorterSide = UIScreen.main.bounds.size.shorterSide
     let screenHeight = UIScreen.main.bounds.size.height
     #else
-    let screenShorterSide:CGFloat = 600// NSApplication.shared.windows[0].frame.height
-    let screenHeight:CGFloat = 600 // NSApplication.shared.windows[0].frame.height
+    let screenShorterSide:CGFloat = NSScreen.main!.frame.height / 5.0// NSApplication.shared.windows[0].frame.height
+    let screenHeight:CGFloat = NSScreen.main!.frame.height / 5.0 // NSApplication.shared.windows[0].frame.height
     #endif
 
     var body: some View {
@@ -132,6 +133,7 @@ struct AppMainView: View {
             NavigationLink(
                 destination: AssemblyInstructions(onSuccess: { self.diceKey = $0 })) {
                 VStack {
+                    #if os(iOS)
                     HStack {
                         Spacer()
                         Image("Illustration of shaking bag").resizable().aspectRatio(contentMode: .fit)
@@ -141,6 +143,7 @@ struct AppMainView: View {
                         Image("Seal Box").resizable().aspectRatio(contentMode: .fit)
                         Spacer(minLength: 20)
                     }.padding(.horizontal, 20).frame(maxHeight: screenShorterSide / 4)
+                    #endif
                     Text("Assemble your First DiceKey").font(.title2)
                 }
             }
@@ -150,14 +153,14 @@ struct AppMainView: View {
             hiddenNavigationLinkToScanDiceKey
         })
         #if os(iOS)
-        vstack.navigationBarTitle("").navigationBarHidden(true)
-        #endif
+        let view = NavigationView {
+            vstack.navigationBarTitle("").navigationBarHidden(true)
+        }.navigationViewStyle(StackNavigationViewStyle())
+        #else
         let view = NavigationView {
             vstack
         }
-#if os(iOS)
-        view.navigationViewStyle(StackNavigationViewStyle())
-#endif
+        #endif
         return view
     }
 }
@@ -168,7 +171,7 @@ struct AppMainView_Previews: PreviewProvider {
         AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
 //        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
         #else
-        AppMainView()
+        AppMainView().frame(width: 720, height: 600)
         #endif
     }
 }

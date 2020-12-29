@@ -37,8 +37,9 @@ struct ScanDiceKey: View {
                     Spacer()
                         GeometryReader { reader in
                             ZStack {
-                                #if os(iOS)
+                                
                                 DiceKeysCameraView(onFrameProcessed: onFrameProcessed, size: reader.size)
+                                #if os(iOS)
                                 FacesReadOverlay(
                                     renderedSize: reader.size,
                                     imageFrameSize: processedImageFrameSize ?? reader.size,
@@ -60,6 +61,10 @@ struct ScanDiceKey: View {
 
 struct ScanDiceKey_Previews: PreviewProvider {
     static var previews: some View {
+        #if os(iOS)
         ScanDiceKey().previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+        #else
+        ScanDiceKey()
+        #endif
     }
 }

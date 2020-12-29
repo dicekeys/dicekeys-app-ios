@@ -57,7 +57,11 @@ struct DiceKeyStorageOptions_Previews: PreviewProvider {
     @StateObject static var diceKeyState = UnlockedDiceKeyState.forDiceKey(diceKey)
 
     static var previews: some View {
+        #if os(iOS)
+//        DiceKeyStorageOptions(diceKey: diceKey)
+//            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+        #else
         DiceKeyStorageOptions(diceKey: diceKey)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+        #endif
     }
 }

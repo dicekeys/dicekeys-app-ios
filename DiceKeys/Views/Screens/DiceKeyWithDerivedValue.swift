@@ -131,7 +131,6 @@ struct DiceKeyWithDerivedValue: View {
         #if os(iOS)
         view.navigationBarDiceKeyStyle()
         #endif
-        return view
     }
 }
 

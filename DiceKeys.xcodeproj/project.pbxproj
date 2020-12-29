@@ -126,8 +126,12 @@
 		EC50932C2595BD03007D2B91 /* SequenceNumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50932A2595BD03007D2B91 /* SequenceNumberField.swift */; };
 		EC5093322595C043007D2B91 /* RoundedRectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5093312595C043007D2B91 /* RoundedRectCard.swift */; };
 		EC5093332595C043007D2B91 /* RoundedRectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5093312595C043007D2B91 /* RoundedRectCard.swift */; };
+		EC50934C25974065007D2B91 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926A259482F4007D2B91 /* CameraController.swift */; };
 		EC561299258B827300A056B8 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC561298258B827300A056B8 /* Tests_iOS.swift */; };
 		EC5612A4258B827300A056B8 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5612A3258B827300A056B8 /* Tests_macOS.swift */; };
+		ECFC52312599CD21008D0598 /* DiceKeysCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926D259482F4007D2B91 /* DiceKeysCameraView.swift */; };
+		ECFC5237259A194F008D0598 /* PlatformTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC5236259A194F008D0598 /* PlatformTypes.swift */; };
+		ECFC5238259A194F008D0598 /* PlatformTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC5236259A194F008D0598 /* PlatformTypes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -227,6 +231,7 @@
 		EC56129F258B827300A056B8 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC5612A3258B827300A056B8 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		EC5612A5258B827300A056B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ECFC5236259A194F008D0598 /* PlatformTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformTypes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -298,6 +303,7 @@
 			children = (
 				EC5091F825948124007D2B91 /* DiceKey */,
 				EC50920025948124007D2B91 /* Api */,
+				ECFC5236259A194F008D0598 /* PlatformTypes.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -860,6 +866,7 @@
 				EC50920925948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift in Sources */,
 				EC5091ED259480BE007D2B91 /* GlobalState.swift in Sources */,
 				EC50921D25948124007D2B91 /* ApiRequest.swift in Sources */,
+				ECFC5237259A194F008D0598 /* PlatformTypes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -867,6 +874,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC50934C25974065007D2B91 /* CameraController.swift in Sources */,
 				EC5092BA259482F5007D2B91 /* DerivationRecipeBuilders.swift in Sources */,
 				EC5092362594818F007D2B91 /* Size.swift in Sources */,
 				EC50921425948124007D2B91 /* Derivables.swift in Sources */,
@@ -874,6 +882,7 @@
 				EC5092382594818F007D2B91 /* Color.swift in Sources */,
 				EC50921225948124007D2B91 /* FaceSpecification.swift in Sources */,
 				EC50922025948124007D2B91 /* ApiInterfaces.swift in Sources */,
+				ECFC5238259A194F008D0598 /* PlatformTypes.swift in Sources */,
 				EC5092B6259482F5007D2B91 /* StepFooter.swift in Sources */,
 				EC509296259482F4007D2B91 /* DieView.swift in Sources */,
 				EC5092302594818F007D2B91 /* UIWindow+Orientation.swift in Sources */,
@@ -912,6 +921,7 @@
 				EC5092A6259482F5007D2B91 /* SeedHardwareSecurityKey.swift in Sources */,
 				EC5092B4259482F5007D2B91 /* ChildSizeReader.swift in Sources */,
 				EC5091F2259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */,
+				ECFC52312599CD21008D0598 /* DiceKeysCameraView.swift in Sources */,
 				EC5092C4259482F5007D2B91 /* StickerTargetSheet.swift in Sources */,
 				EC509294259482F4007D2B91 /* DiceKeyView.swift in Sources */,
 				EC5093332595C043007D2B91 /* RoundedRectCard.swift in Sources */,
@@ -1073,6 +1083,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 588VZ4M8P3;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1096,6 +1107,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 588VZ4M8P3;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

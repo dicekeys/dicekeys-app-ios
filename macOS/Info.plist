@@ -22,5 +22,11 @@
 	<string>1</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Inconsolata-Bold.otf</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires to access your camera to scan DiceKeys</string>
 </dict>
 </plist>
