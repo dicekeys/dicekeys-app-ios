@@ -117,10 +117,14 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
             self.captureSession = AVCaptureSession()
         }
         func configureCaptureDevices() throws {
-            guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
+//            guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
+//                throw CameraControllerError.noCamerasAvailable
+//            }
+            guard let camera = AVCaptureDevice.default(for: .video) else {
                 throw CameraControllerError.noCamerasAvailable
             }
-
+            
+            
             self.camera = camera
 
             do {

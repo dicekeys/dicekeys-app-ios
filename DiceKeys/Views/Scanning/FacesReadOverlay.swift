@@ -26,15 +26,15 @@ struct AngularCoordinateSystem {
     }
 }
 
-private let letterColorSuccess = UIColor(red: 0, green: 1, blue: 0, alpha: 1)
+private let letterColorSuccess = XXColor(red: 0, green: 1, blue: 0, alpha: 1)
 
 func drawCenteredString(
     cgContext: CGContext,
     string: String,
     targetCenter: CGPoint,
     angleClockwise: Angle,
-    font: UIFont,
-    color: UIColor = UIColor.blue
+    font: XXFont,
+    color: XXColor = XXColor.blue
 ) {
     let attrString = NSAttributedString(string: string, attributes: [
         NSAttributedString.Key.font: font,
@@ -69,12 +69,12 @@ struct FacesReadOverlay: View {
 
     let facesRead: [FaceRead]?
 
-    var renderer: UIGraphicsImageRenderer {
-        UIGraphicsImageRenderer(size: renderedSize)
+    var renderer: XXGraphicsImageRenderer {
+        XXGraphicsImageRenderer(size: renderedSize)
     }
 
     var body: some View {
-        Image(uiImage: renderer.image { context in
+        let image = renderer.image { context in
             let cgContext = context.cgContext
             // Add a red frame rect for debugging bounds
 //            let frameRect = CGRect(x: 0, y: 0, width: renderedSize.width, height: renderedSize.height)
@@ -92,7 +92,11 @@ struct FacesReadOverlay: View {
                 }
                 let faceSizeInPixels = faceSizeInFramePixels * renderedSize.width / imageFrameSize.width
                 let fontSize = faceSizeInPixels * FaceDimensionsFractional.fontSize
+                #if os(iOS)
                 let font = UIFont(name: "Inconsolata-Bold", size: fontSize)!
+                #else
+                let font = NSFont(name: "Inconsolata-Bold", size: fontSize)!
+                #endif
                 let centerLandscape = faceRead.center
                 let angle = angleLandscape + Angle(degrees: 90)
                 let center = CGPoint(
@@ -121,9 +125,16 @@ struct FacesReadOverlay: View {
                                        font: font, color: letterColorSuccess)
                 }
             }
-        })
+        }
+        #if os(iOS)
+        Image(uiImage: image)
         .frame(width: renderedSize.width, height: renderedSize.height)
         .position(x: renderedSize.width / 2, y: renderedSize.height / 2)
+        #else
+        Image(nsImage: image)
+        .frame(width: renderedSize.width, height: renderedSize.height)
+        .position(x: renderedSize.width / 2, y: renderedSize.height / 2)
+        #endif
     }
 
     init(renderedSize: CGSize, imageFrameSize: CGSize, facesRead: [FaceRead]?) {
@@ -138,12 +149,16 @@ let facesReadJson: String = """
 """
 
 struct RotatedTextTest: View {
-    let renderer = UIGraphicsImageRenderer(size: CGSize(width: 700, height: 700))
+    let renderer = XXGraphicsImageRenderer(size: CGSize(width: 700, height: 700))
 
     var body: some View {
-        Image(uiImage: renderer.image { context in
+        let image = renderer.image { context in
             let cgContext = context.cgContext
+            #if os(iOS)
             let font = UIFont(name: "Inconsolata-Bold", size: CGFloat(90))!
+            #else
+            let font = NSFont(name: "Inconsolata-Bold", size: CGFloat(90))!
+            #endif
 
             (0...35).forEach { degreesOver10 in
                 let degrees = Double(degreesOver10 * 10)
@@ -151,7 +166,12 @@ struct RotatedTextTest: View {
                 let textLocation = AngularCoordinateSystem(zeroPoint: CGPoint(x: 350, y: 350), angle: angle, scalingFactor: 1 ).pointAt(offset: CGPoint(x: 0, y: -250))
                 drawCenteredString(cgContext: cgContext, string: "A", targetCenter: textLocation, angleClockwise: angle, font: font)
             }
-        })
+        }
+        #if os(iOS)
+        Image(uiImage: image)
+        #else
+        Image(nsImage: image)
+        #endif
     }
 }
 

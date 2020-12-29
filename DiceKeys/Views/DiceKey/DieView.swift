@@ -96,9 +96,7 @@ struct DieFaceUprightView: View {
     }
     #else
     var uiFont: NSFont {
-        NSFont.systemFont(ofSize: fontSize, weight: .bold)
-        // FIXME: use Inconsolate Bold font
-        //NSFont(name: "Inconsolata-Bold", size: fontSize)!
+        NSFont(name: "Inconsolata-Bold", size: fontSize)!
     }
     #endif
     var halfTextRegionWidth: CGFloat {

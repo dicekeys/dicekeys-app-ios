@@ -132,6 +132,7 @@
 		ECFC52312599CD21008D0598 /* DiceKeysCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926D259482F4007D2B91 /* DiceKeysCameraView.swift */; };
 		ECFC5237259A194F008D0598 /* PlatformTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC5236259A194F008D0598 /* PlatformTypes.swift */; };
 		ECFC5238259A194F008D0598 /* PlatformTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC5236259A194F008D0598 /* PlatformTypes.swift */; };
+		ECFC5244259AC86A008D0598 /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926B259482F4007D2B91 /* FacesReadOverlay.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -898,6 +899,7 @@
 				EC50921C25948124007D2B91 /* WebBasedApplicationIdentity.swift in Sources */,
 				EC5092CC259482F5007D2B91 /* BackupToDiceKeysKitIntroduction.swift in Sources */,
 				EC50920825948124007D2B91 /* DiceKeyMedium.swift in Sources */,
+				ECFC5244259AC86A008D0598 /* FacesReadOverlay.swift in Sources */,
 				EC50929E259482F4007D2B91 /* ScanDiceKey.swift in Sources */,
 				EC5092C2259482F5007D2B91 /* TransferSticker.swift in Sources */,
 				EC5092C8259482F5007D2B91 /* ValidateBackup.swift in Sources */,
@@ -1134,6 +1136,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = macOS/Info.plist;
@@ -1158,6 +1161,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = macOS/Info.plist;

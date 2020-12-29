@@ -28,5 +28,7 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>This app requires to access your camera to scan DiceKeys</string>
+	<key>ATSApplicationFontsPath</key>
+	<string>.</string>
 </dict>
 </plist>
