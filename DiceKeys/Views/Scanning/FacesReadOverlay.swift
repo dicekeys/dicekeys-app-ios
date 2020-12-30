@@ -158,11 +158,7 @@ struct RotatedTextTest: View {
     var body: some View {
         let image = renderer.image { context in
             let cgContext = context.cgContext
-            #if os(iOS)
-            let font = UIFont(name: "Inconsolata-Bold", size: CGFloat(90))!
-            #else
-            let font = NSFont(name: "Inconsolata-Bold", size: CGFloat(90))!
-            #endif
+            let font = XXFont(name: "Inconsolata-Bold", size: CGFloat(90))!
 
             (0...35).forEach { degreesOver10 in
                 let degrees = Double(degreesOver10 * 10)
