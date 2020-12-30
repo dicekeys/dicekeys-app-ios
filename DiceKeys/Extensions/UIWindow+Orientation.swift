@@ -5,7 +5,6 @@
 //  Created by Nikita Titov on 29.10.2020.
 //
 
-#if os(iOS)
 import UIKit
 
 extension UIWindow {
@@ -17,4 +16,3 @@ extension UIWindow {
         }
     }
 }
-#endif

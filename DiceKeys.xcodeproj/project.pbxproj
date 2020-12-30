@@ -42,7 +42,6 @@
 		EC50921F25948124007D2B91 /* ApiInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920625948124007D2B91 /* ApiInterfaces.swift */; };
 		EC50922025948124007D2B91 /* ApiInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920625948124007D2B91 /* ApiInterfaces.swift */; };
 		EC50922F2594818F007D2B91 /* UIWindow+Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922A2594818F007D2B91 /* UIWindow+Orientation.swift */; };
-		EC5092302594818F007D2B91 /* UIWindow+Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922A2594818F007D2B91 /* UIWindow+Orientation.swift */; };
 		EC5092312594818F007D2B91 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922B2594818F007D2B91 /* View.swift */; };
 		EC5092322594818F007D2B91 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922B2594818F007D2B91 /* View.swift */; };
 		EC5092332594818F007D2B91 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922C2594818F007D2B91 /* Properties.swift */; };
@@ -886,7 +885,6 @@
 				ECFC5238259A194F008D0598 /* PlatformTypes.swift in Sources */,
 				EC5092B6259482F5007D2B91 /* StepFooter.swift in Sources */,
 				EC509296259482F4007D2B91 /* DieView.swift in Sources */,
-				EC5092302594818F007D2B91 /* UIWindow+Orientation.swift in Sources */,
 				EC50932C2595BD03007D2B91 /* SequenceNumberField.swift in Sources */,
 				EC50921025948124007D2B91 /* DiceKey.swift in Sources */,
 				EC5092B8259482F5007D2B91 /* RoundedTextButton.swift in Sources */,

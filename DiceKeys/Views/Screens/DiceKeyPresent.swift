@@ -57,7 +57,7 @@ struct DiceKeyPresentNavigationFooter: View {
     }
 
     var body: some View {
-        let view = VStack {
+        var view = VStack {
         ZStack {
             HStack(alignment: .top) {
                 Spacer()
@@ -113,7 +113,7 @@ struct DiceKeyPresentNavigationFooter: View {
         .padding(.top, 5)
         }
         #if os(iOS)
-        view.background(Color(UIColor.systemFill))
+        view = view.background(Color(UIColor.systemFill))
         #endif
 //        .background(
 //            NavigationLink(destination: DiceKeyWithDerivedValue(diceKey: diceKey, menuOptionChosen: derivationRecipeMenuOptionChosen), isActive: $shouldNavigateToDiceKeyWithDerivedValue, label: { EmptyView() })
