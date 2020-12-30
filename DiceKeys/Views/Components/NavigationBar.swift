@@ -49,7 +49,7 @@ struct NavigationBarModifierDiceKeysStyle: ViewModifier {
                         .frame(height: geometry.safeAreaInsets.top)
                         .edgesIgnoringSafeArea(.top)
                     } else {
-                        Color(.alexandrasBlue)
+                        Color.alexandrasBlue
                         .frame(height: geometry.safeAreaInsets.top)
                         .edgesIgnoringSafeArea(.top)
                     }

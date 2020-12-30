@@ -63,6 +63,7 @@ private let digitOffset = CGPoint(
     y: 0
 )
 
+
 struct FacesReadOverlay: View {
     let renderedSize: CGSize
     let imageFrameSize: CGSize
@@ -74,67 +75,70 @@ struct FacesReadOverlay: View {
     }
 
     var body: some View {
-        let image = renderer.image { context in
-            let cgContext = context.cgContext
-            // Add a red frame rect for debugging bounds
-//            let frameRect = CGRect(x: 0, y: 0, width: renderedSize.width, height: renderedSize.height)
-//            cgContext.addRect(frameRect)
-//            cgContext.setStrokeColor(CGColor(red: 1, green: 0, blue: 0, alpha: 1))
-//            cgContext.strokePath()
-            guard let facesRead = self.facesRead else { return }
+        if let facesRead = facesRead {
+            let image = renderer.image { context in
+                let cgContext = context.cgContext
+                // Add a red frame rect for debugging bounds
+        //            let frameRect = CGRect(x: 0, y: 0, width: renderedSize.width, height: renderedSize.height)
+        //            cgContext.addRect(frameRect)
+        //            cgContext.setStrokeColor(CGColor(red: 1, green: 0, blue: 0, alpha: 1))
+        //            cgContext.strokePath()
+        //            guard let facesRead = self.facesRead else { return }
 
-            for faceRead in facesRead {
-                guard let faceSizeInFramePixels = faceRead.length else {
-                    continue
-                }
-                guard let angleLandscape = faceRead.angle else {
-                    continue
-                }
-                let faceSizeInPixels = faceSizeInFramePixels * renderedSize.width / imageFrameSize.width
-                let fontSize = faceSizeInPixels * FaceDimensionsFractional.fontSize
-                #if os(iOS)
-                let font = UIFont(name: "Inconsolata-Bold", size: fontSize)!
-                #else
-                let font = NSFont(name: "Inconsolata-Bold", size: fontSize)!
-                #endif
-                let centerLandscape = faceRead.center
-                let angle = angleLandscape + Angle(degrees: 90)
-                let center = CGPoint(
-                    x: imageFrameSize.height - centerLandscape.y,
-                    y: centerLandscape.x
-                )
+                for faceRead in facesRead {
+                    guard let faceSizeInFramePixels = faceRead.length else {
+                        continue
+                    }
+                    guard let angleLandscape = faceRead.angle else {
+                        continue
+                    }
+                    let faceSizeInPixels = faceSizeInFramePixels * renderedSize.width / imageFrameSize.width
+                    let fontSize = faceSizeInPixels * FaceDimensionsFractional.fontSize
+                    let font = XXFont(name: "Inconsolata-Bold", size: fontSize)!
+                    let centerLandscape = faceRead.center
+                    let angle = angleLandscape + Angle(degrees: 90)
+                    let center = CGPoint(
+                        x: imageFrameSize.height - centerLandscape.y,
+                        y: centerLandscape.x
+                    )
 
-                let coordinateSystemFromCenterOfDie = AngularCoordinateSystem(
-                    zeroPoint: CGPoint(
-                        x: center.x * renderedSize.width / imageFrameSize.width,
-                        y: center.y * renderedSize.height / imageFrameSize.height
-                    ),
-                    angle: angle,
-                    scalingFactor: faceSizeInPixels)
+                    let coordinateSystemFromCenterOfDie = AngularCoordinateSystem(
+                        zeroPoint: CGPoint(
+                            x: center.x * renderedSize.width / imageFrameSize.width,
+                            y: center.y * renderedSize.height / imageFrameSize.height
+                        ),
+                        angle: angle,
+                        scalingFactor: faceSizeInPixels)
 
-                if let letter = faceRead.letter {
-                    let location = coordinateSystemFromCenterOfDie.pointAt(offset: letterOffset)
-                    drawCenteredString(cgContext: cgContext, string: letter.rawValue, targetCenter: location,
-                                       angleClockwise: angle,
-                                       font: font, color: letterColorSuccess)
-                }
-                if let digit = faceRead.digit {
-                    let location = coordinateSystemFromCenterOfDie.pointAt(offset: digitOffset)
-                    drawCenteredString(cgContext: cgContext, string: digit.rawValue, targetCenter: location,
-                                       angleClockwise: angle,
-                                       font: font, color: letterColorSuccess)
+                    if let letter = faceRead.letter {
+                        let location = coordinateSystemFromCenterOfDie.pointAt(offset: letterOffset)
+                        drawCenteredString(cgContext: cgContext, string: letter.rawValue, targetCenter: location,
+                                           angleClockwise: angle,
+                                           font: font, color: letterColorSuccess)
+                    }
+                    if let digit = faceRead.digit {
+                        let location = coordinateSystemFromCenterOfDie.pointAt(offset: digitOffset)
+                        drawCenteredString(cgContext: cgContext, string: digit.rawValue, targetCenter: location,
+                                           angleClockwise: angle,
+                                           font: font, color: letterColorSuccess)
+                    }
                 }
             }
+            #if os(iOS)
+            Image(uiImage: image)
+            .frame(width: renderedSize.width, height: renderedSize.height)
+            .position(x: renderedSize.width / 2, y: renderedSize.height / 2)
+            #else
+            Image(nsImage: image)
+            .frame(width: renderedSize.width, height: renderedSize.height)
+            .position(x: renderedSize.width / 2, y: renderedSize.height / 2)
+            #endif
+        } else {
+            Image("Scanning Overlay")
+                .resizable()
+                .foregroundColor(Color(red: 0, green: 0, blue: 0, opacity: 0.75))
+                .frame(width: renderedSize.width, height: renderedSize.height)
         }
-        #if os(iOS)
-        Image(uiImage: image)
-        .frame(width: renderedSize.width, height: renderedSize.height)
-        .position(x: renderedSize.width / 2, y: renderedSize.height / 2)
-        #else
-        Image(nsImage: image)
-        .frame(width: renderedSize.width, height: renderedSize.height)
-        .position(x: renderedSize.width / 2, y: renderedSize.height / 2)
-        #endif
     }
 
     init(renderedSize: CGSize, imageFrameSize: CGSize, facesRead: [FaceRead]?) {

@@ -180,7 +180,7 @@ class ApiRequestGenerateSignature: ApiRequestWithExplicitDerivationOptions, ApiR
 
     func execute(seedString: String) throws -> SuccessResponse {
         let signingKey = try SigningKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson ?? "")
-        let signature = try signingKey.generateSignature(withMessage: "FIXME") // self.message) // FIXME
+        let signature = try signingKey.generateSignature(with: message)
         return SuccessResponse.generateSignature(signature: base64urlEncode(signature), signatureVerificationKeyJson: signingKey.signatureVerificationKey.toJson())
     }
 }

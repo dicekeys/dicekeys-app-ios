@@ -186,13 +186,14 @@ struct DerivationRecipeBuilders_Previews: PreviewProvider {
         }
         .navigationBarDiceKeyStyle()
         .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+        .environment(\.colorScheme, .dark)
 
-        
         NavigationView {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
         }
         .navigationBarDiceKeyStyle()
         .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+        .environment(\.colorScheme, .dark)
 
         NavigationView {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
@@ -200,12 +201,11 @@ struct DerivationRecipeBuilders_Previews: PreviewProvider {
         .navigationViewStyle(StackNavigationViewStyle())
         .navigationBarDiceKeyStyle()
         .previewDevice(PreviewDevice(rawValue: "iPad Air (4th generation)"))
+        .environment(\.colorScheme, .dark)
         #else
-        
         NavigationView {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .customFromUrl(.Password))
         }
-        
         #endif
     }
 }
