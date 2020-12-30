@@ -35,38 +35,17 @@ extension Color {
     }
 
     static var highlighter: Color { Color("highlighter") }
-//    static let highlighter: Color = Color(CGColor(red: 1, green: 1, blue: 0, alpha: 0.5))
-//    static let alexandrasBlue: Color = Color(hex: "5576C5")
     static var alexandrasBlue: Color { Color("alexandrasBlue") }
-//    static let alexandrasBlueLighter: Color = Color(hex: "607BCA")
     static var alexandrasBlueLighter: Color { Color("alexandrasBlueLighter") }
     static var DiceKeysNavigationForeground: Color { Color("navigationBarForeground") }
     static var warningBackground: Color { Color("warningBackground") }
-
-//    static let warningBackground = Color(hex: "E0585B")
-//    static var diceBox = Color(hex: "050350")
     static var diceBox: Color { Color("diceBox") }
-//    static var diceBoxDieSlot = Color(hex: "040240")
     static var diceBoxDieSlot: Color { Color("diceBoxDieSlot") }
-
-//    static var formHeadingBackground = Color(hex: "080808")
-//    static var formHeadingForeground = Color(hex: "FFFFFF")
-//    static var formContentBackground = Color(hex: "F8F8F8")
     static var formHeadingBackground: Color { Color("formHeadingBackground") }
     static var formHeadingForeground: Color { Color("formHeadingForeground") }
     static var formContentBackground: Color { Color("formContentBackground") }
     static var formInstructions: Color { Color("formInstructions") }
-
-    
     static var funnelBackground: Color { Color("funnelBackground") }
-//    static let funnelBackground: Color = {
-//        let rgba1 = Color.alexandrasBlue.cgColor!.components!
-//        let rgba2 = UIColor.systemBackground.cgColor.components!
-//        let red: Double = Double(rgba1[0] + rgba2[0]) / 2
-//        let green: Double = Double(rgba1[1] + rgba2[1]) / 2
-//        let blue: Double = Double(rgba1[2] + rgba2[2]) / 2
-//        return Color(RGBColorSpace.sRGB, red: red, green: green, blue: blue, opacity: 1.0)
-//    }()
 }
 
 extension UIColor {
