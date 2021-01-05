@@ -203,7 +203,7 @@ struct AssemblyInstructions: View {
     } }
 
     var body: some View {
-        var reader = GeometryReader { geometry in
+        let reader = GeometryReader { geometry in
             VStack {
                 Spacer()
                 VStack(alignment: .center) {
@@ -264,9 +264,10 @@ struct AssemblyInstructions: View {
                 }
             }
 #if os(iOS)
-        reader = reader.navigationBarTitleDisplayMode(.inline).navigationBarDiceKeyStyle()
-#endif
+        return reader.navigationBarTitleDisplayMode(.inline).navigationBarDiceKeyStyle()
+#else
         return reader
+#endif
     }
 }
 

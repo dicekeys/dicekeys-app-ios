@@ -57,7 +57,7 @@ struct DiceKeyPresentNavigationFooter: View {
     }
 
     var body: some View {
-        var view = VStack {
+        let view = VStack {
         ZStack {
             HStack(alignment: .top) {
                 Spacer()
@@ -113,13 +113,14 @@ struct DiceKeyPresentNavigationFooter: View {
         .padding(.top, 5)
         }
         #if os(iOS)
-        view = view.background(Color(UIColor.systemFill))
-        #endif
+        return view.background(Color(UIColor.systemFill))
 //        .background(
 //            NavigationLink(destination: DiceKeyWithDerivedValue(diceKey: diceKey, menuOptionChosen: derivationRecipeMenuOptionChosen), isActive: $shouldNavigateToDiceKeyWithDerivedValue, label: { EmptyView() })
 //                .position(x: 0, y: 0).frame(width: 0, height: 0).hidden()
 //        )
+        #else
         return view
+        #endif
     }
 }
 
@@ -181,7 +182,7 @@ struct DiceKeyPresent: View {
     let defaultContentPadding: CGFloat = 15
 
     var body: some View {
-        var reader = GeometryReader { geometry in
+        let reader = GeometryReader { geometry in
             VStack {
                 Spacer()
                 switch self.pageContent {
@@ -196,7 +197,7 @@ struct DiceKeyPresent: View {
             }.ignoresSafeArea(.all, edges: .bottom)
         }
         #if os(iOS)
-        reader = reader.navigationViewStyle(StackNavigationViewStyle())
+        return reader.navigationViewStyle(StackNavigationViewStyle())
             .navigationTitle(diceKeyState.nickname)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarDiceKeyStyle()
@@ -211,16 +212,17 @@ struct DiceKeyPresent: View {
                             Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget")
                         }
                     }
-                    ToolbarItem(placement: .primaryAction) {
-                        storageButton
-                    }
                 }
-                .background(
-                    NavBarAccessor { navBar in self.navBarHeight = navBar.bounds.height }
-                )
+                ToolbarItem(placement: .primaryAction) {
+                    storageButton
+                }
             }
-        #endif
+            .background(
+                NavBarAccessor { navBar in self.navBarHeight = navBar.bounds.height }
+            )
+        #else
         return reader
+        #endif
     }
 }
 
