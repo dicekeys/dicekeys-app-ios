@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0FF7F731929DF324410FCCEA /* Pods_DiceKeys__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25A6B06AB3C071EB2999AE67 /* Pods_DiceKeys__iOS_.framework */; };
+		17B6C5A125A43AAB007798F3 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5A025A43AAB007798F3 /* Seed.swift */; };
 		ACF9E6A9B1E79E881EEE4C09 /* Pods_DiceKeys__macOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19FCCD61505F4C2ED9F6ED0B /* Pods_DiceKeys__macOS_.framework */; };
 		EC5091ED259480BE007D2B91 /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EA259480BE007D2B91 /* GlobalState.swift */; };
 		EC5091EE259480BE007D2B91 /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EA259480BE007D2B91 /* GlobalState.swift */; };
@@ -153,6 +154,7 @@
 
 /* Begin PBXFileReference section */
 		14C38080E39571B13473B619 /* Pods-DiceKeys (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (iOS).release.xcconfig"; path = "Target Support Files/Pods-DiceKeys (iOS)/Pods-DiceKeys (iOS).release.xcconfig"; sourceTree = "<group>"; };
+		17B6C5A025A43AAB007798F3 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
 		19FCCD61505F4C2ED9F6ED0B /* Pods_DiceKeys__macOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys__macOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25A6B06AB3C071EB2999AE67 /* Pods_DiceKeys__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A12F40698764C98F698C6350 /* Pods-DiceKeys (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (macOS).release.xcconfig"; path = "Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS).release.xcconfig"; sourceTree = "<group>"; };
@@ -268,6 +270,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		17B6C59F25A43A86007798F3 /* SeedSecurityKey */ = {
+			isa = PBXGroup;
+			children = (
+				17B6C5A025A43AAB007798F3 /* Seed.swift */,
+			);
+			path = SeedSecurityKey;
+			sourceTree = "<group>";
+		};
 		8BCE0DBCE05C749853CDC99E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -301,6 +311,7 @@
 		EC5091F725948124007D2B91 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				17B6C59F25A43A86007798F3 /* SeedSecurityKey */,
 				EC5091F825948124007D2B91 /* DiceKey */,
 				EC50920025948124007D2B91 /* Api */,
 				ECFC5236259A194F008D0598 /* PlatformTypes.swift */,
@@ -846,6 +857,7 @@
 				EC5092B1259482F5007D2B91 /* Instruction.swift in Sources */,
 				EC509297259482F4007D2B91 /* DerivedFromDiceKey.swift in Sources */,
 				EC5092312594818F007D2B91 /* View.swift in Sources */,
+				17B6C5A125A43AAB007798F3 /* Seed.swift in Sources */,
 				EC5092AD259482F5007D2B91 /* AssemblyInstructions.swift in Sources */,
 				EC50921525948124007D2B91 /* DerivationOptions.swift in Sources */,
 				EC50921725948124007D2B91 /* UnsealingInstructions.swift in Sources */,
