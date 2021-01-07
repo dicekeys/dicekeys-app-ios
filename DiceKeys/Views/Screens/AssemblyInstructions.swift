@@ -120,7 +120,13 @@ private struct ScanFirstTime: View {
             DiceKeyView(diceKey: diceKey)
             RoundedTextButton("Scan again") { self.diceKey = nil; self.scanning = true }
         } else if scanning {
+            #if os(iOS)
             ScanDiceKey { self.diceKey = $0; self.scanning = false }
+            #else
+            GeometryReader { reader in
+                ScanDiceKey { self.diceKey = $0; self.scanning = false }
+            }
+            #endif
             Spacer()
             RoundedTextButton("Cancel") { self.scanning = false }
         } else {

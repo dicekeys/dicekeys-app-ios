@@ -6,8 +6,15 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct ScanDiceKey: View {
+    #if os(iOS)
+    @State var cameraAuthorized: Bool = true
+    #else
+    @State var cameraAuthorized: Bool = false
+    #endif
+    
     var stickers: Bool = false
     let onDiceKeyRead: ((_ diceKey: DiceKey) -> Void)?
 
@@ -31,25 +38,49 @@ struct ScanDiceKey: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            Text("Place the DiceKey so that the \(stickers ? "stickers" : "dice") fill the camera view. Then hold steady.").font(.title2)
-            VStack(alignment: .center, spacing: 0) {
-                HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
-                    Spacer()
-                        GeometryReader { reader in
-                            ZStack {
-                                
-                                DiceKeysCameraView(onFrameProcessed: onFrameProcessed, size: reader.size)
-                                FacesReadOverlay(
-                                    renderedSize: reader.size,
-                                    imageFrameSize: processedImageFrameSize ?? reader.size,
-                                    facesRead: self.facesRead
-                                )
-                            }
-                        }.aspectRatio(1, contentMode: .fit)
-                    Spacer()
-                }
-                Text("\(frameCount) frames processed").font(.footnote).foregroundColor(.white).padding(.top, 3)
-            }.background(Color.black).padding(.vertical, 5)
+            if cameraAuthorized {
+                Text("Place the DiceKey so that the \(stickers ? "stickers" : "dice") fill the camera view. Then hold steady.").font(.title2)
+                VStack(alignment: .center, spacing: 0) {
+                    HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
+                        Spacer()
+                            GeometryReader { reader in
+                                ZStack {
+                                    
+                                    DiceKeysCameraView(onFrameProcessed: onFrameProcessed, size: reader.size)
+                                    FacesReadOverlay(
+                                        renderedSize: reader.size,
+                                        imageFrameSize: processedImageFrameSize ?? reader.size,
+                                        facesRead: self.facesRead
+                                    )
+                                }
+                            }.aspectRatio(1, contentMode: .fit)
+                        Spacer()
+                    }
+                    Text("\(frameCount) frames processed").font(.footnote).foregroundColor(.white).padding(.top, 3)
+                }.background(Color.black).padding(.vertical, 5)
+            } else {
+                Text("Allow camera access, please")
+            }
+        }.onAppear {
+            #if os(macOS)
+            switch AVCaptureDevice.authorizationStatus(for: .video) {
+                case .authorized: // The user has previously granted access to the camera.
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        cameraAuthorized = true
+                    }
+                case .notDetermined: // The user has not yet been asked for camera access.
+                    AVCaptureDevice.requestAccess(for: .video) { granted in
+                        if granted {
+                            cameraAuthorized = true                  }
+                    }
+                
+                case .denied: // The user has previously denied access.
+                    return
+
+                case .restricted: // The user can't grant access due to restrictions.
+                    return
+            }
+            #endif
         }
     }
 }

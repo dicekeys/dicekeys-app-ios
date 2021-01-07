@@ -119,28 +119,7 @@ final class DiceKeysCameraUIViewController: XXViewController {
         previewView.contentMode = UIView.ContentMode.scaleAspectFill
         #endif
         view.addSubview(previewView)
-        
-        #if os(iOS)
         cameraControllerPrepare()
-        #else
-        // FIXME: issue noCamerasAvailable on macOS
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-            case .authorized: // The user has previously granted access to the camera.
-                self.cameraControllerPrepare()
-            
-            case .notDetermined: // The user has not yet been asked for camera access.
-                AVCaptureDevice.requestAccess(for: .video) { granted in
-                    if granted {
-                        self.cameraControllerPrepare()                   }
-                }
-            
-            case .denied: // The user has previously denied access.
-                return
-
-            case .restricted: // The user can't grant access due to restrictions.
-                return
-        }
-        #endif
     }
     
     func cameraControllerPrepare() {
