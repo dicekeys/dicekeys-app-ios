@@ -16,6 +16,9 @@ import Combine
 
 private let hidPacketLengthInBytes: Int = 64
 
+/**
+    CTAP Command bytes
+ */
 enum CtapCommand: UInt8 {
     case MSG = 0x03
     case INIT = 0x06
@@ -24,9 +27,13 @@ enum CtapCommand: UInt8 {
     case LOADKEYSEED = 0x62
 }
 
+
+/// This class decodes CTAP HID packets received from a security key
 class CtapHidPacketReceived {
     let packet: Data
     
+    /// Construct this class to decode the values in a CTAP HID Packet
+    /// - Parameter packet: the raw HID packet received
     init (_ packet: Data) {
         self.packet = packet
     }
@@ -58,9 +65,12 @@ class CtapHidPacketReceived {
     }
 }
 
+/// A class used to decode the contents of an HID INIT response
 class CtapHidInitResponseMessage {
     let message: Data
     
+    /// Decode an HID INIT response message from the data within the response
+    /// - Parameter message: The data encoded in the packet
     init(_ message: Data) {
         self.message = message
     }
@@ -69,9 +79,6 @@ class CtapHidInitResponseMessage {
     var nonce: Data {
         Data(message.prefix(8))
     }
-//    var nonceBytes: [UInt8] {
-//        Array(nonce)
-//    }
 
     // DATA+8    4-byte channel ID
     var channelCreated: UInt32 {
@@ -93,6 +100,7 @@ class CtapHidInitResponseMessage {
     var capabilitiesFlags: UInt8 { message[16] }
 }
 
+/// Possible errors returned when sending a CTAP HID Request
 enum CtapRequestError: Error {
     case couldNotOpenDevice
     case invalidSeedLength
@@ -100,6 +108,8 @@ enum CtapRequestError: Error {
     case errorReturned(Data)
 }
 
+
+/// A connection to an HID device
 class CtapHidConnection {
     let device: AttachedHidDevice
     static let maxReportSize: Int = 64
@@ -107,6 +117,9 @@ class CtapHidConnection {
     var callbacksForCreateChannelIndexByNonce: [Data: (Result<UInt32, CtapRequestError>) -> Void] = [:]
     var callbacksForLoadKeySeedIndexByChannel: [UInt32: (Result<Void,CtapRequestError>) -> Void] = [:]
     
+    
+    /// Construct a connection to an HID device
+    /// - Parameter device: The device to connect to
     init(_ device: AttachedHidDevice) {
         self.device = device
         
@@ -119,7 +132,9 @@ class CtapHidConnection {
         }
     }
     
-    func onReceiveHidMessage(_ packet: CtapHidPacketReceived) {
+    /// Handle a received HID message packet
+    /// - Parameter packet: The received HID packet to interpret as a CTAP HID packet
+    private func onReceiveHidMessage(_ packet: CtapHidPacketReceived) {
         print("Read from channel \(String(format:"%02X", packet.channel)) with command \(packet.command) and message \([UInt8](packet.message))")
         if (packet.command == CtapCommand.ERROR) {
             if let callback = callbacksForLoadKeySeedIndexByChannel[packet.channel] {
@@ -140,7 +155,7 @@ class CtapHidConnection {
         }
     }
     
-    func receiveHidMessage(_ inResult: IOReturn, inSender: UnsafeMutableRawPointer, type: IOHIDReportType, reportId: UInt32, report: UnsafeMutablePointer<UInt8>, reportLength: CFIndex) {
+    private func receiveHidMessage(_ inResult: IOReturn, inSender: UnsafeMutableRawPointer, type: IOHIDReportType, reportId: UInt32, report: UnsafeMutablePointer<UInt8>, reportLength: CFIndex) {
         onReceiveHidMessage(CtapHidPacketReceived(Data(bytes: report, count: reportLength)))
     }
     private let receiveHidMessageWrapper : IOHIDReportCallback = { inContext, inResult, inSender, type, reportId, report, reportLength in
@@ -172,7 +187,7 @@ class CtapHidConnection {
         print("Sent channel request with nonce \([UInt8](channelCreationNonce))")
     }
 
-    func sendLoadKeySeed(
+    private func sendLoadKeySeed(
         channel: UInt32,
         keySeedAs32Bytes: Data,
         extState: Data = Data(),
@@ -191,7 +206,16 @@ class CtapHidConnection {
         callbacksForLoadKeySeedIndexByChannel[channel] = callback
         let sendResult = sendCtapHidMessage(channel: channel, command: CtapCommand.LOADKEYSEED.rawValue, data: message)
     }
-    
+        
+    /// Write a cryptographic seed into a security key for use in deterministically
+    /// generating/replacing WebAuthN keys
+    /// https://github.com/dicekeys/seeding-webauthn
+    ///
+    /// - Parameters:
+    ///   - keySeedAs32Bytes: A 32-byte seed
+    ///   - extState: A short array of bytes (or empty) to store with the seed that might help one to-generate or locate the original seed (default empty)
+    ///   - commandVersion: The version of the seeding operation (default 1)
+    ///   - callback: A callback for the result/error
     func loadKeySeed(
         keySeedAs32Bytes: Data,
         extState: Data = Data(),

@@ -9,6 +9,8 @@
 import Foundation
 import IOKit.hid
 
+
+/// An abstraction of an HID device, which includes the low-level reference pointer and convenience accessors that retrieve information about the device
 class AttachedHidDevice {
     let unmanagedDeviceRef: IOHIDDevice
 
@@ -49,6 +51,7 @@ class AttachedHidDevice {
     }
 }
 
+/// This class tracks the list of attached HID (USB/Bluetooth) devices
 class AttachedHidDevices : NSObject {
     var onDeviceAdded: ((AttachedHidDevice) -> Void)?
     var onDeviceRemoved: ((AttachedHidDevice) -> Void)?
