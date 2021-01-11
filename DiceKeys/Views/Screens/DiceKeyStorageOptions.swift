@@ -19,6 +19,7 @@ struct DiceKeyStorageOptions: View {
     }
 
     var body: some View {
+        VStack {
         HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
             Spacer()
             VStack {
@@ -34,7 +35,7 @@ struct DiceKeyStorageOptions: View {
                                     DiceKeyView(diceKey: diceKey, diceBoxColor: Color.alexandrasBlue, diePenColor: Color.alexandrasBlue).scaleEffect(0.8)
                                 )
                             }
-                            Text("Store the DiceKey").font(.title).bold().padding(.top, 3)
+                            Text("Save the DiceKey").font(.title).bold().padding(.top, 3)
                             VStack(alignment: .leading) {
                                 Text("The center die will appear in the home screen.").font(.title2)
                                 Text("The other 24 dice will be encrypted, and your TouchID, FaceID, or PIN will unlock them.").font(.title2)
@@ -49,6 +50,7 @@ struct DiceKeyStorageOptions: View {
             Spacer()
         }
         Button(action: { done?() }, label: { Text("Done") }).padding(.bottom, 20)
+        }
     }
 }
 
@@ -57,7 +59,15 @@ struct DiceKeyStorageOptions_Previews: PreviewProvider {
     @StateObject static var diceKeyState = UnlockedDiceKeyState.forDiceKey(diceKey)
 
     static var previews: some View {
+        #if os(iOS)
         DiceKeyStorageOptions(diceKey: diceKey)
             .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+            .environment(\.colorScheme, .dark)
+        DiceKeyStorageOptions(diceKey: diceKey)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+        #else
+        DiceKeyStorageOptions(diceKey: diceKey)
+        #endif
     }
 }

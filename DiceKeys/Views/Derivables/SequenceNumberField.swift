@@ -20,15 +20,21 @@ struct SequenceNumberView: View {
             }
         )
     }
+    
+    
 
     var body: some View {
-        HStack {
+        let textField = TextField("1", text: sequenceNumberString)
+            .font(.title)
+            .multilineTextAlignment(.center).frame(maxWidth: 40).padding(.leading, 10)
+            .padding(.top, 2)
+        return HStack {
             VStack(alignment: .center, spacing: 0) {
-                TextField("1", text: sequenceNumberString)
-                    .font(.title)
-                    .keyboardType(.numberPad)
-                    .multilineTextAlignment(.center).frame(maxWidth: 40).padding(.leading, 10)
-                    .padding(.top, 2)
+                #if os(iOS)
+                textField.keyboardType(.numberPad)
+                #else
+                textField
+                #endif
                 Text("Sequence").font(.footnote).foregroundColor(.gray)
                 Text("Number").font(.footnote).foregroundColor(.gray)
             }
@@ -59,7 +65,7 @@ struct SequenceNumberField: View {
             SequenceNumberView(sequenceNumber: $sequenceNumber)
             Spacer(minLength: 30)
             Text("If you need multiple passwords for a single website or service, change the sequence number to create additional passwords.")
-                .foregroundColor(.gray)
+                .foregroundColor(Color.formInstructions)
                 .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
                 .minimumScaleFactor(0.01)

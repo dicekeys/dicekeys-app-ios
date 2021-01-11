@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-
+#if os(iOS)
 struct NavBarAccessor: UIViewControllerRepresentable {
     var callback: (UINavigationBar) -> Void
     private let proxyController = ViewController()
@@ -34,12 +34,13 @@ struct NavBarAccessor: UIViewControllerRepresentable {
         }
     }
 }
+#endif
 
 enum DiceKeyPresentPageContent: Equatable {
     case Backup
     case SeedHardwareKey
     case Derive(DerivationRecipeBuilderType)
-    case Store
+    case Save
     case Default
 }
 
@@ -56,7 +57,7 @@ struct DiceKeyPresentNavigationFooter: View {
     }
 
     var body: some View {
-        VStack {
+        let view = VStack {
         ZStack {
             HStack(alignment: .top) {
                 Spacer()
@@ -110,11 +111,16 @@ struct DiceKeyPresentNavigationFooter: View {
         }
         .padding(.bottom, geometry.safeAreaInsets.bottom)
         .padding(.top, 5)
-        }.background(Color(UIColor.systemFill))
+        }
+        #if os(iOS)
+        return view.background(Color(UIColor.systemFill))
 //        .background(
 //            NavigationLink(destination: DiceKeyWithDerivedValue(diceKey: diceKey, menuOptionChosen: derivationRecipeMenuOptionChosen), isActive: $shouldNavigateToDiceKeyWithDerivedValue, label: { EmptyView() })
 //                .position(x: 0, y: 0).frame(width: 0, height: 0).hidden()
 //        )
+        #else
+        return view
+        #endif
     }
 }
 
@@ -141,7 +147,7 @@ struct DiceKeyPresent: View {
     @State private var navBarHeight: CGFloat = 0
 
     var storageButton: some View {
-        Button(action: { navigate(to: .Store) }) {
+        Button(action: { navigate(to: .Save) }) {
             VStack(alignment: .center, spacing: 0) {
                 ZStack(alignment: .center, content: {
                     Image("Phonelet")
@@ -149,7 +155,7 @@ struct DiceKeyPresent: View {
                         .renderingMode(.template)
                         .foregroundColor(Color.DiceKeysNavigationForeground)
                         .aspectRatio(contentMode: .fit)
-                    if diceKeyState.isDiceKeyStored {
+                    if diceKeyState.isDiceKeySaved {
                         Image("DiceKey Icon")
                             .renderingMode(.template)
                             .resizable()
@@ -159,9 +165,9 @@ struct DiceKeyPresent: View {
                             .scaleEffect(2/3)
                     }
                 }).aspectRatio(contentMode: .fit)
-                Text(diceKeyState.isDiceKeyStored ? "Stored" : "Store")
+                Text(diceKeyState.isDiceKeySaved ? "Saved" : "Save")
             }.frame(maxHeight: navBarHeight)
-            .if( pageContent == .Store ) { $0.colorInvert() }
+            .if( pageContent == .Save ) { $0.colorInvert() }
         }
     }
 
@@ -176,11 +182,11 @@ struct DiceKeyPresent: View {
     let defaultContentPadding: CGFloat = 15
 
     var body: some View {
-        GeometryReader { geometry in
+        let reader = GeometryReader { geometry in
             VStack {
                 Spacer()
                 switch self.pageContent {
-                case .Store: DiceKeyStorageOptions(diceKey: diceKey, done: { self.pageContent = .Default }).padding(.horizontal, defaultContentPadding)
+                case .Save: DiceKeyStorageOptions(diceKey: diceKey, done: { self.pageContent = .Default }).padding(.horizontal, defaultContentPadding)
                 case .Derive(let derivationRecipeBuilder): DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)
                 case .Backup: BackupDiceKey(onComplete: { navigate(to: .Default) }, diceKey: $diceKey, backupDiceKeyState: backupDiceKeyState)
                 case .SeedHardwareKey: SeedHardwareSecurityKey().padding(.horizontal, defaultContentPadding)
@@ -190,29 +196,33 @@ struct DiceKeyPresent: View {
                 DiceKeyPresentNavigationFooter(pageContent: pageContent, navigateTo: navigate, geometry: geometry)
             }.ignoresSafeArea(.all, edges: .bottom)
         }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .navigationTitle(diceKeyState.nickname)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarDiceKeyStyle()
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: ToolbarItemPlacement.navigationBarLeading) {
-                Button(action: {
-                    self.onForget()
-                }) {
-                    VStack {
-                        Image(systemName: "lock")
-                        Text(diceKeyState.isDiceKeyStored ? "Lock" : "Forget")
+        #if os(iOS)
+        return reader.navigationViewStyle(StackNavigationViewStyle())
+            .navigationTitle(diceKeyState.nickname)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarDiceKeyStyle()
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: ToolbarItemPlacement.navigationBarLeading) {
+                    Button(action: {
+                        self.onForget()
+                    }) {
+                        VStack {
+                            Image(systemName: "lock")
+                            Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget")
+                        }
                     }
                 }
+                ToolbarItem(placement: .primaryAction) {
+                    storageButton
+                }
             }
-            ToolbarItem(placement: .primaryAction) {
-                storageButton
-            }
-        }
-        .background(
-            NavBarAccessor { navBar in self.navBarHeight = navBar.bounds.height }
-        )
+            .background(
+                NavBarAccessor { navBar in self.navBarHeight = navBar.bounds.height }
+            )
+        #else
+        return reader
+        #endif
     }
 }
 
@@ -232,10 +242,15 @@ struct TestDiceKeyPresent: View {
 
 struct DiceKeyPresent_Previews: PreviewProvider {
     static var previews: some View {
+        #if os(iOS)
+        NavigationView {
+            TestDiceKeyPresent().navigationBarDiceKeyStyle()
+        }.previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+        #else
         NavigationView {
             TestDiceKeyPresent()
-                .navigationBarDiceKeyStyle()
-        }.previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+        }
+        #endif
 //
 //        DerivedFromDiceKey(diceKey: diceKey) {
 //            Text("Derive a Password, Key, or Secret")

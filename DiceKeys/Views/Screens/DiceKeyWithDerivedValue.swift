@@ -66,7 +66,7 @@ struct DiceKeyWithDerivedValue: View {
     }
 
     var body: some View {
-        VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
+        let view = VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
 //            DerivationRecipeMenu({ menuOptionChosen in self.menuOptionChosen = menuOptionChosen }) { Text(derivationRecipe?.name ?? "Derive...") }
             if let derivationRecipeBuilder = self.derivationRecipeBuilder {
                 FormCard(title: "Recipe\( derivationRecipe == nil ? "" : " for \( derivationRecipe?.name ?? "" )")") {
@@ -90,7 +90,7 @@ struct DiceKeyWithDerivedValue: View {
                             Button(action: {
                                 if recipeCanBeDeleted {
                                     globalState.removeRecipe(derivationRecipe)
-                                } else if (recipeCanBeSaved) {
+                                } else if recipeCanBeSaved {
                                     globalState.saveRecipe(derivationRecipe)
                                 }
                             }, label: { Text(recipeCanBeDeleted ? "Remove recipe from menu" : "Save recipe in the menu")
@@ -112,8 +112,14 @@ struct DiceKeyWithDerivedValue: View {
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding(.horizontal, 5)
                     }).padding(.horizontal, 5).layoutPriority(-1)
-                    if derivedValue != "" {
-                        Button("Copy\( derivationRecipe?.type == .Password ? " Password" : "" )") { UIPasteboard.general.string = derivedValue }
+                    if let derivedValue = derivedValue, derivedValue != "" {
+                        Button("Copy\( derivationRecipe?.type == .Password ? " Password" : "" )") {
+                            #if os(iOS)
+                            UIPasteboard.general.string = derivedValue
+                            #else
+                            NSPasteboard.general.setString(derivedValue, forType: .string)
+                            #endif
+                        }
                     }
                 }.hideIf(derivationRecipe == nil)
                 Spacer()
@@ -122,7 +128,9 @@ struct DiceKeyWithDerivedValue: View {
 
             Spacer()
         }.padding(.vertical, 5)
-        .navigationBarDiceKeyStyle()
+        #if os(iOS)
+        view.navigationBarDiceKeyStyle()
+        #endif
     }
 }
 

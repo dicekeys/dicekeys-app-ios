@@ -87,11 +87,11 @@ struct DieFaceUprightView: View {
     var fontSize: CGFloat {
         FaceDimensionsFractional.fontSize * sizeOfRenderedFace
     }
-        var font: Font {
+    var font: Font {
         Font.custom("Inconsolata", size: fontSize)
     }
-    var uiFont: UIFont {
-        UIFont(name: "Inconsolata-Bold", size: fontSize)!
+    var uiFont: XXFont {
+        XXFont(name: "Inconsolata-Bold", size: fontSize)!
     }
     var halfTextRegionWidth: CGFloat {
         FaceDimensionsFractional.textRegionWidth * sizeOfRenderedFace / 2
@@ -117,12 +117,12 @@ struct DieFaceUprightView: View {
                     .stroke(faceBorderColor)
             }
             Text(face.letter.rawValue)
-                .font(.custom("Inconsolata", size: fontSize))
+                .font(Font(uiFont))
                 .fontWeight(.bold)
                 .position(x: (dieSize - halfTextRegionWidth) / 2, y: textCenterY)
                 .foregroundColor(penColor)
             Text(face.digit.rawValue)
-                .font(.custom("Inconsolata", size: fontSize))
+                .font(Font(uiFont))
                 .fontWeight(.bold)
                 .position(x: (dieSize + halfTextRegionWidth) / 2, y: textCenterY)
                 .foregroundColor(penColor)

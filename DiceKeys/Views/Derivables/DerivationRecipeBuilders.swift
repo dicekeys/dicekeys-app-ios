@@ -100,12 +100,16 @@ struct DerivationRecipeForFromUrl: View {
     }
 
     var body: some View {
-        VStack {
+        let textfield = TextField("https://somecrazyurl.com", text: $model.urlString)
+            .font(.body)
+            .multilineTextAlignment(.center)
+        return VStack {
             VStack(alignment: .center, spacing: 0) {
-                TextField("https://somecrazyurl.com", text: $model.urlString)
-                    .font(.body)
-                    .keyboardType(.numberPad)
-                    .multilineTextAlignment(.center)
+                #if os(iOS)
+                textfield.keyboardType(.numberPad)
+                #else
+                textfield
+                #endif
                 Text("URL or comma-separated list of domains").font(.footnote).foregroundColor(.gray)
             }
             SequenceNumberField(sequenceNumber: $model.sequenceNumber)
@@ -176,18 +180,20 @@ struct DerivationRecipeView: View {
 
 struct DerivationRecipeBuilders_Previews: PreviewProvider {
     static var previews: some View {
+        #if os(iOS)
         NavigationView {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .customFromUrl(.Password))
         }
         .navigationBarDiceKeyStyle()
         .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+        .environment(\.colorScheme, .dark)
 
-        
         NavigationView {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
         }
         .navigationBarDiceKeyStyle()
         .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+        .environment(\.colorScheme, .dark)
 
         NavigationView {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
@@ -195,5 +201,11 @@ struct DerivationRecipeBuilders_Previews: PreviewProvider {
         .navigationViewStyle(StackNavigationViewStyle())
         .navigationBarDiceKeyStyle()
         .previewDevice(PreviewDevice(rawValue: "iPad Air (4th generation)"))
+        .environment(\.colorScheme, .dark)
+        #else
+        NavigationView {
+            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .customFromUrl(.Password))
+        }
+        #endif
     }
 }

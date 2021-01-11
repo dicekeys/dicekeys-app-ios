@@ -9,13 +9,18 @@ import SwiftUI
 
 struct BackupToDiceKeysKitIntroduction: View {
     let diceKey: DiceKey
+    #if os(iOS)
+    let shorterSide = UIScreen.main.bounds.size.shorterSide
+    #else
+    let shorterSide = NSScreen.main!.frame.size.height
+    #endif
 
     var body: some View {
         VStack {
             Spacer()
             Instruction("Open your DiceKey kit and take out the box bottom and the 25 dice.")
             Spacer()
-            DiceKeyView(diceKey: diceKey, showDiceAtIndexes: Set()).padding(.horizontal, UIScreen.main.bounds.size.shorterSide / 6)
+            DiceKeyView(diceKey: diceKey, showDiceAtIndexes: Set()).padding(.horizontal, shorterSide / 6)
             Spacer()
             Instruction("Next, you will replicate the first DiceKey by copying the arrangement of dice.")
             HStack(alignment: .center, spacing: 0) {

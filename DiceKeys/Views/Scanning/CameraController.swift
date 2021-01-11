@@ -8,7 +8,12 @@
 
 import Foundation
 import AVFoundation
+
+#if os(iOS)
 import UIKit
+#else
+import AppKit
+#endif
 
 typealias CaptureFrameHandler = (_ imageBitmap: Data, _ width: Int32, _ height: Int32) throws -> Void
 
@@ -19,11 +24,17 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
     var camera: AVCaptureDevice?
     var cameraInput: AVCaptureDeviceInput?
     var previewLayer: AVCaptureVideoPreviewLayer?
+    
+    #if os(iOS)
+    let defaultSize = UIScreen.main.bounds.size
+    #else
+    let defaultSize = CGSize(width: 300, height: 300)
+    #endif
 
     var onFrameCaptured: CaptureFrameHandler?
     private var _size: CGSize?
     var size: CGSize {
-        get { _size ?? UIScreen.main.bounds.size }
+        get { _size ?? defaultSize }
         set { _size = newValue }
     }
 
@@ -106,10 +117,16 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
             self.captureSession = AVCaptureSession()
         }
         func configureCaptureDevices() throws {
+            #if os(iOS)
             guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
                 throw CameraControllerError.noCamerasAvailable
             }
-
+            #else
+            guard let camera = AVCaptureDevice.default(for: .video) else {
+                throw CameraControllerError.noCamerasAvailable
+            }
+            #endif
+            
             self.camera = camera
 
             do {
@@ -126,10 +143,12 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
                     // Focus on center
                     camera.focusPointOfInterest = CGPoint(x: 0.5, y: 0.5)
                 }
+                #if os(iOS)
                 if camera.isAutoFocusRangeRestrictionSupported {
                     // Focus close by
                     camera.autoFocusRangeRestriction = .near
                 }
+                #endif
                 if camera.isExposureModeSupported(.autoExpose) {
                     camera.exposureMode = .continuousAutoExposure
                 }
@@ -181,12 +200,15 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
         }
     }
 
-    func displayPreview(on view: UIView) throws {
+    func displayPreview(on view: XXView) throws {
         guard let captureSession = self.captureSession, captureSession.isRunning else { throw CameraControllerError.captureSessionIsMissing }
 
         let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        view.layer.insertSublayer(previewLayer, at: 0)
+        let layer:CALayer? = view.layer
+        if let layer = layer {
+            layer.insertSublayer(previewLayer, at: 0)
+        }
         previewLayer.frame = view.frame
         self.previewLayer = previewLayer
     }

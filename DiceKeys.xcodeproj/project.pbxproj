@@ -7,602 +7,682 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04EA543F170C770F1092B593 /* Pods_DiceKeysTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */; };
-		171D5D81258C0955005DEF10 /* RoundedRectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171D5D80258C0955005DEF10 /* RoundedRectCard.swift */; };
-		171D5D85258C7C5C005DEF10 /* SequenceNumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171D5D84258C7C5C005DEF10 /* SequenceNumberField.swift */; };
-		17318748257DA69800A9F97A /* ValidateBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17318747257DA69700A9F97A /* ValidateBackup.swift */; };
-		1731874E257E27C500A9F97A /* DiceKeyCopyInProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1731874D257E27C300A9F97A /* DiceKeyCopyInProgress.swift */; };
-		17318752257E545000A9F97A /* BackupToStickeysIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17318751257E545000A9F97A /* BackupToStickeysIntroduction.swift */; };
-		17318757257E555B00A9F97A /* StickerSheetForFace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17318756257E555B00A9F97A /* StickerSheetForFace.swift */; };
-		17318760257E55BB00A9F97A /* TransferDie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1731875F257E55BB00A9F97A /* TransferDie.swift */; };
-		17318766257E562600A9F97A /* BackupToDiceKeysKitIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17318765257E562600A9F97A /* BackupToDiceKeysKitIntroduction.swift */; };
-		17426E2C2564FA6000FB0FAB /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E2B2564FA6000FB0FAB /* Face.swift */; };
-		17426E2D2564FA6000FB0FAB /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E2B2564FA6000FB0FAB /* Face.swift */; };
-		17426E2E2564FA6000FB0FAB /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E2B2564FA6000FB0FAB /* Face.swift */; };
-		17426E322564FA8000FB0FAB /* FaceSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E312564FA8000FB0FAB /* FaceSpecification.swift */; };
-		17426E332564FA8000FB0FAB /* FaceSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E312564FA8000FB0FAB /* FaceSpecification.swift */; };
-		17426E342564FA8000FB0FAB /* FaceSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E312564FA8000FB0FAB /* FaceSpecification.swift */; };
-		17426E3A2564FAAF00FB0FAB /* FaceRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E392564FAAF00FB0FAB /* FaceRead.swift */; };
-		17426E3B2564FAAF00FB0FAB /* FaceRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E392564FAAF00FB0FAB /* FaceRead.swift */; };
-		17426E3C2564FAAF00FB0FAB /* FaceRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E392564FAAF00FB0FAB /* FaceRead.swift */; };
-		17426E422564FAB700FB0FAB /* DiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E412564FAB700FB0FAB /* DiceKey.swift */; };
-		17426E432564FAB700FB0FAB /* DiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E412564FAB700FB0FAB /* DiceKey.swift */; };
-		17426E442564FAB700FB0FAB /* DiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E412564FAB700FB0FAB /* DiceKey.swift */; };
-		17426E4A2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E492564FADA00FB0FAB /* ApiInterfaces.swift */; };
-		17426E4B2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E492564FADA00FB0FAB /* ApiInterfaces.swift */; };
-		17426E4C2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E492564FADA00FB0FAB /* ApiInterfaces.swift */; };
-		17426E532564FAFB00FB0FAB /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E522564FAFB00FB0FAB /* ApiRequest.swift */; };
-		17426E542564FAFB00FB0FAB /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E522564FAFB00FB0FAB /* ApiRequest.swift */; };
-		17426E5D2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E592564FB0B00FB0FAB /* UnsealingInstructions.swift */; };
-		17426E5E2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E592564FB0B00FB0FAB /* UnsealingInstructions.swift */; };
-		17426E5F2564FB0B00FB0FAB /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5A2564FB0B00FB0FAB /* DerivationOptions.swift */; };
-		17426E602564FB0B00FB0FAB /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5A2564FB0B00FB0FAB /* DerivationOptions.swift */; };
-		17426E612564FB0B00FB0FAB /* PermissionChecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5B2564FB0B00FB0FAB /* PermissionChecks.swift */; };
-		17426E622564FB0B00FB0FAB /* PermissionChecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5B2564FB0B00FB0FAB /* PermissionChecks.swift */; };
-		17426E632564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5C2564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift */; };
-		17426E642564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E5C2564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift */; };
-		17426E792564FB7300FB0FAB /* DiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E772564FB7200FB0FAB /* DiceKeyView.swift */; };
-		17426E882565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */; };
-		17426E892565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */; };
-		17426E8A2565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */; };
-		17426E932566316100FB0FAB /* DiceKeysCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426E922566316100FB0FAB /* DiceKeysCameraView.swift */; };
-		17426EB62567C03500FB0FAB /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */; };
-		17426ED02567CC7700FB0FAB /* DieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17426ECF2567CC7700FB0FAB /* DieView.swift */; };
-		1742872225721A7200C3715B /* SeedHardwareSecurityKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872125721A7100C3715B /* SeedHardwareSecurityKey.swift */; };
-		1742872825721B5B00C3715B /* BackupDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872725721B5B00C3715B /* BackupDiceKey.swift */; };
-		1742872C25721E5500C3715B /* DiceKeyStorageOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */; };
-		1742873025726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742872F25726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift */; };
-		1742874125749CA300C3715B /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1742874025749CA300C3715B /* Properties.swift */; };
-		1749B52B2589A11300065E28 /* StepFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1749B52A2589A11300065E28 /* StepFooter.swift */; };
-		17533912256B2BCB00E090BC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533911256B2BCB00E090BC /* CameraController.swift */; };
-		17533916256B3AC500E090BC /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17533915256B3AC500E090BC /* App.swift */; };
-		175F393C2575A445007FAE80 /* UnlockedDiceKeyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F393B2575A445007FAE80 /* UnlockedDiceKeyState.swift */; };
-		175F39442575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F39432575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */; };
-		1778C120258093B2004EFC03 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1778C11F258093B2004EFC03 /* UIViewController.swift */; };
-		1778C12425810FAA004EFC03 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1778C12325810FAA004EFC03 /* NavigationBar.swift */; };
-		1778C12B258198B6004EFC03 /* KeyScanningIllustration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1778C12A258198B6004EFC03 /* KeyScanningIllustration.swift */; };
-		1778C13125819976004EFC03 /* DiceKeyMedium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1778C13025819976004EFC03 /* DiceKeyMedium.swift */; };
-		177CF42625830D630071F845 /* DerivationRecipeMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177CF42525830D630071F845 /* DerivationRecipeMenu.swift */; };
-		177CF42A258330200071F845 /* DerivationRecipeBuilders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177CF429258330200071F845 /* DerivationRecipeBuilders.swift */; };
-		177FCA56256D03DA00E2FB6F /* AppMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA55256D03DA00E2FB6F /* AppMainView.swift */; };
-		177FCA60256D193B00E2FB6F /* ScanDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA5F256D193B00E2FB6F /* ScanDiceKey.swift */; };
-		177FCA76256DBB9600E2FB6F /* AssemblyInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA75256DBB9600E2FB6F /* AssemblyInstructions.swift */; };
-		177FCA7A256DBBF300E2FB6F /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA79256DBBF300E2FB6F /* Color.swift */; };
-		177FCA7E256E3B8500E2FB6F /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177FCA7D256E3B8500E2FB6F /* View.swift */; };
-		1788B16E25790AD0007F6CF9 /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B16D25790AD0007F6CF9 /* GlobalState.swift */; };
-		1788B17625790B29007F6CF9 /* TransferSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B17325790B29007F6CF9 /* TransferSticker.swift */; };
-		1788B17725790B29007F6CF9 /* StickerTargetSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B17425790B29007F6CF9 /* StickerTargetSheet.swift */; };
-		1788B17825790B29007F6CF9 /* StickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B17525790B29007F6CF9 /* StickerSheet.swift */; };
-		1788B17E25790C47007F6CF9 /* Derivables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B17D25790C47007F6CF9 /* Derivables.swift */; };
-		1788B18225790EDB007F6CF9 /* DiceKeyWithDerivedValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B18125790EDB007F6CF9 /* DiceKeyWithDerivedValue.swift */; };
-		1788B1982579E6A1007F6CF9 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B1972579E6A1007F6CF9 /* Size.swift */; };
-		1788B1A2257A6E2B007F6CF9 /* RoundedTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B1A1257A6E2A007F6CF9 /* RoundedTextButton.swift */; };
-		1788B1C0257B277F007F6CF9 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B1BF257B277C007F6CF9 /* Instruction.swift */; };
-		1788B1C4257B58B2007F6CF9 /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788B1C3257B58B0007F6CF9 /* ChildSizeReader.swift */; };
-		17BBB61E256F87CD009AC42B /* Funnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB61D256F87CD009AC42B /* Funnel.swift */; };
-		17BBB622256F8840009AC42B /* DerivedFromDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB621256F8840009AC42B /* DerivedFromDiceKey.swift */; };
-		17BBB63625706A7E009AC42B /* DiceKeyPresent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB63525706A7E009AC42B /* DiceKeyPresent.swift */; };
-		17F4DF72257F31E20088D1D7 /* DiceKeyCenterFaceOnlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F4DF71257F31E20088D1D7 /* DiceKeyCenterFaceOnlyView.swift */; };
-		6185ECF52F55E701A7D44A6F /* Pods_DiceKeys.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD0DF73F2796056AF2C9CA0 /* Pods_DiceKeys.framework */; };
-		6F3EE4E22549B2BB002602CD /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F3EE4E12549B2BB002602CD /* test.png */; };
-		6F846C04254B2BCF00ABE33B /* UIWindow+Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */; };
-		6FAC6AB325480DE200AA8249 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FAC6AB225480DE200AA8249 /* Assets.xcassets */; };
-		6FAC6AC125480DE200AA8249 /* DiceKeysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6AC025480DE200AA8249 /* DiceKeysTests.swift */; };
-		6FAC6ACC25480DE200AA8249 /* DiceKeysUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAC6ACB25480DE200AA8249 /* DiceKeysUITests.swift */; };
-		B5D66895958DCA98A0B25D61 /* Pods_DiceKeys_DiceKeysUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FF34CD70539F7AB4106E41 /* Pods_DiceKeys_DiceKeysUITests.framework */; };
-		D3EA9809CFFADDCED4460E9F /* Pods_DiceKeys_DiceKeysUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EF10658592EB59EDF5C1CCD /* Pods_DiceKeys_DiceKeysUITests.framework */; };
+		0FF7F731929DF324410FCCEA /* Pods_DiceKeys__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25A6B06AB3C071EB2999AE67 /* Pods_DiceKeys__iOS_.framework */; };
+		17B6C5A125A43AAB007798F3 /* CtapHidConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */; };
+		17B6C5AB25A494CB007798F3 /* AttachedHidDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */; };
+		17B6C5D525A52A69007798F3 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17B6C5D425A52A69007798F3 /* Colors.xcassets */; };
+		17B6C5DA25A52AB6007798F3 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17B6C5D425A52A69007798F3 /* Colors.xcassets */; };
+		ACF9E6A9B1E79E881EEE4C09 /* Pods_DiceKeys__macOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19FCCD61505F4C2ED9F6ED0B /* Pods_DiceKeys__macOS_.framework */; };
+		EC5091ED259480BE007D2B91 /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EA259480BE007D2B91 /* GlobalState.swift */; };
+		EC5091EE259480BE007D2B91 /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EA259480BE007D2B91 /* GlobalState.swift */; };
+		EC5091EF259480BE007D2B91 /* UnlockedDiceKeyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EB259480BE007D2B91 /* UnlockedDiceKeyState.swift */; };
+		EC5091F0259480BE007D2B91 /* UnlockedDiceKeyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EB259480BE007D2B91 /* UnlockedDiceKeyState.swift */; };
+		EC5091F1259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EC259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */; };
+		EC5091F2259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EC259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */; };
+		EC50920725948124007D2B91 /* DiceKeyMedium.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091F925948124007D2B91 /* DiceKeyMedium.swift */; };
+		EC50920825948124007D2B91 /* DiceKeyMedium.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091F925948124007D2B91 /* DiceKeyMedium.swift */; };
+		EC50920925948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FA25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift */; };
+		EC50920A25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FA25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift */; };
+		EC50920B25948124007D2B91 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FB25948124007D2B91 /* Face.swift */; };
+		EC50920C25948124007D2B91 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FB25948124007D2B91 /* Face.swift */; };
+		EC50920D25948124007D2B91 /* FaceRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FC25948124007D2B91 /* FaceRead.swift */; };
+		EC50920E25948124007D2B91 /* FaceRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FC25948124007D2B91 /* FaceRead.swift */; };
+		EC50920F25948124007D2B91 /* DiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FD25948124007D2B91 /* DiceKey.swift */; };
+		EC50921025948124007D2B91 /* DiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FD25948124007D2B91 /* DiceKey.swift */; };
+		EC50921125948124007D2B91 /* FaceSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FE25948124007D2B91 /* FaceSpecification.swift */; };
+		EC50921225948124007D2B91 /* FaceSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FE25948124007D2B91 /* FaceSpecification.swift */; };
+		EC50921325948124007D2B91 /* Derivables.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FF25948124007D2B91 /* Derivables.swift */; };
+		EC50921425948124007D2B91 /* Derivables.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FF25948124007D2B91 /* Derivables.swift */; };
+		EC50921525948124007D2B91 /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* DerivationOptions.swift */; };
+		EC50921625948124007D2B91 /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* DerivationOptions.swift */; };
+		EC50921725948124007D2B91 /* UnsealingInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920225948124007D2B91 /* UnsealingInstructions.swift */; };
+		EC50921825948124007D2B91 /* UnsealingInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920225948124007D2B91 /* UnsealingInstructions.swift */; };
+		EC50921925948124007D2B91 /* PermissionChecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920325948124007D2B91 /* PermissionChecks.swift */; };
+		EC50921A25948124007D2B91 /* PermissionChecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920325948124007D2B91 /* PermissionChecks.swift */; };
+		EC50921B25948124007D2B91 /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */; };
+		EC50921C25948124007D2B91 /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */; };
+		EC50921D25948124007D2B91 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920525948124007D2B91 /* ApiRequest.swift */; };
+		EC50921E25948124007D2B91 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920525948124007D2B91 /* ApiRequest.swift */; };
+		EC50921F25948124007D2B91 /* ApiInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920625948124007D2B91 /* ApiInterfaces.swift */; };
+		EC50922025948124007D2B91 /* ApiInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920625948124007D2B91 /* ApiInterfaces.swift */; };
+		EC50922F2594818F007D2B91 /* UIWindow+Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922A2594818F007D2B91 /* UIWindow+Orientation.swift */; };
+		EC5092312594818F007D2B91 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922B2594818F007D2B91 /* View.swift */; };
+		EC5092322594818F007D2B91 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922B2594818F007D2B91 /* View.swift */; };
+		EC5092332594818F007D2B91 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922C2594818F007D2B91 /* Properties.swift */; };
+		EC5092342594818F007D2B91 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922C2594818F007D2B91 /* Properties.swift */; };
+		EC5092352594818F007D2B91 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922D2594818F007D2B91 /* Size.swift */; };
+		EC5092362594818F007D2B91 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922D2594818F007D2B91 /* Size.swift */; };
+		EC5092372594818F007D2B91 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922E2594818F007D2B91 /* Color.swift */; };
+		EC5092382594818F007D2B91 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50922E2594818F007D2B91 /* Color.swift */; };
+		EC509240259481E2007D2B91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC50923E259481E2007D2B91 /* Assets.xcassets */; };
+		EC509241259481E2007D2B91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC50923E259481E2007D2B91 /* Assets.xcassets */; };
+		EC509242259481E2007D2B91 /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = EC50923F259481E2007D2B91 /* test.png */; };
+		EC509243259481E2007D2B91 /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = EC50923F259481E2007D2B91 /* test.png */; };
+		EC509259259482CA007D2B91 /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC509258259482CA007D2B91 /* Inconsolata-Bold.otf */; };
+		EC50925A259482CA007D2B91 /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC509258259482CA007D2B91 /* Inconsolata-Bold.otf */; };
+		EC50928D259482F4007D2B91 /* KeyScanningIllustration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509261259482F4007D2B91 /* KeyScanningIllustration.swift */; };
+		EC50928E259482F4007D2B91 /* KeyScanningIllustration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509261259482F4007D2B91 /* KeyScanningIllustration.swift */; };
+		EC50928F259482F4007D2B91 /* Funnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509263259482F4007D2B91 /* Funnel.swift */; };
+		EC509290259482F4007D2B91 /* Funnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509263259482F4007D2B91 /* Funnel.swift */; };
+		EC509291259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509265259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift */; };
+		EC509292259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509265259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift */; };
+		EC509293259482F4007D2B91 /* DiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509266259482F4007D2B91 /* DiceKeyView.swift */; };
+		EC509294259482F4007D2B91 /* DiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509266259482F4007D2B91 /* DiceKeyView.swift */; };
+		EC509295259482F4007D2B91 /* DieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509267259482F4007D2B91 /* DieView.swift */; };
+		EC509296259482F4007D2B91 /* DieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509267259482F4007D2B91 /* DieView.swift */; };
+		EC509297259482F4007D2B91 /* DerivedFromDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509268259482F4007D2B91 /* DerivedFromDiceKey.swift */; };
+		EC509298259482F4007D2B91 /* DerivedFromDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509268259482F4007D2B91 /* DerivedFromDiceKey.swift */; };
+		EC509299259482F4007D2B91 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926A259482F4007D2B91 /* CameraController.swift */; };
+		EC50929B259482F4007D2B91 /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926B259482F4007D2B91 /* FacesReadOverlay.swift */; };
+		EC50929D259482F4007D2B91 /* ScanDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926C259482F4007D2B91 /* ScanDiceKey.swift */; };
+		EC50929E259482F4007D2B91 /* ScanDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926C259482F4007D2B91 /* ScanDiceKey.swift */; };
+		EC50929F259482F4007D2B91 /* DiceKeysCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926D259482F4007D2B91 /* DiceKeysCameraView.swift */; };
+		EC5092A1259482F4007D2B91 /* DiceKeyPresent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926F259482F4007D2B91 /* DiceKeyPresent.swift */; };
+		EC5092A2259482F4007D2B91 /* DiceKeyPresent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926F259482F4007D2B91 /* DiceKeyPresent.swift */; };
+		EC5092A3259482F4007D2B91 /* AppMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509270259482F4007D2B91 /* AppMainView.swift */; };
+		EC5092A4259482F4007D2B91 /* AppMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509270259482F4007D2B91 /* AppMainView.swift */; };
+		EC5092A5259482F5007D2B91 /* SeedHardwareSecurityKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509271259482F4007D2B91 /* SeedHardwareSecurityKey.swift */; };
+		EC5092A6259482F5007D2B91 /* SeedHardwareSecurityKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509271259482F4007D2B91 /* SeedHardwareSecurityKey.swift */; };
+		EC5092A7259482F5007D2B91 /* DiceKeyStorageOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509272259482F4007D2B91 /* DiceKeyStorageOptions.swift */; };
+		EC5092A8259482F5007D2B91 /* DiceKeyStorageOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509272259482F4007D2B91 /* DiceKeyStorageOptions.swift */; };
+		EC5092A9259482F5007D2B91 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509273259482F4007D2B91 /* UIViewController.swift */; };
+		EC5092AB259482F5007D2B91 /* DiceKeyWithDerivedValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509274259482F4007D2B91 /* DiceKeyWithDerivedValue.swift */; };
+		EC5092AC259482F5007D2B91 /* DiceKeyWithDerivedValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509274259482F4007D2B91 /* DiceKeyWithDerivedValue.swift */; };
+		EC5092AD259482F5007D2B91 /* AssemblyInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509275259482F4007D2B91 /* AssemblyInstructions.swift */; };
+		EC5092AE259482F5007D2B91 /* AssemblyInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509275259482F4007D2B91 /* AssemblyInstructions.swift */; };
+		EC5092AF259482F5007D2B91 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509277259482F4007D2B91 /* NavigationBar.swift */; };
+		EC5092B1259482F5007D2B91 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509278259482F4007D2B91 /* Instruction.swift */; };
+		EC5092B2259482F5007D2B91 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509278259482F4007D2B91 /* Instruction.swift */; };
+		EC5092B3259482F5007D2B91 /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509279259482F4007D2B91 /* ChildSizeReader.swift */; };
+		EC5092B4259482F5007D2B91 /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509279259482F4007D2B91 /* ChildSizeReader.swift */; };
+		EC5092B5259482F5007D2B91 /* StepFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50927A259482F4007D2B91 /* StepFooter.swift */; };
+		EC5092B6259482F5007D2B91 /* StepFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50927A259482F4007D2B91 /* StepFooter.swift */; };
+		EC5092B7259482F5007D2B91 /* RoundedTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50927B259482F4007D2B91 /* RoundedTextButton.swift */; };
+		EC5092B8259482F5007D2B91 /* RoundedTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50927B259482F4007D2B91 /* RoundedTextButton.swift */; };
+		EC5092B9259482F5007D2B91 /* DerivationRecipeBuilders.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50927D259482F4007D2B91 /* DerivationRecipeBuilders.swift */; };
+		EC5092BA259482F5007D2B91 /* DerivationRecipeBuilders.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50927D259482F4007D2B91 /* DerivationRecipeBuilders.swift */; };
+		EC5092BB259482F5007D2B91 /* DerivationRecipeMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50927E259482F4007D2B91 /* DerivationRecipeMenu.swift */; };
+		EC5092BC259482F5007D2B91 /* DerivationRecipeMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50927E259482F4007D2B91 /* DerivationRecipeMenu.swift */; };
+		EC5092BD259482F5007D2B91 /* StickerSheetForFace.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509281259482F4007D2B91 /* StickerSheetForFace.swift */; };
+		EC5092BE259482F5007D2B91 /* StickerSheetForFace.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509281259482F4007D2B91 /* StickerSheetForFace.swift */; };
+		EC5092BF259482F5007D2B91 /* BackupToStickeysIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509282259482F4007D2B91 /* BackupToStickeysIntroduction.swift */; };
+		EC5092C0259482F5007D2B91 /* BackupToStickeysIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509282259482F4007D2B91 /* BackupToStickeysIntroduction.swift */; };
+		EC5092C1259482F5007D2B91 /* TransferSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509283259482F4007D2B91 /* TransferSticker.swift */; };
+		EC5092C2259482F5007D2B91 /* TransferSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509283259482F4007D2B91 /* TransferSticker.swift */; };
+		EC5092C3259482F5007D2B91 /* StickerTargetSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509284259482F4007D2B91 /* StickerTargetSheet.swift */; };
+		EC5092C4259482F5007D2B91 /* StickerTargetSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509284259482F4007D2B91 /* StickerTargetSheet.swift */; };
+		EC5092C5259482F5007D2B91 /* StickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509285259482F4007D2B91 /* StickerSheet.swift */; };
+		EC5092C6259482F5007D2B91 /* StickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509285259482F4007D2B91 /* StickerSheet.swift */; };
+		EC5092C7259482F5007D2B91 /* ValidateBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509286259482F4007D2B91 /* ValidateBackup.swift */; };
+		EC5092C8259482F5007D2B91 /* ValidateBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509286259482F4007D2B91 /* ValidateBackup.swift */; };
+		EC5092C9259482F5007D2B91 /* BackupDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509287259482F4007D2B91 /* BackupDiceKey.swift */; };
+		EC5092CA259482F5007D2B91 /* BackupDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509287259482F4007D2B91 /* BackupDiceKey.swift */; };
+		EC5092CB259482F5007D2B91 /* BackupToDiceKeysKitIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509289259482F4007D2B91 /* BackupToDiceKeysKitIntroduction.swift */; };
+		EC5092CC259482F5007D2B91 /* BackupToDiceKeysKitIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509289259482F4007D2B91 /* BackupToDiceKeysKitIntroduction.swift */; };
+		EC5092CD259482F5007D2B91 /* TransferDie.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50928A259482F4007D2B91 /* TransferDie.swift */; };
+		EC5092CE259482F5007D2B91 /* TransferDie.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50928A259482F4007D2B91 /* TransferDie.swift */; };
+		EC5092CF259482F5007D2B91 /* DiceKeyCopyInProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50928B259482F4007D2B91 /* DiceKeyCopyInProgress.swift */; };
+		EC5092D0259482F5007D2B91 /* DiceKeyCopyInProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50928B259482F4007D2B91 /* DiceKeyCopyInProgress.swift */; };
+		EC5092D1259482F5007D2B91 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50928C259482F4007D2B91 /* App.swift */; };
+		EC5092D2259482F5007D2B91 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50928C259482F4007D2B91 /* App.swift */; };
+		EC50932B2595BD03007D2B91 /* SequenceNumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50932A2595BD03007D2B91 /* SequenceNumberField.swift */; };
+		EC50932C2595BD03007D2B91 /* SequenceNumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50932A2595BD03007D2B91 /* SequenceNumberField.swift */; };
+		EC5093322595C043007D2B91 /* RoundedRectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5093312595C043007D2B91 /* RoundedRectCard.swift */; };
+		EC5093332595C043007D2B91 /* RoundedRectCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5093312595C043007D2B91 /* RoundedRectCard.swift */; };
+		EC50934C25974065007D2B91 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926A259482F4007D2B91 /* CameraController.swift */; };
+		EC561299258B827300A056B8 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC561298258B827300A056B8 /* Tests_iOS.swift */; };
+		EC5612A4258B827300A056B8 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5612A3258B827300A056B8 /* Tests_macOS.swift */; };
+		ECFC52312599CD21008D0598 /* DiceKeysCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926D259482F4007D2B91 /* DiceKeysCameraView.swift */; };
+		ECFC5237259A194F008D0598 /* PlatformTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC5236259A194F008D0598 /* PlatformTypes.swift */; };
+		ECFC5238259A194F008D0598 /* PlatformTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC5236259A194F008D0598 /* PlatformTypes.swift */; };
+		ECFC5244259AC86A008D0598 /* FacesReadOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50926B259482F4007D2B91 /* FacesReadOverlay.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		6FAC6ABD25480DE200AA8249 /* PBXContainerItemProxy */ = {
+		EC561295258B827300A056B8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6FAC6A9E25480DE000AA8249 /* Project object */;
+			containerPortal = EC561278258B827200A056B8 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 6FAC6AA525480DE000AA8249;
-			remoteInfo = DiceKeys;
+			remoteGlobalIDString = EC561283258B827300A056B8;
+			remoteInfo = "DiceKeys (iOS)";
 		};
-		6FAC6AC825480DE200AA8249 /* PBXContainerItemProxy */ = {
+		EC5612A0258B827300A056B8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6FAC6A9E25480DE000AA8249 /* Project object */;
+			containerPortal = EC561278258B827200A056B8 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 6FAC6AA525480DE000AA8249;
-			remoteInfo = DiceKeys;
+			remoteGlobalIDString = EC56128B258B827300A056B8;
+			remoteInfo = "DiceKeys (macOS)";
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		6F565C5F2551736100B6B3B1 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		171D5D80258C0955005DEF10 /* RoundedRectCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedRectCard.swift; sourceTree = "<group>"; };
-		171D5D84258C7C5C005DEF10 /* SequenceNumberField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceNumberField.swift; sourceTree = "<group>"; };
-		17318747257DA69700A9F97A /* ValidateBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateBackup.swift; sourceTree = "<group>"; };
-		1731874D257E27C300A9F97A /* DiceKeyCopyInProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyCopyInProgress.swift; sourceTree = "<group>"; };
-		17318751257E545000A9F97A /* BackupToStickeysIntroduction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupToStickeysIntroduction.swift; sourceTree = "<group>"; };
-		17318756257E555B00A9F97A /* StickerSheetForFace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerSheetForFace.swift; sourceTree = "<group>"; };
-		1731875F257E55BB00A9F97A /* TransferDie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferDie.swift; sourceTree = "<group>"; };
-		17318765257E562600A9F97A /* BackupToDiceKeysKitIntroduction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupToDiceKeysKitIntroduction.swift; sourceTree = "<group>"; };
-		17426E2B2564FA6000FB0FAB /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
-		17426E312564FA8000FB0FAB /* FaceSpecification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSpecification.swift; sourceTree = "<group>"; };
-		17426E392564FAAF00FB0FAB /* FaceRead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceRead.swift; sourceTree = "<group>"; };
-		17426E412564FAB700FB0FAB /* DiceKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKey.swift; sourceTree = "<group>"; };
-		17426E492564FADA00FB0FAB /* ApiInterfaces.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiInterfaces.swift; sourceTree = "<group>"; };
-		17426E522564FAFB00FB0FAB /* ApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
-		17426E592564FB0B00FB0FAB /* UnsealingInstructions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnsealingInstructions.swift; sourceTree = "<group>"; };
-		17426E5A2564FB0B00FB0FAB /* DerivationOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DerivationOptions.swift; sourceTree = "<group>"; };
-		17426E5B2564FB0B00FB0FAB /* PermissionChecks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionChecks.swift; sourceTree = "<group>"; };
-		17426E5C2564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebBasedApplicationIdentity.swift; sourceTree = "<group>"; };
-		17426E772564FB7200FB0FAB /* DiceKeyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyView.swift; sourceTree = "<group>"; };
-		17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inconsolata-Bold.otf"; sourceTree = "<group>"; };
-		17426E922566316100FB0FAB /* DiceKeysCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeysCameraView.swift; sourceTree = "<group>"; };
-		17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacesReadOverlay.swift; sourceTree = "<group>"; };
-		17426ECF2567CC7700FB0FAB /* DieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DieView.swift; sourceTree = "<group>"; };
-		1742872125721A7100C3715B /* SeedHardwareSecurityKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedHardwareSecurityKey.swift; sourceTree = "<group>"; };
-		1742872725721B5B00C3715B /* BackupDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupDiceKey.swift; sourceTree = "<group>"; };
-		1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyStorageOptions.swift; sourceTree = "<group>"; };
-		1742872F25726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedDiceKeyFileAccessor.swift; sourceTree = "<group>"; };
-		1742874025749CA300C3715B /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
-		1749B52A2589A11300065E28 /* StepFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepFooter.swift; sourceTree = "<group>"; };
-		17533911256B2BCB00E090BC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
-		17533915256B3AC500E090BC /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
-		175F393B2575A445007FAE80 /* UnlockedDiceKeyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockedDiceKeyState.swift; sourceTree = "<group>"; };
-		175F39432575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableObjectUpdatingOnAllChangesToUserDefaults.swift; sourceTree = "<group>"; };
-		1778C11F258093B2004EFC03 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
-		1778C12325810FAA004EFC03 /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
-		1778C12A258198B6004EFC03 /* KeyScanningIllustration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyScanningIllustration.swift; sourceTree = "<group>"; };
-		1778C13025819976004EFC03 /* DiceKeyMedium.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyMedium.swift; sourceTree = "<group>"; };
-		177CF42525830D630071F845 /* DerivationRecipeMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivationRecipeMenu.swift; sourceTree = "<group>"; };
-		177CF429258330200071F845 /* DerivationRecipeBuilders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivationRecipeBuilders.swift; sourceTree = "<group>"; };
-		177FCA55256D03DA00E2FB6F /* AppMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainView.swift; sourceTree = "<group>"; };
-		177FCA5F256D193B00E2FB6F /* ScanDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDiceKey.swift; sourceTree = "<group>"; };
-		177FCA75256DBB9600E2FB6F /* AssemblyInstructions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyInstructions.swift; sourceTree = "<group>"; };
-		177FCA79256DBBF300E2FB6F /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
-		177FCA7D256E3B8500E2FB6F /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
-		1788B16D25790AD0007F6CF9 /* GlobalState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalState.swift; sourceTree = "<group>"; };
-		1788B17325790B29007F6CF9 /* TransferSticker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferSticker.swift; sourceTree = "<group>"; };
-		1788B17425790B29007F6CF9 /* StickerTargetSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerTargetSheet.swift; sourceTree = "<group>"; };
-		1788B17525790B29007F6CF9 /* StickerSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerSheet.swift; sourceTree = "<group>"; };
-		1788B17D25790C47007F6CF9 /* Derivables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Derivables.swift; sourceTree = "<group>"; };
-		1788B18125790EDB007F6CF9 /* DiceKeyWithDerivedValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyWithDerivedValue.swift; sourceTree = "<group>"; };
-		1788B1972579E6A1007F6CF9 /* Size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
-		1788B1A1257A6E2A007F6CF9 /* RoundedTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextButton.swift; sourceTree = "<group>"; };
-		1788B1BF257B277C007F6CF9 /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
-		1788B1C3257B58B0007F6CF9 /* ChildSizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSizeReader.swift; sourceTree = "<group>"; };
-		17BBB61D256F87CD009AC42B /* Funnel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funnel.swift; sourceTree = "<group>"; };
-		17BBB621256F8840009AC42B /* DerivedFromDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivedFromDiceKey.swift; sourceTree = "<group>"; };
-		17BBB63525706A7E009AC42B /* DiceKeyPresent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyPresent.swift; sourceTree = "<group>"; };
-		17F4DF71257F31E20088D1D7 /* DiceKeyCenterFaceOnlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyCenterFaceOnlyView.swift; sourceTree = "<group>"; };
-		1EF10658592EB59EDF5C1CCD /* Pods_DiceKeys_DiceKeysUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeysUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeysTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		336285FF67EA50C62F01AC19 /* Pods-DiceKeys.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys.release.xcconfig"; path = "Target Support Files/Pods-DiceKeys/Pods-DiceKeys.release.xcconfig"; sourceTree = "<group>"; };
-		3D5F184BC3A8DD2234A00D0F /* Pods-DiceKeysTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeysTests.debug.xcconfig"; path = "Target Support Files/Pods-DiceKeysTests/Pods-DiceKeysTests.debug.xcconfig"; sourceTree = "<group>"; };
-		6F3EE4E12549B2BB002602CD /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
-		6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Orientation.swift"; sourceTree = "<group>"; };
-		6FAC6AA625480DE000AA8249 /* DiceKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiceKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FAC6AB225480DE200AA8249 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		6FAC6AB725480DE200AA8249 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6FAC6ABC25480DE200AA8249 /* DiceKeysTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiceKeysTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FAC6AC025480DE200AA8249 /* DiceKeysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeysTests.swift; sourceTree = "<group>"; };
-		6FAC6AC225480DE200AA8249 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6FAC6AC725480DE200AA8249 /* DiceKeysUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiceKeysUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FAC6ACB25480DE200AA8249 /* DiceKeysUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeysUITests.swift; sourceTree = "<group>"; };
-		6FAC6ACD25480DE200AA8249 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6FAC6D852548873000AA8249 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
-		6FAC6DA625488BCB00AA8249 /* DiceKeys-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DiceKeys-Bridging-Header.h"; sourceTree = "<group>"; };
-		A8FF34CD70539F7AB4106E41 /* Pods_DiceKeys_DiceKeysUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DiceKeys_DiceKeysUITests.framework; path = "../../../Library/Developer/Xcode/DerivedData/DiceKeys-bxmaythpbltjcmfwtczrhqqwndho/Build/Products/Debug-iphoneos/Pods_DiceKeys_DiceKeysUITests.framework"; sourceTree = SOURCE_ROOT; };
-		AAD0DF73F2796056AF2C9CA0 /* Pods_DiceKeys.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B4CF76E3ABEDC8F66941F330 /* Pods-DiceKeys-DiceKeysUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-DiceKeysUITests.debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys-DiceKeysUITests/Pods-DiceKeys-DiceKeysUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		D62952D418B79F6700259BAD /* Pods-DiceKeys-DiceKeysUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-DiceKeysUITests.release.xcconfig"; path = "Target Support Files/Pods-DiceKeys-DiceKeysUITests/Pods-DiceKeys-DiceKeysUITests.release.xcconfig"; sourceTree = "<group>"; };
-		DB881CF2AEECEBA83A4A2040 /* Pods-DiceKeys.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys.debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys/Pods-DiceKeys.debug.xcconfig"; sourceTree = "<group>"; };
-		F5E037741A28CC6CA9137A98 /* Pods-DiceKeysTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeysTests.release.xcconfig"; path = "Target Support Files/Pods-DiceKeysTests/Pods-DiceKeysTests.release.xcconfig"; sourceTree = "<group>"; };
+		14C38080E39571B13473B619 /* Pods-DiceKeys (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (iOS).release.xcconfig"; path = "Target Support Files/Pods-DiceKeys (iOS)/Pods-DiceKeys (iOS).release.xcconfig"; sourceTree = "<group>"; };
+		17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CtapHidConnection.swift; sourceTree = "<group>"; };
+		17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachedHidDevice.swift; sourceTree = "<group>"; };
+		17B6C5D425A52A69007798F3 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		19FCCD61505F4C2ED9F6ED0B /* Pods_DiceKeys__macOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys__macOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		25A6B06AB3C071EB2999AE67 /* Pods_DiceKeys__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A12F40698764C98F698C6350 /* Pods-DiceKeys (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (macOS).release.xcconfig"; path = "Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS).release.xcconfig"; sourceTree = "<group>"; };
+		B09CA29A4B28E9D780FE3E0E /* Pods-DiceKeys (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (macOS).debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS).debug.xcconfig"; sourceTree = "<group>"; };
+		D6328E5B71C2EFE82AB1D100 /* Pods-DiceKeys (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (iOS).debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys (iOS)/Pods-DiceKeys (iOS).debug.xcconfig"; sourceTree = "<group>"; };
+		EC5091EA259480BE007D2B91 /* GlobalState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalState.swift; sourceTree = "<group>"; };
+		EC5091EB259480BE007D2B91 /* UnlockedDiceKeyState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockedDiceKeyState.swift; sourceTree = "<group>"; };
+		EC5091EC259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableObjectUpdatingOnAllChangesToUserDefaults.swift; sourceTree = "<group>"; };
+		EC5091F925948124007D2B91 /* DiceKeyMedium.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyMedium.swift; sourceTree = "<group>"; };
+		EC5091FA25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptedDiceKeyFileAccessor.swift; sourceTree = "<group>"; };
+		EC5091FB25948124007D2B91 /* Face.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
+		EC5091FC25948124007D2B91 /* FaceRead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceRead.swift; sourceTree = "<group>"; };
+		EC5091FD25948124007D2B91 /* DiceKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKey.swift; sourceTree = "<group>"; };
+		EC5091FE25948124007D2B91 /* FaceSpecification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSpecification.swift; sourceTree = "<group>"; };
+		EC5091FF25948124007D2B91 /* Derivables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Derivables.swift; sourceTree = "<group>"; };
+		EC50920125948124007D2B91 /* DerivationOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DerivationOptions.swift; sourceTree = "<group>"; };
+		EC50920225948124007D2B91 /* UnsealingInstructions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnsealingInstructions.swift; sourceTree = "<group>"; };
+		EC50920325948124007D2B91 /* PermissionChecks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionChecks.swift; sourceTree = "<group>"; };
+		EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebBasedApplicationIdentity.swift; sourceTree = "<group>"; };
+		EC50920525948124007D2B91 /* ApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
+		EC50920625948124007D2B91 /* ApiInterfaces.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiInterfaces.swift; sourceTree = "<group>"; };
+		EC50922A2594818F007D2B91 /* UIWindow+Orientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIWindow+Orientation.swift"; sourceTree = "<group>"; };
+		EC50922B2594818F007D2B91 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		EC50922C2594818F007D2B91 /* Properties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
+		EC50922D2594818F007D2B91 /* Size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
+		EC50922E2594818F007D2B91 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		EC50923E259481E2007D2B91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EC50923F259481E2007D2B91 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
+		EC509258259482CA007D2B91 /* Inconsolata-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inconsolata-Bold.otf"; sourceTree = "<group>"; };
+		EC509261259482F4007D2B91 /* KeyScanningIllustration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyScanningIllustration.swift; sourceTree = "<group>"; };
+		EC509263259482F4007D2B91 /* Funnel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Funnel.swift; sourceTree = "<group>"; };
+		EC509265259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyCenterFaceOnlyView.swift; sourceTree = "<group>"; };
+		EC509266259482F4007D2B91 /* DiceKeyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyView.swift; sourceTree = "<group>"; };
+		EC509267259482F4007D2B91 /* DieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DieView.swift; sourceTree = "<group>"; };
+		EC509268259482F4007D2B91 /* DerivedFromDiceKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DerivedFromDiceKey.swift; sourceTree = "<group>"; };
+		EC50926A259482F4007D2B91 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		EC50926B259482F4007D2B91 /* FacesReadOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacesReadOverlay.swift; sourceTree = "<group>"; };
+		EC50926C259482F4007D2B91 /* ScanDiceKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanDiceKey.swift; sourceTree = "<group>"; };
+		EC50926D259482F4007D2B91 /* DiceKeysCameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeysCameraView.swift; sourceTree = "<group>"; };
+		EC50926F259482F4007D2B91 /* DiceKeyPresent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyPresent.swift; sourceTree = "<group>"; };
+		EC509270259482F4007D2B91 /* AppMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMainView.swift; sourceTree = "<group>"; };
+		EC509271259482F4007D2B91 /* SeedHardwareSecurityKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeedHardwareSecurityKey.swift; sourceTree = "<group>"; };
+		EC509272259482F4007D2B91 /* DiceKeyStorageOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyStorageOptions.swift; sourceTree = "<group>"; };
+		EC509273259482F4007D2B91 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		EC509274259482F4007D2B91 /* DiceKeyWithDerivedValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyWithDerivedValue.swift; sourceTree = "<group>"; };
+		EC509275259482F4007D2B91 /* AssemblyInstructions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssemblyInstructions.swift; sourceTree = "<group>"; };
+		EC509277259482F4007D2B91 /* NavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
+		EC509278259482F4007D2B91 /* Instruction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
+		EC509279259482F4007D2B91 /* ChildSizeReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildSizeReader.swift; sourceTree = "<group>"; };
+		EC50927A259482F4007D2B91 /* StepFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepFooter.swift; sourceTree = "<group>"; };
+		EC50927B259482F4007D2B91 /* RoundedTextButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedTextButton.swift; sourceTree = "<group>"; };
+		EC50927D259482F4007D2B91 /* DerivationRecipeBuilders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DerivationRecipeBuilders.swift; sourceTree = "<group>"; };
+		EC50927E259482F4007D2B91 /* DerivationRecipeMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DerivationRecipeMenu.swift; sourceTree = "<group>"; };
+		EC509281259482F4007D2B91 /* StickerSheetForFace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerSheetForFace.swift; sourceTree = "<group>"; };
+		EC509282259482F4007D2B91 /* BackupToStickeysIntroduction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackupToStickeysIntroduction.swift; sourceTree = "<group>"; };
+		EC509283259482F4007D2B91 /* TransferSticker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferSticker.swift; sourceTree = "<group>"; };
+		EC509284259482F4007D2B91 /* StickerTargetSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerTargetSheet.swift; sourceTree = "<group>"; };
+		EC509285259482F4007D2B91 /* StickerSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerSheet.swift; sourceTree = "<group>"; };
+		EC509286259482F4007D2B91 /* ValidateBackup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateBackup.swift; sourceTree = "<group>"; };
+		EC509287259482F4007D2B91 /* BackupDiceKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackupDiceKey.swift; sourceTree = "<group>"; };
+		EC509289259482F4007D2B91 /* BackupToDiceKeysKitIntroduction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackupToDiceKeysKitIntroduction.swift; sourceTree = "<group>"; };
+		EC50928A259482F4007D2B91 /* TransferDie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferDie.swift; sourceTree = "<group>"; };
+		EC50928B259482F4007D2B91 /* DiceKeyCopyInProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyCopyInProgress.swift; sourceTree = "<group>"; };
+		EC50928C259482F4007D2B91 /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		EC5092D72594830F007D2B91 /* DiceKeys-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DiceKeys-Bridging-Header.h"; sourceTree = "<group>"; };
+		EC50932A2595BD03007D2B91 /* SequenceNumberField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceNumberField.swift; sourceTree = "<group>"; };
+		EC5093312595C043007D2B91 /* RoundedRectCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedRectCard.swift; sourceTree = "<group>"; };
+		EC561284258B827300A056B8 /* DiceKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiceKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC561287258B827300A056B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC56128C258B827300A056B8 /* DiceKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiceKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC56128E258B827300A056B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC56128F258B827300A056B8 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		EC561294258B827300A056B8 /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC561298258B827300A056B8 /* Tests_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOS.swift; sourceTree = "<group>"; };
+		EC56129A258B827300A056B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC56129F258B827300A056B8 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC5612A3258B827300A056B8 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
+		EC5612A5258B827300A056B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ECFC5236259A194F008D0598 /* PlatformTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformTypes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		6FAC6AA325480DE000AA8249 /* Frameworks */ = {
+		EC561281258B827300A056B8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6185ECF52F55E701A7D44A6F /* Pods_DiceKeys.framework in Frameworks */,
+				0FF7F731929DF324410FCCEA /* Pods_DiceKeys__iOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6FAC6AB925480DE200AA8249 /* Frameworks */ = {
+		EC561289258B827300A056B8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04EA543F170C770F1092B593 /* Pods_DiceKeysTests.framework in Frameworks */,
+				ACF9E6A9B1E79E881EEE4C09 /* Pods_DiceKeys__macOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6FAC6AC425480DE200AA8249 /* Frameworks */ = {
+		EC561291258B827300A056B8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5D66895958DCA98A0B25D61 /* Pods_DiceKeys_DiceKeysUITests.framework in Frameworks */,
-				D3EA9809CFFADDCED4460E9F /* Pods_DiceKeys_DiceKeysUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EC56129C258B827300A056B8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		17318755257E552000A9F97A /* StickeysKit */ = {
+		17B6C59F25A43A86007798F3 /* SeedSecurityKey */ = {
 			isa = PBXGroup;
 			children = (
-				17318751257E545000A9F97A /* BackupToStickeysIntroduction.swift */,
-				1788B17525790B29007F6CF9 /* StickerSheet.swift */,
-				1788B17425790B29007F6CF9 /* StickerTargetSheet.swift */,
-				1788B17325790B29007F6CF9 /* TransferSticker.swift */,
-				17318756257E555B00A9F97A /* StickerSheetForFace.swift */,
+				17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */,
+				17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */,
 			);
-			path = StickeysKit;
+			path = SeedSecurityKey;
 			sourceTree = "<group>";
 		};
-		1731875C257E557E00A9F97A /* DiceKeyKit */ = {
+		8BCE0DBCE05C749853CDC99E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				17318765257E562600A9F97A /* BackupToDiceKeysKitIntroduction.swift */,
-				1731874D257E27C300A9F97A /* DiceKeyCopyInProgress.swift */,
-				1731875F257E55BB00A9F97A /* TransferDie.swift */,
+				D6328E5B71C2EFE82AB1D100 /* Pods-DiceKeys (iOS).debug.xcconfig */,
+				14C38080E39571B13473B619 /* Pods-DiceKeys (iOS).release.xcconfig */,
+				B09CA29A4B28E9D780FE3E0E /* Pods-DiceKeys (macOS).debug.xcconfig */,
+				A12F40698764C98F698C6350 /* Pods-DiceKeys (macOS).release.xcconfig */,
 			);
-			name = DiceKeyKit;
-			path = Stickeys;
+			path = Pods;
 			sourceTree = "<group>";
 		};
-		17426E122564F91E00FB0FAB /* DiceKey */ = {
+		E3C92F6F84F8D8E47D8983A4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				17426E312564FA8000FB0FAB /* FaceSpecification.swift */,
-				1742872F25726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift */,
-				17426E412564FAB700FB0FAB /* DiceKey.swift */,
-				17426E392564FAAF00FB0FAB /* FaceRead.swift */,
-				17426E2B2564FA6000FB0FAB /* Face.swift */,
-				1778C13025819976004EFC03 /* DiceKeyMedium.swift */,
-				1788B17D25790C47007F6CF9 /* Derivables.swift */,
-			);
-			path = DiceKey;
-			sourceTree = "<group>";
-		};
-		17426E512564FAE000FB0FAB /* Api */ = {
-			isa = PBXGroup;
-			children = (
-				17426E522564FAFB00FB0FAB /* ApiRequest.swift */,
-				17426E5A2564FB0B00FB0FAB /* DerivationOptions.swift */,
-				17426E5B2564FB0B00FB0FAB /* PermissionChecks.swift */,
-				17426E592564FB0B00FB0FAB /* UnsealingInstructions.swift */,
-				17426E5C2564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift */,
-				17426E492564FADA00FB0FAB /* ApiInterfaces.swift */,
-			);
-			path = Api;
-			sourceTree = "<group>";
-		};
-		17426E742564FB4600FB0FAB /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				1778C129258198A5004EFC03 /* Illustrations */,
-				1788B1BC257B0781007F6CF9 /* Backup */,
-				1788B1A5257A6E36007F6CF9 /* Components */,
-				17BBB62825706291009AC42B /* Scanning */,
-				177CF42425830D180071F845 /* Derivables */,
-				17BBB6272570623B009AC42B /* DiceKey */,
-				17BBB626257061FE009AC42B /* Screens */,
-				17BBB625257061DD009AC42B /* Shapes */,
-				17533915256B3AC500E090BC /* App.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		17426E8F2565E20800FB0FAB /* fonts */ = {
-			isa = PBXGroup;
-			children = (
-				17426E872565E1CD00FB0FAB /* Inconsolata-Bold.otf */,
-			);
-			path = fonts;
-			sourceTree = "<group>";
-		};
-		17428737257478EB00C3715B /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				17426E512564FAE000FB0FAB /* Api */,
-				17426E122564F91E00FB0FAB /* DiceKey */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		175F393A2575A42D007FAE80 /* State */ = {
-			isa = PBXGroup;
-			children = (
-				1788B16D25790AD0007F6CF9 /* GlobalState.swift */,
-				175F39432575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */,
-				175F393B2575A445007FAE80 /* UnlockedDiceKeyState.swift */,
-			);
-			path = State;
-			sourceTree = "<group>";
-		};
-		1778C129258198A5004EFC03 /* Illustrations */ = {
-			isa = PBXGroup;
-			children = (
-				1778C12A258198B6004EFC03 /* KeyScanningIllustration.swift */,
-			);
-			path = Illustrations;
-			sourceTree = "<group>";
-		};
-		177CF42425830D180071F845 /* Derivables */ = {
-			isa = PBXGroup;
-			children = (
-				177CF42525830D630071F845 /* DerivationRecipeMenu.swift */,
-				177CF429258330200071F845 /* DerivationRecipeBuilders.swift */,
-				171D5D84258C7C5C005DEF10 /* SequenceNumberField.swift */,
-			);
-			path = Derivables;
-			sourceTree = "<group>";
-		};
-		1788B1A5257A6E36007F6CF9 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				1788B1C3257B58B0007F6CF9 /* ChildSizeReader.swift */,
-				1788B1A1257A6E2A007F6CF9 /* RoundedTextButton.swift */,
-				1788B1BF257B277C007F6CF9 /* Instruction.swift */,
-				1778C12325810FAA004EFC03 /* NavigationBar.swift */,
-				1749B52A2589A11300065E28 /* StepFooter.swift */,
-				171D5D80258C0955005DEF10 /* RoundedRectCard.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		1788B1BC257B0781007F6CF9 /* Backup */ = {
-			isa = PBXGroup;
-			children = (
-				1731875C257E557E00A9F97A /* DiceKeyKit */,
-				17318755257E552000A9F97A /* StickeysKit */,
-				17318747257DA69700A9F97A /* ValidateBackup.swift */,
-				1742872725721B5B00C3715B /* BackupDiceKey.swift */,
-			);
-			path = Backup;
-			sourceTree = "<group>";
-		};
-		17BBB625257061DD009AC42B /* Shapes */ = {
-			isa = PBXGroup;
-			children = (
-				17BBB61D256F87CD009AC42B /* Funnel.swift */,
-			);
-			path = Shapes;
-			sourceTree = "<group>";
-		};
-		17BBB626257061FE009AC42B /* Screens */ = {
-			isa = PBXGroup;
-			children = (
-				177FCA55256D03DA00E2FB6F /* AppMainView.swift */,
-				177FCA75256DBB9600E2FB6F /* AssemblyInstructions.swift */,
-				17BBB63525706A7E009AC42B /* DiceKeyPresent.swift */,
-				1788B18125790EDB007F6CF9 /* DiceKeyWithDerivedValue.swift */,
-				1742872B25721E5500C3715B /* DiceKeyStorageOptions.swift */,
-				1742872125721A7100C3715B /* SeedHardwareSecurityKey.swift */,
-				1778C11F258093B2004EFC03 /* UIViewController.swift */,
-			);
-			path = Screens;
-			sourceTree = "<group>";
-		};
-		17BBB6272570623B009AC42B /* DiceKey */ = {
-			isa = PBXGroup;
-			children = (
-				17BBB621256F8840009AC42B /* DerivedFromDiceKey.swift */,
-				17426ECF2567CC7700FB0FAB /* DieView.swift */,
-				17426E772564FB7200FB0FAB /* DiceKeyView.swift */,
-				17F4DF71257F31E20088D1D7 /* DiceKeyCenterFaceOnlyView.swift */,
-			);
-			path = DiceKey;
-			sourceTree = "<group>";
-		};
-		17BBB62825706291009AC42B /* Scanning */ = {
-			isa = PBXGroup;
-			children = (
-				17426E922566316100FB0FAB /* DiceKeysCameraView.swift */,
-				17426EB52567C03400FB0FAB /* FacesReadOverlay.swift */,
-				177FCA5F256D193B00E2FB6F /* ScanDiceKey.swift */,
-				17533911256B2BCB00E090BC /* CameraController.swift */,
-			);
-			path = Scanning;
-			sourceTree = "<group>";
-		};
-		6F3EE4E02549B2B1002602CD /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				6F3EE4E12549B2BB002602CD /* test.png */,
-				6FAC6AB225480DE200AA8249 /* Assets.xcassets */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		6F565C3F25516F9500B6B3B1 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				AAD0DF73F2796056AF2C9CA0 /* Pods_DiceKeys.framework */,
-				A8FF34CD70539F7AB4106E41 /* Pods_DiceKeys_DiceKeysUITests.framework */,
-				2C745A8B1CC38B6B0C65BE2E /* Pods_DiceKeysTests.framework */,
-				1EF10658592EB59EDF5C1CCD /* Pods_DiceKeys_DiceKeysUITests.framework */,
+				25A6B06AB3C071EB2999AE67 /* Pods_DiceKeys__iOS_.framework */,
+				19FCCD61505F4C2ED9F6ED0B /* Pods_DiceKeys__macOS_.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6F846B43254AAC3100ABE33B /* Extensions */ = {
+		EC5091E9259480BE007D2B91 /* State */ = {
 			isa = PBXGroup;
 			children = (
-				177FCA79256DBBF300E2FB6F /* Color.swift */,
-				1788B1972579E6A1007F6CF9 /* Size.swift */,
-				177FCA7D256E3B8500E2FB6F /* View.swift */,
-				6F846C03254B2BCF00ABE33B /* UIWindow+Orientation.swift */,
-				1742874025749CA300C3715B /* Properties.swift */,
+				EC5091EA259480BE007D2B91 /* GlobalState.swift */,
+				EC5091EB259480BE007D2B91 /* UnlockedDiceKeyState.swift */,
+				EC5091EC259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		EC5091F725948124007D2B91 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				17B6C59F25A43A86007798F3 /* SeedSecurityKey */,
+				EC5091F825948124007D2B91 /* DiceKey */,
+				EC50920025948124007D2B91 /* Api */,
+				ECFC5236259A194F008D0598 /* PlatformTypes.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		EC5091F825948124007D2B91 /* DiceKey */ = {
+			isa = PBXGroup;
+			children = (
+				EC5091F925948124007D2B91 /* DiceKeyMedium.swift */,
+				EC5091FA25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift */,
+				EC5091FB25948124007D2B91 /* Face.swift */,
+				EC5091FC25948124007D2B91 /* FaceRead.swift */,
+				EC5091FD25948124007D2B91 /* DiceKey.swift */,
+				EC5091FE25948124007D2B91 /* FaceSpecification.swift */,
+				EC5091FF25948124007D2B91 /* Derivables.swift */,
+			);
+			path = DiceKey;
+			sourceTree = "<group>";
+		};
+		EC50920025948124007D2B91 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				EC50920125948124007D2B91 /* DerivationOptions.swift */,
+				EC50920225948124007D2B91 /* UnsealingInstructions.swift */,
+				EC50920325948124007D2B91 /* PermissionChecks.swift */,
+				EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */,
+				EC50920525948124007D2B91 /* ApiRequest.swift */,
+				EC50920625948124007D2B91 /* ApiInterfaces.swift */,
+			);
+			path = Api;
+			sourceTree = "<group>";
+		};
+		EC5092292594818F007D2B91 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				EC50922A2594818F007D2B91 /* UIWindow+Orientation.swift */,
+				EC50922B2594818F007D2B91 /* View.swift */,
+				EC50922C2594818F007D2B91 /* Properties.swift */,
+				EC50922D2594818F007D2B91 /* Size.swift */,
+				EC50922E2594818F007D2B91 /* Color.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		6FAC6A9D25480DE000AA8249 = {
+		EC50923D259481E2007D2B91 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				6FAC6D852548873000AA8249 /* .swift-version */,
-				6FAC6AA825480DE000AA8249 /* DiceKeys */,
-				6FAC6ABF25480DE200AA8249 /* DiceKeysTests */,
-				6FAC6ACA25480DE200AA8249 /* DiceKeysUITests */,
-				6FAC6AA725480DE000AA8249 /* Products */,
-				6F565C3F25516F9500B6B3B1 /* Frameworks */,
-				E2B878D0BDEA1D91C5A1FFAE /* Pods */,
+				EC50923E259481E2007D2B91 /* Assets.xcassets */,
+				17B6C5D425A52A69007798F3 /* Colors.xcassets */,
+				EC50923F259481E2007D2B91 /* test.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		EC509257259482CA007D2B91 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				EC509258259482CA007D2B91 /* Inconsolata-Bold.otf */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
+		EC50925F259482F4007D2B91 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EC509260259482F4007D2B91 /* Illustrations */,
+				EC509262259482F4007D2B91 /* Shapes */,
+				EC509264259482F4007D2B91 /* DiceKey */,
+				EC509269259482F4007D2B91 /* Scanning */,
+				EC50926E259482F4007D2B91 /* Screens */,
+				EC509276259482F4007D2B91 /* Components */,
+				EC50927C259482F4007D2B91 /* Derivables */,
+				EC50927F259482F4007D2B91 /* Backup */,
+				EC50928C259482F4007D2B91 /* App.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EC509260259482F4007D2B91 /* Illustrations */ = {
+			isa = PBXGroup;
+			children = (
+				EC509261259482F4007D2B91 /* KeyScanningIllustration.swift */,
+			);
+			path = Illustrations;
+			sourceTree = "<group>";
+		};
+		EC509262259482F4007D2B91 /* Shapes */ = {
+			isa = PBXGroup;
+			children = (
+				EC509263259482F4007D2B91 /* Funnel.swift */,
+			);
+			path = Shapes;
+			sourceTree = "<group>";
+		};
+		EC509264259482F4007D2B91 /* DiceKey */ = {
+			isa = PBXGroup;
+			children = (
+				EC509265259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift */,
+				EC509266259482F4007D2B91 /* DiceKeyView.swift */,
+				EC509267259482F4007D2B91 /* DieView.swift */,
+				EC509268259482F4007D2B91 /* DerivedFromDiceKey.swift */,
+			);
+			path = DiceKey;
+			sourceTree = "<group>";
+		};
+		EC509269259482F4007D2B91 /* Scanning */ = {
+			isa = PBXGroup;
+			children = (
+				EC50926A259482F4007D2B91 /* CameraController.swift */,
+				EC50926B259482F4007D2B91 /* FacesReadOverlay.swift */,
+				EC50926C259482F4007D2B91 /* ScanDiceKey.swift */,
+				EC50926D259482F4007D2B91 /* DiceKeysCameraView.swift */,
+			);
+			path = Scanning;
+			sourceTree = "<group>";
+		};
+		EC50926E259482F4007D2B91 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				EC50926F259482F4007D2B91 /* DiceKeyPresent.swift */,
+				EC509270259482F4007D2B91 /* AppMainView.swift */,
+				EC509271259482F4007D2B91 /* SeedHardwareSecurityKey.swift */,
+				EC509272259482F4007D2B91 /* DiceKeyStorageOptions.swift */,
+				EC509273259482F4007D2B91 /* UIViewController.swift */,
+				EC509274259482F4007D2B91 /* DiceKeyWithDerivedValue.swift */,
+				EC509275259482F4007D2B91 /* AssemblyInstructions.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		EC509276259482F4007D2B91 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				EC5093312595C043007D2B91 /* RoundedRectCard.swift */,
+				EC509277259482F4007D2B91 /* NavigationBar.swift */,
+				EC509278259482F4007D2B91 /* Instruction.swift */,
+				EC509279259482F4007D2B91 /* ChildSizeReader.swift */,
+				EC50927A259482F4007D2B91 /* StepFooter.swift */,
+				EC50927B259482F4007D2B91 /* RoundedTextButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		EC50927C259482F4007D2B91 /* Derivables */ = {
+			isa = PBXGroup;
+			children = (
+				EC50932A2595BD03007D2B91 /* SequenceNumberField.swift */,
+				EC50927D259482F4007D2B91 /* DerivationRecipeBuilders.swift */,
+				EC50927E259482F4007D2B91 /* DerivationRecipeMenu.swift */,
+			);
+			path = Derivables;
+			sourceTree = "<group>";
+		};
+		EC50927F259482F4007D2B91 /* Backup */ = {
+			isa = PBXGroup;
+			children = (
+				EC509280259482F4007D2B91 /* StickeysKit */,
+				EC509286259482F4007D2B91 /* ValidateBackup.swift */,
+				EC509287259482F4007D2B91 /* BackupDiceKey.swift */,
+				EC509288259482F4007D2B91 /* Stickeys */,
+			);
+			path = Backup;
+			sourceTree = "<group>";
+		};
+		EC509280259482F4007D2B91 /* StickeysKit */ = {
+			isa = PBXGroup;
+			children = (
+				EC509281259482F4007D2B91 /* StickerSheetForFace.swift */,
+				EC509282259482F4007D2B91 /* BackupToStickeysIntroduction.swift */,
+				EC509283259482F4007D2B91 /* TransferSticker.swift */,
+				EC509284259482F4007D2B91 /* StickerTargetSheet.swift */,
+				EC509285259482F4007D2B91 /* StickerSheet.swift */,
+			);
+			path = StickeysKit;
+			sourceTree = "<group>";
+		};
+		EC509288259482F4007D2B91 /* Stickeys */ = {
+			isa = PBXGroup;
+			children = (
+				EC509289259482F4007D2B91 /* BackupToDiceKeysKitIntroduction.swift */,
+				EC50928A259482F4007D2B91 /* TransferDie.swift */,
+				EC50928B259482F4007D2B91 /* DiceKeyCopyInProgress.swift */,
+			);
+			path = Stickeys;
+			sourceTree = "<group>";
+		};
+		EC561277258B827200A056B8 = {
+			isa = PBXGroup;
+			children = (
+				EC56127C258B827200A056B8 /* DiceKeys */,
+				EC561286258B827300A056B8 /* iOS */,
+				EC56128D258B827300A056B8 /* macOS */,
+				EC561297258B827300A056B8 /* Tests iOS */,
+				EC5612A2258B827300A056B8 /* Tests macOS */,
+				EC561285258B827300A056B8 /* Products */,
+				8BCE0DBCE05C749853CDC99E /* Pods */,
+				E3C92F6F84F8D8E47D8983A4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		6FAC6AA725480DE000AA8249 /* Products */ = {
+		EC56127C258B827200A056B8 /* DiceKeys */ = {
 			isa = PBXGroup;
 			children = (
-				6FAC6AA625480DE000AA8249 /* DiceKeys.app */,
-				6FAC6ABC25480DE200AA8249 /* DiceKeysTests.xctest */,
-				6FAC6AC725480DE200AA8249 /* DiceKeysUITests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		6FAC6AA825480DE000AA8249 /* DiceKeys */ = {
-			isa = PBXGroup;
-			children = (
-				175F393A2575A42D007FAE80 /* State */,
-				17428737257478EB00C3715B /* Core */,
-				17426E8F2565E20800FB0FAB /* fonts */,
-				17426E742564FB4600FB0FAB /* Views */,
-				6FAC6DA625488BCB00AA8249 /* DiceKeys-Bridging-Header.h */,
-				6FAC6AB725480DE200AA8249 /* Info.plist */,
-				6F846B43254AAC3100ABE33B /* Extensions */,
-				6F3EE4E02549B2B1002602CD /* Resources */,
+				EC5091E9259480BE007D2B91 /* State */,
+				EC5091F725948124007D2B91 /* Core */,
+				EC5092D72594830F007D2B91 /* DiceKeys-Bridging-Header.h */,
+				EC50925F259482F4007D2B91 /* Views */,
+				EC509257259482CA007D2B91 /* fonts */,
+				EC50923D259481E2007D2B91 /* Resources */,
+				EC5092292594818F007D2B91 /* Extensions */,
 			);
 			path = DiceKeys;
 			sourceTree = "<group>";
 		};
-		6FAC6ABF25480DE200AA8249 /* DiceKeysTests */ = {
+		EC561285258B827300A056B8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6FAC6AC025480DE200AA8249 /* DiceKeysTests.swift */,
-				6FAC6AC225480DE200AA8249 /* Info.plist */,
+				EC561284258B827300A056B8 /* DiceKeys.app */,
+				EC56128C258B827300A056B8 /* DiceKeys.app */,
+				EC561294258B827300A056B8 /* Tests iOS.xctest */,
+				EC56129F258B827300A056B8 /* Tests macOS.xctest */,
 			);
-			path = DiceKeysTests;
+			name = Products;
 			sourceTree = "<group>";
 		};
-		6FAC6ACA25480DE200AA8249 /* DiceKeysUITests */ = {
+		EC561286258B827300A056B8 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				6FAC6ACB25480DE200AA8249 /* DiceKeysUITests.swift */,
-				6FAC6ACD25480DE200AA8249 /* Info.plist */,
+				EC561287258B827300A056B8 /* Info.plist */,
 			);
-			path = DiceKeysUITests;
+			path = iOS;
 			sourceTree = "<group>";
 		};
-		E2B878D0BDEA1D91C5A1FFAE /* Pods */ = {
+		EC56128D258B827300A056B8 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
-				DB881CF2AEECEBA83A4A2040 /* Pods-DiceKeys.debug.xcconfig */,
-				336285FF67EA50C62F01AC19 /* Pods-DiceKeys.release.xcconfig */,
-				B4CF76E3ABEDC8F66941F330 /* Pods-DiceKeys-DiceKeysUITests.debug.xcconfig */,
-				D62952D418B79F6700259BAD /* Pods-DiceKeys-DiceKeysUITests.release.xcconfig */,
-				3D5F184BC3A8DD2234A00D0F /* Pods-DiceKeysTests.debug.xcconfig */,
-				F5E037741A28CC6CA9137A98 /* Pods-DiceKeysTests.release.xcconfig */,
+				EC56128E258B827300A056B8 /* Info.plist */,
+				EC56128F258B827300A056B8 /* macOS.entitlements */,
 			);
-			path = Pods;
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		EC561297258B827300A056B8 /* Tests iOS */ = {
+			isa = PBXGroup;
+			children = (
+				EC561298258B827300A056B8 /* Tests_iOS.swift */,
+				EC56129A258B827300A056B8 /* Info.plist */,
+			);
+			path = "Tests iOS";
+			sourceTree = "<group>";
+		};
+		EC5612A2258B827300A056B8 /* Tests macOS */ = {
+			isa = PBXGroup;
+			children = (
+				EC5612A3258B827300A056B8 /* Tests_macOS.swift */,
+				EC5612A5258B827300A056B8 /* Info.plist */,
+			);
+			path = "Tests macOS";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6FAC6AA525480DE000AA8249 /* DiceKeys */ = {
+		EC561283258B827300A056B8 /* DiceKeys (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6FAC6AD025480DE200AA8249 /* Build configuration list for PBXNativeTarget "DiceKeys" */;
+			buildConfigurationList = EC5612AE258B827300A056B8 /* Build configuration list for PBXNativeTarget "DiceKeys (iOS)" */;
 			buildPhases = (
-				F27FC1EB2BA6BCB99546AC6B /* [CP] Check Pods Manifest.lock */,
-				6FAC6D8A2548886E00AA8249 /* Run Script: Swift Lint */,
-				6FAC6AA225480DE000AA8249 /* Sources */,
-				6FAC6AA325480DE000AA8249 /* Frameworks */,
-				6FAC6AA425480DE000AA8249 /* Resources */,
-				6F565C5F2551736100B6B3B1 /* Embed Frameworks */,
-				CA9BB091A4288A3D3017F297 /* [CP] Embed Pods Frameworks */,
+				9F42E1F9A15CDF587A953B33 /* [CP] Check Pods Manifest.lock */,
+				EC561280258B827300A056B8 /* Sources */,
+				EC561281258B827300A056B8 /* Frameworks */,
+				EC561282258B827300A056B8 /* Resources */,
+				7089064DC75FE356585A21AA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = DiceKeys;
-			productName = DiceKeys;
-			productReference = 6FAC6AA625480DE000AA8249 /* DiceKeys.app */;
+			name = "DiceKeys (iOS)";
+			productName = "DiceKeys (iOS)";
+			productReference = EC561284258B827300A056B8 /* DiceKeys.app */;
 			productType = "com.apple.product-type.application";
 		};
-		6FAC6ABB25480DE200AA8249 /* DiceKeysTests */ = {
+		EC56128B258B827300A056B8 /* DiceKeys (macOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6FAC6AD325480DE200AA8249 /* Build configuration list for PBXNativeTarget "DiceKeysTests" */;
+			buildConfigurationList = EC5612B1258B827300A056B8 /* Build configuration list for PBXNativeTarget "DiceKeys (macOS)" */;
 			buildPhases = (
-				255B0FFF8FC50C46D6D93818 /* [CP] Check Pods Manifest.lock */,
-				6FAC6AB825480DE200AA8249 /* Sources */,
-				6FAC6AB925480DE200AA8249 /* Frameworks */,
-				6FAC6ABA25480DE200AA8249 /* Resources */,
+				DF673C82531249488B44C288 /* [CP] Check Pods Manifest.lock */,
+				EC561288258B827300A056B8 /* Sources */,
+				EC561289258B827300A056B8 /* Frameworks */,
+				EC56128A258B827300A056B8 /* Resources */,
+				1BA84882CD207698B9D160C4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				6FAC6ABE25480DE200AA8249 /* PBXTargetDependency */,
 			);
-			name = DiceKeysTests;
-			productName = DiceKeysTests;
-			productReference = 6FAC6ABC25480DE200AA8249 /* DiceKeysTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
+			name = "DiceKeys (macOS)";
+			productName = "DiceKeys (macOS)";
+			productReference = EC56128C258B827300A056B8 /* DiceKeys.app */;
+			productType = "com.apple.product-type.application";
 		};
-		6FAC6AC625480DE200AA8249 /* DiceKeysUITests */ = {
+		EC561293258B827300A056B8 /* Tests iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6FAC6AD625480DE200AA8249 /* Build configuration list for PBXNativeTarget "DiceKeysUITests" */;
+			buildConfigurationList = EC5612B4258B827300A056B8 /* Build configuration list for PBXNativeTarget "Tests iOS" */;
 			buildPhases = (
-				CEB6721DA555B0B1625E1B29 /* [CP] Check Pods Manifest.lock */,
-				6FAC6AC325480DE200AA8249 /* Sources */,
-				6FAC6AC425480DE200AA8249 /* Frameworks */,
-				6FAC6AC525480DE200AA8249 /* Resources */,
-				4035568018E95AD3B4CDFA88 /* [CP] Embed Pods Frameworks */,
+				EC561290258B827300A056B8 /* Sources */,
+				EC561291258B827300A056B8 /* Frameworks */,
+				EC561292258B827300A056B8 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				6FAC6AC925480DE200AA8249 /* PBXTargetDependency */,
+				EC561296258B827300A056B8 /* PBXTargetDependency */,
 			);
-			name = DiceKeysUITests;
-			productName = DiceKeysUITests;
-			productReference = 6FAC6AC725480DE200AA8249 /* DiceKeysUITests.xctest */;
+			name = "Tests iOS";
+			productName = "Tests iOS";
+			productReference = EC561294258B827300A056B8 /* Tests iOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		EC56129E258B827300A056B8 /* Tests macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EC5612B7258B827300A056B8 /* Build configuration list for PBXNativeTarget "Tests macOS" */;
+			buildPhases = (
+				EC56129B258B827300A056B8 /* Sources */,
+				EC56129C258B827300A056B8 /* Frameworks */,
+				EC56129D258B827300A056B8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EC5612A1258B827300A056B8 /* PBXTargetDependency */,
+			);
+			name = "Tests macOS";
+			productName = "Tests macOS";
+			productReference = EC56129F258B827300A056B8 /* Tests macOS.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		6FAC6A9E25480DE000AA8249 /* Project object */ = {
+		EC561278258B827200A056B8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1200;
-				LastUpgradeCheck = 1200;
+				LastSwiftUpdateCheck = 1230;
+				LastUpgradeCheck = 1230;
 				TargetAttributes = {
-					6FAC6AA525480DE000AA8249 = {
-						CreatedOnToolsVersion = 12.0.1;
-						LastSwiftMigration = 1200;
+					EC561283258B827300A056B8 = {
+						CreatedOnToolsVersion = 12.3;
 					};
-					6FAC6ABB25480DE200AA8249 = {
-						CreatedOnToolsVersion = 12.0.1;
-						TestTargetID = 6FAC6AA525480DE000AA8249;
+					EC56128B258B827300A056B8 = {
+						CreatedOnToolsVersion = 12.3;
 					};
-					6FAC6AC625480DE200AA8249 = {
-						CreatedOnToolsVersion = 12.0.1;
-						TestTargetID = 6FAC6AA525480DE000AA8249;
+					EC561293258B827300A056B8 = {
+						CreatedOnToolsVersion = 12.3;
+						TestTargetID = EC561283258B827300A056B8;
+					};
+					EC56129E258B827300A056B8 = {
+						CreatedOnToolsVersion = 12.3;
+						TestTargetID = EC56128B258B827300A056B8;
 					};
 				};
 			};
-			buildConfigurationList = 6FAC6AA125480DE000AA8249 /* Build configuration list for PBXProject "DiceKeys" */;
+			buildConfigurationList = EC56127B258B827200A056B8 /* Build configuration list for PBXProject "DiceKeys" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -610,49 +690,94 @@
 				en,
 				Base,
 			);
-			mainGroup = 6FAC6A9D25480DE000AA8249;
-			productRefGroup = 6FAC6AA725480DE000AA8249 /* Products */;
+			mainGroup = EC561277258B827200A056B8;
+			productRefGroup = EC561285258B827300A056B8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6FAC6AA525480DE000AA8249 /* DiceKeys */,
-				6FAC6ABB25480DE200AA8249 /* DiceKeysTests */,
-				6FAC6AC625480DE200AA8249 /* DiceKeysUITests */,
+				EC561283258B827300A056B8 /* DiceKeys (iOS) */,
+				EC56128B258B827300A056B8 /* DiceKeys (macOS) */,
+				EC561293258B827300A056B8 /* Tests iOS */,
+				EC56129E258B827300A056B8 /* Tests macOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		6FAC6AA425480DE000AA8249 /* Resources */ = {
+		EC561282258B827300A056B8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FAC6AB325480DE200AA8249 /* Assets.xcassets in Resources */,
-				6F3EE4E22549B2BB002602CD /* test.png in Resources */,
-				17426E882565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */,
+				EC509259259482CA007D2B91 /* Inconsolata-Bold.otf in Resources */,
+				17B6C5D525A52A69007798F3 /* Colors.xcassets in Resources */,
+				EC509240259481E2007D2B91 /* Assets.xcassets in Resources */,
+				EC509242259481E2007D2B91 /* test.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6FAC6ABA25480DE200AA8249 /* Resources */ = {
+		EC56128A258B827300A056B8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17426E892565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */,
+				EC50925A259482CA007D2B91 /* Inconsolata-Bold.otf in Resources */,
+				17B6C5DA25A52AB6007798F3 /* Colors.xcassets in Resources */,
+				EC509241259481E2007D2B91 /* Assets.xcassets in Resources */,
+				EC509243259481E2007D2B91 /* test.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6FAC6AC525480DE200AA8249 /* Resources */ = {
+		EC561292258B827300A056B8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17426E8A2565E1CE00FB0FAB /* Inconsolata-Bold.otf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EC56129D258B827300A056B8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		255B0FFF8FC50C46D6D93818 /* [CP] Check Pods Manifest.lock */ = {
+		1BA84882CD207698B9D160C4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS)-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS)-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS)-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7089064DC75FE356585A21AA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DiceKeys (iOS)/Pods-DiceKeys (iOS)-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DiceKeys (iOS)/Pods-DiceKeys (iOS)-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DiceKeys (iOS)/Pods-DiceKeys (iOS)-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9F42E1F9A15CDF587A953B33 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -667,66 +792,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DiceKeysTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-DiceKeys (iOS)-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4035568018E95AD3B4CDFA88 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DiceKeys-DiceKeysUITests/Pods-DiceKeys-DiceKeysUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DiceKeys-DiceKeysUITests/Pods-DiceKeys-DiceKeysUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DiceKeys-DiceKeysUITests/Pods-DiceKeys-DiceKeysUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6FAC6D8A2548886E00AA8249 /* Run Script: Swift Lint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script: Swift Lint";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		CA9BB091A4288A3D3017F297 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DiceKeys/Pods-DiceKeys-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DiceKeys/Pods-DiceKeys-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DiceKeys/Pods-DiceKeys-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CEB6721DA555B0B1625E1B29 /* [CP] Check Pods Manifest.lock */ = {
+		DF673C82531249488B44C288 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -741,29 +814,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DiceKeys-DiceKeysUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F27FC1EB2BA6BCB99546AC6B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DiceKeys-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-DiceKeys (macOS)-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -773,119 +824,170 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		6FAC6AA225480DE000AA8249 /* Sources */ = {
+		EC561280258B827300A056B8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1788B1982579E6A1007F6CF9 /* Size.swift in Sources */,
-				1788B17E25790C47007F6CF9 /* Derivables.swift in Sources */,
-				17426ED02567CC7700FB0FAB /* DieView.swift in Sources */,
-				6F846C04254B2BCF00ABE33B /* UIWindow+Orientation.swift in Sources */,
-				177FCA7A256DBBF300E2FB6F /* Color.swift in Sources */,
-				1788B18225790EDB007F6CF9 /* DiceKeyWithDerivedValue.swift in Sources */,
-				1749B52B2589A11300065E28 /* StepFooter.swift in Sources */,
-				1778C13125819976004EFC03 /* DiceKeyMedium.swift in Sources */,
-				1742874125749CA300C3715B /* Properties.swift in Sources */,
-				17318757257E555B00A9F97A /* StickerSheetForFace.swift in Sources */,
-				1742872225721A7200C3715B /* SeedHardwareSecurityKey.swift in Sources */,
-				17318766257E562600A9F97A /* BackupToDiceKeysKitIntroduction.swift in Sources */,
-				17533916256B3AC500E090BC /* App.swift in Sources */,
-				17BBB61E256F87CD009AC42B /* Funnel.swift in Sources */,
-				171D5D85258C7C5C005DEF10 /* SequenceNumberField.swift in Sources */,
-				1742872C25721E5500C3715B /* DiceKeyStorageOptions.swift in Sources */,
-				1742872825721B5B00C3715B /* BackupDiceKey.swift in Sources */,
-				17426E5F2564FB0B00FB0FAB /* DerivationOptions.swift in Sources */,
-				17318748257DA69800A9F97A /* ValidateBackup.swift in Sources */,
-				17426E612564FB0B00FB0FAB /* PermissionChecks.swift in Sources */,
-				175F393C2575A445007FAE80 /* UnlockedDiceKeyState.swift in Sources */,
-				1788B16E25790AD0007F6CF9 /* GlobalState.swift in Sources */,
-				177FCA7E256E3B8500E2FB6F /* View.swift in Sources */,
-				17426E322564FA8000FB0FAB /* FaceSpecification.swift in Sources */,
-				1788B1A2257A6E2B007F6CF9 /* RoundedTextButton.swift in Sources */,
-				17426EB62567C03500FB0FAB /* FacesReadOverlay.swift in Sources */,
-				17426E3A2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
-				171D5D81258C0955005DEF10 /* RoundedRectCard.swift in Sources */,
-				17F4DF72257F31E20088D1D7 /* DiceKeyCenterFaceOnlyView.swift in Sources */,
-				17BBB63625706A7E009AC42B /* DiceKeyPresent.swift in Sources */,
-				1778C12425810FAA004EFC03 /* NavigationBar.swift in Sources */,
-				177FCA60256D193B00E2FB6F /* ScanDiceKey.swift in Sources */,
-				17426E422564FAB700FB0FAB /* DiceKey.swift in Sources */,
-				1788B1C0257B277F007F6CF9 /* Instruction.swift in Sources */,
-				1788B1C4257B58B2007F6CF9 /* ChildSizeReader.swift in Sources */,
-				1788B17725790B29007F6CF9 /* StickerTargetSheet.swift in Sources */,
-				17318760257E55BB00A9F97A /* TransferDie.swift in Sources */,
-				175F39442575DC4F007FAE80 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */,
-				17426E5D2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */,
-				1788B17825790B29007F6CF9 /* StickerSheet.swift in Sources */,
-				17BBB622256F8840009AC42B /* DerivedFromDiceKey.swift in Sources */,
-				177CF42625830D630071F845 /* DerivationRecipeMenu.swift in Sources */,
-				177CF42A258330200071F845 /* DerivationRecipeBuilders.swift in Sources */,
-				17426E2C2564FA6000FB0FAB /* Face.swift in Sources */,
-				17426E792564FB7300FB0FAB /* DiceKeyView.swift in Sources */,
-				17426E4A2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,
-				1731874E257E27C500A9F97A /* DiceKeyCopyInProgress.swift in Sources */,
-				17426E932566316100FB0FAB /* DiceKeysCameraView.swift in Sources */,
-				1778C12B258198B6004EFC03 /* KeyScanningIllustration.swift in Sources */,
-				1742873025726ACC00C3715B /* EncryptedDiceKeyFileAccessor.swift in Sources */,
-				1788B17625790B29007F6CF9 /* TransferSticker.swift in Sources */,
-				17426E632564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */,
-				1778C120258093B2004EFC03 /* UIViewController.swift in Sources */,
-				17533912256B2BCB00E090BC /* CameraController.swift in Sources */,
-				177FCA56256D03DA00E2FB6F /* AppMainView.swift in Sources */,
-				177FCA76256DBB9600E2FB6F /* AssemblyInstructions.swift in Sources */,
-				17318752257E545000A9F97A /* BackupToStickeysIntroduction.swift in Sources */,
-				17426E532564FAFB00FB0FAB /* ApiRequest.swift in Sources */,
+				EC5092B9259482F5007D2B91 /* DerivationRecipeBuilders.swift in Sources */,
+				EC5092352594818F007D2B91 /* Size.swift in Sources */,
+				EC50921325948124007D2B91 /* Derivables.swift in Sources */,
+				EC5092D1259482F5007D2B91 /* App.swift in Sources */,
+				EC50929B259482F4007D2B91 /* FacesReadOverlay.swift in Sources */,
+				EC5092372594818F007D2B91 /* Color.swift in Sources */,
+				EC50921125948124007D2B91 /* FaceSpecification.swift in Sources */,
+				EC50921F25948124007D2B91 /* ApiInterfaces.swift in Sources */,
+				EC5092B5259482F5007D2B91 /* StepFooter.swift in Sources */,
+				EC509295259482F4007D2B91 /* DieView.swift in Sources */,
+				EC50922F2594818F007D2B91 /* UIWindow+Orientation.swift in Sources */,
+				EC50920F25948124007D2B91 /* DiceKey.swift in Sources */,
+				EC5092B7259482F5007D2B91 /* RoundedTextButton.swift in Sources */,
+				EC5092BB259482F5007D2B91 /* DerivationRecipeMenu.swift in Sources */,
+				EC509291259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift in Sources */,
+				EC5092A1259482F4007D2B91 /* DiceKeyPresent.swift in Sources */,
+				EC5092BF259482F5007D2B91 /* BackupToStickeysIntroduction.swift in Sources */,
+				EC50920D25948124007D2B91 /* FaceRead.swift in Sources */,
+				EC5092332594818F007D2B91 /* Properties.swift in Sources */,
+				EC50921B25948124007D2B91 /* WebBasedApplicationIdentity.swift in Sources */,
+				EC5092CB259482F5007D2B91 /* BackupToDiceKeysKitIntroduction.swift in Sources */,
+				EC50920725948124007D2B91 /* DiceKeyMedium.swift in Sources */,
+				EC50929D259482F4007D2B91 /* ScanDiceKey.swift in Sources */,
+				EC5092C1259482F5007D2B91 /* TransferSticker.swift in Sources */,
+				EC5092C7259482F5007D2B91 /* ValidateBackup.swift in Sources */,
+				17B6C5AB25A494CB007798F3 /* AttachedHidDevice.swift in Sources */,
+				EC50928D259482F4007D2B91 /* KeyScanningIllustration.swift in Sources */,
+				EC5092CF259482F5007D2B91 /* DiceKeyCopyInProgress.swift in Sources */,
+				EC5093322595C043007D2B91 /* RoundedRectCard.swift in Sources */,
+				EC5092A7259482F5007D2B91 /* DiceKeyStorageOptions.swift in Sources */,
+				EC5092AB259482F5007D2B91 /* DiceKeyWithDerivedValue.swift in Sources */,
+				EC5092BD259482F5007D2B91 /* StickerSheetForFace.swift in Sources */,
+				EC5092C5259482F5007D2B91 /* StickerSheet.swift in Sources */,
+				EC5091EF259480BE007D2B91 /* UnlockedDiceKeyState.swift in Sources */,
+				EC50921925948124007D2B91 /* PermissionChecks.swift in Sources */,
+				EC5092A9259482F5007D2B91 /* UIViewController.swift in Sources */,
+				EC5092B1259482F5007D2B91 /* Instruction.swift in Sources */,
+				EC509297259482F4007D2B91 /* DerivedFromDiceKey.swift in Sources */,
+				EC5092312594818F007D2B91 /* View.swift in Sources */,
+				17B6C5A125A43AAB007798F3 /* CtapHidConnection.swift in Sources */,
+				EC5092AD259482F5007D2B91 /* AssemblyInstructions.swift in Sources */,
+				EC50921525948124007D2B91 /* DerivationOptions.swift in Sources */,
+				EC50921725948124007D2B91 /* UnsealingInstructions.swift in Sources */,
+				EC50929F259482F4007D2B91 /* DiceKeysCameraView.swift in Sources */,
+				EC5092C9259482F5007D2B91 /* BackupDiceKey.swift in Sources */,
+				EC50928F259482F4007D2B91 /* Funnel.swift in Sources */,
+				EC50932B2595BD03007D2B91 /* SequenceNumberField.swift in Sources */,
+				EC50920B25948124007D2B91 /* Face.swift in Sources */,
+				EC5092A5259482F5007D2B91 /* SeedHardwareSecurityKey.swift in Sources */,
+				EC509299259482F4007D2B91 /* CameraController.swift in Sources */,
+				EC5092B3259482F5007D2B91 /* ChildSizeReader.swift in Sources */,
+				EC5091F1259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */,
+				EC5092C3259482F5007D2B91 /* StickerTargetSheet.swift in Sources */,
+				EC509293259482F4007D2B91 /* DiceKeyView.swift in Sources */,
+				EC5092A3259482F4007D2B91 /* AppMainView.swift in Sources */,
+				EC5092CD259482F5007D2B91 /* TransferDie.swift in Sources */,
+				EC5092AF259482F5007D2B91 /* NavigationBar.swift in Sources */,
+				EC50920925948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift in Sources */,
+				EC5091ED259480BE007D2B91 /* GlobalState.swift in Sources */,
+				EC50921D25948124007D2B91 /* ApiRequest.swift in Sources */,
+				ECFC5237259A194F008D0598 /* PlatformTypes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6FAC6AB825480DE200AA8249 /* Sources */ = {
+		EC561288258B827300A056B8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17426E642564FB0B00FB0FAB /* WebBasedApplicationIdentity.swift in Sources */,
-				17426E432564FAB700FB0FAB /* DiceKey.swift in Sources */,
-				17426E5E2564FB0B00FB0FAB /* UnsealingInstructions.swift in Sources */,
-				17426E3B2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
-				17426E622564FB0B00FB0FAB /* PermissionChecks.swift in Sources */,
-				17426E4B2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,
-				17426E2D2564FA6000FB0FAB /* Face.swift in Sources */,
-				6FAC6AC125480DE200AA8249 /* DiceKeysTests.swift in Sources */,
-				17426E542564FAFB00FB0FAB /* ApiRequest.swift in Sources */,
-				17426E602564FB0B00FB0FAB /* DerivationOptions.swift in Sources */,
-				17426E332564FA8000FB0FAB /* FaceSpecification.swift in Sources */,
+				EC50934C25974065007D2B91 /* CameraController.swift in Sources */,
+				EC5092BA259482F5007D2B91 /* DerivationRecipeBuilders.swift in Sources */,
+				EC5092362594818F007D2B91 /* Size.swift in Sources */,
+				EC50921425948124007D2B91 /* Derivables.swift in Sources */,
+				EC5092D2259482F5007D2B91 /* App.swift in Sources */,
+				EC5092382594818F007D2B91 /* Color.swift in Sources */,
+				EC50921225948124007D2B91 /* FaceSpecification.swift in Sources */,
+				EC50922025948124007D2B91 /* ApiInterfaces.swift in Sources */,
+				ECFC5238259A194F008D0598 /* PlatformTypes.swift in Sources */,
+				EC5092B6259482F5007D2B91 /* StepFooter.swift in Sources */,
+				EC509296259482F4007D2B91 /* DieView.swift in Sources */,
+				EC50932C2595BD03007D2B91 /* SequenceNumberField.swift in Sources */,
+				EC50921025948124007D2B91 /* DiceKey.swift in Sources */,
+				EC5092B8259482F5007D2B91 /* RoundedTextButton.swift in Sources */,
+				EC5092BC259482F5007D2B91 /* DerivationRecipeMenu.swift in Sources */,
+				EC509292259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift in Sources */,
+				EC5092A2259482F4007D2B91 /* DiceKeyPresent.swift in Sources */,
+				EC5092C0259482F5007D2B91 /* BackupToStickeysIntroduction.swift in Sources */,
+				EC50920E25948124007D2B91 /* FaceRead.swift in Sources */,
+				EC5092342594818F007D2B91 /* Properties.swift in Sources */,
+				EC50921C25948124007D2B91 /* WebBasedApplicationIdentity.swift in Sources */,
+				EC5092CC259482F5007D2B91 /* BackupToDiceKeysKitIntroduction.swift in Sources */,
+				EC50920825948124007D2B91 /* DiceKeyMedium.swift in Sources */,
+				ECFC5244259AC86A008D0598 /* FacesReadOverlay.swift in Sources */,
+				EC50929E259482F4007D2B91 /* ScanDiceKey.swift in Sources */,
+				EC5092C2259482F5007D2B91 /* TransferSticker.swift in Sources */,
+				EC5092C8259482F5007D2B91 /* ValidateBackup.swift in Sources */,
+				EC50928E259482F4007D2B91 /* KeyScanningIllustration.swift in Sources */,
+				EC5092D0259482F5007D2B91 /* DiceKeyCopyInProgress.swift in Sources */,
+				EC5092A8259482F5007D2B91 /* DiceKeyStorageOptions.swift in Sources */,
+				EC5092AC259482F5007D2B91 /* DiceKeyWithDerivedValue.swift in Sources */,
+				EC5092BE259482F5007D2B91 /* StickerSheetForFace.swift in Sources */,
+				EC5092C6259482F5007D2B91 /* StickerSheet.swift in Sources */,
+				EC5091F0259480BE007D2B91 /* UnlockedDiceKeyState.swift in Sources */,
+				EC50921A25948124007D2B91 /* PermissionChecks.swift in Sources */,
+				EC5092B2259482F5007D2B91 /* Instruction.swift in Sources */,
+				EC509298259482F4007D2B91 /* DerivedFromDiceKey.swift in Sources */,
+				EC5092322594818F007D2B91 /* View.swift in Sources */,
+				EC5092AE259482F5007D2B91 /* AssemblyInstructions.swift in Sources */,
+				EC50921625948124007D2B91 /* DerivationOptions.swift in Sources */,
+				EC50921825948124007D2B91 /* UnsealingInstructions.swift in Sources */,
+				EC5092CA259482F5007D2B91 /* BackupDiceKey.swift in Sources */,
+				EC509290259482F4007D2B91 /* Funnel.swift in Sources */,
+				EC50920C25948124007D2B91 /* Face.swift in Sources */,
+				EC5092A6259482F5007D2B91 /* SeedHardwareSecurityKey.swift in Sources */,
+				EC5092B4259482F5007D2B91 /* ChildSizeReader.swift in Sources */,
+				EC5091F2259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */,
+				ECFC52312599CD21008D0598 /* DiceKeysCameraView.swift in Sources */,
+				EC5092C4259482F5007D2B91 /* StickerTargetSheet.swift in Sources */,
+				EC509294259482F4007D2B91 /* DiceKeyView.swift in Sources */,
+				EC5093332595C043007D2B91 /* RoundedRectCard.swift in Sources */,
+				EC5092A4259482F4007D2B91 /* AppMainView.swift in Sources */,
+				EC5092CE259482F5007D2B91 /* TransferDie.swift in Sources */,
+				EC50920A25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift in Sources */,
+				EC5091EE259480BE007D2B91 /* GlobalState.swift in Sources */,
+				EC50921E25948124007D2B91 /* ApiRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6FAC6AC325480DE200AA8249 /* Sources */ = {
+		EC561290258B827300A056B8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17426E442564FAB700FB0FAB /* DiceKey.swift in Sources */,
-				17426E3C2564FAAF00FB0FAB /* FaceRead.swift in Sources */,
-				17426E4C2564FADA00FB0FAB /* ApiInterfaces.swift in Sources */,
-				17426E2E2564FA6000FB0FAB /* Face.swift in Sources */,
-				6FAC6ACC25480DE200AA8249 /* DiceKeysUITests.swift in Sources */,
-				17426E342564FA8000FB0FAB /* FaceSpecification.swift in Sources */,
+				EC561299258B827300A056B8 /* Tests_iOS.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EC56129B258B827300A056B8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC5612A4258B827300A056B8 /* Tests_macOS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		6FAC6ABE25480DE200AA8249 /* PBXTargetDependency */ = {
+		EC561296258B827300A056B8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6FAC6AA525480DE000AA8249 /* DiceKeys */;
-			targetProxy = 6FAC6ABD25480DE200AA8249 /* PBXContainerItemProxy */;
+			target = EC561283258B827300A056B8 /* DiceKeys (iOS) */;
+			targetProxy = EC561295258B827300A056B8 /* PBXContainerItemProxy */;
 		};
-		6FAC6AC925480DE200AA8249 /* PBXTargetDependency */ = {
+		EC5612A1258B827300A056B8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6FAC6AA525480DE000AA8249 /* DiceKeys */;
-			targetProxy = 6FAC6AC825480DE200AA8249 /* PBXContainerItemProxy */;
+			target = EC56128B258B827300A056B8 /* DiceKeys (macOS) */;
+			targetProxy = EC5612A0258B827300A056B8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		6FAC6ACE25480DE200AA8249 /* Debug */ = {
+		EC5612AC258B827300A056B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -936,17 +1038,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		6FAC6ACF25480DE200AA8249 /* Release */ = {
+		EC5612AD258B827300A056B8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -991,189 +1091,246 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		EC5612AF258B827300A056B8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D6328E5B71C2EFE82AB1D100 /* Pods-DiceKeys (iOS).debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CTDV6HX5KK;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
+				PRODUCT_NAME = DiceKeys;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EC5612B0258B827300A056B8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 14C38080E39571B13473B619 /* Pods-DiceKeys (iOS).release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CTDV6HX5KK;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
+				PRODUCT_NAME = DiceKeys;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		6FAC6AD125480DE200AA8249 /* Debug */ = {
+		EC5612B2258B827300A056B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB881CF2AEECEBA83A4A2040 /* Pods-DiceKeys.debug.xcconfig */;
+			baseConfigurationReference = B09CA29A4B28E9D780FE3E0E /* Pods-DiceKeys (macOS).debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
-				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CTDV6HX5KK;
-				INFOPLIST_FILE = DiceKeys/Info.plist;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = "";
+				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "DiceKeys/DiceKeys-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys.app;
+				PRODUCT_NAME = DiceKeys;
+				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		6FAC6AD225480DE200AA8249 /* Release */ = {
+		EC5612B3258B827300A056B8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 336285FF67EA50C62F01AC19 /* Pods-DiceKeys.release.xcconfig */;
+			baseConfigurationReference = A12F40698764C98F698C6350 /* Pods-DiceKeys (macOS).release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
-				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CTDV6HX5KK;
-				INFOPLIST_FILE = DiceKeys/Info.plist;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = "";
+				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "DiceKeys/DiceKeys-Bridging-Header.h";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys.app;
+				PRODUCT_NAME = DiceKeys;
+				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		6FAC6AD425480DE200AA8249 /* Debug */ = {
+		EC5612B5258B827300A056B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3D5F184BC3A8DD2234A00D0F /* Pods-DiceKeysTests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PZRJ539VW8;
-				INFOPLIST_FILE = DiceKeysTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				INFOPLIST_FILE = "Tests iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys.DiceKeysTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dicekeys.Tests-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DiceKeys.app/DiceKeys";
+				TEST_TARGET_NAME = "DiceKeys (iOS)";
 			};
 			name = Debug;
 		};
-		6FAC6AD525480DE200AA8249 /* Release */ = {
+		EC5612B6258B827300A056B8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F5E037741A28CC6CA9137A98 /* Pods-DiceKeysTests.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PZRJ539VW8;
-				INFOPLIST_FILE = DiceKeysTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				INFOPLIST_FILE = "Tests iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys.DiceKeysTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dicekeys.Tests-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DiceKeys.app/DiceKeys";
+				TEST_TARGET_NAME = "DiceKeys (iOS)";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		6FAC6AD725480DE200AA8249 /* Debug */ = {
+		EC5612B8258B827300A056B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B4CF76E3ABEDC8F66941F330 /* Pods-DiceKeys-DiceKeysUITests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PZRJ539VW8;
-				INFOPLIST_FILE = DiceKeysUITests/Info.plist;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Tests macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys.DiceKeysUITests;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dicekeys.Tests-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = DiceKeys;
+				TEST_TARGET_NAME = "DiceKeys (macOS)";
 			};
 			name = Debug;
 		};
-		6FAC6AD825480DE200AA8249 /* Release */ = {
+		EC5612B9258B827300A056B8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D62952D418B79F6700259BAD /* Pods-DiceKeys-DiceKeysUITests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PZRJ539VW8;
-				INFOPLIST_FILE = DiceKeysUITests/Info.plist;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Tests macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys.DiceKeysUITests;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dicekeys.Tests-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = DiceKeys;
+				TEST_TARGET_NAME = "DiceKeys (macOS)";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6FAC6AA125480DE000AA8249 /* Build configuration list for PBXProject "DiceKeys" */ = {
+		EC56127B258B827200A056B8 /* Build configuration list for PBXProject "DiceKeys" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6FAC6ACE25480DE200AA8249 /* Debug */,
-				6FAC6ACF25480DE200AA8249 /* Release */,
+				EC5612AC258B827300A056B8 /* Debug */,
+				EC5612AD258B827300A056B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6FAC6AD025480DE200AA8249 /* Build configuration list for PBXNativeTarget "DiceKeys" */ = {
+		EC5612AE258B827300A056B8 /* Build configuration list for PBXNativeTarget "DiceKeys (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6FAC6AD125480DE200AA8249 /* Debug */,
-				6FAC6AD225480DE200AA8249 /* Release */,
+				EC5612AF258B827300A056B8 /* Debug */,
+				EC5612B0258B827300A056B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6FAC6AD325480DE200AA8249 /* Build configuration list for PBXNativeTarget "DiceKeysTests" */ = {
+		EC5612B1258B827300A056B8 /* Build configuration list for PBXNativeTarget "DiceKeys (macOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6FAC6AD425480DE200AA8249 /* Debug */,
-				6FAC6AD525480DE200AA8249 /* Release */,
+				EC5612B2258B827300A056B8 /* Debug */,
+				EC5612B3258B827300A056B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6FAC6AD625480DE200AA8249 /* Build configuration list for PBXNativeTarget "DiceKeysUITests" */ = {
+		EC5612B4258B827300A056B8 /* Build configuration list for PBXNativeTarget "Tests iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6FAC6AD725480DE200AA8249 /* Debug */,
-				6FAC6AD825480DE200AA8249 /* Release */,
+				EC5612B5258B827300A056B8 /* Debug */,
+				EC5612B6258B827300A056B8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EC5612B7258B827300A056B8 /* Build configuration list for PBXNativeTarget "Tests macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC5612B8258B827300A056B8 /* Debug */,
+				EC5612B9258B827300A056B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 6FAC6A9E25480DE000AA8249 /* Project object */;
+	rootObject = EC561278258B827200A056B8 /* Project object */;
 }

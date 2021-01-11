@@ -43,7 +43,7 @@ class KnownDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, Ide
 
     @Published fileprivate var protectedCacheOfIsDiceKeyStored: Bool?
 
-    var isDiceKeyStored: Bool {
+    var isDiceKeySaved: Bool {
         get {
             if self.protectedCacheOfIsDiceKeyStored == nil {
                 self.protectedCacheOfIsDiceKeyStored = EncryptedDiceKeyFileAccessor.instance.hasDiceKey(forKeyId: keyId)
@@ -83,8 +83,8 @@ final class UnlockedDiceKeyState: KnownDiceKeyState {
         }
     }
 
-    override var isDiceKeyStored: Bool {
-        get { super.isDiceKeyStored }
+    override var isDiceKeySaved: Bool {
+        get { super.isDiceKeySaved }
         set {
             // Currently we are storing the center face IFF we are storing the DiceKey
             isCenterFaceStored = newValue
@@ -107,7 +107,7 @@ final class UnlockedDiceKeyState: KnownDiceKeyState {
     }
 
     var isDiceKeyStoredBinding: Binding<Bool> { Binding<Bool>(
-        get: { self.isDiceKeyStored }, set: { self.isDiceKeyStored = $0 })
+        get: { self.isDiceKeySaved }, set: { self.isDiceKeySaved = $0 })
     }
 
     private init(_ forDiceKey: DiceKey) {
