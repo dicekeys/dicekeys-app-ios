@@ -153,14 +153,14 @@ struct DiceKeyPresent: View {
                     Image("Phonelet")
                         .resizable()
                         .renderingMode(.template)
-                        .foregroundColor(Color.DiceKeysNavigationForeground)
+                        .foregroundColor(Color.navigationForeground)
                         .aspectRatio(contentMode: .fit)
                     if diceKeyState.isDiceKeySaved {
                         Image("DiceKey Icon")
                             .renderingMode(.template)
                             .resizable()
                             .renderingMode(.template)
-                            .foregroundColor(Color.DiceKeysNavigationForeground)
+                            .foregroundColor(Color.navigationForeground)
                             .aspectRatio(contentMode: .fit)
                             .scaleEffect(2/3)
                     }
@@ -208,8 +208,8 @@ struct DiceKeyPresent: View {
                         self.onForget()
                     }) {
                         VStack {
-                            Image(systemName: "lock")
-                            Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget")
+                            Image(systemName: "lock").foregroundColor(Color.navigationForeground)
+                            Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget").foregroundColor(Color.navigationForeground)
                         }
                     }
                 }

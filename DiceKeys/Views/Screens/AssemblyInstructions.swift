@@ -266,7 +266,7 @@ struct AssemblyInstructions: View {
             .navigationTitle("Assembly Instructions")
             .toolbar {
                 ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {
-                    Text("Step \(step.rawValue) of \(Step.SealBox.rawValue)").foregroundColor(Color.DiceKeysNavigationForeground).font(.body)
+                    Text("Step \(step.rawValue) of \(Step.SealBox.rawValue)").foregroundColor(Color.navigationForeground).font(.body)
                 }
             }
 #if os(iOS)

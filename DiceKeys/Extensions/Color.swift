@@ -36,7 +36,7 @@ extension Color {
     static var highlighter: Color { Color("highlighter") }
     static var alexandrasBlue: Color { Color("alexandrasBlue") }
     static var alexandrasBlueLighter: Color { Color("alexandrasBlueLighter") }
-    static var DiceKeysNavigationForeground: Color { Color("navigationBarForeground") }
+    static var navigationForeground: Color { Color("navigationBarForeground") }
     static var warningBackground: Color { Color("warningBackground") }
     static var diceBox: Color { Color("diceBox") }
     static var diceBoxDieSlot: Color { Color("diceBoxDieSlot") }
