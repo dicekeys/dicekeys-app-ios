@@ -106,19 +106,7 @@ struct DerivationRecipe: DerivationRecipeIdentifiable, Equatable {
         return try JSONDecoder().decode([DerivationRecipe].self, from: json.data(using: .utf8)! )
     }
     static func listToJson(_ derivables: [DerivationRecipe]) throws -> String { String(decoding: try JSONEncoder().encode(derivables), as: UTF8.self) }
- }
-
-let derivationRecipeTemplates: [DerivationRecipeTemplate] = [
-    DerivationRecipeTemplate.password("1Password", "1password.com"),
-    DerivationRecipeTemplate.password("Apple", "apple.com", "icloud.com"),
-    DerivationRecipeTemplate.password("Authy", "authy.com"),
-    DerivationRecipeTemplate.password("Bitwarden", "bitwarden.com"),
-    DerivationRecipeTemplate.password("Facebook", "facebook.com"),
-    DerivationRecipeTemplate.password("Google", "google.com"),
-    DerivationRecipeTemplate.password("Keeper", "keepersecurity.com", "keepersecurity.eu"),
-    DerivationRecipeTemplate.password("LastPass", "lastpass.com"),
-    DerivationRecipeTemplate.password("Microsoft", "microsoft.com", "live.com")
-].sorted(by: { $0.id < $1.id })
+}
 
 let derivablePasswordTemplates = derivationRecipeTemplates
     .filter { $0.type == .Password }
