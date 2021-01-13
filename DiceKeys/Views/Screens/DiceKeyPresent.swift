@@ -186,7 +186,7 @@ struct DiceKeyPresent: View {
             VStack {
                 Spacer()
                 switch self.pageContent {
-                case .Save: DiceKeyStorageOptions(diceKey: diceKey, done: { self.pageContent = .Default }).padding(.horizontal, defaultContentPadding)
+                case .Save: DiceKeyStorageOptions(diceKey: diceKey, done: { navigate(to: .Default) }).padding(.horizontal, defaultContentPadding)
                 case .Derive(let derivationRecipeBuilder): DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)
                 case .Backup: BackupDiceKey(onComplete: { navigate(to: .Default) }, diceKey: $diceKey, backupDiceKeyState: backupDiceKeyState)
                 case .SeedHardwareKey: SeedHardwareSecurityKey().padding(.horizontal, defaultContentPadding)
