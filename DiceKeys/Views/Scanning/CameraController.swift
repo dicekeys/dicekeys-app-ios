@@ -111,21 +111,43 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
             try? self.onFrameCaptured?(self.reusableFrameDataBuffer, Int32(width), Int32(height))
         }
     }
+    
+    #if os(iOS)
+    func getBestCamera() throws -> AVCaptureDevice {
+        guard let camera = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back) else {
+            throw CameraControllerError.noCamerasAvailable
+        }
+        return camera
+    }
+    #endif
+
+    #if os(macOS)
+    func getBestCamera() throws -> AVCaptureDevice {
+        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes:
+                                                                    [AVCaptureDevice.DeviceType.builtInWideAngleCamera, .externalUnknown],
+            mediaType: .video, position: .unspecified)
+        for device in discoverySession.devices {
+            if (device.hasMediaType(.video) && device.isConnected && !device.isSuspended) {
+                return device
+            }
+        }
+        throw CameraControllerError.noCamerasAvailable
+    }
+    #endif
 
     func prepare(completionHandler: @escaping (Error?) -> Void) {
         func createCaptureSession() {
             self.captureSession = AVCaptureSession()
         }
         func configureCaptureDevices() throws {
-            #if os(iOS)
-            guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
-                throw CameraControllerError.noCamerasAvailable
-            }
-            #else
-            guard let camera = AVCaptureDevice.default(for: .video) else {
-                throw CameraControllerError.noCamerasAvailable
-            }
-            #endif
+            let camera = try getBestCamera()
+//            #if os(iOS)
+//            guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
+//                throw CameraControllerError.noCamerasAvailable
+//            }
+//            #else
+//            let camera = try getBestMacOsCamera()
+//            #endif
             
             self.camera = camera
 
