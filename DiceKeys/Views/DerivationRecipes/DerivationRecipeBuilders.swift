@@ -98,11 +98,14 @@ struct DerivationRecipeForFromUrl: View {
     init(type: DerivationOptionsType, recipeBuilderState: RecipeBuilderState) {
         self.model = DerivationRecipeForFromUrlModel(type, recipeBuilderState)
     }
-
-    var body: some View {
-        let textfield = TextField("https://somecrazyurl.com", text: $model.urlString)
+    
+    var textfield: some View {
+        TextField("URL or comma-separated list of domains", text: $model.urlString)
             .font(.body)
             .multilineTextAlignment(.center)
+    }
+
+    var body: some View {
         return VStack {
             VStack(alignment: .center, spacing: 0) {
                 #if os(iOS)

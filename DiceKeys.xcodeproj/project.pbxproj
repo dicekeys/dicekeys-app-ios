@@ -391,7 +391,7 @@
 				EC509269259482F4007D2B91 /* Scanning */,
 				EC50926E259482F4007D2B91 /* Screens */,
 				EC509276259482F4007D2B91 /* Components */,
-				EC50927C259482F4007D2B91 /* Derivables */,
+				EC50927C259482F4007D2B91 /* DerivationRecipes */,
 				EC50927F259482F4007D2B91 /* Backup */,
 				EC50928C259482F4007D2B91 /* App.swift */,
 			);
@@ -463,14 +463,14 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		EC50927C259482F4007D2B91 /* Derivables */ = {
+		EC50927C259482F4007D2B91 /* DerivationRecipes */ = {
 			isa = PBXGroup;
 			children = (
 				EC50932A2595BD03007D2B91 /* SequenceNumberField.swift */,
 				EC50927D259482F4007D2B91 /* DerivationRecipeBuilders.swift */,
 				EC50927E259482F4007D2B91 /* DerivationRecipeMenu.swift */,
 			);
-			path = Derivables;
+			path = DerivationRecipes;
 			sourceTree = "<group>";
 		};
 		EC50927F259482F4007D2B91 /* Backup */ = {
