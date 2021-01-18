@@ -21,26 +21,36 @@ func restrictionsJson(_ hosts: String...) -> String {
     return "{\"allow\":\(getHostRestrictionsArrayAsString(hosts))}"
 }
 
-func getDerivationOptionsJson(hosts: [String], sequenceNumber: Int = 1) -> String {
+func getDerivationOptionsJson(hosts: [String], sequenceNumber: Int = 1, lengthInChars: Int = -1) -> String {
     let sortedHosts = hosts.sorted()
-    return "{\"allow\":\(getHostRestrictionsArrayAsString(sortedHosts))\(sequenceNumber == 1 ? "" : ",\"#\":\(String(sequenceNumber))" )}"
+    return """
+{"allow":\(getHostRestrictionsArrayAsString(sortedHosts))\(
+    (lengthInChars > 0 ? "" : ",\"lengthInChars\":\(String(lengthInChars))") +
+    (sequenceNumber == 1 ? "" : ",\"#\":\(String(sequenceNumber))")
+)}
+"""
 }
 
 func getDerivationOptionsJson(_ hosts: String..., sequenceNumber: Int = 1) -> String {
     getDerivationOptionsJson(hosts: hosts, sequenceNumber: sequenceNumber)
 }
 
+func addFieldToEndOfJsonObjectString(_ originalJsonObjectString: String, fieldName: String, fieldValue: String) -> String {
+    guard let lastClosingBraceIndex = originalJsonObjectString.lastIndex(where: { $0 == "}" }) else { return originalJsonObjectString }
+    let prefixUpToFinalClosingBrace = originalJsonObjectString.prefix(upTo: lastClosingBraceIndex)
+    let suffixIncludingFinalCloseBrace = originalJsonObjectString.suffix(from: lastClosingBraceIndex)
+    let commaIfObjectNonEmpty = originalJsonObjectString.contains(":") ? "," : ""
+    return String(prefixUpToFinalClosingBrace) + "\(commaIfObjectNonEmpty)\"\(fieldName)\":\(fieldValue)" + suffixIncludingFinalCloseBrace
+}
+
+func addLengthInCharsToDerivationOptionsJson(_ derivationOptionsWithoutLengthInChars: String, lengthInChars: Int = 0 ) -> String {
+    guard lengthInChars > 0 else { return derivationOptionsWithoutLengthInChars }
+    return addFieldToEndOfJsonObjectString(derivationOptionsWithoutLengthInChars, fieldName: "lengthInChars", fieldValue: String(describing: lengthInChars))
+}
+
 func addSequenceNumberToDerivationOptionsJson(_ derivationOptionsWithoutSequenceNumber: String, sequenceNumber: Int) -> String {
     guard sequenceNumber != 1 else { return derivationOptionsWithoutSequenceNumber }
-
-    guard let lastClosingBraceIndex = derivationOptionsWithoutSequenceNumber.lastIndex(where: { $0 == "}" }) else { return derivationOptionsWithoutSequenceNumber }
-    let prefixUpToFinalClosingBrace = derivationOptionsWithoutSequenceNumber.prefix(upTo: lastClosingBraceIndex)
-    let suffixIncludingFinalCloseBrace = derivationOptionsWithoutSequenceNumber.suffix(from: lastClosingBraceIndex)
-
-    let commaIfOptionsNonEmpty = derivationOptionsWithoutSequenceNumber.contains(":") ? "," : ""
-    let sequenceNumberString = "\(commaIfOptionsNonEmpty)\"#\":\(String(describing: sequenceNumber))"
-
-    return prefixUpToFinalClosingBrace + sequenceNumberString + suffixIncludingFinalCloseBrace
+    return addFieldToEndOfJsonObjectString(derivationOptionsWithoutSequenceNumber, fieldName: "#", fieldValue: String(describing: sequenceNumber))
 }
 
 protocol DerivationRecipeIdentifiable: Codable, Identifiable {
@@ -68,14 +78,6 @@ struct DerivationRecipeTemplate: DerivationRecipeIdentifiable, Equatable {
         self.init(type: type, name: name, derivationOptionsJson: getDerivationOptionsJson(hosts: hosts))
     }
 
-    static func password(_ name: String, _ hosts: String...) -> DerivationRecipeTemplate {
-        DerivationRecipeTemplate(type: .Password, name: name, hosts: hosts)
-    }
-//
-//    static func unsealingKey(_ name: String, _ hosts: String...) -> DerivableTemplate {
-//        DerivableTemplate(type: .UnsealingKey, name: name, hosts: hosts)
-//    }
-
     static func listFromJson(_ json: String) throws -> [DerivationRecipeTemplate]? {
         return try JSONDecoder().decode([DerivationRecipeTemplate].self, from: json.data(using: .utf8)! )
     }
@@ -93,13 +95,18 @@ struct DerivationRecipe: DerivationRecipeIdentifiable, Equatable {
         self.derivationOptionsJson = derivationOptionsJson
     }
 
-    init(template: DerivationRecipeTemplate, sequenceNumber: Int) {
+    init(template: DerivationRecipeTemplate, sequenceNumber: Int, lengthInChars: Int = 0) {
         self.type = template.type
         let typeSuffix = template.type == .Password ? " Password" : template.type == .SymmetricKey ? " Key" : template.type == .UnsealingKey ? " Key Pair" : ""
         let sequenceSuffix = sequenceNumber == 1 ? "" : " (\(String(sequenceNumber)))"
         self.name = template.name + typeSuffix + sequenceSuffix
-        self.derivationOptionsJson =
-            addSequenceNumberToDerivationOptionsJson(template.derivationOptionsJson, sequenceNumber: sequenceNumber)
+        var derivationOptionsJson = template.derivationOptionsJson
+        if (template.type == .Password && lengthInChars > 0) {
+            derivationOptionsJson = addLengthInCharsToDerivationOptionsJson(derivationOptionsJson, lengthInChars: lengthInChars)
+        }
+        derivationOptionsJson =
+            addSequenceNumberToDerivationOptionsJson(derivationOptionsJson, sequenceNumber: sequenceNumber)
+        self.derivationOptionsJson = derivationOptionsJson
     }
 
     static func listFromJson(_ json: String) throws -> [DerivationRecipe]? {
