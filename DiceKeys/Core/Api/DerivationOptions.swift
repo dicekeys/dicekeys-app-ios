@@ -102,6 +102,7 @@ struct DerivationOptions: AuthenticationRequirements, Codable {
     var hashFunctionMemoryLimitInBytes: Int64?
     var hashFunctionMemoryPasses: Int64?
     var lengthInBytes: Int32?
+    var lengthInChars: Int32?
     var lengthInWords: Int32?
     var lengthInBits: Int32?
     var wordList: WordListName?
