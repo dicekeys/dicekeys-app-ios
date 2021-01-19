@@ -159,7 +159,7 @@ class CtapHidConnection {
         onReceiveHidMessage(CtapHidPacketReceived(Data(bytes: report, count: reportLength)))
     }
     private let receiveHidMessageWrapper : IOHIDReportCallback = { inContext, inResult, inSender, type, reportId, report, reportLength in
-        let this: HidDeviceConnection = Unmanaged<HidDeviceConnection>.fromOpaque(inContext!).takeUnretainedValue()
+        let this: CtapHidConnection = Unmanaged<CtapHidConnection>.fromOpaque(inContext!).takeUnretainedValue()
         this.receiveHidMessage(inResult, inSender: inSender!, type: type, reportId: reportId, report: report, reportLength: reportLength)
     }
     
