@@ -14,12 +14,12 @@ struct DiceKeyboardView: View {
     var body: some View {
         GeometryReader { (geo) in
             VStack(spacing: 12) {
-                if let model = diceFaceManager.selectedDiceFaceModel, model.isDiceFaceModelValid {
+                if let model = diceFaceManager.selectedDiceFaceModel, (model.face != nil) {
                     LazyVGrid(columns: Array(repeating: GridItem(), count: 5), spacing: 4, content: {
                         Section {
                             ForEach(0...4, id: \.self) { (index) in
                                 if FaceOrientationLettersTrbl.indices.contains(index) {
-                                    Image(systemName: FaceOrientationLettersTrbl[index].imageName)
+                                    Image(systemName: self.getFaceOrientationImageName(FaceOrientationLettersTrbl[index]))
                                         .onTapGesture {
                                             diceFaceManager.selectedDiceFaceModel?.orientation = FaceOrientationLettersTrbl[index]
                                             diceFaceManager.objectWillChange.send()
@@ -27,8 +27,8 @@ struct DiceKeyboardView: View {
                                 } else {
                                     Image(systemName: "delete.right.fill")
                                         .onTapGesture {
-                                            diceFaceManager.selectedDiceFaceModel?.letter = .none
-                                            diceFaceManager.selectedDiceFaceModel?.digit = ._none
+                                            diceFaceManager.selectedDiceFaceModel?.letter = nil
+                                            diceFaceManager.selectedDiceFaceModel?.digit = nil
                                             diceFaceManager.objectWillChange.send()
                                         }
                                 }
@@ -70,6 +70,19 @@ struct DiceKeyboardView: View {
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
             .animation(.linear(duration: 0.25))
+        }
+    }
+    
+    func getFaceOrientationImageName(_ orientation: FaceOrientationLetterTrbl) -> String {
+        switch orientation {
+        case .Top:
+            return "chevron.up.circle.fill"
+        case .Right:
+            return "chevron.right.circle.fill"
+        case .Bottom:
+            return "chevron.down.circle.fill"
+        case .Left:
+            return "chevron.left.circle.fill"
         }
     }
 }

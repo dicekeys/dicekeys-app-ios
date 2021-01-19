@@ -18,7 +18,7 @@ struct TypeYourDiceKeyView: View {
                 Text(diceFaceManager.displayMessage)
                 
                 VStack {
-                    CustomDiceFaceView(diceFaceManager: diceFaceManager)
+                    EditableDiceKeyView(diceFaceManager: diceFaceManager)
                         .padding()
                 }
                 .frame(width: geo.size.width, height: geo.size.height / 2, alignment: .topLeading)

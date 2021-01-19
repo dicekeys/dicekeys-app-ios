@@ -28,9 +28,9 @@ import Foundation
 import SwiftUI
 
 enum FaceLetter: String, Codable, CaseIterable {
-  case A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, R, S, T, U, V, W, X, Y, Z, none
+  case A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, R, S, T, U, V, W, X, Y, Z
 }
-let FaceLetters = Array(FaceLetter.allCases).dropLast()
+let FaceLetters = Array(FaceLetter.allCases)
 
 enum FaceDigit: String, Codable, CaseIterable {
   case _1 = "1"
@@ -39,9 +39,8 @@ enum FaceDigit: String, Codable, CaseIterable {
   case _4 = "4"
   case _5 = "5"
   case _6 = "6"
-  case _none = "-1"
 }
-let FaceDigits = Array(FaceDigit.allCases).dropLast()
+let FaceDigits = Array(FaceDigit.allCases)
 
 let faceLetterIndexes: [FaceLetter: UInt] = [
     FaceLetter.A: 0,
@@ -94,19 +93,6 @@ enum FaceOrientationLetterTrbl: String, Codable, CaseIterable {
   case Right = "r"
   case Bottom = "b"
   case Left = "l"
-    
-    var imageName: String {
-        switch self {
-        case .Top:
-            return "chevron.up.circle.fill"
-        case .Right:
-            return "chevron.right.circle.fill"
-        case .Bottom:
-            return "chevron.down.circle.fill"
-        case .Left:
-            return "chevron.left.circle.fill"
-        }
-    }
 }
 let FaceOrientationLettersTrbl = Array(FaceOrientationLetterTrbl.allCases)
 
