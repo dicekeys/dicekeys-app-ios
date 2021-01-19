@@ -159,7 +159,7 @@ class CtapHidConnection {
         onReceiveHidMessage(CtapHidPacketReceived(Data(bytes: report, count: reportLength)))
     }
     private let receiveHidMessageWrapper : IOHIDReportCallback = { inContext, inResult, inSender, type, reportId, report, reportLength in
-        let this: HidDeviceConnection = Unmanaged<HidDeviceConnection>.fromOpaque(inContext!).takeUnretainedValue()
+        let this: CtapHidConnection = Unmanaged<CtapHidConnection>.fromOpaque(inContext!).takeUnretainedValue()
         this.receiveHidMessage(inResult, inSender: inSender!, type: type, reportId: reportId, report: report, reportLength: reportLength)
     }
     
@@ -216,7 +216,7 @@ class CtapHidConnection {
     ///   - extState: A short array of bytes (or empty) to store with the seed that might help one to-generate or locate the original seed (default empty)
     ///   - commandVersion: The version of the seeding operation (default 1)
     ///   - callback: A callback for the result/error
-    func loadKeySeed(
+    func writeSecurityKeySeed(
         keySeedAs32Bytes: Data,
         extState: Data = Data(),
         commandVersion: UInt8 = 1,
