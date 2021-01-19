@@ -53,34 +53,43 @@ class AttachedHidDevice: Identifiable {
     var isFido: Bool {
         primaryUsagePage == 0xf1d0
     }
+    
+    func writeSecurityKeySeed(
+        keySeedAs32Bytes: Data,
+        extState: Data = Data(),
+        callback: @escaping (Result<Void, CtapRequestError>) -> Void
+    ) {
+        CtapHidConnection(self).writeSecurityKeySeed(keySeedAs32Bytes: keySeedAs32Bytes, extState: Data(), callback: callback)
+    }
+    
 }
 
-func seedSecurityKey(connectedDevice: AttachedHidDevice, keySeedAs32Bytes: Data, extState: Data = Data()) {
-    let connection = CtapHidConnection(connectedDevice)
-    connection.loadKeySeed(keySeedAs32Bytes: keySeedAs32Bytes, extState: Data()) { result in
-        print("loadKeySeed result: \(result)")
-        switch (result) {
-        case .failure(let err):
-            switch err {
-            case .errorReturned(let errMessage):
-                print ("Error message: \([UInt8](errMessage))")
-            default: break
-        }
-        default: break
-        }
-    }
-}
-
-func testSeedDevice(connectedDevice: AttachedHidDevice) {
-    var testSeed = Data(count: 32)
-    let result = testSeed.withUnsafeMutableBytes {
-        SecRandomCopyBytes(kSecRandomDefault, 32, $0)
-    }
-    if result != errSecSuccess {
-        print("Problem generating random bytes")
-        return
-    }
-    seedSecurityKey(connectedDevice: connectedDevice, keySeedAs32Bytes: testSeed)
-}
+//func seedSecurityKey(connectedDevice: AttachedHidDevice, keySeedAs32Bytes: Data, extState: Data = Data()) {
+//    let connection = CtapHidConnection(connectedDevice)
+//    connection.loadKeySeed(keySeedAs32Bytes: keySeedAs32Bytes, extState: Data()) { result in
+//        print("loadKeySeed result: \(result)")
+//        switch (result) {
+//        case .failure(let err):
+//            switch err {
+//            case .errorReturned(let errMessage):
+//                print ("Error message: \([UInt8](errMessage))")
+//            default: break
+//        }
+//        default: break
+//        }
+//    }
+//}
+//
+//func testSeedDevice(connectedDevice: AttachedHidDevice) {
+//    var testSeed = Data(count: 32)
+//    let result = testSeed.withUnsafeMutableBytes {
+//        SecRandomCopyBytes(kSecRandomDefault, 32, $0)
+//    }
+//    if result != errSecSuccess {
+//        print("Problem generating random bytes")
+//        return
+//    }
+//    seedSecurityKey(connectedDevice: connectedDevice, keySeedAs32Bytes: testSeed)
+//}
 
 #endif

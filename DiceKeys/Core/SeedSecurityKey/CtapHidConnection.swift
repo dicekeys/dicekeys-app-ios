@@ -216,7 +216,7 @@ class CtapHidConnection {
     ///   - extState: A short array of bytes (or empty) to store with the seed that might help one to-generate or locate the original seed (default empty)
     ///   - commandVersion: The version of the seeding operation (default 1)
     ///   - callback: A callback for the result/error
-    func loadKeySeed(
+    func writeSecurityKeySeed(
         keySeedAs32Bytes: Data,
         extState: Data = Data(),
         commandVersion: UInt8 = 1,
