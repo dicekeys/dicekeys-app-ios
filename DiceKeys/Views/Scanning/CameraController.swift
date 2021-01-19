@@ -139,13 +139,14 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
     }
     #endif
 
-    func prepare(completionHandler: @escaping ([AVCaptureDevice]?, Error?) -> Void) {
+    func prepare(_ selectedCamera: AVCaptureDevice?, completionHandler: @escaping ([AVCaptureDevice]?, Error?) -> Void) {
         func createCaptureSession() {
             self.captureSession = AVCaptureSession()
         }
         func configureCaptureDevices() throws {
-            if self.camera == nil {
-                let camera = try getBestCamera()
+            var camera: AVCaptureDevice
+            if selectedCamera == nil {
+                camera = try getBestCamera()
     //            #if os(iOS)
     //            guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
     //                throw CameraControllerError.noCamerasAvailable
@@ -155,8 +156,10 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
     //            #endif
                 
                 self.camera = camera
+            } else {
+                camera = selectedCamera!
             }
-            let camera = self.camera!
+            
             do {
                 // NOTE - for future MacOS compat, follow this:
                 // https://developer.apple.com/documentation/avfoundation/avcapturedevice/1387810-lockforconfiguration

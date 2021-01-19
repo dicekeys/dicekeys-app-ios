@@ -21,11 +21,14 @@ struct ScanDiceKey: View {
     init(stickers: Bool = false, onDiceKeyRead: ((_ diceKey: DiceKey) -> Void)? = nil) {
         self.stickers = stickers
         self.onDiceKeyRead = onDiceKeyRead
+        getAvailableCameras()
     }
 
     @State var frameCount: Int = 0
     @State var facesRead: [FaceRead]?
     @State var processedImageFrameSize: CGSize?
+    @State var selectedCameraIndex: Int = 0
+    private var availableCameras = [AVCaptureDevice]()
 
     func onFrameProcessed(_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) {
         self.frameCount += 1
@@ -33,6 +36,17 @@ struct ScanDiceKey: View {
         self.facesRead = facesRead
         if facesRead?.count == 25 && facesRead?.allSatisfy({ faceRead in faceRead.errors.count == 0 }) == true {
             try? onDiceKeyRead?(DiceKey(facesRead!).rotatedClockwise90Degrees())
+        }
+    }
+    
+    mutating func getAvailableCameras() {
+        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes:
+                                                                    [AVCaptureDevice.DeviceType.builtInWideAngleCamera, .externalUnknown],
+            mediaType: .video, position: .unspecified)
+        for device in discoverySession.devices {
+            if (device.hasMediaType(.video) && device.isConnected && !device.isSuspended) {
+                availableCameras.append(device)
+            }
         }
     }
 
@@ -45,8 +59,7 @@ struct ScanDiceKey: View {
                         Spacer()
                             GeometryReader { reader in
                                 ZStack {
-                                    
-                                    DiceKeysCameraView(onFrameProcessed: onFrameProcessed, size: reader.size)
+                                    DiceKeysCameraView(availableCameras[selectedCameraIndex], onFrameProcessed: onFrameProcessed, size: reader.size)
                                     FacesReadOverlay(
                                         renderedSize: reader.size,
                                         imageFrameSize: processedImageFrameSize ?? reader.size,
@@ -55,6 +68,13 @@ struct ScanDiceKey: View {
                                 }
                             }.aspectRatio(1, contentMode: .fit)
                         Spacer()
+                    }
+                    if availableCameras.count > 1 {
+                        Picker("Cameras", selection: $selectedCameraIndex) {
+                            ForEach(availableCameras.indices) { index in
+                                Text(self.availableCameras[index].localizedName)
+                            }
+                        }
                     }
                     Text("\(frameCount) frames processed").font(.footnote).foregroundColor(.white).padding(.top, 3)
                 }.background(Color.black).padding(.vertical, 5)
