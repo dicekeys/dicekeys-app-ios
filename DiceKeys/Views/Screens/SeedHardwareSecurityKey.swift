@@ -22,6 +22,26 @@ struct SeedHardwareSecurityKey: View {
 private let soloKeyButtonTimeoutInSeconds: Int = 8
 private let buttonTimeoutErrorCode: UInt8 = 0x27
 
+struct SeedSequenceNumberField: View {
+    @Binding var sequenceNumber: Int
+
+    var body: some View {
+        HStack {
+            Spacer()
+            SequenceNumberView(sequenceNumber: $sequenceNumber)
+            Spacer(minLength: 30)
+            Text("Changing the sequence number changes the seed written to the security key.")
+                .foregroundColor(Color.formInstructions)
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+                .minimumScaleFactor(0.01)
+                .scaledToFit()
+                .lineLimit(4)
+            Spacer()
+        }
+    }
+}
+
 enum WriteSecurityKeySeedState {
     case inProgress
     case success(AttachedHidDevice)
@@ -56,6 +76,10 @@ struct SeedHardwareSecurityKey: View {
     
     var keySeedAs32Bytes: Data {
         return try! SeededCrypto.Secret.deriveFromSeed(withSeedString: diceKey.toSeed(), derivationOptionsJson: derivationOptionsJson).secretBytes()
+    }
+    
+    var keySeedAsHexString: String {
+        return keySeedAs32Bytes.reduce("") {$0 + String(format: "%02x", $1)}
     }
 
     func write(securityKey: AttachedHidDevice) {
@@ -92,7 +116,7 @@ struct SeedHardwareSecurityKey: View {
     var nameOfKeyIfSeedWrittenSuccessfully: String? {
         switch writeSecurityKeySeedState {
         case .success(let securityKey):
-            return "Successfully wrote to key \(securityKey.product): \(securityKey.serialNumber ?? "unknown serial number")"
+            return "\(securityKey.product): \(securityKey.serialNumber ?? "unknown serial number")"
         default: return nil
         }
     }
@@ -120,28 +144,63 @@ struct SeedHardwareSecurityKey: View {
 
     var body: some View {
 
-        VStack(alignment: .leading) {
-            if (securityKeys.count == 0) {
+        VStack(alignment: .center) {
+            if (writeToSeedInProgress) {
+                Text("Press the button on your security key three times.").font(.headline)
+                Text("You have \(secondsLeft) seconds to do so").onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { input in
+                    self.secondsLeft = max(self.secondsLeft - 1 , 0)
+                }.font(.headline).padding(.top, 20)
+            } else if (securityKeys.count == 0) {
                 Text("Please connect a SoloKey.")
             } else {
-                if (writeToSeedInProgress) {
-                    Text("Press the button on your security key three times. You have \(secondsLeft) seconds to do so").onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { input in
-                        self.secondsLeft = max(self.secondsLeft - 1 , 0)
-                    }
-                }
                 if let errorMessage = errorMessageIfSeedFailedToWrite {
                     Text(errorMessage)
+                        .font(.headline)
+                        .foregroundColor(.red)
+                        .padding(.bottom, 20)
+                    Divider()
                 }
                 if let nameOfSecurityKey = nameOfKeyIfSeedWrittenSuccessfully {
                         Text("Successfully wrote to key \(nameOfSecurityKey)")
+                            .font(.headline)
+                            .foregroundColor(.green)
+                            .padding(.bottom, 20)
+                    Divider()
                 }
-                Text("Derivation Options Json: \(derivationOptionsJson)")
-                Text("Seed: \(keySeedAs32Bytes.reduce("") {$0 + String(format: "%02x", $1)})")
-                ForEach(securityKeys) { securityKey in
-                    Text("\(securityKey.product): \(securityKey.serialNumber ?? "unknown serial number")")
-                    Button(action: { write(securityKey: securityKey) }, label: {
-                        Text("Seed")
-                    })
+                SeedSequenceNumberField(sequenceNumber: $sequenceNumber)
+                Divider()
+                Text("Internal representation of the recipe used to derive the seed")
+                    .font(.title3)
+                    .scaledToFit()
+                    .minimumScaleFactor(0.01)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(1)
+                Text(derivationOptionsJson)
+                    .font(Font.system(.footnote, design: .monospaced))
+                    .scaledToFit()
+                    .minimumScaleFactor(0.01)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(1).padding(.top, 3)
+                Divider()
+                Text("The seed to be written to the security key")
+                    .font(.title3)
+                    .scaledToFit()
+                    .minimumScaleFactor(0.01)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(1)
+                Text("\(keySeedAsHexString)")
+                    .font(Font.system(.footnote, design: .monospaced))
+                    .scaledToFit()
+                    .minimumScaleFactor(0.01)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(1).padding(.top, 3)
+                ForEach(self.securityKeys) { securityKey in
+                    Button(
+                        action: { write(securityKey: securityKey) },
+                        label: {
+                            Text("Seed \(securityKey.product) SN#\(securityKey.serialNumber ?? "unknown")")
+                        }
+                    )
                 }
             }
         }
