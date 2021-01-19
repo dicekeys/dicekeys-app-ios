@@ -92,7 +92,7 @@ final class DiceKeysCameraView: NSViewControllerRepresentable {
 
 final class DiceKeysCameraUIViewController: XXViewController {
     let cameraController = DiceKeysCameraController()
-
+    
     var previewView: XXView!
 
     var onFrameCaptured: CaptureFrameHandler? {
@@ -119,11 +119,16 @@ final class DiceKeysCameraUIViewController: XXViewController {
         previewView.contentMode = UIView.ContentMode.scaleAspectFill
         #endif
         view.addSubview(previewView)
+        previewView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        previewView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        #if os(iOS)
+        var popupButton = NSPopUpButton()
+        popupButton.topAnchor
         cameraControllerPrepare()
     }
     
     func cameraControllerPrepare() {
-        cameraController.prepare { error in
+        cameraController.prepare { availableCameras, error in
             if let error = error {
                 print(error)
             }

@@ -24,6 +24,7 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
     var camera: AVCaptureDevice?
     var cameraInput: AVCaptureDeviceInput?
     var previewLayer: AVCaptureVideoPreviewLayer?
+    var availableCameras = [AVCaptureDevice]()
     
     #if os(iOS)
     let defaultSize = UIScreen.main.bounds.size
@@ -128,29 +129,34 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
             mediaType: .video, position: .unspecified)
         for device in discoverySession.devices {
             if (device.hasMediaType(.video) && device.isConnected && !device.isSuspended) {
-                return device
+                availableCameras.append(device)
             }
+        }
+        if availableCameras.count > 0 {
+            return availableCameras[0]
         }
         throw CameraControllerError.noCamerasAvailable
     }
     #endif
 
-    func prepare(completionHandler: @escaping (Error?) -> Void) {
+    func prepare(completionHandler: @escaping ([AVCaptureDevice]?, Error?) -> Void) {
         func createCaptureSession() {
             self.captureSession = AVCaptureSession()
         }
         func configureCaptureDevices() throws {
-            let camera = try getBestCamera()
-//            #if os(iOS)
-//            guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
-//                throw CameraControllerError.noCamerasAvailable
-//            }
-//            #else
-//            let camera = try getBestMacOsCamera()
-//            #endif
-            
-            self.camera = camera
-
+            if self.camera == nil {
+                let camera = try getBestCamera()
+    //            #if os(iOS)
+    //            guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
+    //                throw CameraControllerError.noCamerasAvailable
+    //            }
+    //            #else
+    //            let camera = try getBestMacOsCamera()
+    //            #endif
+                
+                self.camera = camera
+            }
+            let camera = self.camera!
             do {
                 // NOTE - for future MacOS compat, follow this:
                 // https://developer.apple.com/documentation/avfoundation/avcapturedevice/1387810-lockforconfiguration
@@ -211,13 +217,13 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
                 try configureDeviceInputs()
             } catch {
                 DispatchQueue.main.async {
-                    completionHandler(error)
+                    completionHandler(nil, error)
                 }
                 return
             }
 
             DispatchQueue.main.async {
-                completionHandler(nil)
+                completionHandler(self.availableCameras, nil)
             }
         }
     }
