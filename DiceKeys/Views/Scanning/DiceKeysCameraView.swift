@@ -96,7 +96,7 @@ final class DiceKeysCameraView: NSViewControllerRepresentable {
 #endif
 
 final class DiceKeysCameraUIViewController: XXViewController {
-//    let cameraController = DiceKeysCameraController()
+    let cameraController = DiceKeysCameraController()
     
     var previewView: XXView!
     var selectedCamera: AVCaptureDevice? = nil
