@@ -189,7 +189,7 @@ struct DiceKeyPresent: View {
                 case .Save: DiceKeyStorageOptions(diceKey: diceKey, done: { navigate(to: .Default) }).padding(.horizontal, defaultContentPadding)
                 case .Derive(let derivationRecipeBuilder): DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)
                 case .Backup: BackupDiceKey(onComplete: { navigate(to: .Default) }, diceKey: $diceKey, backupDiceKeyState: backupDiceKeyState)
-                case .SeedHardwareKey: SeedHardwareSecurityKey().padding(.horizontal, defaultContentPadding)
+                case .SeedHardwareKey: SeedHardwareSecurityKey(diceKey: diceKey).padding(.horizontal, defaultContentPadding)
                 default: DiceKeyView(diceKey: diceKey, showLidTab: true).padding(.horizontal, defaultContentPadding)
                 }
                 Spacer()
