@@ -24,7 +24,7 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
     var camera: AVCaptureDevice?
     var cameraInput: AVCaptureDeviceInput?
     var previewLayer: AVCaptureVideoPreviewLayer?
-    var availableCameras = [AVCaptureDevice]()
+    var availableCameras: [AVCaptureDevice] { ActiveCameras.get() }
     
     #if os(iOS)
     let defaultSize = UIScreen.main.bounds.size
@@ -113,52 +113,32 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
         }
     }
     
-    #if os(iOS)
-    func getBestCamera() throws -> AVCaptureDevice {
-        guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
-            throw CameraControllerError.noCamerasAvailable
-        }
-        return camera
-    }
-    #endif
-
-    #if os(macOS)
-    func getBestCamera() throws -> AVCaptureDevice {
-        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes:
-                                                                    [AVCaptureDevice.DeviceType.builtInWideAngleCamera, .externalUnknown],
-            mediaType: .video, position: .unspecified)
-        for device in discoverySession.devices {
-            if (device.hasMediaType(.video) && device.isConnected && !device.isSuspended) {
-                availableCameras.append(device)
-            }
-        }
-        if availableCameras.count > 0 {
-            return availableCameras[0]
-        }
-        throw CameraControllerError.noCamerasAvailable
-    }
-    #endif
+//    #if os(iOS)
+//    func getBestCamera() throws -> AVCaptureDevice {
+//        guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
+//            throw CameraControllerError.noCamerasAvailable
+//        }
+//        return camera
+//    }
+//    #endif
+//
+//    #if os(macOS)
+//    func getBestCamera() throws -> AVCaptureDevice {
+//        guard let camera = availableCameras.first else {
+//            throw CameraControllerError.noCamerasAvailable
+//        }
+//        return camera
+//    }
+//    #endif
 
     func prepare(_ selectedCamera: AVCaptureDevice?, completionHandler: @escaping ([AVCaptureDevice]?, Error?) -> Void) {
+        print ("CameraController.prepare \(selectedCamera?.localizedName ?? "no camera")")
+        guard let camera = selectedCamera else { return }
         func createCaptureSession() {
             self.captureSession = AVCaptureSession()
         }
         func configureCaptureDevices() throws {
-            var camera: AVCaptureDevice
-            if selectedCamera == nil {
-                camera = try getBestCamera()
-    //            #if os(iOS)
-    //            guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
-    //                throw CameraControllerError.noCamerasAvailable
-    //            }
-    //            #else
-    //            let camera = try getBestMacOsCamera()
-    //            #endif
-                
-                self.camera = camera
-            } else {
-                camera = selectedCamera!
-            }
+            print("CameraController.configureCaptureDevices: \(camera.localizedName)")
             
             do {
                 // NOTE - for future MacOS compat, follow this:
