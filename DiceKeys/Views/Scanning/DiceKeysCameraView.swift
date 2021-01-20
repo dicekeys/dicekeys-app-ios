@@ -80,16 +80,13 @@ final class DiceKeysCameraView: NSViewControllerRepresentable {
 
     init(selectedCamera: AVCaptureDevice? = nil, onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize) {
         self.delegate = DiceKeysCameraViewDelegate(selectedCamera: selectedCamera, onFrameProcessed: onFrameProcessed, onRead: onRead, size: size)
-        print("DiceKeysCameraView.init: \(selectedCamera?.localizedName ?? "none")")
     }
 
     public func makeNSViewController(context: NSViewControllerRepresentableContext<DiceKeysCameraView>) -> DiceKeysCameraUIViewController {
-        print("DiceKeysCameraView.makeXXViewController")
         return delegate.makeXXViewController(context: context)
     }
 
     public func updateNSViewController(_ viewController: DiceKeysCameraUIViewController, context:                XXViewControllerRepresentableContext<DiceKeysCameraView>) {
-        print("DiceKeysCameraView.updateNSViewController  \(delegate.selectedCamera?.localizedName ?? "none")")
         if viewController.selectedCamera == nil || viewController.selectedCamera!.uniqueID != delegate.selectedCamera?.uniqueID {
             viewController.selectedCamera = delegate.selectedCamera
             viewController.cameraControllerPrepare()

@@ -132,16 +132,14 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
 //    #endif
 
     func prepare(_ selectedCamera: AVCaptureDevice?, completionHandler: @escaping (Error?) -> Void) {
-        print ("CameraController.prepare \(selectedCamera?.localizedName ?? "no camera")")
         guard let camera = selectedCamera else { return }
         func createCaptureSession() {
-            if (self.captureSession != nil && self.captureSession!.isRunning) {
-                self.captureSession?.stopRunning()
+            if let captureSession = self.captureSession, captureSession.isRunning {
+                captureSession.stopRunning()
             }
             self.captureSession = AVCaptureSession()
         }
         func configureCaptureDevices() throws {
-            print("CameraController.configureCaptureDevices: \(camera.localizedName)")
             
             do {
                 // NOTE - for future MacOS compat, follow this:
