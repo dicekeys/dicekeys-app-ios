@@ -20,6 +20,10 @@
 		264D302B25B2FCC10048D165 /* DiceKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264D302925B2FCC10048D165 /* DiceKeyboardView.swift */; };
 		267F67E425B2CA7000F2324A /* EditableDiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267F67E325B2CA7000F2324A /* EditableDiceKeyView.swift */; };
 		267F67E525B2CA7000F2324A /* EditableDiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267F67E325B2CA7000F2324A /* EditableDiceKeyView.swift */; };
+		17B6C62725B58253007798F3 /* AttachedHidDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C62625B58252007798F3 /* AttachedHidDevices.swift */; };
+		17B6C62825B58253007798F3 /* AttachedHidDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C62625B58252007798F3 /* AttachedHidDevices.swift */; };
+		17B6C62D25B58319007798F3 /* AttachedHidDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */; };
+		17B6C63225B58684007798F3 /* CtapHidConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */; };
 		ACF9E6A9B1E79E881EEE4C09 /* Pods_DiceKeys__macOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19FCCD61505F4C2ED9F6ED0B /* Pods_DiceKeys__macOS_.framework */; };
 		EC5091ED259480BE007D2B91 /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EA259480BE007D2B91 /* GlobalState.swift */; };
 		EC5091EE259480BE007D2B91 /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EA259480BE007D2B91 /* GlobalState.swift */; };
@@ -167,6 +171,7 @@
 		17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachedHidDevice.swift; sourceTree = "<group>"; };
 		17B6C5D425A52A69007798F3 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		17B6C61B25AD52C6007798F3 /* DerivationRecipeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivationRecipeTemplates.swift; sourceTree = "<group>"; };
+		17B6C62625B58252007798F3 /* AttachedHidDevices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachedHidDevices.swift; sourceTree = "<group>"; };
 		19FCCD61505F4C2ED9F6ED0B /* Pods_DiceKeys__macOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys__macOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25A6B06AB3C071EB2999AE67 /* Pods_DiceKeys__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeYourDiceKeyView.swift; sourceTree = "<group>"; };
@@ -289,6 +294,7 @@
 			children = (
 				17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */,
 				17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */,
+				17B6C62625B58252007798F3 /* AttachedHidDevices.swift */,
 			);
 			path = SeedSecurityKey;
 			sourceTree = "<group>";
@@ -410,7 +416,7 @@
 				EC509269259482F4007D2B91 /* Scanning */,
 				EC50926E259482F4007D2B91 /* Screens */,
 				EC509276259482F4007D2B91 /* Components */,
-				EC50927C259482F4007D2B91 /* Derivables */,
+				EC50927C259482F4007D2B91 /* DerivationRecipes */,
 				EC50927F259482F4007D2B91 /* Backup */,
 				EC50928C259482F4007D2B91 /* App.swift */,
 			);
@@ -483,14 +489,14 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		EC50927C259482F4007D2B91 /* Derivables */ = {
+		EC50927C259482F4007D2B91 /* DerivationRecipes */ = {
 			isa = PBXGroup;
 			children = (
 				EC50932A2595BD03007D2B91 /* SequenceNumberField.swift */,
 				EC50927D259482F4007D2B91 /* DerivationRecipeBuilders.swift */,
 				EC50927E259482F4007D2B91 /* DerivationRecipeMenu.swift */,
 			);
-			path = Derivables;
+			path = DerivationRecipes;
 			sourceTree = "<group>";
 		};
 		EC50927F259482F4007D2B91 /* Backup */ = {
@@ -855,6 +861,7 @@
 				EC50921125948124007D2B91 /* FaceSpecification.swift in Sources */,
 				EC50921F25948124007D2B91 /* ApiInterfaces.swift in Sources */,
 				EC5092B5259482F5007D2B91 /* StepFooter.swift in Sources */,
+				17B6C62725B58253007798F3 /* AttachedHidDevices.swift in Sources */,
 				EC509295259482F4007D2B91 /* DieView.swift in Sources */,
 				EC50922F2594818F007D2B91 /* UIWindow+Orientation.swift in Sources */,
 				EC50920F25948124007D2B91 /* DiceKey.swift in Sources */,
@@ -950,12 +957,15 @@
 				EC50928E259482F4007D2B91 /* KeyScanningIllustration.swift in Sources */,
 				EC5092D0259482F5007D2B91 /* DiceKeyCopyInProgress.swift in Sources */,
 				EC5092A8259482F5007D2B91 /* DiceKeyStorageOptions.swift in Sources */,
+				17B6C62825B58253007798F3 /* AttachedHidDevices.swift in Sources */,
 				EC5092AC259482F5007D2B91 /* DiceKeyWithDerivedValue.swift in Sources */,
 				EC5092BE259482F5007D2B91 /* StickerSheetForFace.swift in Sources */,
 				EC5092C6259482F5007D2B91 /* StickerSheet.swift in Sources */,
 				EC5091F0259480BE007D2B91 /* UnlockedDiceKeyState.swift in Sources */,
 				EC50921A25948124007D2B91 /* PermissionChecks.swift in Sources */,
+				17B6C62D25B58319007798F3 /* AttachedHidDevice.swift in Sources */,
 				EC5092B2259482F5007D2B91 /* Instruction.swift in Sources */,
+				17B6C63225B58684007798F3 /* CtapHidConnection.swift in Sources */,
 				EC509298259482F4007D2B91 /* DerivedFromDiceKey.swift in Sources */,
 				EC5092322594818F007D2B91 /* View.swift in Sources */,
 				EC5092AE259482F5007D2B91 /* AssemblyInstructions.swift in Sources */,

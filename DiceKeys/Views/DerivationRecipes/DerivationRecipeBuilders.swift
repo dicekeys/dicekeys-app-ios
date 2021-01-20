@@ -15,7 +15,7 @@ class RecipeBuilderState: ObservableObject {
 
 private class DerivationRecipeBuilderForTemplateModel: ObservableObject {
     let template: DerivationRecipeTemplate
-     var recipeBuilderState: RecipeBuilderState
+    var recipeBuilderState: RecipeBuilderState
     @Published var sequenceNumber: Int = 1 { didSet { update() } }
 
     init(_ template: DerivationRecipeTemplate, _ recipeBuilderState: RecipeBuilderState) {
@@ -53,6 +53,7 @@ private class DerivationRecipeForFromUrlModel: ObservableObject {
     @ObservedObject var recipeBuilderState: RecipeBuilderState
     @Published var urlString: String = "https://example.com" { didSet { update() } }
     @Published var sequenceNumber: Int = 1 { didSet { update() } }
+    @Published var lengthInChars: Int = 0 { didSet { update() } }
     let type: DerivationOptionsType
 
     var hosts: [String] {
@@ -82,7 +83,7 @@ private class DerivationRecipeForFromUrlModel: ObservableObject {
         guard hosts.count > 0 else { recipeBuilderState.derivationRecipe = nil; return }
         self.recipeBuilderState.derivationRecipe = DerivationRecipe(
             type: type, name: name,
-            derivationOptionsJson: getDerivationOptionsJson(hosts: hosts, sequenceNumber: sequenceNumber))
+            derivationOptionsJson: getDerivationOptionsJson(hosts: hosts, sequenceNumber: sequenceNumber, lengthInChars: type == .Password ? lengthInChars : 0))
     }
 
     init(_ type: DerivationOptionsType, _ recipeBuilderState: RecipeBuilderState) {
@@ -98,11 +99,14 @@ struct DerivationRecipeForFromUrl: View {
     init(type: DerivationOptionsType, recipeBuilderState: RecipeBuilderState) {
         self.model = DerivationRecipeForFromUrlModel(type, recipeBuilderState)
     }
-
-    var body: some View {
-        let textfield = TextField("https://somecrazyurl.com", text: $model.urlString)
+    
+    var textfield: some View {
+        TextField("URL or comma-separated list of domains", text: $model.urlString)
             .font(.body)
             .multilineTextAlignment(.center)
+    }
+
+    var body: some View {
         return VStack {
             VStack(alignment: .center, spacing: 0) {
                 #if os(iOS)
