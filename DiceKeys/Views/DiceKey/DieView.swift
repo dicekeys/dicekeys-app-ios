@@ -62,7 +62,7 @@ struct UndoverlineView: View {
 }
 
 struct DieFaceUprightView: View {
-    let face: Face
+    let face: PartialFace
     let dieSize: CGFloat
     let linearFractionOfFaceRenderedToDieSize: CGFloat
 
@@ -116,27 +116,33 @@ struct DieFaceUprightView: View {
                     .size(width: dieSize, height: dieSize)
                     .stroke(faceBorderColor)
             }
-            Text(face.letter.rawValue)
-                .font(Font(uiFont))
-                .fontWeight(.bold)
-                .position(x: (dieSize - halfTextRegionWidth) / 2, y: textCenterY)
-                .foregroundColor(penColor)
-            Text(face.digit.rawValue)
-                .font(Font(uiFont))
-                .fontWeight(.bold)
-                .position(x: (dieSize + halfTextRegionWidth) / 2, y: textCenterY)
-                .foregroundColor(penColor)
-            UndoverlineView(face: face, faceSize: sizeOfRenderedFace, isOverline: false, penColor: penColor, holeColor: faceSurfaceColor)
-                .position(x: hCenter, y: underlineVCenter)
-            UndoverlineView(face: face, faceSize: sizeOfRenderedFace, isOverline: true, penColor: penColor, holeColor: faceSurfaceColor)
-                .position(x: hCenter, y: overlineVCenter)
+            if let letter = face.letter {
+                Text(letter.rawValue)
+                    .font(Font(uiFont))
+                    .fontWeight(.bold)
+                    .position(x: (dieSize - halfTextRegionWidth) / 2, y: textCenterY)
+                    .foregroundColor(penColor)
+            }
+            if let digit = face.digit {
+                Text(digit.rawValue)
+                    .font(Font(uiFont))
+                    .fontWeight(.bold)
+                    .position(x: (dieSize + halfTextRegionWidth) / 2, y: textCenterY)
+                    .foregroundColor(penColor)
+            }
+            if let face = face.face {
+                UndoverlineView(face: face, faceSize: sizeOfRenderedFace, isOverline: false, penColor: penColor, holeColor: faceSurfaceColor)
+                    .position(x: hCenter, y: underlineVCenter)
+                UndoverlineView(face: face, faceSize: sizeOfRenderedFace, isOverline: true, penColor: penColor, holeColor: faceSurfaceColor)
+                    .position(x: hCenter, y: overlineVCenter)
+            }
         }
         .frame(width: dieSize, height: dieSize)
     }
 }
 
 struct DieFaceView: View {
-    let face: Face
+    let face: PartialFace
     let dieSize: CGFloat
     var linearFractionOfFaceRenderedToDieSize: CGFloat = CGFloat(1)
     var penColor: Color = Color.black
@@ -151,7 +157,7 @@ struct DieFaceView: View {
             penColor: penColor,
             faceSurfaceColor: faceSurfaceColor,
             faceBorderColor: faceBorderColor
-        ).rotationEffect(Angle(degrees: face.orientationAsLowercaseLetterTrbl.asClockwiseDegrees), anchor: .center)
+        ).rotationEffect(Angle(degrees: face.orientation.asClockwiseDegrees), anchor: .center)
     }
 }
 
@@ -163,7 +169,7 @@ struct DiceKeyFaceArray: View {
         GeometryReader { geometry in
             HStack(alignment: .center, spacing: 0) {
                 ForEach(0..<25) { index in
-                    DieFaceView(face: diceKey.faces[index], dieSize: geometry.size.width/CGFloat(25),
+                    DieFaceView(face: PartialFace(diceKey.faces[index], index: index), dieSize: geometry.size.width/CGFloat(25),
                         linearFractionOfFaceRenderedToDieSize: 1-marginBetweenDiceFractional/2)
                 }
             }
@@ -172,15 +178,19 @@ struct DiceKeyFaceArray: View {
 }
 
 struct DieView: View {
-    let face: Face
+    var face: Face?
+    var partialFace: PartialFace?
     let dieSize: CGFloat
     let linearFractionOfFaceRenderedToDieSize: CGFloat = CGFloat(5)/8
     var penColor: Color = Color.black
     var faceSurfaceColor: Color = Color.white
     var faceBorderColor: Color?
+    
+    var computedPartialFace: PartialFace { partialFace ?? PartialFace(face!) }
+//    var yface: Face? { xface ?? xpartialFace }
 
     var body: some View {
-        DieFaceView(face: face, dieSize: dieSize, linearFractionOfFaceRenderedToDieSize: linearFractionOfFaceRenderedToDieSize, penColor: penColor, faceSurfaceColor: faceSurfaceColor, faceBorderColor: faceBorderColor)
+        DieFaceView(face: computedPartialFace, dieSize: dieSize, linearFractionOfFaceRenderedToDieSize: linearFractionOfFaceRenderedToDieSize, penColor: penColor, faceSurfaceColor: faceSurfaceColor, faceBorderColor: faceBorderColor)
     }
 }
 
@@ -192,7 +202,7 @@ struct DieFaceView_Previews: PreviewProvider {
         }
 
         DieFaceView(
-            face: Face(letter: FaceLetter.L, digit: FaceDigit._3, orientationAsLowercaseLetterTrbl: FaceOrientationLetterTrbl.Right),
+            face: PartialFace(letter: FaceLetter.L, digit: FaceDigit._3, orientation: FaceOrientationLetterTrbl.Right),
             dieSize: 500
         )
         .previewLayout(PreviewLayout.fixed(width: 500, height: 500))

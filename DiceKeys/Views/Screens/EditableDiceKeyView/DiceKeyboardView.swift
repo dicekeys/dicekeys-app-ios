@@ -8,28 +8,26 @@
 import SwiftUI
 
 struct DiceKeyboardView: View {
-    
-    @ObservedObject var diceFaceManager: DiceFaceManager
+    @ObservedObject var editableDiceKeyState: EditableDiceKeyState
     
     var body: some View {
         GeometryReader { (geo) in
             VStack(spacing: 12) {
-                if let model = diceFaceManager.selectedDiceFaceModel, (model.face != nil) {
+                if let face = editableDiceKeyState.faceSelected {
                     LazyVGrid(columns: Array(repeating: GridItem(), count: 5), spacing: 4, content: {
                         Section {
                             ForEach(0...4, id: \.self) { (index) in
                                 if FaceOrientationLettersTrbl.indices.contains(index) {
                                     Image(systemName: self.getFaceOrientationImageName(FaceOrientationLettersTrbl[index]))
                                         .onTapGesture {
-                                            diceFaceManager.selectedDiceFaceModel?.orientation = FaceOrientationLettersTrbl[index]
-                                            diceFaceManager.objectWillChange.send()
+                                            editableDiceKeyState.faceSelected?.orientation = FaceOrientationLettersTrbl[index]
                                         }
                                 } else {
                                     Image(systemName: "delete.right.fill")
                                         .onTapGesture {
-                                            diceFaceManager.selectedDiceFaceModel?.letter = nil
-                                            diceFaceManager.selectedDiceFaceModel?.digit = nil
-                                            diceFaceManager.objectWillChange.send()
+                                            editableDiceKeyState.faceSelected?.letter = nil
+                                            editableDiceKeyState.faceSelected?.digit = nil
+                                            editableDiceKeyState.faceSelected?.orientation = .Top
                                         }
                                 }
                             }
@@ -38,32 +36,32 @@ struct DiceKeyboardView: View {
                 }
                 
                 LazyVGrid(columns: Array(repeating: GridItem(), count: 6), spacing: 4, content: {
-                    if let model = diceFaceManager.selectedDiceFaceModel, model.letter != .none {
-                        Section {
-                            ForEach(FaceDigits, id: \.self) { (faceDigit) in
-                                Text("\(faceDigit.rawValue)")
-                                    .font(.system(size: 18))
-                                    .frame(width: 40, height: 30)
-                                    .border(Color.black, width: 1)
-                                    .onTapGesture {
-                                        self.diceFaceManager.selectedDiceFaceModel?.digit = faceDigit
-                                        self.diceFaceManager.selectNextDiceIfNeeded()
-                                        self.diceFaceManager.objectWillChange.send()
-                                    }
-                            }
-                        }
-                    }
-                    
-                    Section {
-                        ForEach(FaceLetters, id: \.self) { (faceLetter) in
-                            Text(faceLetter.rawValue)
-                                .font(.system(size: 18))
-                                .frame(width: 40, height: 30)
-                                .border(Color.black, width: 1)
-                                .onTapGesture {
-                                    diceFaceManager.selectedDiceFaceModel?.letter = faceLetter
-                                    diceFaceManager.objectWillChange.send()
+                    if let face = editableDiceKeyState.faceSelected {
+                        if face.letter == nil {
+                            Section {
+                                ForEach(FaceLetters, id: \.self) { faceLetter in
+                                    Text(faceLetter.rawValue)
+                                        .font(.system(size: 18))
+                                        .frame(width: 40, height: 30)
+                                        .border(Color.black, width: 1)
+                                        .onTapGesture {
+                                            face.letter = faceLetter
+                                        }
                                 }
+                            }
+                        } else if (face.digit != nil) {
+                            Section {
+                                ForEach(FaceDigits, id: \.self) { faceDigit in
+                                    Text("\(faceDigit.rawValue)")
+                                        .font(.system(size: 18))
+                                        .frame(width: 40, height: 30)
+                                        .border(Color.black, width: 1)
+                                        .onTapGesture {
+                                            face.digit = faceDigit
+                                            editableDiceKeyState.moveNext()
+                                    }
+                                }
+                            }
                         }
                     }
                 })
