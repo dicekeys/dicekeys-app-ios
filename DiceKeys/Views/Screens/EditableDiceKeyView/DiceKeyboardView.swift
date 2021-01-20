@@ -7,6 +7,19 @@
 
 import SwiftUI
 
+private func getFaceOrientationImageName(_ orientation: FaceOrientationLetterTrbl) -> String {
+    switch orientation {
+    case .Top:
+        return "chevron.up.circle.fill"
+    case .Right:
+        return "chevron.right.circle.fill"
+    case .Bottom:
+        return "chevron.down.circle.fill"
+    case .Left:
+        return "chevron.left.circle.fill"
+    }
+}
+
 struct DiceKeyboardView: View {
     @ObservedObject var editableDiceKeyState: EditableDiceKeyState
     
@@ -18,16 +31,16 @@ struct DiceKeyboardView: View {
                         Section {
                             ForEach(0...4, id: \.self) { (index) in
                                 if FaceOrientationLettersTrbl.indices.contains(index) {
-                                    Image(systemName: self.getFaceOrientationImageName(FaceOrientationLettersTrbl[index]))
+                                    Image(systemName: getFaceOrientationImageName(FaceOrientationLettersTrbl[index]))
                                         .onTapGesture {
-                                            editableDiceKeyState.faceSelected?.orientation = FaceOrientationLettersTrbl[index]
+                                            face.orientation = FaceOrientationLettersTrbl[index]
                                         }
                                 } else {
                                     Image(systemName: "delete.right.fill")
                                         .onTapGesture {
-                                            editableDiceKeyState.faceSelected?.letter = nil
-                                            editableDiceKeyState.faceSelected?.digit = nil
-                                            editableDiceKeyState.faceSelected?.orientation = .Top
+                                            face.letter = nil
+                                            face.digit = nil
+                                            face.orientation = .Top
                                         }
                                 }
                             }
@@ -68,19 +81,6 @@ struct DiceKeyboardView: View {
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
             .animation(.linear(duration: 0.25))
-        }
-    }
-    
-    func getFaceOrientationImageName(_ orientation: FaceOrientationLetterTrbl) -> String {
-        switch orientation {
-        case .Top:
-            return "chevron.up.circle.fill"
-        case .Right:
-            return "chevron.right.circle.fill"
-        case .Bottom:
-            return "chevron.down.circle.fill"
-        case .Left:
-            return "chevron.left.circle.fill"
         }
     }
 }

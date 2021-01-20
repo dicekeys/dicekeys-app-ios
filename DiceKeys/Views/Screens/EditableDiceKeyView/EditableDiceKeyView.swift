@@ -54,7 +54,7 @@ struct EditableDiceKeyView: View {
                         }
                 }
             })
-            .frame(width: geo.size.width, height: geo.size.height)
-        }
+//            .frame(width: geo.size.width, height: geo.size.height)
+        }.aspectRatio(contentMode: .fit)
     }
 }
