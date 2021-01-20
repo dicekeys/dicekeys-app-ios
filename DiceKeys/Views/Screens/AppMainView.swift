@@ -148,6 +148,12 @@ struct AppMainView: View {
                 }
             }
             Spacer()
+            NavigationLink(
+                destination: TypeYourDiceKeyView(),
+                label: {
+                    Text("Type your Dicekey")
+                })
+            Spacer()
         }.background( ZStack {
             hiddenNavigationLinkToDiceKeyPresent
             hiddenNavigationLinkToScanDiceKey
@@ -168,7 +174,7 @@ struct AppMainView_Previews: PreviewProvider {
     static var previews: some View {
         #if os(iOS)
         AppMainView().previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
+//        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
 //        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
         #else
         AppMainView().frame(width: 720, height: 600)
