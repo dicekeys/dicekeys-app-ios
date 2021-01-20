@@ -8,12 +8,24 @@
 import SwiftUI
 import AVFoundation
 
+// Extend AVCaptureDevice to make it Identifiable by allowing the uniqueID field
+// to be accessed via the ID alias.
+extension AVCaptureDevice: Identifiable {
+    var ID: String { self.uniqueID }
+    
+    var canBeDisplayed: Bool {
+        self.hasMediaType(.video) && self.isConnected && !self.isSuspended
+    }
+}
+
+#if os(iOS)
+private let defaultCameraAuthorized: Bool = true
+#else
+private let defaultCameraAuthorized: Bool = false
+#endif
+
 struct ScanDiceKey: View {
-    #if os(iOS)
-    @State var cameraAuthorized: Bool = true
-    #else
-    @State var cameraAuthorized: Bool = false
-    #endif
+    @State var cameraAuthorized: Bool = defaultCameraAuthorized
     
     var stickers: Bool = false
     let onDiceKeyRead: ((_ diceKey: DiceKey) -> Void)?
@@ -21,11 +33,29 @@ struct ScanDiceKey: View {
     init(stickers: Bool = false, onDiceKeyRead: ((_ diceKey: DiceKey) -> Void)? = nil) {
         self.stickers = stickers
         self.onDiceKeyRead = onDiceKeyRead
+        self.selectedCameraUniqueId = activeCameras.first?.ID ?? ""
+//        self.selectedCamera = activeCameras.first
     }
 
     @State var frameCount: Int = 0
     @State var facesRead: [FaceRead]?
     @State var processedImageFrameSize: CGSize?
+    @State var selectedCameraUniqueId: String = ""
+//    @State var selectedCamera: AVCaptureDevice?
+ 
+    var selectedCamera: AVCaptureDevice? {
+        activeCameras.first { $0.ID == selectedCameraUniqueId }
+    }
+    
+    var activeCameras: [AVCaptureDevice] { ActiveCameras.get() }    
+    
+    var selectedOrNextBestCameraDisplayableCamera: AVCaptureDevice? {
+        if let selectedCamera = self.selectedCamera, selectedCamera.canBeDisplayed {
+            return selectedCamera
+        } else {
+            return activeCameras.first
+        }
+    }
 
     func onFrameProcessed(_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) {
         self.frameCount += 1
@@ -41,12 +71,13 @@ struct ScanDiceKey: View {
             if cameraAuthorized {
                 Text("Place the DiceKey so that the \(stickers ? "stickers" : "dice") fill the camera view. Then hold steady.").font(.title2)
                 VStack(alignment: .center, spacing: 0) {
+                    // For debugging: remove
+                    Text("Selected camera: \(selectedOrNextBestCameraDisplayableCamera?.localizedName ?? "nil")")
                     HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
                         Spacer()
                             GeometryReader { reader in
                                 ZStack {
-                                    
-                                    DiceKeysCameraView(onFrameProcessed: onFrameProcessed, size: reader.size)
+                                    DiceKeysCameraView(selectedCamera: selectedOrNextBestCameraDisplayableCamera, onFrameProcessed: onFrameProcessed, size: reader.size)
                                     FacesReadOverlay(
                                         renderedSize: reader.size,
                                         imageFrameSize: processedImageFrameSize ?? reader.size,
@@ -56,10 +87,20 @@ struct ScanDiceKey: View {
                             }.aspectRatio(1, contentMode: .fit)
                         Spacer()
                     }
+                    if activeCameras.count > 1 {
+                        Picker(
+                            selection: $selectedCameraUniqueId,
+                            label: Text("Camera")
+                        ) {
+                            ForEach(activeCameras) { camera in
+                                Text(camera.localizedName).tag(camera.ID)
+                            }
+                        }
+                    }
                     Text("\(frameCount) frames processed").font(.footnote).foregroundColor(.white).padding(.top, 3)
                 }.background(Color.black).padding(.vertical, 5)
             } else {
-                Text("Allow camera access, please")
+                Text("Permission to access the camera is required to scan your DiceKey")
             }
         }.onAppear {
             #if os(macOS)
@@ -67,11 +108,19 @@ struct ScanDiceKey: View {
                 case .authorized: // The user has previously granted access to the camera.
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         cameraAuthorized = true
+                        if (self.selectedCamera == nil) {
+                            self.selectedCameraUniqueId = activeCameras.first?.ID ?? ""
+                            // self.selectedCamera = activeCameras.first
+                        }
                     }
                 case .notDetermined: // The user has not yet been asked for camera access.
                     AVCaptureDevice.requestAccess(for: .video) { granted in
                         if granted {
                             cameraAuthorized = true                  }
+                        if (self.selectedCamera == nil) {
+                            self.selectedCameraUniqueId = activeCameras.first?.ID ?? ""
+                            // self.selectedCamera = activeCameras.first
+                        }
                     }
                 
                 case .denied: // The user has previously denied access.
@@ -79,6 +128,8 @@ struct ScanDiceKey: View {
 
                 case .restricted: // The user can't grant access due to restrictions.
                     return
+            @unknown default:
+                return
             }
             #endif
         }
