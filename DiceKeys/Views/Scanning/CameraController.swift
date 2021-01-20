@@ -24,7 +24,7 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
     var camera: AVCaptureDevice?
     var cameraInput: AVCaptureDeviceInput?
     var previewLayer: AVCaptureVideoPreviewLayer?
-    var availableCameras: [AVCaptureDevice] { ActiveCameras.get() }
+//    var availableCameras: [AVCaptureDevice] { ActiveCameras.get() }
     
     #if os(iOS)
     let defaultSize = UIScreen.main.bounds.size
@@ -131,7 +131,7 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
 //    }
 //    #endif
 
-    func prepare(_ selectedCamera: AVCaptureDevice?, completionHandler: @escaping ([AVCaptureDevice]?, Error?) -> Void) {
+    func prepare(_ selectedCamera: AVCaptureDevice?, completionHandler: @escaping (Error?) -> Void) {
         print ("CameraController.prepare \(selectedCamera?.localizedName ?? "no camera")")
         guard let camera = selectedCamera else { return }
         func createCaptureSession() {
@@ -171,9 +171,9 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
                 throw CameraControllerError.captureSessionIsMissing
             }
 
-            guard let camera = self.camera else {
-                throw CameraControllerError.noCamerasAvailable
-            }
+//            guard let camera = self.camera else {
+//                throw CameraControllerError.noCamerasAvailable
+//            }
 
             guard let cameraInput = try? AVCaptureDeviceInput(device: camera) else {
                 throw CameraControllerError.inputsAreInvalid
@@ -200,13 +200,13 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
                 try configureDeviceInputs()
             } catch {
                 DispatchQueue.main.async {
-                    completionHandler(nil, error)
+                    completionHandler(error)
                 }
                 return
             }
 
             DispatchQueue.main.async {
-                completionHandler(self.availableCameras, nil)
+                completionHandler(nil)
             }
         }
     }

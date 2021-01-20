@@ -90,7 +90,10 @@ final class DiceKeysCameraView: NSViewControllerRepresentable {
 
     public func updateNSViewController(_ viewController: DiceKeysCameraUIViewController, context:                XXViewControllerRepresentableContext<DiceKeysCameraView>) {
         print("DiceKeysCameraView.updateNSViewController  \(delegate.selectedCamera?.localizedName ?? "none")")
-//self.delegate = DiceKeysCameraViewDelegate(selectedCamera: viewController.selectedCamera, onFrameProcessed: onFrameProcessed, onRead: onRead, size: size)
+        if viewController.selectedCamera == nil || viewController.selectedCamera!.uniqueID != delegate.selectedCamera?.uniqueID {
+            viewController.selectedCamera = delegate.selectedCamera
+            viewController.cameraControllerPrepare()
+        }
     }
 }
 #endif
@@ -133,7 +136,7 @@ final class DiceKeysCameraUIViewController: XXViewController {
     }
     
     func cameraControllerPrepare() {
-        cameraController.prepare(selectedCamera) {[weak self] availableCameras, error in
+        cameraController.prepare(selectedCamera) {[weak self] error in
             guard let weakSelf = self else {
                 return
             }
