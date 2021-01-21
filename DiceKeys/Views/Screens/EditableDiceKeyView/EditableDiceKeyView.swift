@@ -7,7 +7,6 @@
 
 import SwiftUI
 //
-/// DiceFaceManager
 class EditableDiceKeyState: ObservableObject {
     @Published var faces: [PartialFace]
     @Published var faceSelectedIndex: Int = 0  { didSet { objectWillChange.send() } }
