@@ -9,12 +9,18 @@ import SwiftUI
 //
 /// DiceFaceManager
 class EditableDiceKeyState: ObservableObject {
-    var faces: [PartialFace] = (0...24).map { PartialFace(index: $0) }
+    @Published var faces: [PartialFace]
     @Published var faceSelectedIndex: Int = 0  { didSet { objectWillChange.send() } }
+    
+    init() {
+        faces = (0...24).map { PartialFace(index: $0) }
+    }
 
     var faceSelected: PartialFace? {
-        faces[faceSelectedIndex]
+        get { faces[faceSelectedIndex] }
+        set { if let value = newValue, faceSelectedIndex >= 0 && faceSelectedIndex < 25 { faces[faceSelectedIndex] = value } }
     }
+
     var nextEmptyDieIndex: Int? {
         faces.first { !$0.isDiceFaceModelValid }?.index
     }
@@ -46,7 +52,7 @@ struct EditableDiceKeyView: View {
             let height: CGFloat = geo.size.height / 5
             LazyVGrid(columns: Array(repeating: GridItem(), count: 5), spacing: 4, content: {
                 ForEach(editableDiceKeyState.faces) { face  in
-                    DieFaceView(face: face, dieSize: CGFloat(min(width, height) - 4), faceSurfaceColor: (editableDiceKeyState.faceSelectedIndex == face.index) ? .green : .white)
+                    DieFaceView(face: face, dieSize: CGFloat(max(1, min(width, height) - 4)), faceSurfaceColor: (editableDiceKeyState.faceSelectedIndex == face.index) ? .green : .white)
                         .frame(width: width, height: height)
                         .cornerRadius(12)
                         .onTapGesture {
