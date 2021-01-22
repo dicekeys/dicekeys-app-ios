@@ -19,14 +19,16 @@ final class DiceKeysCameraViewDelegate {
     let size: CGSize
     let onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)?
     let onRead: ((DiceKey) -> Void)?
+    let selectedCamera: AVCaptureDevice?
 
     private var onReadSentYet = false
     private let processor = DKImageProcessor.create()!
 
-    init(onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize) {
+    init(selectedCamera: AVCaptureDevice? = nil, onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize) {
         self.onFrameProcessed = onFrameProcessed
         self.onRead = onRead
         self.size = size
+        self.selectedCamera = selectedCamera
     }
 
     func onFrameCaptured(_ imageBitmap: Data, _ width: Int32, _ height: Int32) {
@@ -47,6 +49,7 @@ final class DiceKeysCameraViewDelegate {
 
     public func makeXXViewController(context: XXViewControllerRepresentableContext<DiceKeysCameraView>) -> DiceKeysCameraUIViewController {
         let controller = DiceKeysCameraUIViewController()
+        controller.selectedCamera = self.selectedCamera
         controller.onFrameCaptured = onFrameCaptured
         controller.size = size
         return controller
@@ -59,8 +62,8 @@ final class DiceKeysCameraView: UIViewControllerRepresentable {
     
     let delegate: DiceKeysCameraViewDelegate
 
-    init(onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize = UIScreen.main.bounds.size) {
-        self.delegate = DiceKeysCameraViewDelegate(onFrameProcessed: onFrameProcessed, onRead: onRead, size: size)
+    init(selectedCamera: AVCaptureDevice? = nil, onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize) {
+        self.delegate = DiceKeysCameraViewDelegate(selectedCamera: selectedCamera, onFrameProcessed: onFrameProcessed, onRead: onRead, size: size)
     }
 
     public func makeUIViewController(context: UIViewControllerRepresentableContext<DiceKeysCameraView>) -> DiceKeysCameraUIViewController {
@@ -74,26 +77,30 @@ final class DiceKeysCameraView: UIViewControllerRepresentable {
 final class DiceKeysCameraView: NSViewControllerRepresentable {
     typealias NSViewControllerType = DiceKeysCameraUIViewController
     
-    
     let delegate: DiceKeysCameraViewDelegate
 
-    init(onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize) {
-        self.delegate = DiceKeysCameraViewDelegate(onFrameProcessed: onFrameProcessed, onRead: onRead, size: size)
+    init(selectedCamera: AVCaptureDevice? = nil, onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize) {
+        self.delegate = DiceKeysCameraViewDelegate(selectedCamera: selectedCamera, onFrameProcessed: onFrameProcessed, onRead: onRead, size: size)
     }
 
     public func makeNSViewController(context: NSViewControllerRepresentableContext<DiceKeysCameraView>) -> DiceKeysCameraUIViewController {
         return delegate.makeXXViewController(context: context)
     }
 
-    public func updateNSViewController(_ viewController: DiceKeysCameraUIViewController, context: XXViewControllerRepresentableContext<DiceKeysCameraView>) {
+    public func updateNSViewController(_ viewController: DiceKeysCameraUIViewController, context:                XXViewControllerRepresentableContext<DiceKeysCameraView>) {
+        if viewController.selectedCamera == nil || viewController.selectedCamera!.uniqueID != delegate.selectedCamera?.uniqueID {
+            viewController.selectedCamera = delegate.selectedCamera
+            viewController.cameraControllerPrepare()
+        }
     }
 }
 #endif
 
 final class DiceKeysCameraUIViewController: XXViewController {
     let cameraController = DiceKeysCameraController()
-
+    
     var previewView: XXView!
+    var selectedCamera: AVCaptureDevice? = nil
 
     var onFrameCaptured: CaptureFrameHandler? {
         get { return self.cameraController.onFrameCaptured }
@@ -114,24 +121,32 @@ final class DiceKeysCameraUIViewController: XXViewController {
     }
 
     override func viewDidLoad() {
-        previewView = XXView(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        previewView = XXView(frame:  CGRect(x: 0, y: 0, width: size.width, height: size.height))
         #if os(iOS)
         previewView.contentMode = UIView.ContentMode.scaleAspectFill
         #endif
+        
         view.addSubview(previewView)
+        previewView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        previewView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
         cameraControllerPrepare()
     }
     
     func cameraControllerPrepare() {
-        cameraController.prepare { error in
+        cameraController.prepare(selectedCamera) {[weak self] error in
+            guard let weakSelf = self else {
+                return
+            }
             if let error = error {
                 print(error)
             }
-
-            try? self.cameraController.displayPreview(on: self.previewView)
+            
+            try? weakSelf.cameraController.displayPreview(on: weakSelf.previewView)
         }
     }
-
+    
+    
     #if os(iOS)
     override func viewWillDisappear(_ animated: Bool) {
         cameraController.stop()
