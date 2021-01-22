@@ -10,6 +10,8 @@ import SeededCrypto
 
 #if os(iOS)
 struct SeedHardwareSecurityKey: View {
+    let diceKey: DiceKey
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Apple prevents apps on iPhones and iPads from writing to USB devices.").font(.title)

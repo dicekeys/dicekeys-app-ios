@@ -110,7 +110,7 @@ struct DerivationRecipeForFromUrl: View {
         return VStack {
             VStack(alignment: .center, spacing: 0) {
                 #if os(iOS)
-                textfield.keyboardType(.numberPad)
+                textfield.keyboardType(.alphabet)
                 #else
                 textfield
                 #endif
