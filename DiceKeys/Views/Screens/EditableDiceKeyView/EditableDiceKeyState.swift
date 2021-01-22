@@ -5,9 +5,11 @@
 //  Created by Stuart Schechter on 2021/01/22.
 //
 
+import SwiftUI
 import Foundation
 
 class EditableDiceKeyState: ObservableObject {
+    
     @Published var faces: [PartialFace]
     @Published var faceSelectedIndex: Int = 0  { didSet { objectWillChange.send() } }
     
@@ -80,7 +82,38 @@ class EditableDiceKeyState: ObservableObject {
     }
     
     func enter(digit: FaceDigit) {
+        if self.letter != nil && self.digit != nil && faceSelectedIndex < 24 {
+            // This die is complete so we'll assume the user wants to enter the letter
+            // for the next die
+            moveNext()
+        }
         self.digit = digit
+    }
+    
+    func keyPressed(keyboardCommandsModel: KeyboardCommandsModel) {
+        switch keyboardCommandsModel.id {
+        case "<Arrow", ",Key", "-Key":
+            self.rotateLeft()
+        case ">Arrow", ".Key", "+Key", "=Key":
+            self.rotateRight()
+        case "delete":
+            self.backspace()
+        case "upArrow":
+            self.moveUp()
+        case "downArrow":
+            self.moveDown()
+        case "rightArrow":
+            self.moveNext()
+        case "leftArrow":
+            self.movePrev()
+        default:
+            let keyId = keyboardCommandsModel.id.uppercased()
+            if let letter = FaceLetter(rawValue: keyId) {
+                self.enter(letter: letter)
+            } else if let digit = FaceDigit(rawValue: keyId) {
+                self.enter(digit: digit)
+            }
+        }
     }
     
     func delete() {
