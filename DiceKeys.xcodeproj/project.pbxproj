@@ -20,12 +20,14 @@
 		17B6C63225B58684007798F3 /* CtapHidConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */; };
 		17B6C68125B9883F007798F3 /* PartialFace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C68025B9883F007798F3 /* PartialFace.swift */; };
 		17B6C68225B9883F007798F3 /* PartialFace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C68025B9883F007798F3 /* PartialFace.swift */; };
+		17B6C68C25BA729A007798F3 /* EditableDiceKeyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C68B25BA729A007798F3 /* EditableDiceKeyState.swift */; };
+		17B6C68D25BA729A007798F3 /* EditableDiceKeyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C68B25BA729A007798F3 /* EditableDiceKeyState.swift */; };
+		17B6C69325BA8285007798F3 /* FaceOrientationLetterTrbl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C69225BA8285007798F3 /* FaceOrientationLetterTrbl.swift */; };
+		17B6C69425BA8285007798F3 /* FaceOrientationLetterTrbl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C69225BA8285007798F3 /* FaceOrientationLetterTrbl.swift */; };
 		264CD58325AF1043009D2F5A /* TypeYourDiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */; };
 		264CD58425AF1044009D2F5A /* TypeYourDiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */; };
 		264D302A25B2FCC10048D165 /* DiceKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264D302925B2FCC10048D165 /* DiceKeyboardView.swift */; };
 		264D302B25B2FCC10048D165 /* DiceKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264D302925B2FCC10048D165 /* DiceKeyboardView.swift */; };
-		267F67E425B2CA7000F2324A /* EditableDiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267F67E325B2CA7000F2324A /* EditableDiceKeyView.swift */; };
-		267F67E525B2CA7000F2324A /* EditableDiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267F67E325B2CA7000F2324A /* EditableDiceKeyView.swift */; };
 		ACF9E6A9B1E79E881EEE4C09 /* Pods_DiceKeys__macOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19FCCD61505F4C2ED9F6ED0B /* Pods_DiceKeys__macOS_.framework */; };
 		EC5091ED259480BE007D2B91 /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EA259480BE007D2B91 /* GlobalState.swift */; };
 		EC5091EE259480BE007D2B91 /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EA259480BE007D2B91 /* GlobalState.swift */; };
@@ -175,11 +177,12 @@
 		17B6C61B25AD52C6007798F3 /* DerivationRecipeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivationRecipeTemplates.swift; sourceTree = "<group>"; };
 		17B6C62625B58252007798F3 /* AttachedHidDevices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachedHidDevices.swift; sourceTree = "<group>"; };
 		17B6C68025B9883F007798F3 /* PartialFace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartialFace.swift; sourceTree = "<group>"; };
+		17B6C68B25BA729A007798F3 /* EditableDiceKeyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableDiceKeyState.swift; sourceTree = "<group>"; };
+		17B6C69225BA8285007798F3 /* FaceOrientationLetterTrbl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOrientationLetterTrbl.swift; sourceTree = "<group>"; };
 		19FCCD61505F4C2ED9F6ED0B /* Pods_DiceKeys__macOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys__macOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25A6B06AB3C071EB2999AE67 /* Pods_DiceKeys__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeYourDiceKeyView.swift; sourceTree = "<group>"; };
 		264D302925B2FCC10048D165 /* DiceKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyboardView.swift; sourceTree = "<group>"; };
-		267F67E325B2CA7000F2324A /* EditableDiceKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableDiceKeyView.swift; sourceTree = "<group>"; };
 		A12F40698764C98F698C6350 /* Pods-DiceKeys (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (macOS).release.xcconfig"; path = "Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS).release.xcconfig"; sourceTree = "<group>"; };
 		B09CA29A4B28E9D780FE3E0E /* Pods-DiceKeys (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (macOS).debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS).debug.xcconfig"; sourceTree = "<group>"; };
 		D6328E5B71C2EFE82AB1D100 /* Pods-DiceKeys (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (iOS).debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys (iOS)/Pods-DiceKeys (iOS).debug.xcconfig"; sourceTree = "<group>"; };
@@ -305,7 +308,7 @@
 		267F67DE25B2CA3600F2324A /* EditableDiceKeyView */ = {
 			isa = PBXGroup;
 			children = (
-				267F67E325B2CA7000F2324A /* EditableDiceKeyView.swift */,
+				17B6C68B25BA729A007798F3 /* EditableDiceKeyState.swift */,
 				264D302925B2FCC10048D165 /* DiceKeyboardView.swift */,
 				264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */,
 			);
@@ -389,6 +392,7 @@
 				EC50922C2594818F007D2B91 /* Properties.swift */,
 				EC50922D2594818F007D2B91 /* Size.swift */,
 				EC50922E2594818F007D2B91 /* Color.swift */,
+				17B6C69225BA8285007798F3 /* FaceOrientationLetterTrbl.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -862,6 +866,7 @@
 				EC5092D1259482F5007D2B91 /* App.swift in Sources */,
 				EC50929B259482F4007D2B91 /* FacesReadOverlay.swift in Sources */,
 				EC5092372594818F007D2B91 /* Color.swift in Sources */,
+				17B6C68C25BA729A007798F3 /* EditableDiceKeyState.swift in Sources */,
 				EC50921125948124007D2B91 /* FaceSpecification.swift in Sources */,
 				EC50921F25948124007D2B91 /* ApiInterfaces.swift in Sources */,
 				EC5092B5259482F5007D2B91 /* StepFooter.swift in Sources */,
@@ -901,10 +906,10 @@
 				17B6C5A125A43AAB007798F3 /* CtapHidConnection.swift in Sources */,
 				17B6C68125B9883F007798F3 /* PartialFace.swift in Sources */,
 				EC5092AD259482F5007D2B91 /* AssemblyInstructions.swift in Sources */,
+				17B6C69325BA8285007798F3 /* FaceOrientationLetterTrbl.swift in Sources */,
 				EC50921525948124007D2B91 /* DerivationOptions.swift in Sources */,
 				EC50921725948124007D2B91 /* UnsealingInstructions.swift in Sources */,
 				EC50929F259482F4007D2B91 /* DiceKeysCameraView.swift in Sources */,
-				267F67E425B2CA7000F2324A /* EditableDiceKeyView.swift in Sources */,
 				EC5092C9259482F5007D2B91 /* BackupDiceKey.swift in Sources */,
 				EC50928F259482F4007D2B91 /* Funnel.swift in Sources */,
 				EC50932B2595BD03007D2B91 /* SequenceNumberField.swift in Sources */,
@@ -949,6 +954,7 @@
 				EC509292259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift in Sources */,
 				EC5092A2259482F4007D2B91 /* DiceKeyPresent.swift in Sources */,
 				EC5092C0259482F5007D2B91 /* BackupToStickeysIntroduction.swift in Sources */,
+				17B6C69425BA8285007798F3 /* FaceOrientationLetterTrbl.swift in Sources */,
 				EC50920E25948124007D2B91 /* FaceRead.swift in Sources */,
 				17B6C61D25AD52C6007798F3 /* DerivationRecipeTemplates.swift in Sources */,
 				EC5092342594818F007D2B91 /* Properties.swift in Sources */,
@@ -975,12 +981,12 @@
 				EC509298259482F4007D2B91 /* DerivedFromDiceKey.swift in Sources */,
 				EC5092322594818F007D2B91 /* View.swift in Sources */,
 				EC5092AE259482F5007D2B91 /* AssemblyInstructions.swift in Sources */,
-				267F67E525B2CA7000F2324A /* EditableDiceKeyView.swift in Sources */,
 				264CD58425AF1044009D2F5A /* TypeYourDiceKeyView.swift in Sources */,
 				EC50921625948124007D2B91 /* DerivationOptions.swift in Sources */,
 				EC50921825948124007D2B91 /* UnsealingInstructions.swift in Sources */,
 				EC5092CA259482F5007D2B91 /* BackupDiceKey.swift in Sources */,
 				EC509290259482F4007D2B91 /* Funnel.swift in Sources */,
+				17B6C68D25BA729A007798F3 /* EditableDiceKeyState.swift in Sources */,
 				EC50920C25948124007D2B91 /* Face.swift in Sources */,
 				EC5092A6259482F5007D2B91 /* SeedHardwareSecurityKey.swift in Sources */,
 				EC5092B4259482F5007D2B91 /* ChildSizeReader.swift in Sources */,

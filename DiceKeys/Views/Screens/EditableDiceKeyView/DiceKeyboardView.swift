@@ -7,71 +7,32 @@
 
 import SwiftUI
 
-extension FaceOrientationLetterTrbl {
-    var right: FaceOrientationLetterTrbl {
-        switch(self) {
-        case .Top: return .Right
-        case .Right: return .Bottom
-        case .Bottom: return .Left
-        case .Left: return .Top
-        }
-    }
-
-    var left: FaceOrientationLetterTrbl {
-        switch(self) {
-        case .Top: return .Left
-        case .Right: return .Top
-        case .Bottom: return .Right
-        case .Left: return .Bottom
-        }
-    }
-
-}
-
 struct DiceKeyboardView: View {
     @ObservedObject var editableDiceKeyState: EditableDiceKeyState
 
     var orientationAndNavigationKeys: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(), count: 5), spacing: 4, content: {
-            Section {
-                Image(systemName: "rotate.left")
-                .onTapGesture {
-                    if let orientation = editableDiceKeyState.faceSelected?.orientation {
-                        editableDiceKeyState.faceSelected?.orientation = orientation.left
-                    }
-                }
-                Image(systemName: "rotate.right")
-                .onTapGesture {
-                    if let orientation = editableDiceKeyState.faceSelected?.orientation {
-                        editableDiceKeyState.faceSelected?.orientation = orientation.right
-                    }
-                }
-                Image(systemName: "delete.right.fill")
-                .onTapGesture {
-                    if editableDiceKeyState.faceSelectedIndex > 0 && editableDiceKeyState.faceSelected?.letter == nil && editableDiceKeyState.faceSelected?.digit == nil {
-                        editableDiceKeyState.movePrev()
-                    }
-                    editableDiceKeyState.faceSelected?.letter = nil
-                    editableDiceKeyState.faceSelected?.digit = nil
-                    editableDiceKeyState.faceSelected?.orientation = .Top
-                }
-            }
+        LazyVGrid(columns: Array(repeating: GridItem(), count: 7), spacing: 4, content: {
+            Text(" ").font(.system(size: 128, design: .monospaced)).scaledToFit().minimumScaleFactor(0.01)
+                .background( Image(systemName: "rotate.left").resizable().aspectRatio(contentMode: .fit) )
+                .onTapGesture { editableDiceKeyState.rotateLeft() }
+            Text(" ").font(.system(size: 128, design: .monospaced)).scaledToFit().minimumScaleFactor(0.01)
+                .background( Image(systemName: "rotate.right").resizable().aspectRatio(contentMode: .fit) )
+                .onTapGesture { editableDiceKeyState.rotateRight() }
+            Text(" ").font(.system(size: 128, design: .monospaced)).scaledToFit().minimumScaleFactor(0.01)
+                .background( Image(systemName: "delete.right.fill").resizable().aspectRatio(contentMode: .fit) )
+                .onTapGesture { editableDiceKeyState.backspace() }
         })
     }
     
     var letterKeys: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(), count: 6), spacing: 4, content: {
+        LazyVGrid(columns: Array(repeating: GridItem(), count: 8), spacing: 4, content: {
             ForEach(FaceLetters, id: \.self) { faceLetter in
                 Text(faceLetter.rawValue)
-                    .font(.system(size: 18))
-                    .frame(width: 40, height: 30)
-                    .border(Color.black, width: 1)
-                    .onTapGesture {
-                        if (editableDiceKeyState.faceSelected?.letter != nil) {
-                            editableDiceKeyState.moveNext()
-                        }
-                        editableDiceKeyState.faceSelected?.letter = faceLetter
-                    }
+                    .font(.system(size: 128, design: .monospaced)).scaledToFit().minimumScaleFactor(0.01)
+                    .lineLimit(1)
+                    .border(Color.gray, width: 1)
+                    .aspectRatio(1, contentMode: .fit)
+                    .onTapGesture { editableDiceKeyState.enter(letter: faceLetter) }
             }
         })
     }
@@ -80,30 +41,28 @@ struct DiceKeyboardView: View {
         LazyVGrid(columns: Array(repeating: GridItem(), count: 6), spacing: 4, content: {
             ForEach(FaceDigits, id: \.self) { faceDigit in
                 Text("\(faceDigit.rawValue)")
-                    .font(.system(size: 18))
-                    .frame(width: 40, height: 30)
-                    .border(Color.black, width: 1)
-                    .onTapGesture {
-                        editableDiceKeyState.faceSelected?.digit = faceDigit
-                }
+                    .font(.system(size: 128, design: .monospaced)).scaledToFit().minimumScaleFactor(0.01)
+                    .lineLimit(1)
+                    .border(Color.gray, width: 1)
+                    .aspectRatio(1, contentMode: .fit)
+                    .onTapGesture { editableDiceKeyState.enter(digit: faceDigit) }
             }
         })
     }
+    
+    var showLetterKeys: Bool {
+        editableDiceKeyState.faceSelected.letter == nil || editableDiceKeyState.faceSelected.digit != nil
+    }
 
     var body: some View {
-        GeometryReader { (geo) in
-            VStack(spacing: 12) {
-                if (editableDiceKeyState.faceSelected?.letter != nil) {
-                   orientationAndNavigationKeys
-                }
-                if (editableDiceKeyState.faceSelected?.letter == nil || editableDiceKeyState.faceSelected?.digit != nil) {
-                    letterKeys
-                } else if (editableDiceKeyState.faceSelected?.digit == nil) {
-                    digitKeys
-                }
+        VStack {
+            orientationAndNavigationKeys
+            Spacer(minLength: 12)
+            ZStack(alignment: .top) {
+                letterKeys.showIf(showLetterKeys)
+                digitKeys.hideIf(showLetterKeys)
             }
-            .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
-            .animation(.linear(duration: 0.25))
         }
+//            .animation(.linear(duration: 0.25))
     }
 }

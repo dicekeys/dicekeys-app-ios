@@ -10,46 +10,30 @@ import SwiftUI
 /// TypeYourDiceKeyView
 struct TypeYourDiceKeyView: View {
     @StateObject var editableDiceKeyState: EditableDiceKeyState = EditableDiceKeyState()
-    
-    var displayMessage: String {
-        if let face = editableDiceKeyState.faceSelected {
-            if face.letter == nil {
-                return "One Letter required"
-            } else if face.digit == nil {
-                return "One Digit required"
-            } else {
-                return "Selected: \(face.letter!.rawValue)\(face.digit!.rawValue), Orientation"
-            }
-        }
-        return "Please select one square"
-    }
-    
+        
     var body: some View {
-        let geometryReader = GeometryReader { (geo) in
-            VStack(spacing: 12) {
-                Text(displayMessage)
-                
-                VStack {
-                    EditableDiceKeyView(editableDiceKeyState: editableDiceKeyState)
-                        .padding()
-                }
-                .frame(width: geo.size.width, height: geo.size.height / 2, alignment: .topLeading)
-                .background(Color.blue)
-                .cornerRadius(12)
-                
-                DiceKeyboardView(editableDiceKeyState: editableDiceKeyState)
-                    .frame(width: geo.size.width, height: geo.size.height / 2, alignment: .center)
-            }
-            .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
+        let view = VStack(alignment: .center) {
+            Spacer()
+            DiceKeyView(
+                partialFaces: editableDiceKeyState.faces,
+                highlightIndexes: Set([editableDiceKeyState.faceSelectedIndex]),
+                onFacePressed: { faceIndex in editableDiceKeyState.faceSelectedIndex = faceIndex })
+            Spacer()
+            DiceKeyboardView(editableDiceKeyState: editableDiceKeyState)
+            Spacer()
+            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                Text("Done")
+            }).showIf(editableDiceKeyState.diceKey != nil)
+            Spacer()
         }
         .padding()
         .navigationTitle("Type your Dicekey")
         #if os(iOS)
-            return geometryReader
+            return view
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarDiceKeyStyle()
         #else
-            return geometryReader
+            return view
         #endif
     }
 }
