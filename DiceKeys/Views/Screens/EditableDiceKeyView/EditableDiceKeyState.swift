@@ -92,9 +92,9 @@ class EditableDiceKeyState: ObservableObject {
     
     func keyPressed(keyboardCommandsModel: KeyboardCommandsModel) {
         switch keyboardCommandsModel.id {
-        case "<Arrow", ",Key", "-Key":
+        case "<", ",", "-":
             self.rotateLeft()
-        case ">Arrow", ".Key", "+Key", "=Key":
+        case ">", ".", "+", "=":
             self.rotateRight()
         case "delete":
             self.backspace()

@@ -15,33 +15,26 @@ struct KeyboardCommandsModel: Identifiable {
 struct KeyboardCommands: Commands {
     
     let arrKeyboardCommandsModel: [KeyboardCommandsModel] = {
-        var arr: [KeyboardCommandsModel] = []
-        for letter in FaceLetters {
-            let model = KeyboardCommandsModel(id: letter.rawValue, key: KeyEquivalent(letter.rawValue.first!))
-            arr.append(model)
-            
-            let model1 = KeyboardCommandsModel(id: letter.rawValue.lowercased(), key: KeyEquivalent(letter.rawValue.lowercased().first!))
-            arr.append(model1)
-        }
-        for digit in FaceDigits {
-            let model = KeyboardCommandsModel(id: digit.rawValue, key: KeyEquivalent(digit.rawValue.first!))
-            arr.append(model)
-        }
-        arr.append(KeyboardCommandsModel(id: "delete", key: .delete))
-        arr.append(KeyboardCommandsModel(id: "upArrow", key: .upArrow))
-        arr.append(KeyboardCommandsModel(id: "downArrow", key: .downArrow))
-        arr.append(KeyboardCommandsModel(id: "rightArrow", key: .rightArrow))
-        arr.append(KeyboardCommandsModel(id: "leftArrow", key: .leftArrow))
-        
-        arr.append(KeyboardCommandsModel(id: ",Key", key: KeyEquivalent(",")))
-        arr.append(KeyboardCommandsModel(id: ".Key", key: KeyEquivalent(".")))
-        arr.append(KeyboardCommandsModel(id: "<Arrow", key: KeyEquivalent("<")))
-        arr.append(KeyboardCommandsModel(id: ">Arrow", key: KeyEquivalent(">")))
-        arr.append(KeyboardCommandsModel(id: "+Key", key: KeyEquivalent("+")))
-        arr.append(KeyboardCommandsModel(id: "=Key", key: KeyEquivalent("=")))
-        arr.append(KeyboardCommandsModel(id: "-Key", key: KeyEquivalent("-")))
-        
-        return arr
+        return FaceLetters.map { (letter) -> KeyboardCommandsModel in
+            return KeyboardCommandsModel(id: letter.rawValue, key: KeyEquivalent(letter.rawValue.first!))
+        } + FaceLetters.map { (letter) -> KeyboardCommandsModel in
+            /// For lower keys
+            return KeyboardCommandsModel(id: letter.rawValue.lowercased(), key: KeyEquivalent(letter.rawValue.lowercased().first!))
+        } + FaceDigits.map({ (digit) -> KeyboardCommandsModel in
+            return KeyboardCommandsModel(id: digit.rawValue, key: KeyEquivalent(digit.rawValue.first!))
+        }) + [KeyboardCommandsModel(id: "delete", key: .delete),
+                KeyboardCommandsModel(id: "upArrow", key: .upArrow),
+                KeyboardCommandsModel(id: "downArrow", key: .downArrow),
+                KeyboardCommandsModel(id: "rightArrow", key: .rightArrow),
+                KeyboardCommandsModel(id: "leftArrow", key: .leftArrow),
+                KeyboardCommandsModel(id: ",", key: KeyEquivalent(",")),
+                KeyboardCommandsModel(id: ".", key: KeyEquivalent(".")),
+                KeyboardCommandsModel(id: "<", key: KeyEquivalent("<")),
+                KeyboardCommandsModel(id: ">", key: KeyEquivalent(">")),
+                KeyboardCommandsModel(id: "+", key: KeyEquivalent("+")),
+                KeyboardCommandsModel(id: "=", key: KeyEquivalent("=")),
+                KeyboardCommandsModel(id: "-", key: KeyEquivalent("-"))
+            ]
     }()
     
     var keyEquivalentCompletion: ((KeyboardCommandsModel) -> ())?
