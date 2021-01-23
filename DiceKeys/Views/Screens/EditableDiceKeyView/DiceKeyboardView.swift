@@ -55,48 +55,28 @@ private struct ImageKey: View {
     }
 }
 
+
 struct DiceKeyboardView: View {
     @ObservedObject var editableDiceKeyState: EditableDiceKeyState
 
-    var letterKeys: some View {
-        GeometryReader { geometry in
-        let size = CGSize(width: geometry.size.width / 10, height: geometry.size.width / 20)
-        LazyVGrid(columns: Array(repeating: GridItem(), count: 8), content: {
-//        HStack {
-//            EmptyView()
-//            EmptyView()
-//            EmptyView()
-//            EmptyView()
-            ImageKey(size: size, action: {editableDiceKeyState.rotateLeft()}, image: Image(systemName: "rotate.left"))
-            ImageKey(size: size, action: {editableDiceKeyState.rotateRight()}, image: Image(systemName: "rotate.right"))
-            ImageKey(size: size, action: {editableDiceKeyState.backspace()}, image: Image(systemName: "delete.right.fill"))
-//            EmptyView()
-            ForEach(FaceLetters, id: \.self) { faceLetter in
-                CharacterKey(size: size, editableDiceKeyState: editableDiceKeyState, char: faceLetter.rawValue.first!)
-            }
-        })
-        }//.aspectRatio(8 /* columns */ / 4 /* rows */, contentMode: .fit)
-        .background(Color.green)
-    }
-    
-    var digitKeys: some View {
-        GeometryReader { geometry in
-            let size = CGSize(width: geometry.size.width / 10, height: geometry.size.height / 5)
-            LazyVGrid(columns: Array(repeating: GridItem(.fixed(geometry.size.width / 10), alignment: .center), count: 8), spacing: geometry.size.width / 100, content: {
-            EmptyView()
-            EmptyView()
-            EmptyView()
-            EmptyView()
-            ImageKey(size: size, action: {editableDiceKeyState.rotateLeft()}, image: Image(systemName: "rotate.left"))
-            ImageKey(size: size, action: {editableDiceKeyState.rotateRight()}, image: Image(systemName: "rotate.right"))
-            ImageKey(size: size, action: {editableDiceKeyState.backspace()}, image: Image(systemName: "delete.right.fill"))
-            EmptyView()
+    private let fractionalSpaceBetween: CGFloat = 0.1
+    private let columns: Int = 9
+    private let rows: Int = 4
 
-            ForEach(FaceDigits, id: \.self) { faceDigit in
-                CharacterKey(size: size, editableDiceKeyState: editableDiceKeyState, char: faceDigit.rawValue.first!)
-            }
-        })
-        }.aspectRatio(8 /* columns */ / 4 /* rows */, contentMode: .fit)
+    @State private var bounds: CGSize = CGSize(width: 1, height: 1)
+    var width: CGFloat { bounds.width / CGFloat(columns) }
+    var height: CGFloat { width / 2 }
+    var padding: CGFloat { fractionalSpaceBetween * width / 2 }
+    var buttonWidth: CGFloat { width - 2 * padding }
+    var buttonHeight: CGFloat { height - 2 * padding }
+    var buttonSize: CGSize { CGSize(width: buttonWidth, height: buttonHeight) }
+    var left: CGFloat { ( (1 - CGFloat(columns)) / 2 ) * width }
+    var top: CGFloat { ( (1 - CGFloat(rows)) / 2 ) * height }
+    func buttonOffset(x: Int, y: Int) -> CGSize {
+        CGSize(
+            width: left + CGFloat(x) * width,
+            height: top + CGFloat(y) * height
+        )
     }
     
     var showLetterKeys: Bool {
@@ -111,14 +91,38 @@ struct DiceKeyboardView: View {
                     editableDiceKeyState.keyPressed(id: id)
                 }
             }
-        #else
-        VStack {
-            ZStack(alignment: .top) {
-                letterKeys.showIf(showLetterKeys)
-                // digitKeys.hideIf(showLetterKeys)
-            }
-        }//.aspectRatio(8 /* columns */ / 4 /* rows */, contentMode: .fit)
-//            .animation(.linear(duration: 0.25))
         #endif
+//        #else
+        CalculateBounds(bounds: $bounds) {
+            ZStack(alignment: .center) {
+                ImageKey(size: buttonSize, action: {editableDiceKeyState.rotateLeft()}, image: Image(systemName: "rotate.left"))
+                    .offset(buttonOffset(x: 0, y: 0))
+                ImageKey(size: buttonSize, action: {editableDiceKeyState.rotateRight()}, image: Image(systemName: "rotate.right"))
+                    .offset(buttonOffset(x: 1, y: 0))
+                ImageKey(size: buttonSize, action: {editableDiceKeyState.backspace()}, image: Image(systemName: "delete.right.fill"))
+                    .offset(buttonOffset(x: columns - 1, y: 0))
+                ForEach(0..<FaceLetters.count) { faceLetterIndex in
+                    CharacterKey(size: buttonSize, editableDiceKeyState: editableDiceKeyState, char: FaceLetters[faceLetterIndex].rawValue.first!)
+                    .offset(buttonOffset(x: (faceLetterIndex % columns), y: 1 + faceLetterIndex / columns))
+                    .showIf(showLetterKeys)
+                }
+                ForEach(0..<FaceDigits.count) { faceDigitIndex in
+                    CharacterKey(size: buttonSize, editableDiceKeyState: editableDiceKeyState, char: FaceDigits[faceDigitIndex].rawValue.first!)
+                    .offset(buttonOffset(x: ((faceDigitIndex + 1) % columns), y: 2))
+                    .hideIf(showLetterKeys)
+                }
+            }.frame(width: width * CGFloat(columns), height: height * CGFloat(rows))
+            //.background(Color.red)
+        }.aspectRatio(CGFloat(columns) / CGFloat(rows), contentMode: .fit)
+        //.background(Color.green)
+        //.aspectRatio(8 /* columns */ / 4 /* rows */, contentMode: .fit)
+//            .animation(.linear(duration: 0.25))
+//        #endif
+    }
+}
+
+struct DiceKeyboardView_Previews: PreviewProvider {
+    static var previews: some View {
+        DiceKeyboardView(editableDiceKeyState: EditableDiceKeyState())
     }
 }
