@@ -104,6 +104,14 @@ struct DiceKeyboardView: View {
     }
 
     var body: some View {
+        #if os(macOS)
+        Text("To rotate the current face, use either < >, - +, or CTRL arrow (right and left arrows).")
+            .onReceive(NotificationCenter.default.publisher(for: NotificationCenter.keyEquivalentPressed)) { (object) in
+                if let id = object.object as? String {
+                    editableDiceKeyState.keyPressed(id: id)
+                }
+            }
+        #else
         VStack {
             ZStack(alignment: .top) {
                 letterKeys.showIf(showLetterKeys)
@@ -111,5 +119,6 @@ struct DiceKeyboardView: View {
             }
         }//.aspectRatio(8 /* columns */ / 4 /* rows */, contentMode: .fit)
 //            .animation(.linear(duration: 0.25))
+        #endif
     }
 }
