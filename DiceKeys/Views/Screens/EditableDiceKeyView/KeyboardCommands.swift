@@ -7,47 +7,44 @@
 
 import SwiftUI
 
-struct KeyboardCommandsModel: Identifiable {
-    var id: String
-    var key: KeyEquivalent
-}
-
+/// It will be appear at status bar of macOS, as the name of Inputs.
 struct KeyboardCommands: Commands {
     
-    let arrKeyboardCommandsModel: [KeyboardCommandsModel] = {
-        return FaceLetters.map { (letter) -> KeyboardCommandsModel in
-            return KeyboardCommandsModel(id: letter.rawValue, key: KeyEquivalent(letter.rawValue.first!))
-        } + FaceLetters.map { (letter) -> KeyboardCommandsModel in
+    let idToKeyEquivalent: [String: KeyEquivalent] = {
+        var idToKeyEquivalentBuilder: [String: KeyEquivalent] = [
+            "delete": .delete,
+            "upArrow": .upArrow,
+            "downArrow": .downArrow,
+            "rightArrow": .rightArrow,
+            "leftArrow": .leftArrow,
+            ",": KeyEquivalent(","),
+            ".": KeyEquivalent("."),
+            "<": KeyEquivalent("<"),
+            ">": KeyEquivalent(">"),
+            "+": KeyEquivalent("+"),
+            "=": KeyEquivalent("="),
+            "-": KeyEquivalent("-")
+        ]
+        for letter in FaceLetters {
+            idToKeyEquivalentBuilder[letter.rawValue] = KeyEquivalent(letter.rawValue.first!)
             /// For lower keys
-            return KeyboardCommandsModel(id: letter.rawValue.lowercased(), key: KeyEquivalent(letter.rawValue.lowercased().first!))
-        } + FaceDigits.map({ (digit) -> KeyboardCommandsModel in
-            return KeyboardCommandsModel(id: digit.rawValue, key: KeyEquivalent(digit.rawValue.first!))
-        }) + [KeyboardCommandsModel(id: "delete", key: .delete),
-                KeyboardCommandsModel(id: "upArrow", key: .upArrow),
-                KeyboardCommandsModel(id: "downArrow", key: .downArrow),
-                KeyboardCommandsModel(id: "rightArrow", key: .rightArrow),
-                KeyboardCommandsModel(id: "leftArrow", key: .leftArrow),
-                KeyboardCommandsModel(id: ",", key: KeyEquivalent(",")),
-                KeyboardCommandsModel(id: ".", key: KeyEquivalent(".")),
-                KeyboardCommandsModel(id: "<", key: KeyEquivalent("<")),
-                KeyboardCommandsModel(id: ">", key: KeyEquivalent(">")),
-                KeyboardCommandsModel(id: "+", key: KeyEquivalent("+")),
-                KeyboardCommandsModel(id: "=", key: KeyEquivalent("=")),
-                KeyboardCommandsModel(id: "-", key: KeyEquivalent("-"))
-            ]
+            idToKeyEquivalentBuilder[letter.rawValue.lowercased()] = KeyEquivalent(letter.rawValue.lowercased().first!)
+        }
+        for digit in FaceDigits { idToKeyEquivalentBuilder[digit.rawValue] = KeyEquivalent(digit.rawValue.first!) }
+        return idToKeyEquivalentBuilder
     }()
     
-    var keyEquivalentCompletion: ((KeyboardCommandsModel) -> ())?
+    var keyEquivalentCompletion: ((String) -> ())?
     
     var body: some Commands {
-        CommandMenu("") {
-            ForEach(arrKeyboardCommandsModel, id: \.id) { (keyboardCommandsModel) in
+        CommandMenu("Inputs") {
+            ForEach(idToKeyEquivalent.sorted(by: { $0.key > $1.key }), id: \.key) { (key, value) in
                 Button {
-                    keyEquivalentCompletion?(keyboardCommandsModel)
+                    keyEquivalentCompletion?(key)
                 } label: {
                     Text("")
                 }
-                .keyboardShortcut(keyboardCommandsModel.key, modifiers: EventModifiers())
+                .keyboardShortcut(value, modifiers: EventModifiers())
             }
         }
     }

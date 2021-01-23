@@ -58,8 +58,8 @@ struct DiceKeyboardView: View {
         #if os(macOS)
         Text("To rotate the current face, use either < >, - +, or CTRL arrow (right and left arrows).")
             .onReceive(NotificationCenter.default.publisher(for: NotificationCenter.keyEquivalentPressed)) { (object) in
-                if let key = object.object as? KeyboardCommandsModel {
-                    editableDiceKeyState.keyPressed(keyboardCommandsModel: key)
+                if let id = object.object as? String {
+                    editableDiceKeyState.keyPressed(id: id)
                 }
             }
         #else

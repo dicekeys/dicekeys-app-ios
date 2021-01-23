@@ -90,8 +90,8 @@ class EditableDiceKeyState: ObservableObject {
         self.digit = digit
     }
     
-    func keyPressed(keyboardCommandsModel: KeyboardCommandsModel) {
-        switch keyboardCommandsModel.id {
+    func keyPressed(id: String) {
+        switch id {
         case "<", ",", "-":
             self.rotateLeft()
         case ">", ".", "+", "=":
@@ -107,7 +107,7 @@ class EditableDiceKeyState: ObservableObject {
         case "leftArrow":
             self.movePrev()
         default:
-            let keyId = keyboardCommandsModel.id.uppercased()
+            let keyId = id.uppercased()
             if let letter = FaceLetter(rawValue: keyId) {
                 self.enter(letter: letter)
             } else if let digit = FaceDigit(rawValue: keyId) {
