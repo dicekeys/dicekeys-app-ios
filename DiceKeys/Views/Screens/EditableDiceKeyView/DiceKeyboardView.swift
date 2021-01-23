@@ -91,8 +91,7 @@ struct DiceKeyboardView: View {
                     editableDiceKeyState.keyPressed(id: id)
                 }
             }
-        #endif
-//        #else
+        #else
         CalculateBounds(bounds: $bounds) {
             ZStack(alignment: .center) {
                 ImageKey(size: buttonSize, action: {editableDiceKeyState.rotateLeft()}, image: Image(systemName: "rotate.left"))
@@ -108,16 +107,12 @@ struct DiceKeyboardView: View {
                 }
                 ForEach(0..<FaceDigits.count) { faceDigitIndex in
                     CharacterKey(size: buttonSize, editableDiceKeyState: editableDiceKeyState, char: FaceDigits[faceDigitIndex].rawValue.first!)
-                    .offset(buttonOffset(x: ((faceDigitIndex + 1) % columns), y: 2))
+                    .offset(buttonOffset(x: faceDigitIndex + 2, y: 2))
                     .hideIf(showLetterKeys)
                 }
             }.frame(width: width * CGFloat(columns), height: height * CGFloat(rows))
-            //.background(Color.red)
         }.aspectRatio(CGFloat(columns) / CGFloat(rows), contentMode: .fit)
-        //.background(Color.green)
-        //.aspectRatio(8 /* columns */ / 4 /* rows */, contentMode: .fit)
-//            .animation(.linear(duration: 0.25))
-//        #endif
+        #endif
     }
 }
 
