@@ -109,7 +109,7 @@ struct DiceKeyPresentNavigationFooter: View {
                 Spacer()
             }
         }
-        .padding(.bottom, geometry.safeAreaInsets.bottom)
+//        .padding(.bottom, geometry.safeAreaInsets.bottom)
         .padding(.top, 5)
         }
         #if os(iOS)
@@ -194,8 +194,8 @@ struct DiceKeyPresent: View {
                 }
                 Spacer()
                 DiceKeyPresentNavigationFooter(pageContent: pageContent, navigateTo: navigate, geometry: geometry)
-            }.ignoresSafeArea(.all, edges: .bottom)
-        }
+            }
+        }.ignoresSafeArea(.all, edges: .bottom)
         #if os(iOS)
         return reader.navigationViewStyle(StackNavigationViewStyle())
             .navigationTitle(diceKeyState.nickname)

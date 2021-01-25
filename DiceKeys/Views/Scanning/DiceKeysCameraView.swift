@@ -52,6 +52,7 @@ final class DiceKeysCameraViewDelegate {
         controller.selectedCamera = self.selectedCamera
         controller.onFrameCaptured = onFrameCaptured
         controller.size = size
+        controller.selectedCamera = selectedCamera
         return controller
     }
 }
@@ -62,7 +63,7 @@ final class DiceKeysCameraView: UIViewControllerRepresentable {
     
     let delegate: DiceKeysCameraViewDelegate
 
-    init(selectedCamera: AVCaptureDevice? = nil, onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize) {
+    init(selectedCamera: AVCaptureDevice? = nil, onFrameProcessed: ((_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) -> Void)? = nil, onRead: ((DiceKey) -> Void)? = nil, size: CGSize = UIScreen.main.bounds.size) {
         self.delegate = DiceKeysCameraViewDelegate(selectedCamera: selectedCamera, onFrameProcessed: onFrameProcessed, onRead: onRead, size: size)
     }
 
