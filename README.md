@@ -10,11 +10,11 @@ or init submodules manually:
 
 `git submodule update --init --recursive`
 
-2. Install pods
+2. Install pods (use latest CocoaPods version, tested with 1.10.0)
 
 pod install
 
-3. Open `DiceKeys/DiceKeys.xcodeproj`
+3. Open `DiceKeys/DiceKeys.xcworkspace`
 
 3.5 Due to [issue 36](https://github.com/dicekeys/dicekeys-app-ios/issues/36), you will need to use the xcode file navigator to go to Pods->Pods->OpenCVXF->Core.h and in the file manager change the file type to "Objective-C Source"
 
