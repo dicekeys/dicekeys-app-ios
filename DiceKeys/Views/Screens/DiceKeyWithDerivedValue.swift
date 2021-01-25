@@ -157,7 +157,7 @@ struct FormCard<Content: View, TitleContent: View>: View {
                         .foregroundColor(Color.formHeadingForeground)
                         .lineLimit(1)
                         .minimumScaleFactor(0.01)
-                        .scaledToFit()
+//                        .scaledToFit()
                         .padding(.horizontal, 10)
                 }
                 RoundedRectCard(backgroundRectColor: Color.formContentBackground, radius: 10 //, topMargin: 2, bottomMargin: 5, horizontalMargin: 10
