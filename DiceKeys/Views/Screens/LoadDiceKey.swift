@@ -19,20 +19,24 @@ struct LoadDiceKey: View {
     let onDiceKeyLoaded: ((_ diceKey: DiceKey, _ entryMethod: LoadDiceKeyEntryMethod) -> Void)?
 
     var body: some View {
-        if (useCamera) {
-            VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
+        let view = VStack(alignment: .center, spacing: 0) {
+            if (useCamera) {
                 ScanDiceKey(onDiceKeyRead: { dicKey in onDiceKeyLoaded?(diceKey, .byCamera) })
                 Button(action: { useCamera = false }, label: { Text("Enter the DiceKey by Hand") })
-            }
-        } else {
-            VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
+            } else {
                 TypeYourDiceKeyView(
-                    onDiceKeyEntered: {diceKey in onDiceKeyLoaded?(diceKey, .manual)},
-                    editableDiceKeyState: editableDiceKeyState
-                )
+                        onDiceKeyEntered: {diceKey in onDiceKeyLoaded?(diceKey, .manual)},
+                        editableDiceKeyState: editableDiceKeyState
+                    )
                 Button(action: { useCamera = true }, label: { Text("Scan the DiceKey with my Camera") })
             }
         }
+        #if os(iOS)
+        return view.navigationBarTitleDisplayMode(.inline)
+            .navigationBarDiceKeyStyle()
+        #else
+        return view
+        #endif
     }
 }
 

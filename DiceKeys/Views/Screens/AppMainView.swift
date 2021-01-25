@@ -21,21 +21,7 @@ struct AppMainView: View {
     @State var scanDiceKeyIsActive: Bool = false
 
     var hiddenNavigationLinkToScanDiceKey: some View {
-#if os(iOS)
-        return NavigationLink(
-            destination: LoadDiceKey(
-                onDiceKeyLoaded: { diceKey, _ in
-                    self.diceKey = diceKey
-                    scanDiceKeyIsActive = false
-                }).navigationBarTitleDisplayMode(.inline)
-                .navigationBarDiceKeyStyle(),
-            isActive: $scanDiceKeyIsActive,
-            label: { EmptyView() }
-        )
-        .frame(width: 0, height: 0)
-        .position(x: 0, y: 0)
-        .hidden()
-#else
+
         return NavigationLink(
             destination: LoadDiceKey(
                 onDiceKeyLoaded: { diceKey, _ in
@@ -48,7 +34,6 @@ struct AppMainView: View {
         .frame(width: 0, height: 0)
         .position(x: 0, y: 0)
         .hidden()
-#endif
     }
 
     var hiddenNavigationLinkToDiceKeyPresent: some View {
