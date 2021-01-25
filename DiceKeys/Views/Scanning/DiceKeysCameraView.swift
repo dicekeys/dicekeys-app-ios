@@ -51,7 +51,7 @@ final class DiceKeysCameraViewDelegate {
         let controller = DiceKeysCameraUIViewController()
         controller.onFrameCaptured = onFrameCaptured
         controller.size = size
-        controller.selectedCamera = self.selectedCamera
+        controller.selectedCamera = selectedCamera
         return controller
     }
 }
