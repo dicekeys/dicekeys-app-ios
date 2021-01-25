@@ -26,6 +26,8 @@
 		17B6C68D25BA729A007798F3 /* EditableDiceKeyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C68B25BA729A007798F3 /* EditableDiceKeyState.swift */; };
 		17B6C69325BA8285007798F3 /* FaceOrientationLetterTrbl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C69225BA8285007798F3 /* FaceOrientationLetterTrbl.swift */; };
 		17B6C69425BA8285007798F3 /* FaceOrientationLetterTrbl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C69225BA8285007798F3 /* FaceOrientationLetterTrbl.swift */; };
+		17B6C6E625BE630A007798F3 /* LoadDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C6E525BE6309007798F3 /* LoadDiceKey.swift */; };
+		17B6C6E725BE630A007798F3 /* LoadDiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C6E525BE6309007798F3 /* LoadDiceKey.swift */; };
 		26447E7025BAE1C500F2B534 /* KeyboardCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */; };
 		26447E7125BAE1C500F2B534 /* KeyboardCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */; };
 		264CD58325AF1043009D2F5A /* TypeYourDiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */; };
@@ -184,6 +186,7 @@
 		17B6C68025B9883F007798F3 /* PartialFace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartialFace.swift; sourceTree = "<group>"; };
 		17B6C68B25BA729A007798F3 /* EditableDiceKeyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableDiceKeyState.swift; sourceTree = "<group>"; };
 		17B6C69225BA8285007798F3 /* FaceOrientationLetterTrbl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOrientationLetterTrbl.swift; sourceTree = "<group>"; };
+		17B6C6E525BE6309007798F3 /* LoadDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadDiceKey.swift; sourceTree = "<group>"; };
 		19FCCD61505F4C2ED9F6ED0B /* Pods_DiceKeys__macOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys__macOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25A6B06AB3C071EB2999AE67 /* Pods_DiceKeys__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardCommands.swift; sourceTree = "<group>"; };
@@ -488,6 +491,7 @@
 				EC509274259482F4007D2B91 /* DiceKeyWithDerivedValue.swift */,
 				EC509275259482F4007D2B91 /* AssemblyInstructions.swift */,
 				267F67DE25B2CA3600F2324A /* EditableDiceKeyView */,
+				17B6C6E525BE6309007798F3 /* LoadDiceKey.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -927,6 +931,7 @@
 				EC5092A5259482F5007D2B91 /* SeedHardwareSecurityKey.swift in Sources */,
 				EC509299259482F4007D2B91 /* CameraController.swift in Sources */,
 				EC5092B3259482F5007D2B91 /* ChildSizeReader.swift in Sources */,
+				17B6C6E625BE630A007798F3 /* LoadDiceKey.swift in Sources */,
 				EC5091F1259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */,
 				17B6C61C25AD52C6007798F3 /* DerivationRecipeTemplates.swift in Sources */,
 				EC5092C3259482F5007D2B91 /* StickerTargetSheet.swift in Sources */,
@@ -979,6 +984,7 @@
 				EC5092C2259482F5007D2B91 /* TransferSticker.swift in Sources */,
 				EC5092C8259482F5007D2B91 /* ValidateBackup.swift in Sources */,
 				EC50928E259482F4007D2B91 /* KeyScanningIllustration.swift in Sources */,
+				17B6C6E725BE630A007798F3 /* LoadDiceKey.swift in Sources */,
 				EC5092D0259482F5007D2B91 /* DiceKeyCopyInProgress.swift in Sources */,
 				EC5092A8259482F5007D2B91 /* DiceKeyStorageOptions.swift in Sources */,
 				17B6C62825B58253007798F3 /* AttachedHidDevices.swift in Sources */,

@@ -23,8 +23,8 @@ struct AppMainView: View {
     var hiddenNavigationLinkToScanDiceKey: some View {
 #if os(iOS)
         return NavigationLink(
-            destination: ScanDiceKey(
-                onDiceKeyRead: { diceKey in
+            destination: LoadDiceKey(
+                onDiceKeyLoaded: { diceKey, _ in
                     self.diceKey = diceKey
                     scanDiceKeyIsActive = false
                 }).navigationBarTitleDisplayMode(.inline)
@@ -37,8 +37,8 @@ struct AppMainView: View {
         .hidden()
 #else
         return NavigationLink(
-            destination: ScanDiceKey(
-                onDiceKeyRead: { diceKey in
+            destination: LoadDiceKey(
+                onDiceKeyLoaded: { diceKey, _ in
                     self.diceKey = diceKey
                     scanDiceKeyIsActive = false
                 }),
@@ -126,7 +126,7 @@ struct AppMainView: View {
                 VStack(alignment: .center) {
                     KeyScanningIllustration(.Dice).aspectRatio(contentMode: .fit).frame(maxHeight: 0.3 * screenShorterSide)
                     //Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).frame(maxHeight: UIScreen.main.bounds.size.shorterSide / 4)
-                    Text("Read your DiceKey").font(.title2)
+                    Text("Load your DiceKey").font(.title2)
                 }
             }
             Spacer()
@@ -147,12 +147,6 @@ struct AppMainView: View {
                     Text("Assemble your First DiceKey").font(.title2)
                 }
             }
-            Spacer()
-            NavigationLink(
-                destination: TypeYourDiceKeyView(),
-                label: {
-                    Text("Type your Dicekey")
-                })
             Spacer()
         }.background( ZStack {
             hiddenNavigationLinkToDiceKeyPresent

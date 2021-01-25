@@ -24,6 +24,11 @@ private let defaultCameraAuthorized: Bool = true
 private let defaultCameraAuthorized: Bool = false
 #endif
 
+enum LoadDiceKeyEntryMethod {
+    case byCamera
+    case manual
+}
+
 struct ScanDiceKey: View {
     @State var cameraAuthorized: Bool = defaultCameraAuthorized
     

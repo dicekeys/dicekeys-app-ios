@@ -9,8 +9,9 @@ import SwiftUI
 
 /// TypeYourDiceKeyView
 struct TypeYourDiceKeyView: View {
+    var onDiceKeyEntered: ((_ diceKey: DiceKey) -> Void)?
     @StateObject var editableDiceKeyState: EditableDiceKeyState = EditableDiceKeyState()
-        
+    
     var body: some View {
         let view = VStack(alignment: .center) {
             Spacer()
@@ -21,7 +22,11 @@ struct TypeYourDiceKeyView: View {
             Spacer()
             DiceKeyboardView(editableDiceKeyState: editableDiceKeyState)
             Spacer()
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+            Button(action: {
+                if let diceKey = editableDiceKeyState.diceKey {
+                    onDiceKeyEntered?(diceKey)
+                }
+            }, label: {
                 Text("Done")
             }).showIf(editableDiceKeyState.diceKey != nil)
             Spacer()
