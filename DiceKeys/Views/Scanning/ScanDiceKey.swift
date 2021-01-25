@@ -77,11 +77,7 @@ struct ScanDiceKey: View {
                         Spacer()
                             GeometryReader { reader in
                                 ZStack {
-                                    #if os(iOS)
-                                        DiceKeysCameraView(onFrameProcessed: onFrameProcessed, size: reader.size)
-                                    #else
-                                        DiceKeysCameraView(selectedCamera: selectedOrNextBestCameraDisplayableCamera, onFrameProcessed: onFrameProcessed, size: reader.size)
-                                    #endif
+                                    DiceKeysCameraView(selectedCamera: selectedOrNextBestCameraDisplayableCamera, onFrameProcessed: onFrameProcessed, size: reader.size)
                                     FacesReadOverlay(
                                         renderedSize: reader.size,
                                         imageFrameSize: processedImageFrameSize ?? reader.size,
