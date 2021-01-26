@@ -21,24 +21,10 @@ struct AppMainView: View {
     @State var scanDiceKeyIsActive: Bool = false
 
     var hiddenNavigationLinkToScanDiceKey: some View {
-#if os(iOS)
+
         return NavigationLink(
-            destination: ScanDiceKey(
-                onDiceKeyRead: { diceKey in
-                    self.diceKey = diceKey
-                    scanDiceKeyIsActive = false
-                }).navigationBarTitleDisplayMode(.inline)
-                .navigationBarDiceKeyStyle(),
-            isActive: $scanDiceKeyIsActive,
-            label: { EmptyView() }
-        )
-        .frame(width: 0, height: 0)
-        .position(x: 0, y: 0)
-        .hidden()
-#else
-        return NavigationLink(
-            destination: ScanDiceKey(
-                onDiceKeyRead: { diceKey in
+            destination: LoadDiceKey(
+                onDiceKeyLoaded: { diceKey, _ in
                     self.diceKey = diceKey
                     scanDiceKeyIsActive = false
                 }),
@@ -48,7 +34,6 @@ struct AppMainView: View {
         .frame(width: 0, height: 0)
         .position(x: 0, y: 0)
         .hidden()
-#endif
     }
 
     var hiddenNavigationLinkToDiceKeyPresent: some View {
@@ -126,7 +111,7 @@ struct AppMainView: View {
                 VStack(alignment: .center) {
                     KeyScanningIllustration(.Dice).aspectRatio(contentMode: .fit).frame(maxHeight: 0.3 * screenShorterSide)
                     //Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).frame(maxHeight: UIScreen.main.bounds.size.shorterSide / 4)
-                    Text("Read your DiceKey").font(.title2)
+                    Text("Load your DiceKey").font(.title2)
                 }
             }
             Spacer()
@@ -168,7 +153,7 @@ struct AppMainView_Previews: PreviewProvider {
     static var previews: some View {
         #if os(iOS)
         AppMainView().previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
+//        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
 //        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
         #else
         AppMainView().frame(width: 720, height: 600)

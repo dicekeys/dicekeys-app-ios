@@ -14,10 +14,7 @@ class ActiveCameras {
     // Get the list of active cameras, caching the result for 0.1 seconds
     static func get() -> [AVCaptureDevice] {
         if cache == nil || cache?.count == 0 || lastLoaded == nil || (lastLoaded?.timeIntervalSinceNow.magnitude ?? 1) > 0.1 {
-            #if os(iOS)
-//            AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
-//                throw CameraControllerError.noCamerasAvailable
-//            }            
+            #if os(iOS) 
             cache = AVCaptureDevice.DiscoverySession(
                 deviceTypes: [AVCaptureDevice.DeviceType.builtInWideAngleCamera],
                 mediaType: .video,

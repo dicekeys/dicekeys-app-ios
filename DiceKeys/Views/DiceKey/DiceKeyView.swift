@@ -98,6 +98,7 @@ private struct DieLidView: View {
 
 struct DiceKeyView: View {
     var diceKey: DiceKey?
+    var partialFaces: [PartialFace]?
     var centerFace: Face?
     var showLidTab: Bool = false
     var leaveSpaceForTab: Bool = false
@@ -108,20 +109,24 @@ struct DiceKeyView: View {
     var highlightIndexes: Set<Int> = Set()
     var showDiceAtIndexes: Set<Int>?
     var aspectRatioMatchStickeys: Bool = false
+    var onFacePressed: ((_ faceIndex: Int) -> Void)?
 
     @State private var viewSize: CGSize = CGSize.zero
 
-    var computedDiceKeyToRender: DiceKey {
+    var partialFacesToRender: [PartialFace] {
         if let diceKey = self.diceKey {
             // If the caller specified a diceKey, use that
-            return diceKey
+            return (0..<25).map { index in PartialFace(diceKey.faces[index], index: index) }
         } else if let centerFace = self.centerFace {
             // If the caller specified a center face, create a
             // diceKey with just that face for all dice
-            return DiceKey( (0..<25).map { _ in centerFace })
+            return (0..<25).map { index in PartialFace(centerFace, index: index) }
+        } else if let partialFaces = partialFaces {
+            return partialFaces
         } else {
             // If no diceKey was specified, we'll render the example diceKey
-            return DiceKey.Example
+            let diceKey = DiceKey.Example
+            return (0..<25).map { index in PartialFace(diceKey.faces[index], index: index) }
         }
     }
 
@@ -153,15 +158,16 @@ struct DiceKeyView: View {
 
     private struct DiePosition: Identifiable {
         let indexInArray: Int
-        var face: Face
+        var partialFace: PartialFace
         var id: Int { indexInArray }
         var column: Int { indexInArray % 5 }
         var row: Int { indexInArray / 5 }
     }
 
     private var facePositions: [DiePosition] {
+        let partialFaces = partialFacesToRender
         return [Int](0...24).map { index in
-            DiePosition(indexInArray: index, face: computedDiceKeyToRender.faces[index] )
+            DiePosition(indexInArray: index, partialFace: partialFaces[index] )
         }
     }
 
@@ -182,11 +188,14 @@ struct DiceKeyView: View {
                 // The dice
                 ForEach(facePositions) { facePosition in
                     if computedShowDiceAtIndexes.contains(facePosition.id) {
-                        DieView(face: facePosition.face, dieSize: faceSize, penColor: diePenColor, faceSurfaceColor: highlightIndexes.contains(facePosition.indexInArray) ? Color.highlighter : faceSurfaceColor )
+                        DieView(partialFace: facePosition.partialFace, dieSize: faceSize, penColor: diePenColor, faceSurfaceColor: highlightIndexes.contains(facePosition.indexInArray) ? Color.highlighter : faceSurfaceColor )
                             .position(
                                 x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
                                 y: vCenterOfBox + CGFloat(-2 + facePosition.row) * dieStepSize
                             )
+                            .onTapGesture {
+                                onFacePressed?(facePosition.indexInArray)
+                            }
                     } else {
                         RoundedRectangle(cornerRadius: sizeModel.faceRadius)
                             .size(width: faceSize, height: faceSize)

@@ -12,6 +12,20 @@ extension View {
     func modifyIf(_ condition: Bool, _ modifier: (Self) -> Self) -> Self {
         return condition ? modifier(self) : self
     }
+    
+    #if os(iOS)
+    func modifyIfIOS<Content: View>(
+        _ modifier: (Self) -> Content
+    ) -> Content {
+        return modifier(self)
+    }
+    #else
+    func modifyIfIOS(
+        _ modifier: (Self) -> Any
+    ) -> Self {
+        return self
+    }
+    #endif
 
     func `if`<Content: View>(_ conditional: Bool, content: (Self) -> Content) -> some View {
          if conditional {
@@ -36,7 +50,7 @@ extension View {
             self.hidden()
         }
     }
-    
+        
     @ViewBuilder func previewLayoutMinSupported() -> some View {
         // https://28b.co.uk/ios-device-dimensions-reference-table/
         // iPhone SE: 568 x 320
