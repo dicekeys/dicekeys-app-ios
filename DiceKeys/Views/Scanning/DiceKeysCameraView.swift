@@ -49,6 +49,7 @@ final class DiceKeysCameraViewDelegate {
 
     public func makeXXViewController(context: XXViewControllerRepresentableContext<DiceKeysCameraView>) -> DiceKeysCameraUIViewController {
         let controller = DiceKeysCameraUIViewController()
+        controller.selectedCamera = self.selectedCamera
         controller.onFrameCaptured = onFrameCaptured
         controller.size = size
         controller.selectedCamera = selectedCamera

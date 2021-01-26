@@ -40,6 +40,10 @@ struct AppView: App {
             default:
                 print(phase)
             }
+        }.commands {
+            KeyboardCommands { (keyboardCommandsModel) in
+                NotificationCenter.default.post(name: NotificationCenter.keyEquivalentPressed, object: keyboardCommandsModel)
+            }
         }
     }
 }
