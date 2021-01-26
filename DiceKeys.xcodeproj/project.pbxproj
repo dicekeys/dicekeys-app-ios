@@ -32,6 +32,8 @@
 		264CD58425AF1044009D2F5A /* TypeYourDiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */; };
 		264D302A25B2FCC10048D165 /* DiceKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264D302925B2FCC10048D165 /* DiceKeyboardView.swift */; };
 		264D302B25B2FCC10048D165 /* DiceKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264D302925B2FCC10048D165 /* DiceKeyboardView.swift */; };
+		268E3DDD25BFF81D008B6DE6 /* CameraFrameCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268E3DDC25BFF81D008B6DE6 /* CameraFrameCountView.swift */; };
+		268E3DDE25BFF81D008B6DE6 /* CameraFrameCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268E3DDC25BFF81D008B6DE6 /* CameraFrameCountView.swift */; };
 		ACF9E6A9B1E79E881EEE4C09 /* Pods_DiceKeys__macOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19FCCD61505F4C2ED9F6ED0B /* Pods_DiceKeys__macOS_.framework */; };
 		EC5091ED259480BE007D2B91 /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EA259480BE007D2B91 /* GlobalState.swift */; };
 		EC5091EE259480BE007D2B91 /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EA259480BE007D2B91 /* GlobalState.swift */; };
@@ -189,6 +191,7 @@
 		26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardCommands.swift; sourceTree = "<group>"; };
 		264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeYourDiceKeyView.swift; sourceTree = "<group>"; };
 		264D302925B2FCC10048D165 /* DiceKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceKeyboardView.swift; sourceTree = "<group>"; };
+		268E3DDC25BFF81D008B6DE6 /* CameraFrameCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFrameCountView.swift; sourceTree = "<group>"; };
 		A12F40698764C98F698C6350 /* Pods-DiceKeys (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (macOS).release.xcconfig"; path = "Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS).release.xcconfig"; sourceTree = "<group>"; };
 		B09CA29A4B28E9D780FE3E0E /* Pods-DiceKeys (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (macOS).debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS).debug.xcconfig"; sourceTree = "<group>"; };
 		D6328E5B71C2EFE82AB1D100 /* Pods-DiceKeys (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (iOS).debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys (iOS)/Pods-DiceKeys (iOS).debug.xcconfig"; sourceTree = "<group>"; };
@@ -469,6 +472,7 @@
 			isa = PBXGroup;
 			children = (
 				EC50926A259482F4007D2B91 /* CameraController.swift */,
+				268E3DDC25BFF81D008B6DE6 /* CameraFrameCountView.swift */,
 				EC50926B259482F4007D2B91 /* FacesReadOverlay.swift */,
 				EC50926C259482F4007D2B91 /* ScanDiceKey.swift */,
 				17B6C63F25B7C48C007798F3 /* ActiveCameras.swift */,
@@ -886,6 +890,7 @@
 				EC5092B7259482F5007D2B91 /* RoundedTextButton.swift in Sources */,
 				EC5092BB259482F5007D2B91 /* DerivationRecipeMenu.swift in Sources */,
 				EC509291259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift in Sources */,
+				268E3DDD25BFF81D008B6DE6 /* CameraFrameCountView.swift in Sources */,
 				EC5092A1259482F4007D2B91 /* DiceKeyPresent.swift in Sources */,
 				EC5092BF259482F5007D2B91 /* BackupToStickeysIntroduction.swift in Sources */,
 				EC50920D25948124007D2B91 /* FaceRead.swift in Sources */,
@@ -994,6 +999,7 @@
 				EC5092322594818F007D2B91 /* View.swift in Sources */,
 				EC5092AE259482F5007D2B91 /* AssemblyInstructions.swift in Sources */,
 				264CD58425AF1044009D2F5A /* TypeYourDiceKeyView.swift in Sources */,
+				268E3DDE25BFF81D008B6DE6 /* CameraFrameCountView.swift in Sources */,
 				EC50921625948124007D2B91 /* DerivationOptions.swift in Sources */,
 				EC50921825948124007D2B91 /* UnsealingInstructions.swift in Sources */,
 				EC5092CA259482F5007D2B91 /* BackupDiceKey.swift in Sources */,
@@ -1166,7 +1172,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CTDV6HX5KK;
+				DEVELOPMENT_TEAM = 27T266T272;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1175,7 +1181,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevin.dicekeys;
 				PRODUCT_NAME = DiceKeys;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
