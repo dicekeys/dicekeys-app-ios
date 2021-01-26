@@ -42,10 +42,11 @@ struct ScanDiceKey: View {
 //        self.selectedCamera = activeCameras.first
     }
 
-    @State var frameCount: Int = 0
-    @State var facesRead: [FaceRead]?
-    @State var processedImageFrameSize: CGSize?
     @State var selectedCameraUniqueId: String = ""
+
+    var cameraFrameCountModel: CameraFrameCountModel = CameraFrameCountModel()
+    var facesReadOverlayModel: FacesReadOverlayModel = FacesReadOverlayModel()
+    
 //    @State var selectedCamera: AVCaptureDevice?
  
     var selectedCamera: AVCaptureDevice? {
@@ -63,61 +64,49 @@ struct ScanDiceKey: View {
     }
 
     func onFrameProcessed(_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) {
-        self.frameCount += 1
-        self.processedImageFrameSize = processedImageFrameSize
-        self.facesRead = facesRead
+        DispatchQueue.main.async {
+            cameraFrameCountModel.frameCount += 1
+            facesReadOverlayModel.imageFrameSize = processedImageFrameSize
+            facesReadOverlayModel.facesRead = facesRead ?? []
+        }
+
         if facesRead?.count == 25 && facesRead?.allSatisfy({ faceRead in faceRead.errors.count == 0 }) == true {
             try? onDiceKeyRead?(DiceKey(facesRead!).rotatedClockwise90Degrees())
         }
     }
 
     var body: some View {
-            VStack(alignment: .center, spacing: 0) {
-                if cameraAuthorized {
-                    Text("Place the DiceKey so that the \(stickers ? "stickers" : "dice") fill the camera view. Then hold steady.").font(.title2)
-                        .padding(.top, 20)
-                    VStack(alignment: .center, spacing: 0) {
-                        // For debugging: remove
-                        Text("Selected camera: \(selectedOrNextBestCameraDisplayableCamera?.localizedName ?? "nil")")
-                        HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
-                            Spacer()
-                                GeometryReader { reader in
-                                    ZStack {
-                                        DiceKeysCameraView(selectedCamera: selectedOrNextBestCameraDisplayableCamera, onFrameProcessed: onFrameProcessed, size: reader.size)
-                                        FacesReadOverlay(
-                                            renderedSize: reader.size,
-                                            imageFrameSize: processedImageFrameSize ?? reader.size,
-                                            facesRead: self.facesRead
-                                        )
-                                    }
-                                }.aspectRatio(1, contentMode: .fit)
-                            Spacer()
-                        }
-                        if activeCameras.count > 1 {
-                            Picker(
-                                selection: $selectedCameraUniqueId,
-                                label: Text("Camera")
-                            ) {
-                                ForEach(activeCameras) { camera in
-                                    Text(camera.localizedName).tag(camera.ID)
+        VStack(alignment: .center, spacing: 0) {
+            if cameraAuthorized {
+                Text("Place the DiceKey so that the \(stickers ? "stickers" : "dice") fill the camera view. Then hold steady.").font(.title2)
+                VStack(alignment: .center, spacing: 0) {
+                    // For debugging: remove
+                    Text("Selected camera: \(selectedOrNextBestCameraDisplayableCamera?.localizedName ?? "nil")")
+                    HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
+                        Spacer()
+                            GeometryReader { reader in
+                                ZStack {
+                                    DiceKeysCameraView(selectedCamera: selectedOrNextBestCameraDisplayableCamera, onFrameProcessed: onFrameProcessed, size: reader.size)
+                                    FacesReadOverlay(renderedSize: reader.size,
+                                                     facesReadOverlayModel: facesReadOverlayModel)
                                 }
                             }
                         }
-                        Text("\(frameCount) frames processed").font(.footnote).foregroundColor(.white).padding(.top, 3)
-                    }.background(Color.black).padding(.vertical, 5)
-                } else {
-                    Text("Permission to access the camera is required to scan your DiceKey")
-                }
-            }.onAppear {
-                #if os(macOS)
-                switch AVCaptureDevice.authorizationStatus(for: .video) {
-                    case .authorized: // The user has previously granted access to the camera.
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            cameraAuthorized = true
-                            if (self.selectedCamera == nil) {
-                                self.selectedCameraUniqueId = activeCameras.first?.ID ?? ""
-                                // self.selectedCamera = activeCameras.first
-                            }
+                    }
+                    CameraFrameCountView(cameraFrameCountModel: self.cameraFrameCountModel)
+                }.background(Color.black).padding(.vertical, 5)
+            } else {
+                Text("Permission to access the camera is required to scan your DiceKey")
+            }
+        }.onAppear {
+            #if os(macOS)
+            switch AVCaptureDevice.authorizationStatus(for: .video) {
+                case .authorized: // The user has previously granted access to the camera.
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        cameraAuthorized = true
+                        if (self.selectedCamera == nil) {
+                            self.selectedCameraUniqueId = activeCameras.first?.ID ?? ""
+                            // self.selectedCamera = activeCameras.first
                         }
                     case .notDetermined: // The user has not yet been asked for camera access.
                         AVCaptureDevice.requestAccess(for: .video) { granted in
