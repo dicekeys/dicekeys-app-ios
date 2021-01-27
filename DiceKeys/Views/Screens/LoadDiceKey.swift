@@ -21,7 +21,7 @@ struct LoadDiceKey: View {
     var body: some View {
         let view = VStack(alignment: .center, spacing: 0) {
             if (useCamera) {
-                ScanDiceKey(onDiceKeyRead: { dicKey in onDiceKeyLoaded?(diceKey, .byCamera) })
+                ScanDiceKey(onDiceKeyRead: { diceKey in onDiceKeyLoaded?(diceKey, .byCamera) })
                 Button(action: { useCamera = false }, label: { Text("Enter the DiceKey by Hand") })
             } else {
                 TypeYourDiceKeyView(

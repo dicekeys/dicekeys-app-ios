@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CryptoKit
+import SeededCrypto
 
 typealias Tuple25<T> = (
     T, T, T, T, T,
@@ -37,8 +37,10 @@ class DiceKey: Identifiable {
         case emptyFace
     }
 
+    /// The 25 faces that make up a DiceKey, each with a letter, digit, and orientation
     let faces: [Face]
 
+    /// The set of faces as a more formally-defined 25-item Tuple
     var faceTuple: FaceTuple { get {
         return (
             faces[0], faces[1], faces[2], faces[3], faces[4],
@@ -64,8 +66,12 @@ class DiceKey: Identifiable {
         }
     }
     
+    /// The center face of a DiceKey, useful as the most salient face for users to
+    /// associate with the key.
     var centerFace: Face { faces[12] }
 
+    /// Creae a DiceKey from a low-quality random number generator for testing purposes
+    /// (not for cryptographic-quality DiceKey production)
     static func createFromRandom() -> DiceKey {
         return DiceKey( (1...25).map { _ -> Face in
             return Face(
@@ -76,6 +82,7 @@ class DiceKey: Identifiable {
         })
     }
     
+    /// A sample DiceKey for use in development, such as generating sample views
     static var Example: DiceKey {
         DiceKey((0..<25).map { index in
             Face(
@@ -86,6 +93,7 @@ class DiceKey: Identifiable {
         })
     }
 
+    /// Re-construct a DiceKey from human-readable form.
     static func createFrom(humanReadableForm: String) throws -> DiceKey {
         precondition(humanReadableForm.count == 50 || humanReadableForm.count == 75)
         let bytesPerFace = humanReadableForm.count == 75 ? 3 : 2
@@ -109,6 +117,8 @@ class DiceKey: Identifiable {
         })
     }
 
+    /// Returns a DiceKey stripped of all so that all dice are facing upright (top)
+    /// (non-mutating)
     func withoutOrientations() -> DiceKey {
         return DiceKey(
             faces.map {
@@ -121,6 +131,7 @@ class DiceKey: Identifiable {
         )
     }
 
+    /// Returns a DiceKey rotated 90 degrees clockwise (non-mutating)
     func rotatedClockwise90Degrees() -> DiceKey {
         return DiceKey(
             clockwise90DegreeRotationIndexesFor5x5Grid.map { index in
@@ -133,6 +144,8 @@ class DiceKey: Identifiable {
         )
     }
 
+    /// Convert the DiceKey to human-readable form of
+    /// letter, digit, orientation triples
     func toHumanReadableForm(includeOrientations: Bool = true) -> String {
         return faces.map { face -> String in
             face.letter.rawValue +
@@ -141,7 +154,9 @@ class DiceKey: Identifiable {
         }.joined(separator: "") as String
     }
 
-    var threeAlternateRotations: [DiceKey] {
+    /// A 3-element array containing the 3 possible alternate orientations
+    /// of a DiceKey
+    private var threeAlternateRotations: [DiceKey] {
         var result: [DiceKey] = [ self.rotatedClockwise90Degrees() ]
         for _ in 1...2 {
             result.append(result[result.count-1].rotatedClockwise90Degrees())
@@ -149,11 +164,16 @@ class DiceKey: Identifiable {
         return result
     }
 
-    var allFourPossibleRotations: [DiceKey] {
+    /// A four-element array of the four possible rotations/orientations of a DiceKey
+    private var allFourPossibleRotations: [DiceKey] {
         [self] + self.threeAlternateRotations
     }
 
-    func differencesForFixedRotation(compareTo other: DiceKey) -> Int {
+    /// Count the number of fields different between two DiceKeys.
+    /// For each of the 25 faces, there are three possible differences
+    /// (letter, digit, and orientation)
+    /// (does not rotate the DiceKeys)
+    private func differencesForFixedRotation(compareTo other: DiceKey) -> Int {
         var difference: Int = 0
         for index in 0...24 {
             difference += faces[index].numberOfFieldsDifferent(fromOtherFace: other.faces[index])
@@ -161,6 +181,8 @@ class DiceKey: Identifiable {
         return difference
     }
 
+    /// Get the difference between this DiceKey and another DiceKey, rotating the other DiceKey
+    /// as necessary to get a minimal distance betweeen them.
     func mostSimilarRotationWithDifference(_ other: DiceKey, maxDifferenceToRotateFor: Int = 12) -> ( DiceKey, Int ) {
         var rotationWithSmallestDifference = other
         var smallestDifference = differencesForFixedRotation(compareTo: other)
@@ -182,17 +204,22 @@ class DiceKey: Identifiable {
         return (rotationWithSmallestDifference, smallestDifference)
     }
 
+    /// Find the rotation of the other DiceKey that is most similar to the current one,
+    /// which is useful when summarizing the minimal difference between two DiceKeys.
     func mostSimilarRotationOf(_ other: DiceKey, maxDifferenceToRotateFor: Int = 12) -> DiceKey {
         let (rotationWithSmallestDifference, _) = mostSimilarRotationWithDifference(other, maxDifferenceToRotateFor: maxDifferenceToRotateFor)
         return rotationWithSmallestDifference
     }
     
+    // Compare two DiceKeys to see if they will generate the same cryptographic seed
     static func rotationIndependentEquals(_ first: DiceKey?, _ second: DiceKey?) -> Bool {
         guard let a = first, let b = second else { return false }
         let (_, difference) = a.mostSimilarRotationWithDifference(b)
         return difference == 0
     }
 
+    /// Rotate to canonical orientation by finding the one of the four possible orientations
+    /// that has the human-readable form with the earliest utf8 sort order.
     func rotatedToCanonicalForm(
       includeOrientations: Bool = true
     ) -> DiceKey {
@@ -207,17 +234,25 @@ class DiceKey: Identifiable {
         }
         return diceKeyWithEarliestHumanReadableForm
     }
+    
+    private let recipeFor16ByteUniqueIdentifier = "{\"purpose\":\"a unique identifier for this DiceKey\",\"lengthInBytes\":16}"
 
+    /// A 16-byte unique identifier for this DiceKey derived via hashing
+    var idBytes: Data {
+        try! Secret.deriveFromSeed(withSeedString: toSeed(), derivationOptionsJson: recipeFor16ByteUniqueIdentifier).secretBytes()
+    }
+
+    /// A url-safe base64 encoded 16-byte unique identifier for this DiceKey derived via hashing
     var id: String {
-        Data(
-            SHA256.hash(data: self.toSeed(includeOrientations: true).data(using: .utf8)!)
-                .prefix(16)
-        ).base64EncodedString()
+        idBytes
+        .base64EncodedString()
         .replacingOccurrences(of: "/", with: "_")
         .replacingOccurrences(of: "+", with: "-")
         .replacingOccurrences(of: "=", with: "")
     }
 
+    /// Turn the DiceKey into a cryptographic seed by rotating it to the canonical
+    /// orientation and then generating its human-readable form
     func toSeed(includeOrientations: Bool = true) -> String {
         return rotatedToCanonicalForm(includeOrientations: includeOrientations)
             .toHumanReadableForm(includeOrientations: includeOrientations)

@@ -133,7 +133,7 @@ struct TransferSticker: View {
     }
 }
 
-let diceKey = DiceKey.createFromRandom()
+private let diceKey = DiceKey.createFromRandom()
 struct TransferSticker_Previews: PreviewProvider {
     static var previews: some View {
         TransferSticker(diceKey: diceKey, faceIndex: 24)
