@@ -112,46 +112,52 @@ struct AppMainView: View {
                 })
                 Spacer()
             }
-            Button(action: { scanDiceKeyIsActive = true }//,
-//                       label: {
-//                    /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
-//                })
-//                NavigationLink(
-//                    destination: ScanDiceKey(
-//                        onDiceKeyRead: { diceKey in
-//                            self.diceKey = diceKey
-//                        }).navigationBarTitleDisplayMode(.inline)
-//                        .navigationBarDiceKeyStyle()
-            ) {
+            let readButton = Button(action: { scanDiceKeyIsActive = true }) {
                 VStack(alignment: .center) {
-                    KeyScanningIllustration(.Dice).aspectRatio(contentMode: .fit).frame(maxHeight: 0.3 * screenShorterSide)
-                    //Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).frame(maxHeight: UIScreen.main.bounds.size.shorterSide / 4)
+//                    KeyScanningIllustration(.Dice)
+                    Image("Scanning Side View")
+                        .resizable()
+                        .frame(width: 135, height: 100, alignment: .center)
+//                        .aspectRatio(contentMode: .fit)
+                    
                     Text("Read your DiceKey").font(.title2)
                 }
             }
+            #if os(macOS)
+            readButton.buttonStyle(LinkButtonStyle())
+            #else
+            readButton
+            #endif
             Spacer()
-            NavigationLink(
+            let assembleButton = NavigationLink(
                 destination: AssemblyInstructions(onSuccess: { self.diceKey = $0 })) {
                 VStack {
-                    #if os(iOS)
+//                    #if os(iOS)
                     HStack {
-                        Spacer()
+//                        Spacer()
                         Image("Illustration of shaking bag").resizable().aspectRatio(contentMode: .fit)
-                        Spacer(minLength: 20)
-                        Image("Box Bottom After Roll").resizable().aspectRatio(contentMode: .fit)
-                        Spacer(minLength: 20)
-                        Image("Seal Box").resizable().aspectRatio(contentMode: .fit)
-                        Spacer(minLength: 20)
-                    }.padding(.horizontal, 20).frame(maxHeight: screenShorterSide / 4)
-                    #endif
+                            .frame(width: 100, height: 75, alignment: .center)
+//                        Spacer(minLength: 20)
+                        Image("Box Bottom After Roll").resizable().aspectRatio(contentMode: .fit).frame(width: 100, height: 75, alignment: .center)
+//                        Spacer(minLength: 20)
+                        Image("Seal Box").resizable().aspectRatio(contentMode: .fit).frame(width: 100, height: 75, alignment: .center)
+//                        Spacer(minLength: 20)
+                    }.padding(.horizontal, 20)
+//                    #endif
+                    
                     Text("Assemble your First DiceKey").font(.title2)
                 }
             }
+            #if os(macOS)
+            assembleButton.buttonStyle(LinkButtonStyle())
+            #else
+            assembleButton
+            #endif
             Spacer()
         }.background( ZStack {
             hiddenNavigationLinkToDiceKeyPresent
             hiddenNavigationLinkToScanDiceKey
-        })
+        }).buttonStyle(BorderlessButtonStyle())
         #if os(iOS)
         let view = NavigationView {
             vstack.navigationBarTitle("").navigationBarHidden(true)
@@ -159,7 +165,8 @@ struct AppMainView: View {
         #else
         let view = NavigationView {
             vstack
-        }
+        }.navigationViewStyle(DoubleColumnNavigationViewStyle())
+        
         #endif
         return view
     }
