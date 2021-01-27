@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct AppMainView: View {
-    @State var diceKey: DiceKey?
+//    @State var diceKey: DiceKey?
     @ObservedObject var globalState = GlobalState.instance
+    @ObservedObject var diceKeyState = UnlockedDiceKeyState(diceKey: nil)
     @State var showAssembleInstructions = false
 
     var knownDiceKeysState: [KnownDiceKeyState] {
-        GlobalState.instance.knownDiceKeys.map { KnownDiceKeyState($0) }.filter {
+        GlobalState.instance.knownDiceKeys.map { keyId in KnownDiceKeyState.forKeyId(keyId) }.filter {
             $0.isDiceKeySaved
         }
     }
@@ -25,7 +26,7 @@ struct AppMainView: View {
         return NavigationLink(
             destination: LoadDiceKey(
                 onDiceKeyLoaded: { diceKey, _ in
-                    self.diceKey = diceKey
+                    diceKeyState.diceKey = diceKey
                     scanDiceKeyIsActive = false
                 }),
             isActive: $scanDiceKeyIsActive,
@@ -38,20 +39,20 @@ struct AppMainView: View {
 
     var hiddenNavigationLinkToDiceKeyPresent: some View {
         NavigationLink(
-            destination: DiceKeyPresent(
-                diceKey: Binding<DiceKey>(
-                    get: { self.diceKey ?? DiceKey.Example },
-                    set: { self.diceKey = $0 }
-                ),
+            destination: DiceKeyPresent(diceKeyState: diceKeyState,
+//                diceKey: Binding<DiceKey>(
+//                    get: { self.diceKey ?? DiceKey.Example },
+//                    set: { self.diceKey = $0 }
+//                ),
                 onForget: {
-                    if let diceKey = diceKey {
+                    if let diceKey = diceKeyState.diceKey {
+                        diceKeyState.diceKey = nil
                         UnlockedDiceKeyState.forget(diceKey: diceKey)
                     }
-                    self.diceKey = nil
                 }
             ),
             isActive: Binding<Bool>(
-                get: { diceKey != nil },
+                get: { diceKeyState.diceKey != nil },
                 set: { _ in }
             ),
             label: { EmptyView() }
@@ -77,7 +78,7 @@ struct AppMainView: View {
                     EncryptedDiceKeyFileAccessor.instance.getDiceKey(fromKeyId: knownDiceKeyState.id, centerFace: knownDiceKeyState.centerFace) { result in
                             switch result {
                             case .success(let diceKey):
-                                self.diceKey = diceKey
+                                self.diceKeyState.diceKey = diceKey
                             default: ()
                         }
                     }
@@ -116,7 +117,7 @@ struct AppMainView: View {
             }
             Spacer()
             NavigationLink(
-                destination: AssemblyInstructions(onSuccess: { self.diceKey = $0 })) {
+                destination: AssemblyInstructions(onSuccess: { self.diceKeyState.diceKey = $0 })) {
                 VStack {
                     #if os(iOS)
                     HStack {

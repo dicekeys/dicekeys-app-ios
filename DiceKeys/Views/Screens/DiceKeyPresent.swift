@@ -125,24 +125,24 @@ struct DiceKeyPresentNavigationFooter: View {
 }
 
 struct DiceKeyPresent: View {
-    @Binding var diceKey: DiceKey {
-        mutating didSet {
-            _diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey))
-        }
-    }
+    @ObservedObject var diceKeyState: UnlockedDiceKeyState
+//    @Binding var diceKey: DiceKey {
+//        mutating didSet {
+//            _diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey))
+//        }
+//    }
     let onForget: () -> Void
 
     @State var pageContent: DiceKeyPresentPageContent = .Default
     
     @StateObject var backupDiceKeyState = BackupDiceKeyState()
 
-    @ObservedObject var diceKeyState: UnlockedDiceKeyState
 
-    init(diceKey: Binding<DiceKey>, onForget: @escaping () -> Void) {
-        self._diceKey = diceKey
-        self.onForget = onForget
-        self._diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey.wrappedValue))
-    }
+//    init(diceKey: Binding<DiceKey>, onForget: @escaping () -> Void) {
+//        self.diceKeyState = observ
+//        self.onForget = onForget
+//        self._diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey.wrappedValue))
+//    }
 
     @State private var navBarHeight: CGFloat = 0
 
@@ -185,14 +185,21 @@ struct DiceKeyPresent: View {
         let reader = GeometryReader { geometry in
             VStack {
                 Spacer()
-                switch self.pageContent {
-                case .Save: DiceKeyStorageOptions(diceKey: diceKey, done: { navigate(to: .Default) }).padding(.horizontal, defaultContentPadding)
-                case .Derive(let derivationRecipeBuilder): DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)
-                case .Backup: BackupDiceKey(onComplete: { navigate(to: .Default) }, diceKey: $diceKey, backupDiceKeyState: backupDiceKeyState)
-                case .SeedHardwareKey: SeedHardwareSecurityKey(diceKey: diceKey).padding(.horizontal, defaultContentPadding)
-                default: DiceKeyView(diceKey: diceKey, showLidTab: true).padding(.horizontal, defaultContentPadding)
+                if let diceKey = diceKeyState.diceKey {
+                    switch self.pageContent {
+                    case .Save: DiceKeyStorageOptions(diceKey: diceKey, done: { navigate(to: .Default) }).padding(.horizontal, defaultContentPadding)
+                    case .Derive(let derivationRecipeBuilder): DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)
+                    case .Backup: BackupDiceKey(
+                        onComplete: { navigate(to: .Default) },
+                        diceKey: Binding<DiceKey>(get: { () -> DiceKey in
+                            diceKeyState.diceKey!
+                        }, set: {diceKeyState.diceKey = $0}),
+                        backupDiceKeyState: backupDiceKeyState)
+                    case .SeedHardwareKey: SeedHardwareSecurityKey(diceKey: diceKey).padding(.horizontal, defaultContentPadding)
+                    default: DiceKeyView(diceKey: diceKey, showLidTab: true).padding(.horizontal, defaultContentPadding)
+                    }
+                    Spacer()
                 }
-                Spacer()
                 DiceKeyPresentNavigationFooter(pageContent: pageContent, navigateTo: navigate, geometry: geometry)
             }
         }.ignoresSafeArea(.all, edges: .bottom)
@@ -229,11 +236,12 @@ struct DiceKeyPresent: View {
 struct TestDiceKeyPresent: View {
 //    @State var diceKeyState: UnlockedDiceKeyState = UnlockedDiceKeyState(DiceKey.createFromRandom())
     @State var diceKey = DiceKey.createFromRandom()
+    @ObservedObject var diceKeyUnlocked = UnlockedDiceKeyState(diceKey: DiceKey.createFromRandom())
 
     var body: some View {
 //        NavigationView {
             DiceKeyPresent(
-                diceKey: $diceKey,
+                diceKeyState: diceKeyUnlocked,
                 onForget: {}
             )
 //        }
