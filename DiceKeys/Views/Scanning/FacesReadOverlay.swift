@@ -63,12 +63,6 @@ private let digitOffset = CGPoint(
     y: 0
 )
 
-class FacesReadOverlayModel: ObservableObject {
-    
-    @Published var imageFrameSize: CGSize = .zero
-    @Published var facesRead: [FaceRead] = []
-}
-
 struct FacesReadOverlay: View {
     
     let renderedSize: CGSize
