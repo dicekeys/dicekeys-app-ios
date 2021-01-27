@@ -176,15 +176,20 @@ struct RotatedTextTest: View {
     }
 }
 
-//struct FacesReadOverlay_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RotatedTextTest()
-//            .previewLayout(PreviewLayout.fixed(width: 700, height: 700))
-//        FacesReadOverlay(
-//            renderedSize: CGSize(width: 600, height: 600),
-//            imageFrameSize: CGSize(width: 600, height: 600),
-//            facesRead: FaceRead.fromJson(facesReadJson)!
-//        )
-//        .previewLayout(PreviewLayout.fixed(width: 600, height: 600))
-//    }
-//}
+struct FacesReadOverlay_Previews: PreviewProvider {
+    
+    static var faceReadOverlayModel: FacesReadOverlayModel = {
+        let model: FacesReadOverlayModel = FacesReadOverlayModel()
+        model.imageFrameSize = CGSize(width: 600, height: 600)
+        model.facesRead = FaceRead.fromJson(facesReadJson)!
+        return model
+    }()
+    
+    static var previews: some View {
+        RotatedTextTest()
+            .previewLayout(PreviewLayout.fixed(width: 700, height: 700))
+        FacesReadOverlay(renderedSize: CGSize(width: 600, height: 600),
+                         facesReadOverlayModel: faceReadOverlayModel)
+            .previewLayout(PreviewLayout.fixed(width: 600, height: 600))
+    }
+}

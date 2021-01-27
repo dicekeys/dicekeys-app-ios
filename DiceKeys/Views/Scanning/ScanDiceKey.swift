@@ -61,8 +61,10 @@ struct ScanDiceKey: View {
     func onFrameProcessed(_ processedImageFrameSize: CGSize, _ facesRead: [FaceRead]?) {
         DispatchQueue.main.async {
             cameraFrameCountModel.frameCount += 1
-            facesReadOverlayModel.imageFrameSize = processedImageFrameSize
             facesReadOverlayModel.facesRead = facesRead ?? []
+            if facesReadOverlayModel.imageFrameSize != processedImageFrameSize {
+                facesReadOverlayModel.imageFrameSize = processedImageFrameSize
+            }
         }
 
         if facesRead?.count == 25 && facesRead?.allSatisfy({ faceRead in faceRead.errors.count == 0 }) == true {
