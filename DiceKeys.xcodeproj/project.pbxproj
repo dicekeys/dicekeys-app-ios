@@ -34,6 +34,8 @@
 		264D302B25B2FCC10048D165 /* DiceKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264D302925B2FCC10048D165 /* DiceKeyboardView.swift */; };
 		2669050225C16B300078CF55 /* CameraFrameCountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2669050125C16B300078CF55 /* CameraFrameCountModel.swift */; };
 		2669050C25C16B610078CF55 /* FacesReadOverlayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2669050B25C16B610078CF55 /* FacesReadOverlayModel.swift */; };
+		2669052D25C17AC60078CF55 /* CameraFrameCountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2669050125C16B300078CF55 /* CameraFrameCountModel.swift */; };
+		2669052E25C17AC60078CF55 /* FacesReadOverlayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2669050B25C16B610078CF55 /* FacesReadOverlayModel.swift */; };
 		268E3DDD25BFF81D008B6DE6 /* CameraFrameCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268E3DDC25BFF81D008B6DE6 /* CameraFrameCountView.swift */; };
 		268E3DDE25BFF81D008B6DE6 /* CameraFrameCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268E3DDC25BFF81D008B6DE6 /* CameraFrameCountView.swift */; };
 		ACF9E6A9B1E79E881EEE4C09 /* Pods_DiceKeys__macOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19FCCD61505F4C2ED9F6ED0B /* Pods_DiceKeys__macOS_.framework */; };
@@ -1031,8 +1033,10 @@
 				17B6C68D25BA729A007798F3 /* EditableDiceKeyState.swift in Sources */,
 				EC50920C25948124007D2B91 /* Face.swift in Sources */,
 				EC5092A6259482F5007D2B91 /* SeedHardwareSecurityKey.swift in Sources */,
+				2669052E25C17AC60078CF55 /* FacesReadOverlayModel.swift in Sources */,
 				EC5092B4259482F5007D2B91 /* ChildSizeReader.swift in Sources */,
 				EC5091F2259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */,
+				2669052D25C17AC60078CF55 /* CameraFrameCountModel.swift in Sources */,
 				ECFC52312599CD21008D0598 /* DiceKeysCameraView.swift in Sources */,
 				EC5092C4259482F5007D2B91 /* StickerTargetSheet.swift in Sources */,
 				EC509294259482F4007D2B91 /* DiceKeyView.swift in Sources */,
