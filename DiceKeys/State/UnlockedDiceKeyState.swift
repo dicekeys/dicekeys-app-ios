@@ -97,17 +97,17 @@ class KnownDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, Dic
 }
 
 final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, DiceKeyState {
-    @Published var diceKey: DiceKey? {
+    @Published var diceKey: DiceKey {
         didSet { objectWillChange.send() }
     }
 
     var keyId: String {
-        return diceKey?.id ?? ""
+        return diceKey.id
     }
 
     var centerFace: Face? {
         get {
-            diceKey?.centerFace
+            diceKey.centerFace
         }
     }
     
@@ -118,8 +118,8 @@ final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefa
     var isCenterFaceStored: Bool {
         get { KnownDiceKeyState.forKeyId(keyId).isCenterFaceStored }
         set {
-            if newValue, let centerFace = diceKey?.faces[1] {
-                KnownDiceKeyState.forKeyId(keyId).centerFaceInHumanReadableForm = centerFace.humanReadableForm
+            if newValue{
+                KnownDiceKeyState.forKeyId(keyId).centerFaceInHumanReadableForm = diceKey.faces[12].humanReadableForm
             } else {
                 KnownDiceKeyState.forKeyId(keyId).centerFaceInHumanReadableForm = ""
             }
@@ -135,7 +135,7 @@ final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefa
         set {
             // Currently we are storing the center face IFF we are storing the DiceKey
             isCenterFaceStored = newValue
-            if newValue, let diceKey = diceKey {
+            if newValue {
                 EncryptedDiceKeyFileAccessor.instance.put(diceKey: diceKey) { result in
                     switch result {
                     case .failure(let error): print(error)
@@ -147,9 +147,7 @@ final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefa
             } else {
                 _  = EncryptedDiceKeyFileAccessor.instance.delete(keyId: keyId)
                 self.protectedCacheOfIsDiceKeyStored = false
-                if let keyId = diceKey?.id {
-                    GlobalState.instance.removeKnownDiceKey(keyId: keyId)
-                }
+                GlobalState.instance.removeKnownDiceKey(keyId: diceKey.id)
             }
             self.objectWillChange.send()
         }
@@ -163,7 +161,7 @@ final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefa
 //        self.diceKey = forDiceKey
 //        super.init(forDiceKey.id)
 //    }
-    init(diceKey: DiceKey?) {
+    init(diceKey: DiceKey) {
         self.diceKey = diceKey
     }
 

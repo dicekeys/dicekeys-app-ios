@@ -32,7 +32,11 @@ enum IllegalCharacterError: Error {
     case inOrientation(position: Int)
 }
 
-class DiceKey: Identifiable {
+class DiceKey: Identifiable, Equatable {
+    static func == (lhs: DiceKey, rhs: DiceKey) -> Bool {
+        (0..<25).allSatisfy { index in lhs.faces[index] == rhs.faces[index] }
+    }
+    
     enum ConstructorError: Error {
         case emptyFace
     }

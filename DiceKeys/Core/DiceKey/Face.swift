@@ -55,7 +55,7 @@ struct FaceIdentity: FaceIdentifier {
     let digit: FaceDigit
 }
 
-struct Face: FaceIdentifier {
+struct Face: FaceIdentifier, Equatable {
     let letter: FaceLetter
     let digit: FaceDigit
     let orientationAsLowercaseLetterTrbl: FaceOrientationLetterTrbl

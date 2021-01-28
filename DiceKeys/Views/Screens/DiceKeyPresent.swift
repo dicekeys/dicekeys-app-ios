@@ -192,8 +192,8 @@ struct DiceKeyPresent: View {
                     case .Backup: BackupDiceKey(
                         onComplete: { navigate(to: .Default) },
                         diceKey: Binding<DiceKey>(get: { () -> DiceKey in
-                            diceKeyState.diceKey!
-                        }, set: {diceKeyState.diceKey = $0}),
+                            GlobalState.instance.diceKeyLoaded ?? DiceKey.Example
+                        }, set: {GlobalState.instance.diceKeyLoaded = $0}),
                         backupDiceKeyState: backupDiceKeyState)
                     case .SeedHardwareKey: SeedHardwareSecurityKey(diceKey: diceKey).padding(.horizontal, defaultContentPadding)
                     default: DiceKeyView(diceKey: diceKey, showLidTab: true).padding(.horizontal, defaultContentPadding)

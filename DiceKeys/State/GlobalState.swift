@@ -13,6 +13,13 @@ struct KnownDiceKeyIdentifiable: Identifiable {
     let id: String
 }
 
+enum TopLevelNavigateTo {
+    case nowhere
+    case loadDiceKey
+    case diceKeyPresent
+    case assemblyInstructions
+}
+
 final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
     static private(set) var instance = GlobalState()
 
@@ -20,6 +27,26 @@ final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
         case knownDiceKeys
         case neverAskUserToSave
         case savedDerivationRecipes
+    }
+    
+    @Published var topLevelNavigation: TopLevelNavigateTo = .nowhere {
+        didSet { self.objectWillChange.send() }
+    }
+    
+    @Published var diceKeyLoaded: DiceKey? = nil {
+        didSet { self.objectWillChange.send() }
+    }
+    
+    private var cachedDiceKeyState: UnlockedDiceKeyState? = nil
+    var diceKeyState: UnlockedDiceKeyState? {
+        if (cachedDiceKeyState?.diceKey != self.diceKeyLoaded) {
+            if let diceKey = diceKeyLoaded {
+                cachedDiceKeyState = UnlockedDiceKeyState(diceKey: diceKey)
+            } else {
+                cachedDiceKeyState = nil
+            }
+        }
+        return cachedDiceKeyState
     }
 
     @UserDefault(Fields.savedDerivationRecipes.rawValue, "") private var savedDerivationRecipesJson: String

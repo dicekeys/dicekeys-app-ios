@@ -58,7 +58,7 @@ struct DiceKeyWithDerivedValue: View {
     var derivedPassword: String? {
         guard derivationRecipe?.type == .Password else { return nil }
         guard let derivationOptionsJson = self.derivationOptionsJson, derivationOptionsJson.count > 0 else { return nil }
-        return (try? Password.deriveFromSeed(withSeedString: diceKeyState.diceKey!.toSeed(), derivationOptionsJson: derivationOptionsJson).password)
+        return (try? Password.deriveFromSeed(withSeedString: globalState.diceKeyLoaded!.toSeed(), derivationOptionsJson: derivationOptionsJson).password)
     }
 
     var derivedValue: String? {
