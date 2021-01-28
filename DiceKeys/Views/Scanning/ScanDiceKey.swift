@@ -84,11 +84,10 @@ struct ScanDiceKey: View {
                     Spacer()
                 }
         }) {
-        GeometryReader { outerReader in
             VStack(alignment: .center, spacing: 0) {
-                Spacer()
                 if cameraAuthorized {
                     Text("Place the DiceKey so that the \(stickers ? "stickers" : "dice") fill the camera view. Then hold steady.").font(.title2)
+                        .padding(.top, 20)
                     VStack(alignment: .center, spacing: 0) {
                         // For debugging: remove
                         Text("Selected camera: \(selectedOrNextBestCameraDisplayableCamera?.localizedName ?? "nil")")
@@ -152,8 +151,6 @@ struct ScanDiceKey: View {
                 }
                 #endif
             }
-        }
-        
         }
     }
 }
