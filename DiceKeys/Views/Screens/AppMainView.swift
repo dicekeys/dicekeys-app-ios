@@ -8,57 +8,13 @@
 import SwiftUI
 
 struct AppMainView: View {
-//    @State var diceKey: DiceKey?
     @ObservedObject var globalState = GlobalState.instance
-//    @ObservedObject var diceKeyState = UnlockedDiceKeyState(diceKey: nil)
-    @State var showAssembleInstructions = false
 
     var knownDiceKeysState: [KnownDiceKeyState] {
         GlobalState.instance.knownDiceKeys.map { keyId in KnownDiceKeyState.forKeyId(keyId) }.filter {
             $0.isDiceKeySaved
         }
     }
-
-//    var hiddenNavigationLinkToScanDiceKey: some View {
-//
-//        return NavigationLink(
-//            destination: LoadDiceKey(
-//                onDiceKeyLoaded: { diceKey, _ in
-//                    globalState.diceKeyLoaded = diceKey
-//                    scanDiceKeyIsActive = false
-//                }),
-//            isActive: $scanDiceKeyIsActive,
-//            label: { EmptyView() }
-//        )
-//        .frame(width: 0, height: 0)
-//        .position(x: 0, y: 0)
-//        .hidden()
-//    }
-//
-//    var hiddenNavigationLinkToDiceKeyPresent: some View {
-//        NavigationLink(
-//            destination: DiceKeyPresent(diceKeyState: globalState.diceKeyState!,
-////                diceKey: Binding<DiceKey>(
-////                    get: { self.diceKey ?? DiceKey.Example },
-////                    set: { self.diceKey = $0 }
-////                ),
-//                onForget: {
-//                    if let diceKey = globalState.diceKeyLoaded {
-//                        globalState.diceKeyLoaded = nil
-//                        UnlockedDiceKeyState.forget(diceKey: diceKey)
-//                    }
-//                }
-//            ),
-//            isActive: Binding<Bool>(
-//                get: { globalState.diceKeyLoaded != nil },
-//                set: { _ in }
-//            ),
-//            label: { EmptyView() }
-//        )
-//        .frame(width: 0, height: 0)
-//        .position(x: 0, y: 0)
-//        .hidden()
-//    }
     
     func showLoadDiceKey() {
         globalState.topLevelNavigation = .loadDiceKey
