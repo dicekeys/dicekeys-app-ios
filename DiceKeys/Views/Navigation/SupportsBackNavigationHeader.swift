@@ -43,8 +43,13 @@ struct WithNavigationHeader<HeaderContent: View, BodyContent: View>: View {
 //                            .edgesIgnoringSafeArea(.top)
 //                        }
 //            )
-            Spacer()
+            //Removing this. Let the content decide if it needs Spacer()
+//            Spacer()
             self.content()
-        }.edgesIgnoringSafeArea(.all)}
+        }.edgesIgnoringSafeArea(.leading)
+        .edgesIgnoringSafeArea(.bottom)
+        .edgesIgnoringSafeArea(.trailing)
+            
+        }
     }
 }

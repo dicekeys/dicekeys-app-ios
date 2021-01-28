@@ -209,6 +209,18 @@ struct AssemblyInstructions: View {
     } }
 
     var body: some View {
+        WithNavigationHeader(header: {
+            
+                HStack {
+                    
+                    Text("Back").foregroundColor(Color.navigationForeground)
+                        .padding()
+                        .onTapGesture {
+                            GlobalState.instance.topLevelNavigation = .nowhere
+                        }
+                    Spacer()
+                }
+        }) {
         GeometryReader { geometry in
             VStack {
                 Spacer()
@@ -268,6 +280,7 @@ struct AssemblyInstructions: View {
 //                ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {
 //                    Text("Step \(step.rawValue) of \(Step.SealBox.rawValue)").foregroundColor(Color.navigationForeground).font(.body)
 //                }
+        }
         }
     }
 }
