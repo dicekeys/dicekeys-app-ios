@@ -185,31 +185,19 @@ struct DerivationRecipeView: View {
 struct DerivationRecipeBuilders_Previews: PreviewProvider {
     static var previews: some View {
         #if os(iOS)
-        NavigationView {
-            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .customFromUrl(.Password))
-        }
-        .navigationBarDiceKeyStyle()
+        DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .customFromUrl(.Password))
         .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
         .environment(\.colorScheme, .dark)
 
-        NavigationView {
-            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
-        }
-        .navigationBarDiceKeyStyle()
+        DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
         .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
         .environment(\.colorScheme, .dark)
 
-        NavigationView {
-            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .navigationBarDiceKeyStyle()
+        DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
         .previewDevice(PreviewDevice(rawValue: "iPad Air (4th generation)"))
         .environment(\.colorScheme, .dark)
         #else
-        NavigationView {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .customFromUrl(.Password))
-        }
         #endif
     }
 }

@@ -128,9 +128,6 @@ struct DiceKeyWithDerivedValue: View {
 
             Spacer()
         }.padding(.vertical, 5)
-        #if os(iOS)
-        view.navigationBarDiceKeyStyle()
-        #endif
     }
 }
 
@@ -178,10 +175,7 @@ extension FormCard where TitleContent == Text {
 
 struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
     static var previews: some View {
-//        NavigationView {
-            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
-//        }
-//        .navigationBarDiceKeyStyle()
+        DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
         .previewDevice(PreviewDevice(rawValue: "iPhone 11 Max"))
     }
 }

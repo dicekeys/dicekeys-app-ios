@@ -209,7 +209,7 @@ struct AssemblyInstructions: View {
     } }
 
     var body: some View {
-        let reader = GeometryReader { geometry in
+        GeometryReader { geometry in
             VStack {
                 Spacer()
                 VStack(alignment: .center) {
@@ -262,51 +262,43 @@ struct AssemblyInstructions: View {
                 }.foregroundColor(.white)
                 .background(Color.warningBackground)
                 .showIf(showWarning)
-            }.edgesIgnoringSafeArea(.bottom)}
-            .navigationTitle("Assembly Instructions")
-            .toolbar {
-                ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {
-                    Text("Step \(step.rawValue) of \(Step.SealBox.rawValue)").foregroundColor(Color.navigationForeground).font(.body)
-                }
-            }
-#if os(iOS)
-        return reader.navigationBarTitleDisplayMode(.inline).navigationBarDiceKeyStyle()
-#else
-        return reader
-#endif
+            }//.edgesIgnoringSafeArea(.bottom)}
+//            .navigationTitle("Assembly Instructions")
+//            .toolbar {
+//                ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {
+//                    Text("Step \(step.rawValue) of \(Step.SealBox.rawValue)").foregroundColor(Color.navigationForeground).font(.body)
+//                }
+        }
     }
 }
 
 struct AssemblyInstructions_Previews: PreviewProvider {
     static var previews: some View {
-        #if os(iOS)
-        AppMainView()
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-            .environment(\.colorScheme, .dark)
+    #if os(iOS)
+    AppMainView()
+        .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+        .environment(\.colorScheme, .dark)
 
-//        CreateBackup(diceKey: DiceKey.createFromRandom())
-//            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-
-        AssemblyInstructions(step: .Randomize)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-        AssemblyInstructions(step: .DropDice)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-        AssemblyInstructions(step: .FillEmptySlots)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-        AssemblyInstructions(step: .ScanFirstTime)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-        AssemblyInstructions(step: .CreateBackup)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+    AssemblyInstructions(step: .Randomize)
+        .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+    AssemblyInstructions(step: .DropDice)
+        .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+    AssemblyInstructions(step: .FillEmptySlots)
+        .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+    AssemblyInstructions(step: .ScanFirstTime)
+        .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+    AssemblyInstructions(step: .CreateBackup)
+        .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
 //        AssemblyInstructions(step: .ValidateBackup)
-        AssemblyInstructions(step: .SealBox)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-        // AssemblyInstructions()
-        #else
-        AssemblyInstructions(step: .Randomize)
-        AssemblyInstructions(step: .DropDice)
-        AssemblyInstructions(step: .FillEmptySlots)
-        AssemblyInstructions(step: .ScanFirstTime)
-        AssemblyInstructions(step: .CreateBackup)
-        #endif
+    AssemblyInstructions(step: .SealBox)
+        .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+    // AssemblyInstructions()
+    #else
+    AssemblyInstructions(step: .Randomize)
+    AssemblyInstructions(step: .DropDice)
+    AssemblyInstructions(step: .FillEmptySlots)
+    AssemblyInstructions(step: .ScanFirstTime)
+    AssemblyInstructions(step: .CreateBackup)
+    #endif
     }
 }

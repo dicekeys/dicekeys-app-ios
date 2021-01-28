@@ -19,7 +19,7 @@ struct LoadDiceKey: View {
     let onDiceKeyLoaded: ((_ diceKey: DiceKey, _ entryMethod: LoadDiceKeyEntryMethod) -> Void)?
 
     var body: some View {
-        let view = VStack(alignment: .center, spacing: 0) {
+        VStack(alignment: .center, spacing: 0) {
             if (useCamera) {
                 ScanDiceKey(onDiceKeyRead: { diceKey in onDiceKeyLoaded?(diceKey, .byCamera) })
                 Button(action: { useCamera = false }, label: { Text("Enter the DiceKey by Hand") })
@@ -31,12 +31,6 @@ struct LoadDiceKey: View {
                 Button(action: { useCamera = true }, label: { Text("Scan the DiceKey with my Camera") })
             }
         }
-        #if os(iOS)
-        return view.navigationBarTitleDisplayMode(.inline)
-            .navigationBarDiceKeyStyle()
-        #else
-        return view
-        #endif
     }
 }
 

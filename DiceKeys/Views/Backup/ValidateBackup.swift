@@ -117,8 +117,6 @@ private struct TestValidateBackup: View {
 
 struct ValidateBackup_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            TestValidateBackup(originalDiceKey: DiceKey.createFromRandom())
-        }
+        TestValidateBackup(originalDiceKey: DiceKey.createFromRandom())
     }
 }
