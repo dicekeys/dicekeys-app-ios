@@ -50,7 +50,7 @@ struct AppMainView: View {
                 globalState.topLevelNavigation = .diceKeyPresent
             })
         case .nowhere:
-            VStack {
+            let view = VStack {
             Spacer()
             ForEach(knownDiceKeysState) { knownDiceKeyState in
                 Button(action: {
@@ -113,7 +113,12 @@ struct AppMainView: View {
                 }
             }.buttonStyle(PlainButtonStyle())
             Spacer()
-            }.frame(width: 480, height: 700)
+            }
+            #if os(macOS)
+            view.frame(width: 480, height: 700)
+            #else
+            view
+            #endif
     }
 }
 struct AppMainView_Previews: PreviewProvider {

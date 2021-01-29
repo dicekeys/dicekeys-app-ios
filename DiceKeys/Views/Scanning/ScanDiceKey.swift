@@ -76,13 +76,12 @@ struct ScanDiceKey: View {
             
                 HStack {
                     //TODO Add back navigation Icon
+                    Image("backBtn").foregroundColor(Color.navigationForeground)
                     Text("Back").foregroundColor(Color.navigationForeground)
-                        .padding()
-                        .onTapGesture {
-                            GlobalState.instance.topLevelNavigation = .nowhere
-                        }
                     Spacer()
-                }
+                }.onTapGesture {
+                    GlobalState.instance.topLevelNavigation = .nowhere
+                }.padding()
         }) {
             VStack(alignment: .center, spacing: 0) {
                 if cameraAuthorized {

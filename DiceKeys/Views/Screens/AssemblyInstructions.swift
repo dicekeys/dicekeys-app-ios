@@ -212,13 +212,12 @@ struct AssemblyInstructions: View {
         WithNavigationHeader(header: {
             
                 HStack {
-                    
+                    Image("backBtn").foregroundColor(Color.navigationForeground)
                     Text("Back").foregroundColor(Color.navigationForeground)
-                        .padding()
-                        .onTapGesture {
-                            GlobalState.instance.topLevelNavigation = .nowhere
-                        }
                     Spacer()
+                }.padding()
+                .onTapGesture {
+                    GlobalState.instance.topLevelNavigation = .nowhere
                 }
         }) {
         GeometryReader { geometry in
