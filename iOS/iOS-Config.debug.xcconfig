@@ -1,0 +1,12 @@
+//
+//  Config.xcconfig
+//  DiceKeys
+//
+//  Created by Angelos Veglektsis on 1/30/21.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "DiceKeys/Config.xcconfig"
+#include "Pods/Target Support Files/Pods-DiceKeys (iOS)/Pods-DiceKeys (iOS).debug.xcconfig"

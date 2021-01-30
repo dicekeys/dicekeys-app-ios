@@ -1,0 +1,13 @@
+//
+//  Config.xcconfig
+//  DiceKeys
+//
+//  Created by Angelos Veglektsis on 1/30/21.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+
+DEVELOPMENT_TEAM = REPLACE_WITH_YOUR_TEAM_ID;
+PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys.local;

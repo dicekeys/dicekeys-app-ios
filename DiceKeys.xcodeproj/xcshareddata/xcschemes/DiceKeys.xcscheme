@@ -64,12 +64,21 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
+            BlueprintIdentifier = "EC561283258B827300A056B8"
+            BuildableName = "DiceKeys.app"
+            BlueprintName = "DiceKeys (iOS)"
+            ReferencedContainer = "container:DiceKeys.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
             BlueprintIdentifier = "6FAC6AA525480DE000AA8249"
             BuildableName = "DiceKeys.app"
             BlueprintName = "DiceKeys"
             ReferencedContainer = "container:DiceKeys.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

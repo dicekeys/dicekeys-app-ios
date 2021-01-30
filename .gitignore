@@ -222,3 +222,4 @@ Pods/
 
 /Podfile.lock
 /*.xcworkspace
+/DiceKeys/Config.xcconfig
