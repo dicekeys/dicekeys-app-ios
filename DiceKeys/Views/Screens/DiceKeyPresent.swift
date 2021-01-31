@@ -165,14 +165,17 @@ struct DiceKeyPresent: View {
                     VStack {
                         Image(systemName: "lock").foregroundColor(Color.navigationForeground)
                         Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget").foregroundColor(Color.navigationForeground)
-                                            }
+                    }
                     .onTapGesture {
-                        GlobalState.instance.diceKeyLoaded = nil
+                        GlobalState.instance.topLevelNavigation = .nowhere
                     }
                     Spacer()
                     Text("")
                     Spacer()
                     storageButton
+                        .onTapGesture {
+                            diceKeyState.isDiceKeySaved = true
+                        }
                 }
                 HStack {
                     Spacer()

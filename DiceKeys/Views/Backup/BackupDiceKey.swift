@@ -42,6 +42,7 @@ struct ChooseBackupTarget: View {
                     }
                 }
             ).frame(minHeight: 0, maxHeight: .infinity)
+            .buttonStyle(PlainButtonStyle())
             Spacer(minLength: 20)
             Button(action: { choice(.DiceKey) },
                 label: {
@@ -64,6 +65,7 @@ struct ChooseBackupTarget: View {
                     }
                 }
             ).frame(minHeight: 0, maxHeight: .infinity)
+            .buttonStyle(PlainButtonStyle())
             Spacer()
         }
     }
