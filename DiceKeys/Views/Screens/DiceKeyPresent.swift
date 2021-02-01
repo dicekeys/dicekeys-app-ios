@@ -31,7 +31,7 @@ struct DiceKeyPresentNavigationFooter: View {
         let view = VStack {
         ZStack {
             HStack(alignment: .top) {
-                Spacer()
+                
                 VStack {
                     Image("USB Key")
                         .renderingMode(.template)
@@ -39,12 +39,15 @@ struct DiceKeyPresentNavigationFooter: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
                         .onTapGesture { navigateTo(.SeedHardwareKey) }
-                    Button(action: { navigateTo(.SeedHardwareKey) }) {
-                        VStack {
+//                    Button(action: {  }) {
+//                        VStack {
                             Text("Seed a SoloKey").multilineTextAlignment(.center).font(.footnote)
-                        }
-                    }
+//                        }
+//                    }
                 }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
+                .onTapGesture {
+                    navigateTo(.SeedHardwareKey)
+                }
                 .if( pageContent == .SeedHardwareKey ) { $0.colorInvert() }
                 VStack {
                     VStack {
@@ -82,13 +85,13 @@ struct DiceKeyPresentNavigationFooter: View {
                             maxHeight: min(geometry.size.width, geometry.size.height)/10,
                             alignment: .center
                         )
-                        .onTapGesture { navigateTo(.Backup) }
-                    Button(action: { navigateTo(.Backup) }, label: {
+//                    Button(action: { navigateTo(.Backup) }, label: {
                         Text("Backup this Key").multilineTextAlignment(.center).font(.footnote)
-                    })
+//                    })
                 }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
+                .onTapGesture { navigateTo(.Backup) }
                 .if( pageContent == .Backup ) { $0.colorInvert() }
-                Spacer()
+                
             }
         }
 //        .padding(.bottom, geometry.safeAreaInsets.bottom)
@@ -170,7 +173,7 @@ struct DiceKeyPresent: View {
                     GlobalState.instance.topLevelNavigation = .nowhere
                 }
                 Spacer()
-                Text("\(diceKeyState.nickname)").foregroundColor(Color.navigationForeground)
+                Text("\(diceKeyState.nickname)").font(.title).foregroundColor(Color.navigationForeground)
                 Spacer()
                 storageButton
                 .padding(10)

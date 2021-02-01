@@ -72,17 +72,6 @@ struct ScanDiceKey: View {
     }
 
     var body: some View {
-        WithNavigationHeader(header: {
-            
-                HStack {
-                    //TODO Add back navigation Icon
-                    Image("backBtn").foregroundColor(Color.navigationForeground)
-                    Text("Back").foregroundColor(Color.navigationForeground)
-                    Spacer()
-                }.onTapGesture {
-                    GlobalState.instance.topLevelNavigation = .nowhere
-                }.padding()
-        }) {
             VStack(alignment: .center, spacing: 0) {
                 if cameraAuthorized {
                     Text("Place the DiceKey so that the \(stickers ? "stickers" : "dice") fill the camera view. Then hold steady.").font(.title2)
@@ -150,7 +139,7 @@ struct ScanDiceKey: View {
                 }
                 #endif
             }
-        }
+        
     }
 }
 

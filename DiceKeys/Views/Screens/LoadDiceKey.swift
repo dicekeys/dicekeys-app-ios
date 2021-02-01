@@ -19,6 +19,16 @@ struct LoadDiceKey: View {
     let onDiceKeyLoaded: ((_ diceKey: DiceKey, _ entryMethod: LoadDiceKeyEntryMethod) -> Void)?
 
     var body: some View {
+        WithNavigationHeader(header: {
+            
+                HStack {
+                    Image("backBtn").foregroundColor(Color.navigationForeground)
+                    Text("Back").foregroundColor(Color.navigationForeground)
+                    Spacer()
+                }.onTapGesture {
+                    GlobalState.instance.topLevelNavigation = .nowhere
+                }.padding()
+        }) {
         VStack(alignment: .center, spacing: 0) {
             if (useCamera) {
                 ScanDiceKey(onDiceKeyRead: { diceKey in onDiceKeyLoaded?(diceKey, .byCamera) })
@@ -30,6 +40,7 @@ struct LoadDiceKey: View {
                     )
                 Button(action: { useCamera = true }, label: { Text("Scan the DiceKey with my Camera") })
             }
+        }
         }
     }
 }

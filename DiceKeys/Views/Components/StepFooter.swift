@@ -69,7 +69,7 @@ struct StepFooterView: View {
                 Button(action: { prevPrev?() }) {
                     HStack {
                         Image(systemName: "chevron.backward.2")
-                    }.padding(.horizontal, 20).padding(.vertical, 8)
+                    }.padding(.horizontal, 20)
                 }.showIf( prevPrev != nil )
                 Spacer()
                 Button(action: { prev?() }) {
@@ -89,7 +89,7 @@ struct StepFooterView: View {
                 Button(action: { nextNext?() }) {
                     HStack {
                         Image(systemName: "chevron.forward.2")
-                    }.padding(.horizontal, 20).padding(.vertical, 8)
+                    }.padding(.horizontal, 20)
                 }.showIf( nextNext != nil )
                 Spacer()
             }
