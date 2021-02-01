@@ -14,6 +14,12 @@ class ObservableObjectUpdatingOnAllChangesToUserDefaults: ObservableObject {
 
     init() {
         notificationSubscription = NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification).sink { _ in
+            self.sendChangeEventOnMainThread()
+        }
+    }
+    
+    func sendChangeEventOnMainThread() {
+        DispatchQueue.main.async {
             self.objectWillChange.send()
         }
     }

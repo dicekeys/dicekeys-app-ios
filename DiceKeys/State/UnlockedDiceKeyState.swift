@@ -98,7 +98,7 @@ class KnownDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, Dic
 
 final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, DiceKeyState {
     @Published var diceKey: DiceKey {
-        didSet { objectWillChange.send() }
+        didSet { self.sendChangeEventOnMainThread() }
     }
 
     var keyId: String {
@@ -149,7 +149,7 @@ final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefa
                 self.protectedCacheOfIsDiceKeyStored = false
                 GlobalState.instance.removeKnownDiceKey(keyId: diceKey.id)
             }
-            self.objectWillChange.send()
+            self.sendChangeEventOnMainThread()
         }
     }
 
