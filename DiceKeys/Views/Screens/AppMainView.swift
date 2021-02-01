@@ -50,7 +50,7 @@ struct AppMainView: View {
                 globalState.topLevelNavigation = .diceKeyPresent
             })
         case .nowhere:
-            VStack {
+            let view = VStack {
             Spacer()
             ForEach(knownDiceKeysState) { knownDiceKeyState in
                 Button(action: {
@@ -81,6 +81,7 @@ struct AppMainView: View {
             Button(action: { showLoadDiceKey() }) {
                 VStack(alignment: .center) {
                     KeyScanningIllustration(.Dice)
+                        .frame(width: 135, height: 100, alignment: .center)
 //                        .aspectRatio(contentMode: .fit)
 //                        .frame(maxHeight: 0.3 * screenShorterSide)
                     Text("Load your DiceKey").font(.title2)
@@ -112,7 +113,12 @@ struct AppMainView: View {
                 }
             }.buttonStyle(PlainButtonStyle())
             Spacer()
-        }
+            }
+            #if os(macOS)
+            view.frame(width: 480, height: 700)
+            #else
+            view
+            #endif
     }
 }
 struct AppMainView_Previews: PreviewProvider {
@@ -122,7 +128,7 @@ struct AppMainView_Previews: PreviewProvider {
 //        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
 //        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
         #else
-        AppMainView().frame(width: 720, height: 600)
+        AppMainView()
         #endif
     }
     }

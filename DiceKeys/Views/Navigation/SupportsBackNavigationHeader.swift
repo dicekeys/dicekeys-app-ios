@@ -20,7 +20,7 @@ struct WithNavigationHeader<HeaderContent: View, BodyContent: View>: View {
     
     var body: some View {
         GeometryReader { geometry in
-        VStack(alignment: .leading, spacing: 0) {
+        let vStack = VStack(alignment: .leading, spacing: 0) {
             // NavigationBar
             VStack(alignment: .leading, spacing: 0) {
                 #if os(iOS)
@@ -43,8 +43,18 @@ struct WithNavigationHeader<HeaderContent: View, BodyContent: View>: View {
 //                            .edgesIgnoringSafeArea(.top)
 //                        }
 //            )
-            Spacer()
+            //Removing this. Let the content decide if it needs Spacer()
+//            Spacer()
             self.content()
-        }.edgesIgnoringSafeArea(.all)}
+        }
+        #if os(macOS)
+        vStack.edgesIgnoringSafeArea(.leading)
+            .edgesIgnoringSafeArea(.bottom)
+            .edgesIgnoringSafeArea(.trailing)
+        #else
+        vStack.edgesIgnoringSafeArea(.all)
+        #endif
+            
+        }
     }
 }

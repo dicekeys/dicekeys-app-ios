@@ -209,6 +209,17 @@ struct AssemblyInstructions: View {
     } }
 
     var body: some View {
+        WithNavigationHeader(header: {
+            
+                HStack {
+                    Image("backBtn").foregroundColor(Color.navigationForeground)
+                    Text("Back").foregroundColor(Color.navigationForeground)
+                    Spacer()
+                }.padding()
+                .onTapGesture {
+                    GlobalState.instance.topLevelNavigation = .nowhere
+                }
+        }) {
         GeometryReader { geometry in
             VStack {
                 Spacer()
@@ -249,7 +260,7 @@ struct AssemblyInstructions: View {
                         step: step.rawValue,
                         prev: step.rawValue > 0 ? step.rawValue - 1 : nil,
                         next: step.rawValue + 1,
-                        setMaySkip: step == .ScanFirstTime && !userChoseToAllowSkipScanningStep ? { userChoseToAllowSkipScanningStep = true
+                        setMaySkip: step == .ScanFirstTime && self.diceKeyScanned == nil && !userChoseToAllowSkipScanningStep ? { userChoseToAllowSkipScanningStep = true
                         } :
                             nil,
                         isLastStep: step == .Done
@@ -268,6 +279,7 @@ struct AssemblyInstructions: View {
 //                ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {
 //                    Text("Step \(step.rawValue) of \(Step.SealBox.rawValue)").foregroundColor(Color.navigationForeground).font(.body)
 //                }
+        }
         }
     }
 }

@@ -25,7 +25,7 @@ func getDerivationOptionsJson(hosts: [String], sequenceNumber: Int = 1, lengthIn
     let sortedHosts = hosts.sorted()
     return """
 {"allow":\(getHostRestrictionsArrayAsString(sortedHosts))\(
-    (lengthInChars > 0 ? "" : ",\"lengthInChars\":\(String(lengthInChars))") +
+    (lengthInChars <= 0 ? "" : ",\"lengthInChars\":\(String(lengthInChars))") +
     (sequenceNumber == 1 ? "" : ",\"#\":\(String(sequenceNumber))")
 )}
 """
