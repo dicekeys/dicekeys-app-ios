@@ -58,7 +58,7 @@ struct DiceKeyWithDerivedValue: View {
     var derivedPassword: String? {
         guard derivationRecipe?.type == .Password else { return nil }
         guard let derivationOptionsJson = self.derivationOptionsJson, derivationOptionsJson.count > 0 else { return nil }
-        return (try? Password.deriveFromSeed(withSeedString: diceKeyState.diceKey.toSeed(), derivationOptionsJson: derivationOptionsJson).password)
+        return (try? Password.deriveFromSeed(withSeedString: globalState.diceKeyLoaded!.toSeed(), derivationOptionsJson: derivationOptionsJson).password)
     }
 
     var derivedValue: String? {
@@ -66,7 +66,7 @@ struct DiceKeyWithDerivedValue: View {
     }
 
     var body: some View {
-        let view = VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
+        VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
 //            DerivationRecipeMenu({ menuOptionChosen in self.menuOptionChosen = menuOptionChosen }) { Text(derivationRecipe?.name ?? "Derive...") }
             if let derivationRecipeBuilder = self.derivationRecipeBuilder {
                 FormCard(title: "Recipe\( derivationRecipe == nil ? "" : " for \( derivationRecipe?.name ?? "" )")") {
@@ -117,7 +117,9 @@ struct DiceKeyWithDerivedValue: View {
                             #if os(iOS)
                             UIPasteboard.general.string = derivedValue
                             #else
-                            NSPasteboard.general.setString(derivedValue, forType: .string)
+                            let pasteboard = NSPasteboard.general
+                            pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
+                            pasteboard.setString(derivedValue, forType: .string)
                             #endif
                         }
                     }
@@ -128,9 +130,6 @@ struct DiceKeyWithDerivedValue: View {
 
             Spacer()
         }.padding(.vertical, 5)
-        #if os(iOS)
-        view.navigationBarDiceKeyStyle()
-        #endif
     }
 }
 
@@ -178,10 +177,7 @@ extension FormCard where TitleContent == Text {
 
 struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
     static var previews: some View {
-//        NavigationView {
-            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
-//        }
-//        .navigationBarDiceKeyStyle()
+        DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
         .previewDevice(PreviewDevice(rawValue: "iPhone 11 Max"))
     }
 }

@@ -13,7 +13,7 @@ struct TypeYourDiceKeyView: View {
     @StateObject var editableDiceKeyState: EditableDiceKeyState = EditableDiceKeyState()
     
     var body: some View {
-        let view = VStack(alignment: .center) {
+        VStack(alignment: .center) {
             Spacer()
             DiceKeyView(
                 partialFaces: editableDiceKeyState.faces,
@@ -32,14 +32,7 @@ struct TypeYourDiceKeyView: View {
             Spacer()
         }
         .padding()
-        .navigationTitle("Type your Dicekey")
-        #if os(iOS)
-            return view
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarDiceKeyStyle()
-        #else
-            return view
-        #endif
+//        .navigationTitle("Type your Dicekey")
     }
 }
 

@@ -72,71 +72,84 @@ struct ScanDiceKey: View {
     }
 
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
-            if cameraAuthorized {
-                Text("Place the DiceKey so that the \(stickers ? "stickers" : "dice") fill the camera view. Then hold steady.").font(.title2)
-                VStack(alignment: .center, spacing: 0) {
-                    // For debugging: remove
-                    Text("Selected camera: \(selectedOrNextBestCameraDisplayableCamera?.localizedName ?? "nil")")
-                    HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
-                        Spacer()
-                            GeometryReader { reader in
-                                ZStack {
-                                    DiceKeysCameraView(selectedCamera: selectedOrNextBestCameraDisplayableCamera, onFrameProcessed: onFrameProcessed, size: reader.size)
-                                    FacesReadOverlay(
-                                        renderedSize: reader.size,
-                                        imageFrameSize: processedImageFrameSize ?? reader.size,
-                                        facesRead: self.facesRead
-                                    )
+        WithNavigationHeader(header: {
+            
+                HStack {
+                    //TODO Add back navigation Icon
+                    Image("backBtn").foregroundColor(Color.navigationForeground)
+                    Text("Back").foregroundColor(Color.navigationForeground)
+                    Spacer()
+                }.onTapGesture {
+                    GlobalState.instance.topLevelNavigation = .nowhere
+                }.padding()
+        }) {
+            VStack(alignment: .center, spacing: 0) {
+                if cameraAuthorized {
+                    Text("Place the DiceKey so that the \(stickers ? "stickers" : "dice") fill the camera view. Then hold steady.").font(.title2)
+                        .padding(.top, 20)
+                    VStack(alignment: .center, spacing: 0) {
+                        // For debugging: remove
+                        Text("Selected camera: \(selectedOrNextBestCameraDisplayableCamera?.localizedName ?? "nil")")
+                        HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
+                            Spacer()
+                                GeometryReader { reader in
+                                    ZStack {
+                                        DiceKeysCameraView(selectedCamera: selectedOrNextBestCameraDisplayableCamera, onFrameProcessed: onFrameProcessed, size: reader.size)
+                                        FacesReadOverlay(
+                                            renderedSize: reader.size,
+                                            imageFrameSize: processedImageFrameSize ?? reader.size,
+                                            facesRead: self.facesRead
+                                        )
+                                    }
+                                }.aspectRatio(1, contentMode: .fit)
+                            Spacer()
+                        }
+                        if activeCameras.count > 1 {
+                            Picker(
+                                selection: $selectedCameraUniqueId,
+                                label: Text("Camera")
+                            ) {
+                                ForEach(activeCameras) { camera in
+                                    Text(camera.localizedName).tag(camera.ID)
                                 }
-                            }.aspectRatio(1, contentMode: .fit)
-                        Spacer()
-                    }
-                    if activeCameras.count > 1 {
-                        Picker(
-                            selection: $selectedCameraUniqueId,
-                            label: Text("Camera")
-                        ) {
-                            ForEach(activeCameras) { camera in
-                                Text(camera.localizedName).tag(camera.ID)
                             }
                         }
-                    }
-                    Text("\(frameCount) frames processed").font(.footnote).foregroundColor(.white).padding(.top, 3)
-                }.background(Color.black).padding(.vertical, 5)
-            } else {
-                Text("Permission to access the camera is required to scan your DiceKey")
-            }
-        }.onAppear {
-            #if os(macOS)
-            switch AVCaptureDevice.authorizationStatus(for: .video) {
-                case .authorized: // The user has previously granted access to the camera.
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        cameraAuthorized = true
-                        if (self.selectedCamera == nil) {
-                            self.selectedCameraUniqueId = activeCameras.first?.ID ?? ""
-                            // self.selectedCamera = activeCameras.first
+                        Text("\(frameCount) frames processed").font(.footnote).foregroundColor(.white).padding(.top, 3)
+                    }.background(Color.black).padding(.vertical, 5)
+                } else {
+                    Text("Permission to access the camera is required to scan your DiceKey")
+                }
+            }.onAppear {
+                #if os(macOS)
+                switch AVCaptureDevice.authorizationStatus(for: .video) {
+                    case .authorized: // The user has previously granted access to the camera.
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            cameraAuthorized = true
+                            if (self.selectedCamera == nil) {
+                                self.selectedCameraUniqueId = activeCameras.first?.ID ?? ""
+                                // self.selectedCamera = activeCameras.first
+                            }
                         }
-                    }
-                case .notDetermined: // The user has not yet been asked for camera access.
-                    AVCaptureDevice.requestAccess(for: .video) { granted in
-                        if granted {
-                            cameraAuthorized = true                  }
-                        if (self.selectedCamera == nil) {
-                            self.selectedCameraUniqueId = activeCameras.first?.ID ?? ""
-                            // self.selectedCamera = activeCameras.first
+                    case .notDetermined: // The user has not yet been asked for camera access.
+                        AVCaptureDevice.requestAccess(for: .video) { granted in
+                            if granted {
+                                cameraAuthorized = true                  }
+                            if (self.selectedCamera == nil) {
+                                self.selectedCameraUniqueId = activeCameras.first?.ID ?? ""
+                                // self.selectedCamera = activeCameras.first
+                            }
                         }
-                    }
-                
-                case .denied: // The user has previously denied access.
-                    return
+                    
+                    case .denied: // The user has previously denied access.
+                        return
 
-                case .restricted: // The user can't grant access due to restrictions.
+                    case .restricted: // The user can't grant access due to restrictions.
+                        return
+                @unknown default:
                     return
-            @unknown default:
-                return
+                }
+                #endif
             }
-            #endif
         }
     }
 }

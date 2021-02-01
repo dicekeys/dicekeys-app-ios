@@ -8,57 +8,20 @@
 import SwiftUI
 
 struct AppMainView: View {
-    @State var diceKey: DiceKey?
     @ObservedObject var globalState = GlobalState.instance
-    @State var showAssembleInstructions = false
 
     var knownDiceKeysState: [KnownDiceKeyState] {
-        GlobalState.instance.knownDiceKeys.map { KnownDiceKeyState($0) }.filter {
+        GlobalState.instance.knownDiceKeys.map { keyId in KnownDiceKeyState.forKeyId(keyId) }.filter {
             $0.isDiceKeySaved
         }
     }
-
-    @State var scanDiceKeyIsActive: Bool = false
-
-    var hiddenNavigationLinkToScanDiceKey: some View {
-
-        return NavigationLink(
-            destination: LoadDiceKey(
-                onDiceKeyLoaded: { diceKey, _ in
-                    self.diceKey = diceKey
-                    scanDiceKeyIsActive = false
-                }),
-            isActive: $scanDiceKeyIsActive,
-            label: { EmptyView() }
-        )
-        .frame(width: 0, height: 0)
-        .position(x: 0, y: 0)
-        .hidden()
+    
+    func showLoadDiceKey() {
+        globalState.topLevelNavigation = .loadDiceKey
     }
-
-    var hiddenNavigationLinkToDiceKeyPresent: some View {
-        NavigationLink(
-            destination: DiceKeyPresent(
-                diceKey: Binding<DiceKey>(
-                    get: { self.diceKey ?? DiceKey.Example },
-                    set: { self.diceKey = $0 }
-                ),
-                onForget: {
-                    if let diceKey = diceKey {
-                        UnlockedDiceKeyState.forget(diceKey: diceKey)
-                    }
-                    self.diceKey = nil
-                }
-            ),
-            isActive: Binding<Bool>(
-                get: { diceKey != nil },
-                set: { _ in }
-            ),
-            label: { EmptyView() }
-        )
-        .frame(width: 0, height: 0)
-        .position(x: 0, y: 0)
-        .hidden()
+    
+    func showAssemblyInstructions() {
+        globalState.topLevelNavigation = .assemblyInstructions
     }
     
     #if os(iOS)
@@ -70,14 +33,32 @@ struct AppMainView: View {
     #endif
 
     var body: some View {
-        let vstack = VStack {
+        switch globalState.topLevelNavigation {
+        case .loadDiceKey:
+            LoadDiceKey(
+                onDiceKeyLoaded: { diceKey, _ in
+                    globalState.diceKeyLoaded = diceKey
+                    globalState.topLevelNavigation = .diceKeyPresent
+            })
+        case .diceKeyPresent:
+            if let unlockedDiceKeyState = globalState.diceKeyState {
+                DiceKeyPresent(diceKeyState: unlockedDiceKeyState, onForget: { globalState.diceKeyLoaded = nil })
+            }
+        case .assemblyInstructions:
+            AssemblyInstructions(onSuccess: {
+                globalState.diceKeyLoaded = $0
+                globalState.topLevelNavigation = .diceKeyPresent
+            })
+        case .nowhere:
+            let view = VStack {
             Spacer()
             ForEach(knownDiceKeysState) { knownDiceKeyState in
                 Button(action: {
                     EncryptedDiceKeyFileAccessor.instance.getDiceKey(fromKeyId: knownDiceKeyState.id, centerFace: knownDiceKeyState.centerFace) { result in
                             switch result {
                             case .success(let diceKey):
-                                self.diceKey = diceKey
+                                globalState.diceKeyLoaded = diceKey
+                                globalState.topLevelNavigation = .diceKeyPresent
                             default: ()
                         }
                     }
@@ -94,31 +75,31 @@ struct AppMainView: View {
                         }
                         Text("Unlock " + knownDiceKeyState.nickname).font(.title2)
                     }
-                })
+                }).buttonStyle(PlainButtonStyle())
                 Spacer()
             }
-            Button(action: { scanDiceKeyIsActive = true }//,
-//                       label: {
-//                    /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
-//                })
-//                NavigationLink(
-//                    destination: ScanDiceKey(
-//                        onDiceKeyRead: { diceKey in
-//                            self.diceKey = diceKey
-//                        }).navigationBarTitleDisplayMode(.inline)
-//                        .navigationBarDiceKeyStyle()
-            ) {
+            Button(action: { showLoadDiceKey() }) {
                 VStack(alignment: .center) {
-                    KeyScanningIllustration(.Dice).aspectRatio(contentMode: .fit).frame(maxHeight: 0.3 * screenShorterSide)
-                    //Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).frame(maxHeight: UIScreen.main.bounds.size.shorterSide / 4)
+                    KeyScanningIllustration(.Dice)
+                        .frame(width: 135, height: 100, alignment: .center)
+//                        .aspectRatio(contentMode: .fit)
+//                        .frame(maxHeight: 0.3 * screenShorterSide)
                     Text("Load your DiceKey").font(.title2)
                 }
-            }
+            }.buttonStyle(PlainButtonStyle())
             Spacer()
-            NavigationLink(
-                destination: AssemblyInstructions(onSuccess: { self.diceKey = $0 })) {
+//                HStack {
+//                    Spacer()
+//                    Image("Illustration of shaking bag").resizable().aspectRatio(contentMode: .fit)
+//                    Spacer(minLength: 20)
+//                    Image("Box Bottom After Roll").resizable().aspectRatio(contentMode: .fit)
+//                    Spacer(minLength: 20)
+//                    Image("Seal Box").resizable().aspectRatio(contentMode: .fit)
+//                    Spacer(minLength: 20)
+//                }.padding(.horizontal, 20).frame(maxHeight: screenShorterSide / 4)
+//                .onTapGesture { showAssemblyInstructions() }
+            Button(action: { showAssemblyInstructions() } ) {
                 VStack {
-                    #if os(iOS)
                     HStack {
                         Spacer()
                         Image("Illustration of shaking bag").resizable().aspectRatio(contentMode: .fit)
@@ -127,26 +108,17 @@ struct AppMainView: View {
                         Spacer(minLength: 20)
                         Image("Seal Box").resizable().aspectRatio(contentMode: .fit)
                         Spacer(minLength: 20)
-                    }.padding(.horizontal, 20).frame(maxHeight: screenShorterSide / 4)
-                    #endif
+                    }.padding(.horizontal, 20).aspectRatio(contentMode: .fit).frame(maxHeight: screenShorterSide / 2)
                     Text("Assemble your First DiceKey").font(.title2)
                 }
-            }
+            }.buttonStyle(PlainButtonStyle())
             Spacer()
-        }.background( ZStack {
-            hiddenNavigationLinkToDiceKeyPresent
-            hiddenNavigationLinkToScanDiceKey
-        })
-        #if os(iOS)
-        let view = NavigationView {
-            vstack.navigationBarTitle("").navigationBarHidden(true)
-        }.navigationViewStyle(StackNavigationViewStyle())
-        #else
-        let view = NavigationView {
-            vstack
-        }
-        #endif
-        return view
+            }
+            #if os(macOS)
+            view.frame(width: 480, height: 700)
+            #else
+            view
+            #endif
     }
 }
 struct AppMainView_Previews: PreviewProvider {
@@ -156,7 +128,8 @@ struct AppMainView_Previews: PreviewProvider {
 //        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
 //        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
         #else
-        AppMainView().frame(width: 720, height: 600)
+        AppMainView()
         #endif
+    }
     }
 }

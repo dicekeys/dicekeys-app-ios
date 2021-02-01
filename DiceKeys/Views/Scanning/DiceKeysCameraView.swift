@@ -142,7 +142,7 @@ final class DiceKeysCameraUIViewController: XXViewController {
             if let error = error {
                 print(error)
             }
-            
+    
             try? weakSelf.cameraController.displayPreview(on: weakSelf.previewView)
         }
     }

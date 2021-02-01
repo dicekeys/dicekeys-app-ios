@@ -49,7 +49,10 @@ struct DiceKeyStorageOptions: View {
             }
             Spacer()
         }
-            Button(action: { done?() }, label: { Text("Done").padding(10) }).padding(.bottom, 10)
+            Button(action: { done?() }) {
+                Text("Done")
+                .buttonStyle(PlainButtonStyle())
+            }
         }
     }
 }

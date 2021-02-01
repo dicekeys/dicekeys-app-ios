@@ -24,44 +24,44 @@ private func getGradientImage(forBounds bounds: CGRect) -> UIImage? {
     gradient.render(in: context)
     return UIGraphicsGetImageFromCurrentImageContext()?.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch)
 }
-
-struct NavigationBarModifierDiceKeysStyle: ViewModifier {
-    init() {
-        let coloredAppearance = UINavigationBarAppearance()
-        coloredAppearance.configureWithTransparentBackground()
-//        coloredAppearance.backgroundColor = .clear
-        coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-
-        UINavigationBar.appearance().standardAppearance = coloredAppearance
-        UINavigationBar.appearance().compactAppearance = coloredAppearance
-        UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
-        UINavigationBar.appearance().tintColor = .white
-    }
-
-    func body(content: Content) -> some View {
-        ZStack {
-            content
-            VStack {
-                GeometryReader { geometry in
-                    if let image = getGradientImage(forBounds: CGRect(x: 0, y: 0, width: geometry.size.width, height: geometry.safeAreaInsets.top)) {
-                        Image(uiImage: image)
-                        .frame(height: geometry.safeAreaInsets.top)
-                        .edgesIgnoringSafeArea(.top)
-                    } else {
-                        Color.alexandrasBlue
-                        .frame(height: geometry.safeAreaInsets.top)
-                        .edgesIgnoringSafeArea(.top)
-                    }
-                    Spacer()
-                }
-            }
-        }
-    }
-}
-
-extension View {
-    func navigationBarDiceKeyStyle() -> some View {
-        self.modifier(NavigationBarModifierDiceKeysStyle())
-    }
-}
+//
+//struct NavigationBarModifierDiceKeysStyle: ViewModifier {
+//    init() {
+//        let coloredAppearance = UINavigationBarAppearance()
+//        coloredAppearance.configureWithTransparentBackground()
+////        coloredAppearance.backgroundColor = .clear
+//        coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+//        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+//
+//        UINavigationBar.appearance().standardAppearance = coloredAppearance
+//        UINavigationBar.appearance().compactAppearance = coloredAppearance
+//        UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
+//        UINavigationBar.appearance().tintColor = .white
+//    }
+//
+//    func body(content: Content) -> some View {
+//        ZStack {
+//            content
+//            VStack {
+//                GeometryReader { geometry in
+//                    if let image = getGradientImage(forBounds: CGRect(x: 0, y: 0, width: geometry.size.width, height: geometry.safeAreaInsets.top)) {
+//                        Image(uiImage: image)
+//                        .frame(height: geometry.safeAreaInsets.top)
+//                        .edgesIgnoringSafeArea(.top)
+//                    } else {
+//                        Color.alexandrasBlue
+//                        .frame(height: geometry.safeAreaInsets.top)
+//                        .edgesIgnoringSafeArea(.top)
+//                    }
+//                    Spacer()
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//extension View {
+//    func navigationBarDiceKeyStyle() -> some View {
+//        self.modifier(NavigationBarModifierDiceKeysStyle())
+//    }
+//}

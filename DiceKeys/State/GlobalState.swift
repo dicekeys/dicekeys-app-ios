@@ -13,6 +13,13 @@ struct KnownDiceKeyIdentifiable: Identifiable {
     let id: String
 }
 
+enum TopLevelNavigateTo {
+    case nowhere
+    case loadDiceKey
+    case diceKeyPresent
+    case assemblyInstructions
+}
+
 final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
     static private(set) var instance = GlobalState()
 
@@ -20,6 +27,26 @@ final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
         case knownDiceKeys
         case neverAskUserToSave
         case savedDerivationRecipes
+    }
+    
+    @Published var topLevelNavigation: TopLevelNavigateTo = .nowhere {
+        didSet { self.sendChangeEventOnMainThread() }
+    }
+    
+    @Published var diceKeyLoaded: DiceKey? = nil {
+        didSet { self.sendChangeEventOnMainThread() }
+    }
+    
+    private var cachedDiceKeyState: UnlockedDiceKeyState? = nil
+    var diceKeyState: UnlockedDiceKeyState? {
+        if (cachedDiceKeyState?.diceKey != self.diceKeyLoaded) {
+            if let diceKey = diceKeyLoaded {
+                cachedDiceKeyState = UnlockedDiceKeyState(diceKey: diceKey)
+            } else {
+                cachedDiceKeyState = nil
+            }
+        }
+        return cachedDiceKeyState
     }
 
     @UserDefault(Fields.savedDerivationRecipes.rawValue, "") private var savedDerivationRecipesJson: String
@@ -31,7 +58,7 @@ final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
         } set {
             if let derivablesJson = try? DerivationRecipe.listToJson(newValue) {
                 self.savedDerivationRecipesJson = derivablesJson
-                self.objectWillChange.send()
+                self.sendChangeEventOnMainThread()
             }
         }
     }
@@ -43,7 +70,7 @@ final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
                 self.savedDerivationRecipes + [recipe]
             )
             .sorted(by: { a, b in a.id < b.id })
-            self.objectWillChange.send()
+            self.sendChangeEventOnMainThread()
         }
     }
 

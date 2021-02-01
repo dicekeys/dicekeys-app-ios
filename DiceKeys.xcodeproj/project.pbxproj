@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0FF7F731929DF324410FCCEA /* Pods_DiceKeys__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25A6B06AB3C071EB2999AE67 /* Pods_DiceKeys__iOS_.framework */; };
+		172057B125C2DBF800282E21 /* SupportsBackNavigationHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172057B025C2DBF800282E21 /* SupportsBackNavigationHeader.swift */; };
+		172057B225C2DBF800282E21 /* SupportsBackNavigationHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172057B025C2DBF800282E21 /* SupportsBackNavigationHeader.swift */; };
 		172057CB25C4E7F500282E21 /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* DerivationOptions.swift */; };
 		172057D025C4E7F500282E21 /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* DerivationOptions.swift */; };
 		1720581725C50CBE00282E21 /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */; };
@@ -185,6 +188,7 @@
 		061985777EDBE015A8A6CD60 /* Pods_DiceKeys_DiceKeys__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeys__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1397E5F18A65098140DBC5BB /* Pods_DiceKeys_DiceKeys__macOS__Tests_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeys__macOS__Tests_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14C38080E39571B13473B619 /* Pods-DiceKeys (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (iOS).release.xcconfig"; path = "Target Support Files/Pods-DiceKeys (iOS)/Pods-DiceKeys (iOS).release.xcconfig"; sourceTree = "<group>"; };
+		172057B025C2DBF800282E21 /* SupportsBackNavigationHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportsBackNavigationHeader.swift; sourceTree = "<group>"; };
 		17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CtapHidConnection.swift; sourceTree = "<group>"; };
 		17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachedHidDevice.swift; sourceTree = "<group>"; };
 		17B6C5D425A52A69007798F3 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
@@ -322,6 +326,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1720577A25C27CE900282E21 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				172057B025C2DBF800282E21 /* SupportsBackNavigationHeader.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
 		17B6C59F25A43A86007798F3 /* SeedSecurityKey */ = {
 			isa = PBXGroup;
 			children = (
@@ -459,6 +471,7 @@
 				EC509262259482F4007D2B91 /* Shapes */,
 				EC509264259482F4007D2B91 /* DiceKey */,
 				EC509269259482F4007D2B91 /* Scanning */,
+				1720577A25C27CE900282E21 /* Navigation */,
 				EC50926E259482F4007D2B91 /* Screens */,
 				EC509276259482F4007D2B91 /* Components */,
 				EC50927C259482F4007D2B91 /* DerivationRecipes */,
@@ -1009,6 +1022,7 @@
 				EC50920725948124007D2B91 /* DiceKeyMedium.swift in Sources */,
 				EC50929D259482F4007D2B91 /* ScanDiceKey.swift in Sources */,
 				26447E7025BAE1C500F2B534 /* KeyboardCommands.swift in Sources */,
+				172057B125C2DBF800282E21 /* SupportsBackNavigationHeader.swift in Sources */,
 				EC5092C1259482F5007D2B91 /* TransferSticker.swift in Sources */,
 				EC5092C7259482F5007D2B91 /* ValidateBackup.swift in Sources */,
 				17B6C5AB25A494CB007798F3 /* AttachedHidDevice.swift in Sources */,
@@ -1117,6 +1131,7 @@
 				17B6C68D25BA729A007798F3 /* EditableDiceKeyState.swift in Sources */,
 				EC50920C25948124007D2B91 /* Face.swift in Sources */,
 				EC5092A6259482F5007D2B91 /* SeedHardwareSecurityKey.swift in Sources */,
+				172057B225C2DBF800282E21 /* SupportsBackNavigationHeader.swift in Sources */,
 				EC5092B4259482F5007D2B91 /* ChildSizeReader.swift in Sources */,
 				EC5091F2259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */,
 				ECFC52312599CD21008D0598 /* DiceKeysCameraView.swift in Sources */,

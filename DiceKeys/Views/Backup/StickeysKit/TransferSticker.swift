@@ -133,16 +133,15 @@ struct TransferSticker: View {
     }
 }
 
-private let diceKey = DiceKey.createFromRandom()
 struct TransferSticker_Previews: PreviewProvider {
     static var previews: some View {
-        TransferSticker(diceKey: diceKey, faceIndex: 24)
+        TransferSticker(diceKey: DiceKey.createFromRandom(), faceIndex: 24)
             .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
 
-        TransferSticker(diceKey: diceKey, faceIndex: 0)
+        TransferSticker(diceKey: DiceKey.createFromRandom(), faceIndex: 0)
             .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
 
-        TransferSticker(diceKey: diceKey, faceIndex: 13)
+        TransferSticker(diceKey: DiceKey.createFromRandom(), faceIndex: 13)
             .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
     }
 }
