@@ -28,6 +28,7 @@ struct RoundedTextButton: View {
                 .foregroundColor(.alexandrasBlue)
             )
         })
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
