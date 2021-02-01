@@ -22,7 +22,6 @@ struct LoadDiceKey: View {
         WithNavigationHeader(header: {
             
                 HStack {
-                    //TODO Add back navigation Icon
                     Image("backBtn").foregroundColor(Color.navigationForeground)
                     Text("Back").foregroundColor(Color.navigationForeground)
                     Spacer()
