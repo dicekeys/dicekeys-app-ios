@@ -117,7 +117,9 @@ struct DiceKeyWithDerivedValue: View {
                             #if os(iOS)
                             UIPasteboard.general.string = derivedValue
                             #else
-                            NSPasteboard.general.setString(derivedValue, forType: .string)
+                            let pasteboard = NSPasteboard.general
+                            pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
+                            pasteboard.setString(derivedValue, forType: .string)
                             #endif
                         }
                     }

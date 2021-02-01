@@ -34,6 +34,7 @@ struct DiceKeyPresentNavigationFooter: View {
                 Spacer()
                 VStack {
                     Image("USB Key")
+                        .renderingMode(.template)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
@@ -143,7 +144,7 @@ struct DiceKeyPresent: View {
                 }).aspectRatio(contentMode: .fit)
                 .frame(maxHeight: 30)
                 Text(diceKeyState.isDiceKeySaved ? "Saved" : "Save").foregroundColor(Color.navigationForeground)
-            }//.frame(maxHeight: navBarHeight)
+            }
             .if( pageContent == .Save ) { $0.colorInvert() }
 //        }
     }
@@ -160,29 +161,23 @@ struct DiceKeyPresent: View {
 
     var body: some View {
         WithNavigationHeader(header: {
-            VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
-                HStack {
-                    VStack {
-                        Image(systemName: "lock").foregroundColor(Color.navigationForeground)
-                        Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget").foregroundColor(Color.navigationForeground)
-                    }
-                    .onTapGesture {
-                        GlobalState.instance.topLevelNavigation = .nowhere
-                    }
-                    Spacer()
-                    Text("")
-                    Spacer()
-                    storageButton
-                        .onTapGesture {
-                            diceKeyState.isDiceKeySaved = true
-                        }
+            HStack {
+                VStack {
+                    Image(systemName: "lock").foregroundColor(Color.navigationForeground)
+                    Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget").foregroundColor(Color.navigationForeground)
+                }.padding(10)
+                .onTapGesture {
+                    GlobalState.instance.topLevelNavigation = .nowhere
                 }
-                HStack {
-                    Spacer()
-                    Text("\(diceKeyState.nickname)").foregroundColor(Color.navigationForeground)
-                    Spacer()
+                Spacer()
+                Text("\(diceKeyState.nickname)").foregroundColor(Color.navigationForeground)
+                Spacer()
+                storageButton
+                .padding(10)
+                .onTapGesture {
+                    navigate(to: .Save)
                 }
-            }.padding(.bottom, 4)
+            }
         }) {
         GeometryReader { geometry in
             VStack {
