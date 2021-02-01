@@ -132,6 +132,7 @@ private struct ScanFirstTime: View {
         } else {
             Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).offset(x: 0, y: -50)
             RoundedTextButton("Scan") { self.scanning = true }
+                .buttonStyle(PlainButtonStyle())
         }
         Spacer()
     }

@@ -99,6 +99,7 @@ struct ValidateBackup: View {
                     // Image("Scanning Side View").resizable()
                         .aspectRatio(contentMode: .fit).offset(x: 0, y: -50)
                     RoundedTextButton("Scan copy to validate") { self.scanningCopy = true }
+                        .buttonStyle(PlainButtonStyle())
                 }
             }
         }
