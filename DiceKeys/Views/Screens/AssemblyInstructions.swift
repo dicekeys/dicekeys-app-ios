@@ -260,7 +260,7 @@ struct AssemblyInstructions: View {
                         step: step.rawValue,
                         prev: step.rawValue > 0 ? step.rawValue - 1 : nil,
                         next: step.rawValue + 1,
-                        setMaySkip: step == .ScanFirstTime && !userChoseToAllowSkipScanningStep ? { userChoseToAllowSkipScanningStep = true
+                        setMaySkip: step == .ScanFirstTime && self.diceKeyScanned == nil && !userChoseToAllowSkipScanningStep ? { userChoseToAllowSkipScanningStep = true
                         } :
                             nil,
                         isLastStep: step == .Done
