@@ -6,9 +6,10 @@
 //
 
 import XCTest
+import SeededCrypto
 
 class Tests_iOS: XCTestCase {
-
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
@@ -29,6 +30,13 @@ class Tests_iOS: XCTestCase {
 
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+    }
+    
+    func testIssue56PasswordCannotBeDerived() throws {
+        let recipeJson = "{\"allow\":[{\"host\":\"*.exampl.com\"}],\"lengthInChars\":0}"
+        let password = try Password.deriveFromSeed(withSeedString: "this string is seedy", derivationOptionsJson: recipeJson)
+        XCTAssertNotNil(password)
+        XCTAssertNotNil(password.password)
     }
 
     func testLaunchPerformance() throws {
