@@ -28,7 +28,7 @@ struct LoadDiceKey: View {
                 }.onTapGesture {
                     GlobalState.instance.topLevelNavigation = .nowhere
                 }.padding()
-        }) {
+        }) {_ in 
         VStack(alignment: .center, spacing: 0) {
             if (useCamera) {
                 ScanDiceKey(onDiceKeyRead: { diceKey in onDiceKeyLoaded?(diceKey, .byCamera) })
