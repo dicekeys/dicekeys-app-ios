@@ -126,6 +126,7 @@ struct AppMainView_Previews: PreviewProvider {
         AppMainView().previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
 //        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
 //        AppMainView().previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
+//        AppMainView().previewLayout(.fixed(width: 2048, height: 2732))
         #else
         AppMainView()
         #endif

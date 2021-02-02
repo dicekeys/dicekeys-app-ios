@@ -40,13 +40,8 @@ struct DiceKeyPresentNavigationFooter: View {
                         .renderingMode(.template)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-//                        .frame(height: navBarImageHeight, alignment: .center)
                         .onTapGesture { navigateTo(.SeedHardwareKey) }
-//                    Button(action: {  }) {
-//                        VStack {
-                            Text("Seed a SoloKey").multilineTextAlignment(.center).font(.footnote)
-//                        }
-//                    }
+                    Text("Seed a SoloKey").multilineTextAlignment(.center).font(.footnote)
 
                 }.frame(width: geometry.size.width * BottomButtonFractionalWidth,
                         height: navBarContentHeight, alignment: .center)
@@ -55,6 +50,7 @@ struct DiceKeyPresentNavigationFooter: View {
                 }
                 .if( pageContent == .SeedHardwareKey ) { $0.colorInvert()
                 }
+                #if os(iOS)
                 DerivationRecipeMenu({ newPageContent in
                     navigateTo(newPageContent)
                 }) {
@@ -68,20 +64,43 @@ struct DiceKeyPresentNavigationFooter: View {
                             .aspectRatio(contentMode: .fit)
                         Spacer(minLength: 2)
                         Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
-                    }.frame(width: geometry.size.width * BottomButtonFractionalWidth,
-                            height: navBarContentHeight)
+                    }
                 }
                 .frame(width: geometry.size.width * BottomButtonFractionalWidth,
                        height: navBarContentHeight,
                        alignment: .center)
-//                .frame(width: geometry.size.width * BottomButtonFractionalWidth,
-//                       height: geometry.size.height / 12, alignment: .center)
                 .if( {
                     switch pageContent {
                     case .Derive : return true
                     default: return false
                     }
                 }() ) { $0.colorInvert() }
+                #elseif os(macOS)
+                VStack {
+                    Image(systemName: "arrow.down")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                    Spacer(minLength: 2)
+                    Image(systemName: "ellipsis.rectangle.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                    Spacer(minLength: 2)
+                    DerivationRecipeMenu({ newPageContent in
+                        navigateTo(newPageContent)
+                    }) {
+                        Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
+                    }
+                }.frame(width: geometry.size.width * BottomButtonFractionalWidth,
+                        height: navBarContentHeight)
+                .if( {
+                    switch pageContent {
+                    case .Derive : return true
+                    default: return false
+                    }
+                }() ) { $0.colorInvert() }                #endif
+//                .frame(width: geometry.size.width * BottomButtonFractionalWidth,
+//                       height: geometry.size.height / 12, alignment: .center)
+
                 VStack {
                     Image("Backup to DiceKey")
                         .renderingMode(.template)
