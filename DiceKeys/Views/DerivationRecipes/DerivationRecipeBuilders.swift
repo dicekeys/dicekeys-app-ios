@@ -14,11 +14,11 @@ class RecipeBuilderState: ObservableObject {
 }
 
 private class DerivationRecipeBuilderForTemplateModel: ObservableObject {
-    let template: DerivationRecipeTemplate
+    let template: DerivationRecipe
     var recipeBuilderState: RecipeBuilderState
     @Published var sequenceNumber: Int = 1 { didSet { update() } }
 
-    init(_ template: DerivationRecipeTemplate, _ recipeBuilderState: RecipeBuilderState) {
+    init(_ template: DerivationRecipe, _ recipeBuilderState: RecipeBuilderState) {
         self.recipeBuilderState = recipeBuilderState
         self.template = template
         update()
@@ -35,7 +35,7 @@ private class DerivationRecipeBuilderForTemplateModel: ObservableObject {
 struct DerivationRecipeBuilderForTemplate: View {
     @ObservedObject private var model: DerivationRecipeBuilderForTemplateModel
 
-    init(recipeBuilderState: RecipeBuilderState, template: DerivationRecipeTemplate) {
+    init(recipeBuilderState: RecipeBuilderState, template: DerivationRecipe) {
         self.model = DerivationRecipeBuilderForTemplateModel(template, recipeBuilderState)
     }
 

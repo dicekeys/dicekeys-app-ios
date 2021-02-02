@@ -9,7 +9,7 @@ import SwiftUI
 
 enum DerivationRecipeBuilderType: Equatable {
     case recipe(DerivationRecipe)
-    case template(DerivationRecipeTemplate)
+    case template(DerivationRecipe)
     case customFromUrl(DerivationOptionsType)
 //    case custom
 
