@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0FF7F731929DF324410FCCEA /* Pods_DiceKeys__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25A6B06AB3C071EB2999AE67 /* Pods_DiceKeys__iOS_.framework */; };
 		172057B125C2DBF800282E21 /* SupportsBackNavigationHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172057B025C2DBF800282E21 /* SupportsBackNavigationHeader.swift */; };
 		172057B225C2DBF800282E21 /* SupportsBackNavigationHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172057B025C2DBF800282E21 /* SupportsBackNavigationHeader.swift */; };
 		172057CB25C4E7F500282E21 /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* DerivationOptions.swift */; };
@@ -88,8 +87,6 @@
 		EC509241259481E2007D2B91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC50923E259481E2007D2B91 /* Assets.xcassets */; };
 		EC509259259482CA007D2B91 /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC509258259482CA007D2B91 /* Inconsolata-Bold.otf */; };
 		EC50925A259482CA007D2B91 /* Inconsolata-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC509258259482CA007D2B91 /* Inconsolata-Bold.otf */; };
-		EC50928D259482F4007D2B91 /* KeyScanningIllustration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509261259482F4007D2B91 /* KeyScanningIllustration.swift */; };
-		EC50928E259482F4007D2B91 /* KeyScanningIllustration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509261259482F4007D2B91 /* KeyScanningIllustration.swift */; };
 		EC50928F259482F4007D2B91 /* Funnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509263259482F4007D2B91 /* Funnel.swift */; };
 		EC509290259482F4007D2B91 /* Funnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509263259482F4007D2B91 /* Funnel.swift */; };
 		EC509291259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC509265259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift */; };
@@ -233,7 +230,6 @@
 		EC50922E2594818F007D2B91 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		EC50923E259481E2007D2B91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EC509258259482CA007D2B91 /* Inconsolata-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inconsolata-Bold.otf"; sourceTree = "<group>"; };
-		EC509261259482F4007D2B91 /* KeyScanningIllustration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyScanningIllustration.swift; sourceTree = "<group>"; };
 		EC509263259482F4007D2B91 /* Funnel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Funnel.swift; sourceTree = "<group>"; };
 		EC509265259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyCenterFaceOnlyView.swift; sourceTree = "<group>"; };
 		EC509266259482F4007D2B91 /* DiceKeyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyView.swift; sourceTree = "<group>"; };
@@ -467,7 +463,6 @@
 		EC50925F259482F4007D2B91 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EC509260259482F4007D2B91 /* Illustrations */,
 				EC509262259482F4007D2B91 /* Shapes */,
 				EC509264259482F4007D2B91 /* DiceKey */,
 				EC509269259482F4007D2B91 /* Scanning */,
@@ -479,14 +474,6 @@
 				EC50928C259482F4007D2B91 /* App.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		EC509260259482F4007D2B91 /* Illustrations */ = {
-			isa = PBXGroup;
-			children = (
-				EC509261259482F4007D2B91 /* KeyScanningIllustration.swift */,
-			);
-			path = Illustrations;
 			sourceTree = "<group>";
 		};
 		EC509262259482F4007D2B91 /* Shapes */ = {
@@ -1026,7 +1013,6 @@
 				EC5092C1259482F5007D2B91 /* TransferSticker.swift in Sources */,
 				EC5092C7259482F5007D2B91 /* ValidateBackup.swift in Sources */,
 				17B6C5AB25A494CB007798F3 /* AttachedHidDevice.swift in Sources */,
-				EC50928D259482F4007D2B91 /* KeyScanningIllustration.swift in Sources */,
 				EC5092CF259482F5007D2B91 /* DiceKeyCopyInProgress.swift in Sources */,
 				EC5093322595C043007D2B91 /* RoundedRectCard.swift in Sources */,
 				EC5092A7259482F5007D2B91 /* DiceKeyStorageOptions.swift in Sources */,
@@ -1107,7 +1093,6 @@
 				EC50929E259482F4007D2B91 /* ScanDiceKey.swift in Sources */,
 				EC5092C2259482F5007D2B91 /* TransferSticker.swift in Sources */,
 				EC5092C8259482F5007D2B91 /* ValidateBackup.swift in Sources */,
-				EC50928E259482F4007D2B91 /* KeyScanningIllustration.swift in Sources */,
 				17B6C6E725BE630A007798F3 /* LoadDiceKey.swift in Sources */,
 				EC5092D0259482F5007D2B91 /* DiceKeyCopyInProgress.swift in Sources */,
 				EC5092A8259482F5007D2B91 /* DiceKeyStorageOptions.swift in Sources */,
