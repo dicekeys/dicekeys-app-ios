@@ -80,36 +80,35 @@ struct AppMainView: View {
             }
             Button(action: { showLoadDiceKey() }) {
                 VStack(alignment: .center) {
-                    KeyScanningIllustration(.Dice)
-                        .frame(width: 135, height: 100, alignment: .center)
-//                        .aspectRatio(contentMode: .fit)
+                    HStack {
+                        Spacer()
+                        Image("Scanning a DiceKey PNG")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Spacer()
+                    }
 //                        .frame(maxHeight: 0.3 * screenShorterSide)
                     Text("Load your DiceKey").font(.title2)
                 }
+                .aspectRatio(3.0, contentMode: .fit)
             }.buttonStyle(PlainButtonStyle())
             Spacer()
-//                HStack {
-//                    Spacer()
-//                    Image("Illustration of shaking bag").resizable().aspectRatio(contentMode: .fit)
-//                    Spacer(minLength: 20)
-//                    Image("Box Bottom After Roll").resizable().aspectRatio(contentMode: .fit)
-//                    Spacer(minLength: 20)
-//                    Image("Seal Box").resizable().aspectRatio(contentMode: .fit)
-//                    Spacer(minLength: 20)
-//                }.padding(.horizontal, 20).frame(maxHeight: screenShorterSide / 4)
-//                .onTapGesture { showAssemblyInstructions() }
             Button(action: { showAssemblyInstructions() } ) {
-                VStack {
+                VStack(alignment: .center) {
                     HStack {
                         Spacer()
-                        Image("Illustration of shaking bag").resizable().aspectRatio(contentMode: .fit)
-                        Spacer(minLength: 20)
+                        Image("Illustration of shaking bag")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Spacer(minLength: 10)
                         Image("Box Bottom After Roll").resizable().aspectRatio(contentMode: .fit)
-                        Spacer(minLength: 20)
+                        Spacer(minLength: 10)
                         Image("Seal Box").resizable().aspectRatio(contentMode: .fit)
-                        Spacer(minLength: 20)
-                    }.padding(.horizontal, 20).aspectRatio(contentMode: .fit).frame(maxHeight: screenShorterSide / 2)
-                    Text("Assemble your First DiceKey").font(.title2)
+                        Spacer(minLength: 10)
+                    }
+                    .aspectRatio(4, contentMode: .fit)
+                    //.frame(maxHeight: screenShorterSide / 2)
+                    Text("Assemble \(knownDiceKeysState.count == 0 ? "your First" : "a") DiceKey").font(.title2)
                 }
             }.buttonStyle(PlainButtonStyle())
             Spacer()

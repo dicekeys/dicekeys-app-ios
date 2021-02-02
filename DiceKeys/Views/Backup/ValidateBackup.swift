@@ -95,7 +95,8 @@ struct ValidateBackup: View {
                     }
                 }
                 VStack {
-                    KeyScanningIllustration(target == BackupTarget.Stickeys ? .Stickers : .Dice)
+                    Image(target == BackupTarget.Stickeys ? "Scanning a Stickey" : "Scanning a DiceKey PNG")
+                        .resizable()
                     // Image("Scanning Side View").resizable()
                         .aspectRatio(contentMode: .fit).offset(x: 0, y: -50)
                     RoundedTextButton("Scan copy to validate") { self.scanningCopy = true }
@@ -112,7 +113,9 @@ private struct TestValidateBackup: View {
     @State var backupScanned: DiceKey?
 
     var body: some View {
-        ValidateBackup(target: .Stickeys, originalDiceKey: self.$originalDiceKey, backupScanned: self.$backupScanned)
+        VStack {
+            ValidateBackup(target: .Stickeys, originalDiceKey: self.$originalDiceKey, backupScanned: self.$backupScanned)
+        }
     }
 }
 
