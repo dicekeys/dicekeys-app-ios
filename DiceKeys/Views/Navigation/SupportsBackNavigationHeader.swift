@@ -16,7 +16,7 @@ protocol SupportsBackNavigationHeader {
 
 struct WithNavigationHeader<HeaderContent: View, BodyContent: View>: View {
     let header: () -> HeaderContent
-    let content: () -> BodyContent
+    let content: (GeometryProxy) -> BodyContent
     
     var body: some View {
         GeometryReader { geometry in
@@ -29,9 +29,6 @@ struct WithNavigationHeader<HeaderContent: View, BodyContent: View>: View {
                 VStack {
                 self.header()
                 }
-//                HStack(alignment: .top, spacing: 0, content: {
-//                    Button( action: { goBack }, content: { Text("Back") } )
-//                })
             }.background(Color.alexandrasBlue)//.background(
 //                        if let image = getGradientImage(forBounds: CGRect(x: 0, y: 0, width: geometry.size.width, height: geometry.safeAreaInsets.top)) {
 //                            Image(uiImage: image)
@@ -43,9 +40,7 @@ struct WithNavigationHeader<HeaderContent: View, BodyContent: View>: View {
 //                            .edgesIgnoringSafeArea(.top)
 //                        }
 //            )
-            //Removing this. Let the content decide if it needs Spacer()
-//            Spacer()
-            self.content()
+            self.content(geometry)
         }
         #if os(macOS)
         vStack.edgesIgnoringSafeArea(.leading)

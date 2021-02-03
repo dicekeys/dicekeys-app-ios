@@ -219,8 +219,7 @@ struct AssemblyInstructions: View {
                 .onTapGesture {
                     GlobalState.instance.topLevelNavigation = .nowhere
                 }
-        }) {
-        GeometryReader { geometry in
+        }) { geometry in
             VStack {
                 Spacer()
                 VStack(alignment: .center) {
@@ -273,13 +272,7 @@ struct AssemblyInstructions: View {
                 }.foregroundColor(.white)
                 .background(Color.warningBackground)
                 .showIf(showWarning)
-            }//.edgesIgnoringSafeArea(.bottom)}
-//            .navigationTitle("Assembly Instructions")
-//            .toolbar {
-//                ToolbarItem(placement: ToolbarItemPlacement.primaryAction) {
-//                    Text("Step \(step.rawValue) of \(Step.SealBox.rawValue)").foregroundColor(Color.navigationForeground).font(.body)
-//                }
-        }
+            }
         }
     }
 }

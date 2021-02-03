@@ -26,55 +26,81 @@ struct DiceKeyPresentNavigationFooter: View {
     var BottomButtonFractionalWidth: CGFloat {
         0.9 / CGFloat(BottomButtonCount)
     }
+    
+    var navBarContentHeight: CGFloat { geometry.size.height / 12 }
+    var navBarImageHeight: CGFloat { navBarContentHeight * 0.75 }
 
     var body: some View {
         let view = VStack {
         ZStack {
             HStack(alignment: .top) {
-                
+                Spacer()
                 VStack {
                     Image("USB Key")
                         .renderingMode(.template)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
                         .onTapGesture { navigateTo(.SeedHardwareKey) }
-//                    Button(action: {  }) {
-//                        VStack {
-                            Text("Seed a SoloKey").multilineTextAlignment(.center).font(.footnote)
-//                        }
-//                    }
-                }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
+                    Text("Seed a SoloKey").multilineTextAlignment(.center).font(.footnote)
+
+                }.frame(width: geometry.size.width * BottomButtonFractionalWidth,
+                        height: navBarContentHeight, alignment: .center)
                 .onTapGesture {
                     navigateTo(.SeedHardwareKey)
                 }
-                .if( pageContent == .SeedHardwareKey ) { $0.colorInvert() }
-                VStack {
+                .if( pageContent == .SeedHardwareKey ) { $0.colorInvert()
+                }
+                #if os(iOS)
+                DerivationRecipeMenu({ newPageContent in
+                    navigateTo(newPageContent)
+                }) {
                     VStack {
                         Image(systemName: "arrow.down")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
+                        Spacer(minLength: 2)
                         Image(systemName: "ellipsis.rectangle.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                    }.frame(height: min(geometry.size.width, geometry.size.height)/10, alignment: .center)
-                    DerivationRecipeMenu({ newPageContent in
-                        navigateTo(newPageContent)
-                    }) {
-                        HStack {
-                            Spacer()
-                            Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
-                            Spacer()
-                        }
+                        Spacer(minLength: 2)
+                        Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
                     }
                 }
-                .frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
+                .frame(width: geometry.size.width * BottomButtonFractionalWidth,
+                       height: navBarContentHeight,
+                       alignment: .center)
                 .if( {
                     switch pageContent {
                     case .Derive : return true
                     default: return false
                     }
                 }() ) { $0.colorInvert() }
+                #elseif os(macOS)
+                VStack {
+                    Image(systemName: "arrow.down")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                    Spacer(minLength: 2)
+                    Image(systemName: "ellipsis.rectangle.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                    Spacer(minLength: 2)
+                    DerivationRecipeMenu({ newPageContent in
+                        navigateTo(newPageContent)
+                    }) {
+                        Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
+                    }
+                }.frame(width: geometry.size.width * BottomButtonFractionalWidth,
+                        height: navBarContentHeight)
+                .if( {
+                    switch pageContent {
+                    case .Derive : return true
+                    default: return false
+                    }
+                }() ) { $0.colorInvert() }                #endif
+//                .frame(width: geometry.size.width * BottomButtonFractionalWidth,
+//                       height: geometry.size.height / 12, alignment: .center)
+
                 VStack {
                     Image("Backup to DiceKey")
                         .renderingMode(.template)
@@ -82,19 +108,17 @@ struct DiceKeyPresentNavigationFooter: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(
                             maxWidth: geometry.size.width * BottomButtonFractionalWidth,
-                            maxHeight: min(geometry.size.width, geometry.size.height)/10,
+                            maxHeight: navBarContentHeight,
                             alignment: .center
                         )
-//                    Button(action: { navigateTo(.Backup) }, label: {
-                        Text("Backup this Key").multilineTextAlignment(.center).font(.footnote)
-//                    })
-                }.frame(width: geometry.size.width * BottomButtonFractionalWidth, alignment: .center)
+                    Text("Backup this Key").multilineTextAlignment(.center).font(.footnote)
+                }.frame(width: geometry.size.width * BottomButtonFractionalWidth, height: navBarContentHeight, alignment: .center)
                 .onTapGesture { navigateTo(.Backup) }
                 .if( pageContent == .Backup ) { $0.colorInvert() }
-                
+                Spacer()
             }
         }
-//        .padding(.bottom, geometry.safeAreaInsets.bottom)
+        .padding(.bottom, geometry.safeAreaInsets.bottom)
         .padding(.top, 5)
         }
         #if os(iOS)
@@ -173,7 +197,12 @@ struct DiceKeyPresent: View {
                     GlobalState.instance.topLevelNavigation = .nowhere
                 }
                 Spacer()
-                Text("\(diceKeyState.nickname)").font(.title).foregroundColor(Color.navigationForeground)
+                Text("\(diceKeyState.nickname)")
+                    .font(.title)
+                    .minimumScaleFactor(0.01)
+                    .scaledToFit()
+                    .lineLimit(1)
+                    .foregroundColor(Color.navigationForeground)
                 Spacer()
                 storageButton
                 .padding(10)
@@ -181,8 +210,7 @@ struct DiceKeyPresent: View {
                     navigate(to: .Save)
                 }
             }
-        }) {
-        GeometryReader { geometry in
+        }) { geometry in
             VStack {
                 Spacer()
                 if let diceKey = diceKeyState.diceKey {
@@ -200,37 +228,10 @@ struct DiceKeyPresent: View {
                     }
                     Spacer()
                 }
+//                Text("--\(geometry.safeAreaInsets.bottom)")
                 DiceKeyPresentNavigationFooter(pageContent: pageContent, navigateTo: navigate, geometry: geometry)
             }
-        }.ignoresSafeArea(.all, edges: .bottom)
-//        #if os(iOS)
-//        return reader.navigationViewStyle(StackNavigationViewStyle())
-//            .navigationTitle(diceKeyState.nickname)
-//            .navigationBarTitleDisplayMode(.inline)
-//            .navigationBarDiceKeyStyle()
-//            .navigationBarBackButtonHidden(true)
-//            .toolbar {
-//                ToolbarItem(placement: ToolbarItemPlacement.navigationBarLeading) {
-//                    Button(action: {
-//                        self.onForget()
-//                    }) {
-//                        VStack {
-//                            Image(systemName: "lock").foregroundColor(Color.navigationForeground)
-//                            Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget").foregroundColor(Color.navigationForeground)
-//                        }
-//                    }
-//                }
-//                ToolbarItem(placement: .primaryAction) {
-//                    storageButton
-//                }
-//            }
-//            .background(
-//                NavBarAccessor { navBar in self.navBarHeight = navBar.bounds.height }
-//            )
-//        #else
-//        return reader
-//        #endif
-    }
+        }//.ignoresSafeArea(.all, edges: .bottom)
     }
 }
 
