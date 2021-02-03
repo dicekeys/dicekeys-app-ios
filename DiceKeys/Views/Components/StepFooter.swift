@@ -97,7 +97,7 @@ struct StepFooterView: View {
                 
                 Spacer()
             }
-        }.applyCustomStyle()
+        }.applyLinkButtonStyleForEveryOS()
     }
 }
 

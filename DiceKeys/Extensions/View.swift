@@ -58,7 +58,7 @@ extension View {
         self.previewLayout(PreviewLayout.fixed(width: 320, height: 568))
     }
     
-    @ViewBuilder func applyCustomStyle() -> some View {
+    @ViewBuilder func applyLinkButtonStyleForEveryOS() -> some View {
         #if os(macOS)
         self.buttonStyle(LinkButtonStyle())
         #endif
