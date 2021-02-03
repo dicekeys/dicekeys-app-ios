@@ -57,7 +57,7 @@ class KnownDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, Dic
 
     var nickname: String {
         guard let centerFace = self.centerFace else { return "Unknown DiceKey" }
-        return "DiceKey with \(centerFace.letter.rawValue)\(centerFace.digit.rawValue) in center."
+        return "DiceKey with \(centerFace.letter.rawValue)\(centerFace.digit.rawValue) in center"
     }
 
     var centerFace: Face? {
