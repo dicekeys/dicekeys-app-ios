@@ -196,6 +196,7 @@
 		17B6C68B25BA729A007798F3 /* EditableDiceKeyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableDiceKeyState.swift; sourceTree = "<group>"; };
 		17B6C69225BA8285007798F3 /* FaceOrientationLetterTrbl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOrientationLetterTrbl.swift; sourceTree = "<group>"; };
 		17B6C6E525BE6309007798F3 /* LoadDiceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadDiceKey.swift; sourceTree = "<group>"; };
+		17BB391825CABA080023E430 /* DiceKeys.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DiceKeys.entitlements; sourceTree = "<group>"; };
 		2041EA96DFD46E6AA469E4E3 /* Pods-DiceKeys-DiceKeys (macOS)-Tests macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-DiceKeys (macOS)-Tests macOS.release.xcconfig"; path = "Target Support Files/Pods-DiceKeys-DiceKeys (macOS)-Tests macOS/Pods-DiceKeys-DiceKeys (macOS)-Tests macOS.release.xcconfig"; sourceTree = "<group>"; };
 		26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardCommands.swift; sourceTree = "<group>"; };
 		264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeYourDiceKeyView.swift; sourceTree = "<group>"; };
@@ -583,6 +584,7 @@
 		EC561277258B827200A056B8 = {
 			isa = PBXGroup;
 			children = (
+				17BB391825CABA080023E430 /* DiceKeys.entitlements */,
 				EC56127C258B827200A056B8 /* DiceKeys */,
 				EC561286258B827300A056B8 /* iOS */,
 				EC56128D258B827300A056B8 /* macOS */,
@@ -1284,6 +1286,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DiceKeys.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0.022;
@@ -1311,6 +1314,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DiceKeys.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0.022;
