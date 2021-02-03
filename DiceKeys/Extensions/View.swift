@@ -57,4 +57,10 @@ extension View {
         // iphone 7: 667 × 375
         self.previewLayout(PreviewLayout.fixed(width: 320, height: 568))
     }
+    
+    @ViewBuilder func applyCustomStyle() -> some View {
+        #if os(macOS)
+        self.buttonStyle(LinkButtonStyle())
+        #endif
+    }
 }
