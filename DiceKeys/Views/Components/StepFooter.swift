@@ -61,7 +61,8 @@ struct StepFooterView: View {
                 Spacer()
                 Button(action: { setMaySkip?() },
                     label: { Text("Let me skip this step").font(.body) }
-                ).padding(.bottom, 7).showIf( setMaySkip != nil )
+                )
+                .padding(.bottom, 7).showIf( setMaySkip != nil )
                 Spacer()
             }
             HStack {
@@ -71,6 +72,7 @@ struct StepFooterView: View {
                         Image(systemName: "chevron.backward.2")
                     }.padding(.horizontal, 20)
                 }.showIf( prevPrev != nil )
+                
                 Spacer()
                 Button(action: { prev?() }) {
                     HStack {
@@ -78,6 +80,7 @@ struct StepFooterView: View {
                         Text("Previous").font(.title2)
                     }
                 }.showIf( prev != nil )
+                
                 Spacer()
                 Button(action: { next?() }) {
                     HStack {
@@ -91,9 +94,10 @@ struct StepFooterView: View {
                         Image(systemName: "chevron.forward.2")
                     }.padding(.horizontal, 20)
                 }.showIf( nextNext != nil )
+                
                 Spacer()
             }
-        }
+        }.applyLinkButtonStyleForEveryOS()
     }
 }
 

@@ -33,6 +33,7 @@ struct LoadDiceKey: View {
             if (useCamera) {
                 ScanDiceKey(onDiceKeyRead: { diceKey in onDiceKeyLoaded?(diceKey, .byCamera) })
                 Button(action: { useCamera = false }, label: { Text("Enter the DiceKey by Hand") })
+                    .applyLinkButtonStyleForEveryOS()
             } else {
                 TypeYourDiceKeyView(
                         onDiceKeyEntered: {diceKey in onDiceKeyLoaded?(diceKey, .manual)},

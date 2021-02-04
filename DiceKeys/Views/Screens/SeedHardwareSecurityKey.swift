@@ -50,6 +50,8 @@ enum WriteSecurityKeySeedState {
     case error(CtapRequestError)
 }
 
+private let seedSecurityKeyRecipeTemplate = "{\"purpose\":\"seedSecurityKey\"}"
+
 struct SeedHardwareSecurityKey: View {
     let diceKey: DiceKey
     
@@ -64,10 +66,8 @@ struct SeedHardwareSecurityKey: View {
     @State var writeSecurityKeySeedState: WriteSecurityKeySeedState?
     @State var secondsLeft: Int = 0
     
-    let baseDerivationOptionsJson = "{\"purpose\": \"seedSecurityKey\"}"
-
     var derivationOptionsJson: String {
-        addSequenceNumberToDerivationOptionsJson(baseDerivationOptionsJson, sequenceNumber: sequenceNumber)
+        addSequenceNumberToDerivationOptionsJson(seedSecurityKeyRecipeTemplate, sequenceNumber: sequenceNumber)
     }
     
     var extState: Data {
