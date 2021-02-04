@@ -60,11 +60,13 @@ struct DiceKeyPresentNavigationFooter: View {
                             .aspectRatio(contentMode: .fit)
                         Spacer(minLength: 2)
                         Image(systemName: "ellipsis.rectangle.fill")
+                            .renderingMode(.template)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                         Spacer(minLength: 2)
                         Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
                     }
+                    .foregroundColor(.black)
                 }
                 .frame(width: geometry.size.width * BottomButtonFractionalWidth,
                        height: navBarContentHeight,
@@ -78,6 +80,7 @@ struct DiceKeyPresentNavigationFooter: View {
                 #elseif os(macOS)
                 VStack {
                     Image(systemName: "arrow.down")
+                        
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                     Spacer(minLength: 2)
