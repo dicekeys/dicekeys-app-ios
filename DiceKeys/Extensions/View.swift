@@ -61,6 +61,8 @@ extension View {
     @ViewBuilder func applyLinkButtonStyleForEveryOS() -> some View {
         #if os(macOS)
         self.buttonStyle(LinkButtonStyle())
+        #else
+        self
         #endif
     }
 }
