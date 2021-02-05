@@ -182,6 +182,6 @@ struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
 //        }
 //        .navigationBarDiceKeyStyle()
-        .previewDevice(PreviewDevice(rawValue: "iPhone 11 Max"))
+        .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
     }
 }

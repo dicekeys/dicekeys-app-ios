@@ -20,13 +20,18 @@ struct TransferStickerInstructions: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Remove the \(face.letterAndDigit) sticker from the sheet with letters \(stickerSheet.firstLetter.rawValue) through \(stickerSheet.lastLetter.rawValue).").font(.title)
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Remove the \(face.letterAndDigit) sticker from the sheet with letters \(stickerSheet.firstLetter.rawValue) through \(stickerSheet.lastLetter.rawValue).")
+                .font(.title)
+                .minimumScaleFactor(0.5)
             if face.orientationAsLowercaseLetterTrbl != .Top {
-                Text("Rotate it so the top faces to the \(face.orientationAsLowercaseLetterTrbl.asFacingString).").font(.title).padding(.top, 3)
+                Text("Rotate it so the top faces to the \(face.orientationAsLowercaseLetterTrbl.asFacingString).")
+                    .font(.title)
+                    .minimumScaleFactor(0.5)
             }
-            Text("Place it squarely covering the target rectangle\( faceIndex == 0 ? " at the top left of the target sheet" : "")."
-            ).font(.title).padding(.top, 3)
+            Text("Place it squarely covering the target rectangle\( faceIndex == 0 ? " at the top left of the target sheet" : "").")
+            .font(.title)
+            .minimumScaleFactor(0.5)
         }
     }
 }

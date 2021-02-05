@@ -19,7 +19,7 @@ struct ChooseBackupTarget: View {
 
     var body: some View {
         VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/) {
-            Instruction("Make a backup of your DiceKey by copying it.")
+            Instruction("Make a backup of your DiceKey by copying it.", lineLimit: 2)
             Spacer()
             Button(action: { choice(.Stickeys) },
                 label: {
@@ -88,7 +88,7 @@ private struct BackupSteps: View {
             case .DiceKey: BackupToDiceKeysKitIntroduction(diceKey: diceKey)
             }
         } else if step >= 2 && step <= 26 {
-            Instruction("Construct your Backup")
+            Instruction("Construct your Backup", lineLimit: 1)
             Spacer()
             switch target {
             case .Stickeys: TransferSticker(diceKey: diceKey, faceIndex: faceIndex)
