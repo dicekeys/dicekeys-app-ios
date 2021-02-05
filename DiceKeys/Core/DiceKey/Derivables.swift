@@ -53,20 +53,13 @@ func addSequenceNumberToDerivationOptionsJson(_ derivationOptionsWithoutSequence
     return addFieldToEndOfJsonObjectString(derivationOptionsWithoutSequenceNumber, fieldName: "#", fieldValue: String(describing: sequenceNumber))
 }
 
-protocol DerivationRecipeIdentifiable: Codable, Identifiable {
-    var type: DerivationOptionsType { get }
-    var name: String { get }
-    var derivationOptionsJson: String { get }
-}
 
-extension DerivationRecipeIdentifiable {
+struct DerivationRecipe: Identifiable, Codable, Equatable {
+    let type: DerivationOptionsType
+    let name: String
+    let derivationOptionsJson: String
+    
     var id: String { "\(type):\(name):\(derivationOptionsJson)" }
-}
-
-struct DerivationRecipeTemplate: DerivationRecipeIdentifiable, Equatable {
-    let type: DerivationOptionsType
-    let name: String
-    let derivationOptionsJson: String
 
     init(type: DerivationOptionsType, name: String, derivationOptionsJson: String) {
         self.type = type
@@ -74,28 +67,7 @@ struct DerivationRecipeTemplate: DerivationRecipeIdentifiable, Equatable {
         self.derivationOptionsJson = derivationOptionsJson
     }
 
-    init(type: DerivationOptionsType, name: String, hosts: [String]) {
-        self.init(type: type, name: name, derivationOptionsJson: getDerivationOptionsJson(hosts: hosts))
-    }
-
-    static func listFromJson(_ json: String) throws -> [DerivationRecipeTemplate]? {
-        return try JSONDecoder().decode([DerivationRecipeTemplate].self, from: json.data(using: .utf8)! )
-    }
-    static func listToJson(_ derivables: [DerivationRecipeTemplate]) throws -> String { String(decoding: try JSONEncoder().encode(derivables), as: UTF8.self) }
-}
-
-struct DerivationRecipe: DerivationRecipeIdentifiable, Equatable {
-    let type: DerivationOptionsType
-    let name: String
-    let derivationOptionsJson: String
-
-    init(type: DerivationOptionsType, name: String, derivationOptionsJson: String) {
-        self.type = type
-        self.name = name
-        self.derivationOptionsJson = derivationOptionsJson
-    }
-
-    init(template: DerivationRecipeTemplate, sequenceNumber: Int, lengthInChars: Int = 0) {
+    init(template: DerivationRecipe, sequenceNumber: Int, lengthInChars: Int = 0) {
         self.type = template.type
         let typeSuffix = template.type == .Password ? " Password" : template.type == .SymmetricKey ? " Key" : template.type == .UnsealingKey ? " Key Pair" : ""
         let sequenceSuffix = sequenceNumber == 1 ? "" : " (\(String(sequenceNumber)))"
