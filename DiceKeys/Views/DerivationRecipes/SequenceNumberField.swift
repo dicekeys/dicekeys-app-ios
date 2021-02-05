@@ -75,9 +75,12 @@ struct SequenceNumberField: View {
         }
     }
 }
-//
-//struct SequenceNumberField_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SequenceNumberField()
-//    }
-//}
+
+struct SequenceNumberField_Previews: PreviewProvider {
+    
+    @State static var number: Int = 1
+    
+    static var previews: some View {
+        SequenceNumberField(sequenceNumber: $number)
+    }
+}

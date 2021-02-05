@@ -20,6 +20,8 @@ struct RoundedTextButton: View {
         Button(action: action, label: {
             Text(text)
             .font(.title2)
+            .lineLimit(2)
+            .minimumScaleFactor(0.8)
             .padding(.vertical, 5)
             .padding(.horizontal, 20)
             .foregroundColor(.white)

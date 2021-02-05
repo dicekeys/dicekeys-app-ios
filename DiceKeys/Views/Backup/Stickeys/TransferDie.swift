@@ -31,12 +31,17 @@ struct TransferDieInstructions: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Find the \(face.letter.rawValue) die.").font(.title)
+            Text("Find the \(face.letter.rawValue) die.")
+                .font(.title)
+                .minimumScaleFactor(0.5)
             if face.orientationAsLowercaseLetterTrbl != .Top {
-                Text("Rotate it so the top faces to the \(face.orientationAsLowercaseLetterTrbl.asFacingString).").font(.title).padding(.top, 3)
+                Text("Rotate it so the top faces to the \(face.orientationAsLowercaseLetterTrbl.asFacingString).")
+                    .font(.title)
+                    .minimumScaleFactor(0.5)
             }
-            Text("Place it squarely into the hole\( faceIndex == 0 ? " at the top left of the target box" : "")."
-            ).font(.title).padding(.top, 3)
+            Text("Place it squarely into the hole\( faceIndex == 0 ? " at the top left of the target box" : "").")
+                .font(.title)
+                .minimumScaleFactor(0.5)
         }
     }
 }

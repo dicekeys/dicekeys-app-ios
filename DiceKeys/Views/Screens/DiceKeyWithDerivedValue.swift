@@ -177,7 +177,10 @@ extension FormCard where TitleContent == Text {
 
 struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
     static var previews: some View {
-        DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
-        .previewDevice(PreviewDevice(rawValue: "iPhone 11 Max"))
+//        NavigationView {
+            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
+//        }
+//        .navigationBarDiceKeyStyle()
+        .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
     }
 }
