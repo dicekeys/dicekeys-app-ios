@@ -86,7 +86,7 @@ fileprivate func sendResponse(_ responseUrl: URLComponents, _ additionalParamete
 // Handles API requests arriving via URL
 func handleUrlApiRequest(
     incomingRequestUrl: URL,
-    getSeedStringForRequest: @escaping (_ forRequest: ApiRequest, _ callback: @escaping (Result<String, Error>) -> Void) -> Void,
+    approveApiRequest: @escaping (_ forRequest: ApiRequest, _ callback: @escaping (Result</* seed */String, Error>) -> Void) -> Void,
     // Set only for testing, otherwise, use the default
     sendResponse: @escaping (_ responseUrl: URLComponents, _ additionalParameters: [String:String]) -> Void = sendResponse
 ) {
@@ -127,7 +127,7 @@ func handleUrlApiRequest(
         // try request.throwIfNotAuthorized()
 
         // Only after authorization checks pass can we get the seed string
-        getSeedStringForRequest(request) { result in
+        approveApiRequest(request) { result in
             switch result {
             case .failure(let error):
                 sendError(responseUrl, error)

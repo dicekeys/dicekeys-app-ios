@@ -20,6 +20,11 @@ enum TopLevelNavigateTo {
     case assemblyInstructions
 }
 
+struct ApiRequestWithCompletionCallback {
+    let request: ApiRequest
+    let callback: (Result<String, Error>) -> Void
+}
+
 final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
     static private(set) var instance = GlobalState()
 
@@ -27,6 +32,22 @@ final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
         case knownDiceKeys
         case neverAskUserToSave
         case savedDerivationRecipes
+    }
+    
+    @Published private var apiRequestApprovalQueue: [ApiRequestWithCompletionCallback] = []
+
+    func askUserToApproveApiRequest(_ request: ApiRequest, _ callback: @escaping (Result<String, Error>) -> Void) -> Void {
+        apiRequestApprovalQueue.append(ApiRequestWithCompletionCallback(request: request, callback: callback))
+        self.sendChangeEventOnMainThread()
+    }
+    
+    func removeApiRequestApproval() {
+        apiRequestApprovalQueue.removeFirst()
+        self.sendChangeEventOnMainThread()
+    }
+    
+    var requestForUserToApprove: ApiRequestWithCompletionCallback? {
+        return apiRequestApprovalQueue.first
     }
     
     @Published var topLevelNavigation: TopLevelNavigateTo = .nowhere {

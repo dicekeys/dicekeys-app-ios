@@ -25,9 +25,12 @@ struct AppView: App {
     var body: some Scene {
         WindowGroup {
             AppMainView()
-                .onOpenURL { url in
-                // FIXME -- handle deep linking API requests here
-                print("\(url.absoluteString)")
+            .onOpenURL { url in
+                //                print("\(url.absoluteString)")
+                handleUrlApiRequest(
+                    incomingRequestUrl: url, approveApiRequest: { apiRequest, callback in
+                    GlobalState.instance.askUserToApproveApiRequest(apiRequest, callback)
+                })
             }
         }.onChange(of: scenePhase) { phase in
             switch phase {
