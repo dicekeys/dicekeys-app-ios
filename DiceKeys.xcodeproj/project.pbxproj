@@ -82,6 +82,7 @@
 		17BB39B225CCC6700023E430 /* AttachedHidDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C62625B58252007798F3 /* AttachedHidDevices.swift */; };
 		17BB39B325CCC6700023E430 /* CtapHidConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */; };
 		17BB39B425CCC6700023E430 /* AttachedHidDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */; };
+		17E385E525CE5DED004C2701 /* ApiRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385E425CE5DED004C2701 /* ApiRequestView.swift */; };
 		26447E7025BAE1C500F2B534 /* KeyboardCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */; };
 		26447E7125BAE1C500F2B534 /* KeyboardCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */; };
 		264CD58325AF1043009D2F5A /* TypeYourDiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */; };
@@ -250,6 +251,7 @@
 		17BB394825CBB63D0023E430 /* Unmarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unmarshalling.swift; sourceTree = "<group>"; };
 		17BB395125CBB6C20023E430 /* AuthenticationTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationTokens.swift; sourceTree = "<group>"; };
 		17BB395A25CBB6FC0023E430 /* UrlApiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlApiRequest.swift; sourceTree = "<group>"; };
+		17E385E425CE5DED004C2701 /* ApiRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequestView.swift; sourceTree = "<group>"; };
 		2041EA96DFD46E6AA469E4E3 /* Pods-DiceKeys-DiceKeys (macOS)-Tests macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-DiceKeys (macOS)-Tests macOS.release.xcconfig"; path = "Target Support Files/Pods-DiceKeys-DiceKeys (macOS)-Tests macOS/Pods-DiceKeys-DiceKeys (macOS)-Tests macOS.release.xcconfig"; sourceTree = "<group>"; };
 		26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardCommands.swift; sourceTree = "<group>"; };
 		264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeYourDiceKeyView.swift; sourceTree = "<group>"; };
@@ -393,6 +395,14 @@
 			path = SeedSecurityKey;
 			sourceTree = "<group>";
 		};
+		17E385E325CE5DC9004C2701 /* ApiRequestHandling */ = {
+			isa = PBXGroup;
+			children = (
+				17E385E425CE5DED004C2701 /* ApiRequestView.swift */,
+			);
+			path = ApiRequestHandling;
+			sourceTree = "<group>";
+		};
 		267F67DE25B2CA3600F2324A /* EditableDiceKeyView */ = {
 			isa = PBXGroup;
 			children = (
@@ -521,6 +531,7 @@
 		EC50925F259482F4007D2B91 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				17E385E325CE5DC9004C2701 /* ApiRequestHandling */,
 				EC509262259482F4007D2B91 /* Shapes */,
 				EC509264259482F4007D2B91 /* DiceKey */,
 				EC509269259482F4007D2B91 /* Scanning */,
@@ -1110,6 +1121,7 @@
 				17B6C61C25AD52C6007798F3 /* DerivationRecipeTemplates.swift in Sources */,
 				EC5092C3259482F5007D2B91 /* StickerTargetSheet.swift in Sources */,
 				EC509293259482F4007D2B91 /* DiceKeyView.swift in Sources */,
+				17E385E525CE5DED004C2701 /* ApiRequestView.swift in Sources */,
 				EC5092A3259482F4007D2B91 /* AppMainView.swift in Sources */,
 				EC5092CD259482F5007D2B91 /* TransferDie.swift in Sources */,
 				EC5092AF259482F5007D2B91 /* NavigationBar.swift in Sources */,

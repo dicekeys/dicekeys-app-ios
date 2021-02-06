@@ -41,7 +41,7 @@ final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
         self.sendChangeEventOnMainThread()
     }
     
-    func removeApiRequestApproval() {
+    private func removeApiRequestApproval() {
         apiRequestApprovalQueue.removeFirst()
         self.sendChangeEventOnMainThread()
     }
@@ -49,7 +49,15 @@ final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
     var requestForUserToApprove: ApiRequestWithCompletionCallback? {
         return apiRequestApprovalQueue.first
     }
-    
+
+    /// Complete the request and remove it from the set of pending requests
+    func completeApiRequest(_ result: Result<String, Error>) {
+        // Send the resposne
+        self.requestForUserToApprove?.callback(result)
+        // Remove the request
+        self.removeApiRequestApproval()
+    }
+
     @Published var topLevelNavigation: TopLevelNavigateTo = .nowhere {
         didSet { self.sendChangeEventOnMainThread() }
     }

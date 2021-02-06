@@ -14,6 +14,7 @@ enum AuthenticationRequirementIn {
 }
 
 enum RequestException: Error {
+    case UserDeclinedToAuthorizeOperation
     case ClientNotAuthorized(AuthenticationRequirementIn)
     case ComamndRequiresDerivationOptionsWithClientMayRetrieveKeySetToTrue
     case NotImplemented
