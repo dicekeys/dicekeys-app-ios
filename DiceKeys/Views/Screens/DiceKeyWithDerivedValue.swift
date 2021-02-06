@@ -98,7 +98,7 @@ struct DiceKeyWithDerivedValue: View {
                             Spacer()
                         }
                     }
-                }.padding(.horizontal, 10).padding(.vertical, 10)
+                }.padding(.horizontal, 10)
                 .layoutPriority(1)
                 Spacer()
                 VStack(alignment: .center, spacing: 0) {
@@ -110,7 +110,7 @@ struct DiceKeyWithDerivedValue: View {
     //                            .scaledToFit()
                                 .minimumScaleFactor(0.1)
                                 .fixedSize(horizontal: false, vertical: true)
-                                .padding(.horizontal, 5)
+//                                .padding(.horizontal, 5)
                     }).padding(.horizontal, 5).layoutPriority(-1)
                     if let derivedValue = derivedValue, derivedValue != "" {
                         Button("Copy\( derivationRecipe?.type == .Password ? " Password" : "" )") {
@@ -178,10 +178,10 @@ extension FormCard where TitleContent == Text {
 
 struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
     static var previews: some View {
-//        NavigationView {
+        NavigationView {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
-//        }
-//        .navigationBarDiceKeyStyle()
+        }
+        .navigationBarDiceKeyStyle()
         .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
     }
 }
