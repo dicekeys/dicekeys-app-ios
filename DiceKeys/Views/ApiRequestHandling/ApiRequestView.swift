@@ -7,6 +7,18 @@
 
 import SwiftUI
 
+struct RequestDescription: View {
+    let request: ApiRequest
+    
+    var body: some View {
+        if request is ApiRequestGetSecret {
+            Text("FIXME")
+        }
+        Text("\(request.securityContext.host)")
+    }
+    
+}
+
 struct ApiRequestView: View {
     @ObservedObject var globalState: GlobalState = GlobalState.instance
     @State var userAskedToLoadDiceKey: Bool = false
@@ -45,7 +57,9 @@ struct ApiRequestView: View {
     var body: some View {
         VStack {
             Spacer()
-            requestDescription
+            if let request = self.request {
+                RequestDescription(request: request)
+            }
             Spacer()
             if showLoadDiceKey {
                 LoadDiceKey(onDiceKeyLoaded: { diceKey, _ in
@@ -78,3 +92,4 @@ struct ApiRequestView_Previews: PreviewProvider {
         ApiRequestView()
     }
 }
+
