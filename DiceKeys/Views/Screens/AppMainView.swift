@@ -9,9 +9,10 @@ import SwiftUI
 
 struct AppMainView: View {
     @ObservedObject var globalState = GlobalState.instance
+    @ObservedObject var knownDiceKeysStore = KnownDiceKeysStore.singleton
 
     var knownDiceKeysState: [KnownDiceKeyState] {
-        GlobalState.instance.knownDiceKeys.map { keyId in KnownDiceKeyState.forKeyId(keyId) }.filter {
+        knownDiceKeysStore.knownDiceKeys.map { keyId in KnownDiceKeyState.forKeyId(keyId) }.filter {
             $0.isDiceKeySaved
         }
     }

@@ -29,7 +29,7 @@ struct AppView: App {
                 //                print("\(url.absoluteString)")
                 handleUrlApiRequest(
                     incomingRequestUrl: url, approveApiRequest: { apiRequest, callback in
-                    GlobalState.instance.askUserToApproveApiRequest(apiRequest, callback)
+                    ApiRequestState.singleton.askUserToApproveApiRequest(apiRequest, callback)
                 })
             }
         }.onChange(of: scenePhase) { phase in

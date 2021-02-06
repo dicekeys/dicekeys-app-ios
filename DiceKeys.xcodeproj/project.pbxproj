@@ -83,6 +83,19 @@
 		17BB39B325CCC6700023E430 /* CtapHidConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */; };
 		17BB39B425CCC6700023E430 /* AttachedHidDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */; };
 		17E385E525CE5DED004C2701 /* ApiRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385E425CE5DED004C2701 /* ApiRequestView.swift */; };
+		17E385EB25CF4F8A004C2701 /* ApiRequestState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385EA25CF4F8A004C2701 /* ApiRequestState.swift */; };
+		17E385EC25CF4F8A004C2701 /* ApiRequestState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385EA25CF4F8A004C2701 /* ApiRequestState.swift */; };
+		17E385ED25CF4F8A004C2701 /* ApiRequestState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385EA25CF4F8A004C2701 /* ApiRequestState.swift */; };
+		17E385EE25CF4F8A004C2701 /* ApiRequestState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385EA25CF4F8A004C2701 /* ApiRequestState.swift */; };
+		17E385F325CF56BB004C2701 /* ApiRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385E425CE5DED004C2701 /* ApiRequestView.swift */; };
+		17E3860225CF5C10004C2701 /* WindowNavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860125CF5C10004C2701 /* WindowNavigationState.swift */; };
+		17E3860325CF5C10004C2701 /* WindowNavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860125CF5C10004C2701 /* WindowNavigationState.swift */; };
+		17E3860425CF5C10004C2701 /* WindowNavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860125CF5C10004C2701 /* WindowNavigationState.swift */; };
+		17E3860525CF5C10004C2701 /* WindowNavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860125CF5C10004C2701 /* WindowNavigationState.swift */; };
+		17E3860B25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860A25CF5CB9004C2701 /* KnownDiceKeysStore.swift */; };
+		17E3860C25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860A25CF5CB9004C2701 /* KnownDiceKeysStore.swift */; };
+		17E3860D25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860A25CF5CB9004C2701 /* KnownDiceKeysStore.swift */; };
+		17E3860E25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860A25CF5CB9004C2701 /* KnownDiceKeysStore.swift */; };
 		26447E7025BAE1C500F2B534 /* KeyboardCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */; };
 		26447E7125BAE1C500F2B534 /* KeyboardCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */; };
 		264CD58325AF1043009D2F5A /* TypeYourDiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */; };
@@ -252,6 +265,9 @@
 		17BB395125CBB6C20023E430 /* AuthenticationTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationTokens.swift; sourceTree = "<group>"; };
 		17BB395A25CBB6FC0023E430 /* UrlApiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlApiRequest.swift; sourceTree = "<group>"; };
 		17E385E425CE5DED004C2701 /* ApiRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequestView.swift; sourceTree = "<group>"; };
+		17E385EA25CF4F8A004C2701 /* ApiRequestState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequestState.swift; sourceTree = "<group>"; };
+		17E3860125CF5C10004C2701 /* WindowNavigationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowNavigationState.swift; sourceTree = "<group>"; };
+		17E3860A25CF5CB9004C2701 /* KnownDiceKeysStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnownDiceKeysStore.swift; sourceTree = "<group>"; };
 		2041EA96DFD46E6AA469E4E3 /* Pods-DiceKeys-DiceKeys (macOS)-Tests macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-DiceKeys (macOS)-Tests macOS.release.xcconfig"; path = "Target Support Files/Pods-DiceKeys-DiceKeys (macOS)-Tests macOS/Pods-DiceKeys-DiceKeys (macOS)-Tests macOS.release.xcconfig"; sourceTree = "<group>"; };
 		26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardCommands.swift; sourceTree = "<group>"; };
 		264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeYourDiceKeyView.swift; sourceTree = "<group>"; };
@@ -450,6 +466,9 @@
 				EC5091EA259480BE007D2B91 /* GlobalState.swift */,
 				EC5091EB259480BE007D2B91 /* UnlockedDiceKeyState.swift */,
 				EC5091EC259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */,
+				17E385EA25CF4F8A004C2701 /* ApiRequestState.swift */,
+				17E3860125CF5C10004C2701 /* WindowNavigationState.swift */,
+				17E3860A25CF5CB9004C2701 /* KnownDiceKeysStore.swift */,
 			);
 			path = State;
 			sourceTree = "<group>";
@@ -1058,6 +1077,7 @@
 				EC50921325948124007D2B91 /* Derivables.swift in Sources */,
 				EC5092D1259482F5007D2B91 /* App.swift in Sources */,
 				17BB393925CBB5380023E430 /* Base64.swift in Sources */,
+				17E3860225CF5C10004C2701 /* WindowNavigationState.swift in Sources */,
 				EC50929B259482F4007D2B91 /* FacesReadOverlay.swift in Sources */,
 				17BB392625CBB3470023E430 /* RequestSecurityContext.swift in Sources */,
 				EC5092372594818F007D2B91 /* Color.swift in Sources */,
@@ -1076,6 +1096,7 @@
 				EC509291259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift in Sources */,
 				EC5092A1259482F4007D2B91 /* DiceKeyPresent.swift in Sources */,
 				EC5092BF259482F5007D2B91 /* BackupToStickeysIntroduction.swift in Sources */,
+				17E385EB25CF4F8A004C2701 /* ApiRequestState.swift in Sources */,
 				EC50920D25948124007D2B91 /* FaceRead.swift in Sources */,
 				EC5092332594818F007D2B91 /* Properties.swift in Sources */,
 				EC50921B25948124007D2B91 /* WebBasedApplicationIdentity.swift in Sources */,
@@ -1112,6 +1133,7 @@
 				EC50928F259482F4007D2B91 /* Funnel.swift in Sources */,
 				EC50932B2595BD03007D2B91 /* SequenceNumberField.swift in Sources */,
 				EC50920B25948124007D2B91 /* Face.swift in Sources */,
+				17E3860B25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */,
 				EC5092A5259482F5007D2B91 /* SeedHardwareSecurityKey.swift in Sources */,
 				EC509299259482F4007D2B91 /* CameraController.swift in Sources */,
 				17BB394025CBB5AA0023E430 /* PackagedSealedMessage.swift in Sources */,
@@ -1159,11 +1181,13 @@
 				EC509292259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift in Sources */,
 				EC5092A2259482F4007D2B91 /* DiceKeyPresent.swift in Sources */,
 				EC5092C0259482F5007D2B91 /* BackupToStickeysIntroduction.swift in Sources */,
+				17E3860325CF5C10004C2701 /* WindowNavigationState.swift in Sources */,
 				17B6C69425BA8285007798F3 /* FaceOrientationLetterTrbl.swift in Sources */,
 				17B6C64125B7C48D007798F3 /* ActiveCameras.swift in Sources */,
 				EC50920E25948124007D2B91 /* FaceRead.swift in Sources */,
 				17B6C61D25AD52C6007798F3 /* DerivationRecipeTemplates.swift in Sources */,
 				EC5092342594818F007D2B91 /* Properties.swift in Sources */,
+				17E385EC25CF4F8A004C2701 /* ApiRequestState.swift in Sources */,
 				EC50921C25948124007D2B91 /* WebBasedApplicationIdentity.swift in Sources */,
 				EC5092CC259482F5007D2B91 /* BackupToDiceKeysKitIntroduction.swift in Sources */,
 				17B6C68225B9883F007798F3 /* PartialFace.swift in Sources */,
@@ -1180,6 +1204,8 @@
 				EC5092BE259482F5007D2B91 /* StickerSheetForFace.swift in Sources */,
 				EC5092C6259482F5007D2B91 /* StickerSheet.swift in Sources */,
 				EC5091F0259480BE007D2B91 /* UnlockedDiceKeyState.swift in Sources */,
+				17E385F325CF56BB004C2701 /* ApiRequestView.swift in Sources */,
+				17E3860C25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */,
 				17B6C62D25B58319007798F3 /* AttachedHidDevice.swift in Sources */,
 				EC5092B2259482F5007D2B91 /* Instruction.swift in Sources */,
 				17B6C63225B58684007798F3 /* CtapHidConnection.swift in Sources */,
@@ -1225,14 +1251,17 @@
 				17BB39A125CCC6690023E430 /* DerivationRecipeTemplates.swift in Sources */,
 				17BB397125CCC61D0023E430 /* ApiInterfaces.swift in Sources */,
 				17BB398625CCC65B0023E430 /* UnsealingInstructions.swift in Sources */,
+				17E385ED25CF4F8A004C2701 /* ApiRequestState.swift in Sources */,
 				17BB399025CCC6630023E430 /* Base64.swift in Sources */,
 				17BB399A25CCC6690023E430 /* Face.swift in Sources */,
 				17BB394225CBB5AA0023E430 /* PackagedSealedMessage.swift in Sources */,
 				17BB395D25CBB6FC0023E430 /* UrlApiRequest.swift in Sources */,
 				17BB398025CCC6290023E430 /* RequestSecurityContext.swift in Sources */,
+				17E3860425CF5C10004C2701 /* WindowNavigationState.swift in Sources */,
 				17BB395425CBB6C20023E430 /* AuthenticationTokens.swift in Sources */,
 				17BB399E25CCC6690023E430 /* DiceKey.swift in Sources */,
 				17BB39A025CCC6690023E430 /* DiceKeyMedium.swift in Sources */,
+				17E3860D25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */,
 				EC561299258B827300A056B8 /* Tests_iOS.swift in Sources */,
 				17BB396725CCC6130023E430 /* ApiRequest.swift in Sources */,
 				172057CB25C4E7F500282E21 /* DerivationOptions.swift in Sources */,
@@ -1247,6 +1276,7 @@
 				17BB39A725CCC66A0023E430 /* Derivables.swift in Sources */,
 				17BB39AB25CCC66A0023E430 /* EncryptedDiceKeyFileAccessor.swift in Sources */,
 				17BB39A925CCC66A0023E430 /* FaceSpecification.swift in Sources */,
+				17E3860E25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */,
 				17BB394C25CBB63D0023E430 /* Unmarshalling.swift in Sources */,
 				1720581C25C50CBE00282E21 /* WebBasedApplicationIdentity.swift in Sources */,
 				17BB39AD25CCC66A0023E430 /* DerivationRecipeTemplates.swift in Sources */,
@@ -1255,6 +1285,7 @@
 				17BB39B225CCC6700023E430 /* AttachedHidDevices.swift in Sources */,
 				17BB39B425CCC6700023E430 /* AttachedHidDevice.swift in Sources */,
 				17BB399525CCC6640023E430 /* Base64.swift in Sources */,
+				17E385EE25CF4F8A004C2701 /* ApiRequestState.swift in Sources */,
 				17BB39B325CCC6700023E430 /* CtapHidConnection.swift in Sources */,
 				17BB39A625CCC66A0023E430 /* Face.swift in Sources */,
 				17BB394325CBB5AA0023E430 /* PackagedSealedMessage.swift in Sources */,
@@ -1262,6 +1293,7 @@
 				17BB398125CCC6290023E430 /* RequestSecurityContext.swift in Sources */,
 				17BB395525CBB6C20023E430 /* AuthenticationTokens.swift in Sources */,
 				17BB39AA25CCC66A0023E430 /* DiceKey.swift in Sources */,
+				17E3860525CF5C10004C2701 /* WindowNavigationState.swift in Sources */,
 				17BB39AC25CCC66A0023E430 /* DiceKeyMedium.swift in Sources */,
 				EC5612A4258B827300A056B8 /* Tests_macOS.swift in Sources */,
 				17BB396C25CCC6140023E430 /* ApiRequest.swift in Sources */,

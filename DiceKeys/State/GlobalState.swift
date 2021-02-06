@@ -9,55 +9,14 @@ import Foundation
 import Combine
 import SwiftUI
 
-struct KnownDiceKeyIdentifiable: Identifiable {
-    let id: String
-}
-
-enum TopLevelNavigateTo {
-    case nowhere
-    case loadDiceKey
-    case diceKeyPresent
-    case assemblyInstructions
-}
-
-struct ApiRequestWithCompletionCallback {
-    let request: ApiRequest
-    let callback: (Result<String, Error>) -> Void
-}
-
 final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
     static private(set) var instance = GlobalState()
 
     enum Fields: String {
-        case knownDiceKeys
         case neverAskUserToSave
         case savedDerivationRecipes
     }
     
-    @Published private var apiRequestApprovalQueue: [ApiRequestWithCompletionCallback] = []
-
-    func askUserToApproveApiRequest(_ request: ApiRequest, _ callback: @escaping (Result<String, Error>) -> Void) -> Void {
-        apiRequestApprovalQueue.append(ApiRequestWithCompletionCallback(request: request, callback: callback))
-        self.sendChangeEventOnMainThread()
-    }
-    
-    private func removeApiRequestApproval() {
-        apiRequestApprovalQueue.removeFirst()
-        self.sendChangeEventOnMainThread()
-    }
-    
-    var requestForUserToApprove: ApiRequestWithCompletionCallback? {
-        return apiRequestApprovalQueue.first
-    }
-
-    /// Complete the request and remove it from the set of pending requests
-    func completeApiRequest(_ result: Result<String, Error>) {
-        // Send the resposne
-        self.requestForUserToApprove?.callback(result)
-        // Remove the request
-        self.removeApiRequestApproval()
-    }
-
     @Published var topLevelNavigation: TopLevelNavigateTo = .nowhere {
         didSet { self.sendChangeEventOnMainThread() }
     }
@@ -112,20 +71,20 @@ final class GlobalState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
         }
     }
 
-    @UserDefault(Fields.knownDiceKeys.rawValue, []) private(set) var knownDiceKeys: [String]
-
-    func addKnownDiceKey(keyId: String) {
-        if !knownDiceKeys.contains(keyId) {
-            self.knownDiceKeys = knownDiceKeys + [keyId]
-        }
-    }
-    func removeKnownDiceKey(keyId: String) {
-        self.knownDiceKeys = knownDiceKeys.filter { $0 != keyId }
-    }
-
-    var knownDiceKeysIdentifiable: [KnownDiceKeyIdentifiable] {
-        knownDiceKeys.map { KnownDiceKeyIdentifiable(id: $0) }
-    }
-
+//    @UserDefault(Fields.knownDiceKeys.rawValue, []) private(set) var knownDiceKeys: [String]
+//
+//    func addKnownDiceKey(keyId: String) {
+//        if !knownDiceKeys.contains(keyId) {
+//            self.knownDiceKeys = knownDiceKeys + [keyId]
+//        }
+//    }
+//    func removeKnownDiceKey(keyId: String) {
+//        self.knownDiceKeys = knownDiceKeys.filter { $0 != keyId }
+//    }
+//
+//    var knownDiceKeysIdentifiable: [KnownDiceKeyIdentifiable] {
+//        knownDiceKeys.map { KnownDiceKeyIdentifiable(id: $0) }
+//    }
+//
     @UserDefault(Fields.neverAskUserToSave.rawValue, false) var neverAskUserToSave: Bool
 }

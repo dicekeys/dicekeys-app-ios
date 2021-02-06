@@ -83,6 +83,18 @@ fileprivate func sendResponse(_ responseUrl: URLComponents, _ additionalParamete
     #endif
 }
 
+func testConstructUrlApiRequest(_ requestUrlString: String) throws -> ApiRequest? {
+    let requestUrl = URL(string: requestUrlString)!
+    let parameterUnmarshaller = UrlParameterUnmarshaller(url: requestUrl)
+
+    return try constructApiRequest(
+        securityContext: try UrlRequestSecurityContext(requestParameters: parameterUnmarshaller),
+        unmarshaller: parameterUnmarshaller
+    )
+}
+
+
+
 // Handles API requests arriving via URL
 func handleUrlApiRequest(
     incomingRequestUrl: URL,

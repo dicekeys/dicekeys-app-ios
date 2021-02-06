@@ -143,11 +143,11 @@ final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefa
                         self.protectedCacheOfIsDiceKeyStored = true
                     }
                 }
-                GlobalState.instance.addKnownDiceKey(keyId: diceKey.id)
+                KnownDiceKeysStore.singleton.addKnownDiceKey(keyId: diceKey.id)
             } else {
                 _  = EncryptedDiceKeyFileAccessor.instance.delete(keyId: keyId)
                 self.protectedCacheOfIsDiceKeyStored = false
-                GlobalState.instance.removeKnownDiceKey(keyId: diceKey.id)
+                KnownDiceKeysStore.singleton.removeKnownDiceKey(keyId: diceKey.id)
             }
             self.sendChangeEventOnMainThread()
         }

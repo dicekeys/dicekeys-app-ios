@@ -20,12 +20,10 @@ struct RequestDescription: View {
 }
 
 struct ApiRequestView: View {
-    @ObservedObject var globalState: GlobalState = GlobalState.instance
-    @State var userAskedToLoadDiceKey: Bool = false
+    let request: ApiRequest
+    @ObservedObject var globalState: GlobalState
     
-    var apiRequestWithCompletionCallback: ApiRequestWithCompletionCallback? {
-        globalState.requestForUserToApprove
-    }
+    @State var userAskedToLoadDiceKey: Bool = false
     
     var diceKeyLoaded: DiceKey? {
         globalState.diceKeyLoaded
@@ -33,17 +31,15 @@ struct ApiRequestView: View {
     
     var diceKeyAbsent: Bool { diceKeyLoaded == nil }
     var showLoadDiceKey: Bool { diceKeyAbsent && userAskedToLoadDiceKey }
-    
-    var request: ApiRequest? { apiRequestWithCompletionCallback?.request }
         
     func approveRequest() {
         if let diceKey = diceKeyLoaded {
-            globalState.completeApiRequest(.success(diceKey.toSeed()))
+            ApiRequestState.singleton.completeApiRequest(.success(diceKey.toSeed()))
         }
     }
   
     func declineRequest() {
-        globalState.completeApiRequest(.failure(RequestException.UserDeclinedToAuthorizeOperation))
+        ApiRequestState.singleton.completeApiRequest(.failure(RequestException.UserDeclinedToAuthorizeOperation))
     }
     
     var requestDescription: some View {
@@ -88,8 +84,12 @@ struct ApiRequestView: View {
 }
 
 struct ApiRequestView_Previews: PreviewProvider {
+    static let testUrlForSecret = "https://dicekeys.app/?command=getPassword&requestId=1&respondTo=https%3A%2F%2Fpwmgr.app%2F--derived-secret-api--%2F&derivationOptionsJson=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwmgr.app%22%7D%5D%7D&derivationOptionsJsonMayBeModified=false"
+    
     static var previews: some View {
-        ApiRequestView()
+        ApiRequestView(
+            request: try! testConstructUrlApiRequest(testUrlForSecret)!, globalState: GlobalState()
+        )
     }
 }
 
