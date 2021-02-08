@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct AppMainView: View {
-    @ObservedObject var knownDiceKeysStore = KnownDiceKeysStore.singleton
-    @ObservedObject var navigationState = WindowNavigationState()
-    @ObservedObject var diceKeyMemoryStore = DiceKeyMemoryStore.singleton
+    @StateObject var knownDiceKeysStore = KnownDiceKeysStore.singleton
+    @StateObject var navigationState = WindowNavigationState()
+    @StateObject var diceKeyMemoryStore = DiceKeyMemoryStore.singleton
 
     var knownDiceKeysState: [KnownDiceKeyState] {
         knownDiceKeysStore.knownDiceKeys.map { keyId in KnownDiceKeyState.forKeyId(keyId) }.filter {
@@ -31,6 +31,11 @@ struct AppMainView: View {
         navigationState.topLevelNavigation = .diceKeyPresent
     }
     
+    func diceKeyRemove() {
+        diceKeyMemoryStore.clearDiceKey()
+        navigationState.topLevelNavigation = .nowhere
+    }
+    
     #if os(iOS)
     let screenShorterSide = UIScreen.main.bounds.size.shorterSide
     let screenHeight = UIScreen.main.bounds.size.height
@@ -48,87 +53,88 @@ struct AppMainView: View {
                 },
                 onBack: { navigationState.topLevelNavigation = .nowhere }
             )
-        case .diceKeyPresent:
-            if let unlockedDiceKeyState = diceKeyMemoryStore.diceKeyState {
-                DiceKeyPresent(
-                    diceKeyState: unlockedDiceKeyState,
-                    onForget: { diceKeyMemoryStore.clearDiceKey() }
-                )
-            }
         case .assemblyInstructions:
             AssemblyInstructions(onSuccess: { diceKey in
                 diceKeyLoaded(diceKey)
             }, onBack: {
                 navigationState.topLevelNavigation = .nowhere
             })
-        case .nowhere:
-            let view = VStack {
-            Spacer()
-            ForEach(knownDiceKeysState) { knownDiceKeyState in
-                Button(action: {
-                    EncryptedDiceKeyFileAccessor.instance.getDiceKey(fromKeyId: knownDiceKeyState.id, centerFace: knownDiceKeyState.centerFace) { result in
-                            switch result {
-                            case .success(let diceKey):
-                                diceKeyLoaded(diceKey)
-                            default: ()
-                        }
-                    }
-                }, label: {
-                    VStack {
-                        if let centerFace = knownDiceKeyState.centerFace {
-                            HStack {
-                                Spacer()
-                                DiceKeyCenterFaceOnlyView(centerFace: centerFace)
-                                Spacer()
-                            }.frame(
-                                maxHeight: screenHeight / 5
-                            )
-                        }
-                        Text("Unlock " + knownDiceKeyState.nickname).font(.title2)
-                    }
-                }).buttonStyle(PlainButtonStyle())
+        default:
+            if let unlockedDiceKeyState = diceKeyMemoryStore.diceKeyState {
+                DiceKeyPresent(
+                    diceKeyState: unlockedDiceKeyState,
+                    onForget: { diceKeyMemoryStore.clearDiceKey() }
+                )
+            } else {
+                // Main page view
+                let view = VStack {
                 Spacer()
-            }
-            Button(action: { showLoadDiceKey() }) {
-                VStack(alignment: .center) {
-                    HStack {
-                        Spacer()
-                        Image("Scanning a DiceKey PNG")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                        Spacer()
-                    }
-//                        .frame(maxHeight: 0.3 * screenShorterSide)
-                    Text("Load your DiceKey").font(.title2)
+                ForEach(knownDiceKeysState) { knownDiceKeyState in
+                    Button(action: {
+                        EncryptedDiceKeyFileAccessor.instance.getDiceKey(fromKeyId: knownDiceKeyState.id, centerFace: knownDiceKeyState.centerFace) { result in
+                                switch result {
+                                case .success(let diceKey):
+                                    diceKeyLoaded(diceKey)
+                                default: ()
+                            }
+                        }
+                    }, label: {
+                        VStack {
+                            if let centerFace = knownDiceKeyState.centerFace {
+                                HStack {
+                                    Spacer()
+                                    DiceKeyCenterFaceOnlyView(centerFace: centerFace)
+                                    Spacer()
+                                }.frame(
+                                    maxHeight: screenHeight / 5
+                                )
+                            }
+                            Text("Unlock " + knownDiceKeyState.nickname).font(.title2)
+                        }
+                    }).buttonStyle(PlainButtonStyle())
+                    Spacer()
                 }
-                .aspectRatio(3.0, contentMode: .fit)
-            }.buttonStyle(PlainButtonStyle())
-            Spacer()
-            Button(action: { showAssemblyInstructions() } ) {
-                VStack(alignment: .center) {
-                    HStack {
-                        Spacer()
-                        Image("Illustration of shaking bag")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                        Spacer(minLength: 10)
-                        Image("Box Bottom After Roll").resizable().aspectRatio(contentMode: .fit)
-                        Spacer(minLength: 10)
-                        Image("Seal Box").resizable().aspectRatio(contentMode: .fit)
-                        Spacer(minLength: 10)
+                Button(action: { showLoadDiceKey() }) {
+                    VStack(alignment: .center) {
+                        HStack {
+                            Spacer()
+                            Image("Scanning a DiceKey PNG")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                            Spacer()
+                        }
+    //                        .frame(maxHeight: 0.3 * screenShorterSide)
+                        Text("Load your DiceKey").font(.title2)
                     }
-                    .aspectRatio(4, contentMode: .fit)
-                    //.frame(maxHeight: screenShorterSide / 2)
-                    Text("Assemble \(knownDiceKeysState.count == 0 ? "your First" : "a") DiceKey").font(.title2)
+                    .aspectRatio(3.0, contentMode: .fit)
+                }.buttonStyle(PlainButtonStyle())
+                Spacer()
+                Button(action: { showAssemblyInstructions() } ) {
+                    VStack(alignment: .center) {
+                        HStack {
+                            Spacer()
+                            Image("Illustration of shaking bag")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                            Spacer(minLength: 10)
+                            Image("Box Bottom After Roll").resizable().aspectRatio(contentMode: .fit)
+                            Spacer(minLength: 10)
+                            Image("Seal Box").resizable().aspectRatio(contentMode: .fit)
+                            Spacer(minLength: 10)
+                        }
+                        .aspectRatio(4, contentMode: .fit)
+                        //.frame(maxHeight: screenShorterSide / 2)
+                        Text("Assemble \(knownDiceKeysState.count == 0 ? "your First" : "a") DiceKey").font(.title2)
+                    }
+                }.buttonStyle(PlainButtonStyle())
+                Spacer()
                 }
-            }.buttonStyle(PlainButtonStyle())
-            Spacer()
+                #if os(macOS)
+                view.frame(width: 480, height: 700)
+                #else
+                view
+                #endif
             }
-            #if os(macOS)
-            view.frame(width: 480, height: 700)
-            #else
-            view
-            #endif
     }
 }
 struct AppMainView_Previews: PreviewProvider {
