@@ -175,6 +175,7 @@ struct AssemblyInstructions: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     var onSuccess: ((DiceKey) -> Void)?
+    var onBack: (() -> Void)?
 
     enum Step: Int {
         case Randomize = 1
@@ -217,7 +218,7 @@ struct AssemblyInstructions: View {
                     Spacer()
                 }.padding()
                 .onTapGesture {
-                    GlobalState.instance.topLevelNavigation = .nowhere
+                    onBack?()
                 }
         }) { geometry in
             VStack {

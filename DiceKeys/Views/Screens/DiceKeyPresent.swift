@@ -131,25 +131,18 @@ struct DiceKeyPresentNavigationFooter: View {
 
 struct DiceKeyPresent: View {
     @ObservedObject var diceKeyState: UnlockedDiceKeyState
-//    @Binding var diceKey: DiceKey {
-//        mutating didSet {
-//            _diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey))
-//        }
-//    }
     let onForget: () -> Void
+    @ObservedObject var diceKeyMemoryStore: DiceKeyMemoryStore = DiceKeyMemoryStore.singleton
 
     @State var pageContent: DiceKeyPresentPageContent = .Default
     
     @StateObject var backupDiceKeyState = BackupDiceKeyState()
 
-
-//    init(diceKey: Binding<DiceKey>, onForget: @escaping () -> Void) {
-//        self.diceKeyState = observ
-//        self.onForget = onForget
-//        self._diceKeyState = ObservedObject(initialValue: UnlockedDiceKeyState.forDiceKey(diceKey.wrappedValue))
-//    }
-
     @State private var navBarHeight: CGFloat = 0
+    
+    var diceKey: DiceKey {
+        diceKeyMemoryStore.diceKeyLoaded ?? DiceKey.Example
+    }
 
     var storageButton: some View {
 //        Button(action: { navigate(to: .Save) }) {
@@ -194,7 +187,7 @@ struct DiceKeyPresent: View {
                     Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget").foregroundColor(Color.navigationForeground)
                 }.padding(10)
                 .onTapGesture {
-                    GlobalState.instance.topLevelNavigation = .nowhere
+                    onForget()
                 }
                 Spacer()
                 Text("\(diceKeyState.nickname)")
@@ -220,8 +213,8 @@ struct DiceKeyPresent: View {
                     case .Backup: BackupDiceKey(
                         onComplete: { navigate(to: .Default) },
                         diceKey: Binding<DiceKey>(get: { () -> DiceKey in
-                            GlobalState.instance.diceKeyLoaded ?? DiceKey.Example
-                        }, set: {GlobalState.instance.diceKeyLoaded = $0}),
+                            diceKey
+                        }, set: { diceKeyMemoryStore.setDiceKey(diceKey: $0)}),
                         backupDiceKeyState: backupDiceKeyState)
                     case .SeedHardwareKey: SeedHardwareSecurityKey(diceKey: diceKey).padding(.horizontal, defaultContentPadding)
                     default: DiceKeyView(diceKey: diceKey, showLidTab: true).padding(.horizontal, defaultContentPadding)
@@ -259,6 +252,6 @@ struct DiceKeyPresent_Previews: PreviewProvider {
 //
 //        DerivedFromDiceKey(diceKey: diceKey) {
 //            Text("Derive a Password, Key, or Secret")
-//        }
+        //  , topLevelNavigationState: <#TopLevelNavigationState#>      }
     }
 }

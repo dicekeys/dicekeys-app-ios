@@ -16,12 +16,6 @@ enum TopLevelNavigateTo {
 
 final class WindowNavigationState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
     static private(set) var singleton = WindowNavigationState()
-
-    enum Fields: String {
-        case knownDiceKeys
-        case neverAskUserToSave
-        case savedDerivationRecipes
-    }
     
     @Published var topLevelNavigation: TopLevelNavigateTo = .nowhere {
         didSet { self.sendChangeEventOnMainThread() }

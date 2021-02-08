@@ -17,6 +17,7 @@ struct LoadDiceKey: View {
     var editableDiceKeyState: EditableDiceKeyState = EditableDiceKeyState()
 
     let onDiceKeyLoaded: ((_ diceKey: DiceKey, _ entryMethod: LoadDiceKeyEntryMethod) -> Void)?
+    let onBack: () -> Void
 
     var body: some View {
         WithNavigationHeader(header: {
@@ -26,7 +27,7 @@ struct LoadDiceKey: View {
                     Text("Back").foregroundColor(Color.navigationForeground)
                     Spacer()
                 }.onTapGesture {
-                    GlobalState.instance.topLevelNavigation = .nowhere
+                    onBack()
                 }.padding()
         }) {_ in 
         VStack(alignment: .center, spacing: 0) {
@@ -49,6 +50,7 @@ struct LoadDiceKey: View {
 
 struct LoadDiceKey_Previews: PreviewProvider {
     static var previews: some View {
-        LoadDiceKey(onDiceKeyLoaded: { diceKey, _ in print("DiceKey loaded: \(diceKey.toHumanReadableForm())") })
+        LoadDiceKey(onDiceKeyLoaded: { diceKey, _ in print("DiceKey loaded: \(diceKey.toHumanReadableForm())") },
+        onBack: {} )
     }
 }

@@ -7,26 +7,68 @@
 
 import SwiftUI
 
+
 struct RequestDescription: View {
     let request: ApiRequest
     
+    var hostComponent: String {
+        switch request.securityContext.host {
+            case "apple.com": return "Apple"
+            case "live.com": fallthrough
+            case "microsoft.com": return "Microsoft"
+            case "bitwarden.com": return "BitWarden"
+            case "1password.com": return "1Password"
+        default: return request.securityContext.host
+    } }
+    
+    // FIXME  --  areDerivationOptionsSigned ? "recreate" : "create";
+    var createOrRecreate: String { "create" }
+
+    var description: String {
+        request is ApiRequestGetPassword ?
+          "May \(hostComponent) use your DiceKey to \(createOrRecreate) a password?" :
+        request is ApiRequestGetSecret ?
+          "May \(hostComponent) use your DiceKey to \(createOrRecreate) a secret security code?" :
+        request is ApiRequestGetUnsealingKey ?
+          "May \(hostComponent) use your DiceKey to \(createOrRecreate) keys to encode and decode secrets?" :
+        request is ApiRequestGetSymmetricKey ?
+          "May \(hostComponent) use your DiceKey to a \(createOrRecreate) key to encode and decode secrets?" :
+        request is ApiRequestSealWithSymmetricKey ?
+          "May \(hostComponent) use your DiceKey to encode a secret?" :
+        request is ApiRequestUnsealWithSymmetricKey ?
+          "May \(hostComponent) use your DiceKey to allow to decode a secret?" :
+        request is ApiRequestUnsealWithUnsealingKey ?
+          "May \(hostComponent) use your DiceKey to allow to decode a secret?" :
+        // Less common
+        request is ApiRequestGetSigningKey ?
+          "May \(hostComponent) use your DiceKey to \(createOrRecreate) keys to sign data?" :
+        request is ApiRequestGenerateSignature ?
+          "May \(hostComponent) use your DiceKey to add its digital signature to data?" :
+        request is ApiRequestGetSignatureVerificationKey ?
+          "May \(hostComponent) use your DiceKey to \(createOrRecreate) a key used to verify data it has signed?" :
+          // Uncommon
+        request is ApiRequestGetSealingKey ?
+          "May \(hostComponent) use your DiceKey to \(createOrRecreate) keys to store secrets?" :
+          ""
+    }
+    
     var body: some View {
-        if request is ApiRequestGetSecret {
-            Text("FIXME")
-        }
-        Text("\(request.securityContext.host)")
+        Text(description)
+            .font(.title)
+            .minimumScaleFactor(0.2)
+            .lineLimit(/*@START_MENU_TOKEN@*/2/*@END_MENU_TOKEN@*/)
     }
     
 }
 
 struct ApiRequestView: View {
     let request: ApiRequest
-    @ObservedObject var globalState: GlobalState
+    @ObservedObject var diceKeyMemoryStore: DiceKeyMemoryStore
     
     @State var userAskedToLoadDiceKey: Bool = false
     
     var diceKeyLoaded: DiceKey? {
-        globalState.diceKeyLoaded
+        diceKeyMemoryStore.diceKeyLoaded
     }
     
     var diceKeyAbsent: Bool { diceKeyLoaded == nil }
@@ -59,7 +101,9 @@ struct ApiRequestView: View {
             Spacer()
             if showLoadDiceKey {
                 LoadDiceKey(onDiceKeyLoaded: { diceKey, _ in
-                    globalState.diceKeyLoaded = diceKey
+                    diceKeyMemoryStore.setDiceKey(diceKey: diceKey)
+                    userAskedToLoadDiceKey = false
+                }, onBack: {
                     userAskedToLoadDiceKey = false
                 })
             } else if diceKeyAbsent {
@@ -88,7 +132,14 @@ struct ApiRequestView_Previews: PreviewProvider {
     
     static var previews: some View {
         ApiRequestView(
-            request: try! testConstructUrlApiRequest(testUrlForSecret)!, globalState: GlobalState()
+            request: try! testConstructUrlApiRequest(testUrlForSecret)!,
+            diceKeyMemoryStore: DiceKeyMemoryStore()
+        )
+        
+        
+        ApiRequestView(
+            request: try! testConstructUrlApiRequest(testUrlForSecret)!,
+            diceKeyMemoryStore: DiceKeyMemoryStore(DiceKey.createFromRandom())
         )
     }
 }

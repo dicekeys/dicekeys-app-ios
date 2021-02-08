@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct AppMainView: View {
-    @ObservedObject var globalState = GlobalState.instance
     @ObservedObject var knownDiceKeysStore = KnownDiceKeysStore.singleton
+    @ObservedObject var navigationState = WindowNavigationState()
+    @ObservedObject var diceKeyMemoryStore = DiceKeyMemoryStore.singleton
 
     var knownDiceKeysState: [KnownDiceKeyState] {
         knownDiceKeysStore.knownDiceKeys.map { keyId in KnownDiceKeyState.forKeyId(keyId) }.filter {
@@ -18,11 +19,16 @@ struct AppMainView: View {
     }
     
     func showLoadDiceKey() {
-        globalState.topLevelNavigation = .loadDiceKey
+        navigationState.topLevelNavigation = .loadDiceKey
     }
     
     func showAssemblyInstructions() {
-        globalState.topLevelNavigation = .assemblyInstructions
+        navigationState.topLevelNavigation = .assemblyInstructions
+    }
+    
+    func diceKeyLoaded(_ diceKey: DiceKey) {
+        diceKeyMemoryStore.setDiceKey(diceKey: diceKey)
+        navigationState.topLevelNavigation = .diceKeyPresent
     }
     
     #if os(iOS)
@@ -34,21 +40,26 @@ struct AppMainView: View {
     #endif
 
     var body: some View {
-        switch globalState.topLevelNavigation {
+        switch navigationState.topLevelNavigation {
         case .loadDiceKey:
             LoadDiceKey(
                 onDiceKeyLoaded: { diceKey, _ in
-                    globalState.diceKeyLoaded = diceKey
-                    globalState.topLevelNavigation = .diceKeyPresent
-            })
+                    diceKeyLoaded(diceKey)
+                },
+                onBack: { navigationState.topLevelNavigation = .nowhere }
+            )
         case .diceKeyPresent:
-            if let unlockedDiceKeyState = globalState.diceKeyState {
-                DiceKeyPresent(diceKeyState: unlockedDiceKeyState, onForget: { globalState.diceKeyLoaded = nil })
+            if let unlockedDiceKeyState = diceKeyMemoryStore.diceKeyState {
+                DiceKeyPresent(
+                    diceKeyState: unlockedDiceKeyState,
+                    onForget: { diceKeyMemoryStore.clearDiceKey() }
+                )
             }
         case .assemblyInstructions:
-            AssemblyInstructions(onSuccess: {
-                globalState.diceKeyLoaded = $0
-                globalState.topLevelNavigation = .diceKeyPresent
+            AssemblyInstructions(onSuccess: { diceKey in
+                diceKeyLoaded(diceKey)
+            }, onBack: {
+                navigationState.topLevelNavigation = .nowhere
             })
         case .nowhere:
             let view = VStack {
@@ -58,8 +69,7 @@ struct AppMainView: View {
                     EncryptedDiceKeyFileAccessor.instance.getDiceKey(fromKeyId: knownDiceKeyState.id, centerFace: knownDiceKeyState.centerFace) { result in
                             switch result {
                             case .success(let diceKey):
-                                globalState.diceKeyLoaded = diceKey
-                                globalState.topLevelNavigation = .diceKeyPresent
+                                diceKeyLoaded(diceKey)
                             default: ()
                         }
                     }
