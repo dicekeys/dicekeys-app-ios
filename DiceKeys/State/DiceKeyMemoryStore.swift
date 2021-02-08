@@ -10,6 +10,9 @@ import Foundation
 final class DiceKeyMemoryStore: ObservableObjectUpdatingOnAllChangesToUserDefaults {
     static private(set) var singleton = DiceKeyMemoryStore()
     
+    /// The app should always use the singleton and never use this constructor directly.
+    /// It exists eexclusively for the purpose of allowing previews and tests to create
+    /// different test memory store states.
     init(_ diceKeyLoaded: DiceKey? = nil) {
         self.diceKeyLoaded = diceKeyLoaded
     }
