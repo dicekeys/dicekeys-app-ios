@@ -157,10 +157,6 @@ final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefa
         get: { self.isDiceKeySaved }, set: { self.isDiceKeySaved = $0 })
     }
 
-//    private init(_ forDiceKey: DiceKey) {
-//        self.diceKey = forDiceKey
-//        super.init(forDiceKey.id)
-//    }
     init(diceKey: DiceKey) {
         self.diceKey = diceKey
     }

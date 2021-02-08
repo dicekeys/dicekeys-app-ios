@@ -60,11 +60,13 @@ struct DiceKeyPresentNavigationFooter: View {
                             .aspectRatio(contentMode: .fit)
                         Spacer(minLength: 2)
                         Image(systemName: "ellipsis.rectangle.fill")
+                            .renderingMode(.template)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                         Spacer(minLength: 2)
                         Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
                     }
+                    .foregroundColor(.black)
                 }
                 .frame(width: geometry.size.width * BottomButtonFractionalWidth,
                        height: navBarContentHeight,
@@ -78,6 +80,7 @@ struct DiceKeyPresentNavigationFooter: View {
                 #elseif os(macOS)
                 VStack {
                     Image(systemName: "arrow.down")
+                        
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                     Spacer(minLength: 2)
@@ -144,29 +147,43 @@ struct DiceKeyPresent: View {
         diceKeyMemoryStore.diceKeyLoaded ?? DiceKey.Example
     }
 
+    private var deviceImageName: String {
+        #if os(iOS)
+        return "Phonelet"
+        #else
+        return "Laptop"
+        #endif
+    }
+    
+    private var deviceImageColor: Color {
+        #if os(iOS)
+        return Color.navigationForeground
+        #else
+        return Color.black
+        #endif
+    }
+    
     var storageButton: some View {
-//        Button(action: { navigate(to: .Save) }) {
-            VStack(alignment: .center, spacing: 0) {
-                ZStack(alignment: .center, content: {
-                    Image("Phonelet")
-                        .resizable()
+        VStack(alignment: .center, spacing: 0) {
+            ZStack(alignment: .center, content: {
+                Image(deviceImageName)
+                    .resizable()
+                    .renderingMode(.template)
+                    .foregroundColor(deviceImageColor)
+                    .aspectRatio(contentMode: .fit)
+                if diceKeyState.isDiceKeySaved {
+                    Image("DiceKey Icon")
                         .renderingMode(.template)
+                        .resizable()
                         .foregroundColor(Color.navigationForeground)
                         .aspectRatio(contentMode: .fit)
-                    if diceKeyState.isDiceKeySaved {
-                        Image("DiceKey Icon")
-                            .renderingMode(.template)
-                            .resizable()
-                            .foregroundColor(Color.navigationForeground)
-                            .aspectRatio(contentMode: .fit)
-                            .scaleEffect(2/3)
-                    }
-                }).aspectRatio(contentMode: .fit)
-                .frame(maxHeight: 30)
-                Text(diceKeyState.isDiceKeySaved ? "Saved" : "Save").foregroundColor(Color.navigationForeground)
-            }
-            .if( pageContent == .Save ) { $0.colorInvert() }
-//        }
+                        .scaleEffect(2/3)
+                }
+            }).aspectRatio(contentMode: .fit)
+            .frame(maxHeight: 30)
+            Text(diceKeyState.isDiceKeySaved ? "Saved" : "Save").foregroundColor(Color.navigationForeground)
+        }
+        .if( pageContent == .Save ) { $0.colorInvert() }
     }
 
     func navigate(to destination: DiceKeyPresentPageContent) {
