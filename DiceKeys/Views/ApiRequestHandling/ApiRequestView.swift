@@ -108,39 +108,42 @@ struct RequestPreviewView: View {
     @Binding var request: ApiRequest
     let diceKey: DiceKey
 
-    // FIXME -- run off thread
-    var successResponse: SuccessResponse? {
-        let result = request.executeWithCachedResult(seedString: diceKey.toSeed())
-        switch result {
-        case .success(let successResponse):
-            return successResponse
-        default: return nil
-        }
+    @ObservedObject var apiResultObservable: BackgroundCalculationOfApiRequestResult // = ObservableApiRequestResult.get(request: request, seedString: diceKey.toSeed())
+    
+    init(
+        request: Binding<ApiRequest>,
+        diceKey: DiceKey
+    ) {
+        self._request = request
+        self.diceKey = diceKey
+        self._apiResultObservable = ObservedObject(initialValue: BackgroundCalculationOfApiRequestResult.get(request: request.wrappedValue, seedString: diceKey.toSeed()))
     }
     
     var body: some View {
         VStack {
-            if let successResponse = self.successResponse {
-                    DiceKeyView(diceKey: diceKey)
-                        .frame(maxWidth: WindowDimensions.shorterSide/2)
-            switch successResponse {
+            if self.apiResultObservable.ready, let successResponse = self.apiResultObservable.successResponse {
+                DiceKeyView(diceKey: diceKey)
+                .frame(maxWidth: WindowDimensions.shorterSide/2)
+                switch successResponse {
 
-    //        case generateSignature(signature: String, signatureVerificationKeyJson: String)
-            case .getPassword(let passwordJson):
-                RequestPreviewPassword(password: try! Password.from(json: passwordJson))
-            case .getSecret(let secretJson):
-                RequestPreviewSecret(secret: try! Secret.from(json: secretJson))
-    //        case getSealingKey(sealingKeyJson: String)
-    //        case getSigningKey(signingKeyJson: String)
-    //        case getSignatureVerificationKey(signatureVerificationKeyJson: String)
-    //        case getSymmetricKey(symmetricKeyJson: String)
-    //        case getUnsealingKey(unsealingKeyJson: String)
-    //        case sealWithSymmetricKey(packagedSealedMessageJson: String)
-    //        case unsealWithSymmetricKey(plaintext: String)
-    //        case unsealWithUnsealingKey(plaintext: String)
-            default:
+        //        case generateSignature(signature: String, signatureVerificationKeyJson: String)
+                case .getPassword(let passwordJson):
+                    RequestPreviewPassword(password: try! Password.from(json: passwordJson))
+                case .getSecret(let secretJson):
+                    RequestPreviewSecret(secret: try! Secret.from(json: secretJson))
+        //        case getSealingKey(sealingKeyJson: String)
+        //        case getSigningKey(signingKeyJson: String)
+        //        case getSignatureVerificationKey(signatureVerificationKeyJson: String)
+        //        case getSymmetricKey(symmetricKeyJson: String)
+        //        case getUnsealingKey(unsealingKeyJson: String)
+        //        case sealWithSymmetricKey(packagedSealedMessageJson: String)
+        //        case unsealWithSymmetricKey(plaintext: String)
+        //        case unsealWithUnsealingKey(plaintext: String)
+                default:
+                    EmptyView()
+                }
+            } else {
                 Text("Loading result preview...")
-            }
             }
         }
     }
@@ -230,15 +233,19 @@ struct ApiRequestView_Previews: PreviewProvider {
     
     @State static var testRequestForPassword =  try! testConstructUrlApiRequest(recipeForGetCommand(command: "getPassword"))!
     @State static var testRequestForSecret =  try! testConstructUrlApiRequest(recipeForGetCommand(command: "getSecret"))!
+    
+    static var diceKeyMemoryStoreWithKey = DiceKeyMemoryStore(DiceKey.createFromRandom())
 
     static var previews: some View {
+        let _ = BackgroundCalculationOfApiRequestResult.precalculateForTestUseOnly(request: testRequestForPassword, seedString: diceKeyMemoryStoreWithKey.diceKeyLoaded!.toSeed())
+        let _ = BackgroundCalculationOfApiRequestResult.precalculateForTestUseOnly(request: testRequestForSecret, seedString: diceKeyMemoryStoreWithKey.diceKeyLoaded!.toSeed())
         ApiRequestView(
             request: $testRequestForSecret,
-            diceKeyMemoryStore: DiceKeyMemoryStore(DiceKey.createFromRandom())
+            diceKeyMemoryStore: diceKeyMemoryStoreWithKey
         )
         ApiRequestView(
             request: $testRequestForPassword,
-            diceKeyMemoryStore: DiceKeyMemoryStore(DiceKey.createFromRandom())
+            diceKeyMemoryStore: diceKeyMemoryStoreWithKey
         )
 
         ApiRequestView(

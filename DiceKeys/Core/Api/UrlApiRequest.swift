@@ -88,6 +88,7 @@ func testConstructUrlApiRequest(_ requestUrlString: String) throws -> ApiRequest
     let parameterUnmarshaller = UrlParameterUnmarshaller(url: requestUrl)
 
     return try constructApiRequest(
+        id: requestUrlString,
         securityContext: try UrlRequestSecurityContext(requestParameters: parameterUnmarshaller),
         unmarshaller: parameterUnmarshaller
     )
@@ -133,7 +134,7 @@ func handleUrlApiRequest(
     responseUrl.queryItems?.append(URLQueryItem(name: "requestId", value: requestId))
 
     do {
-        var request = try constructApiRequest(securityContext: securityContext, unmarshaller: parameterUnmarshaller)
+        var request = try constructApiRequest(id: incomingRequestUrl.absoluteString,securityContext: securityContext, unmarshaller: parameterUnmarshaller)
 
         // Do not allow the request to proceed unless all authorization checks pass
         // try request.throwIfNotAuthorized()
@@ -144,12 +145,21 @@ func handleUrlApiRequest(
             case .failure(let error):
                 sendError(responseUrl, error)
             case .success(let seedString):
-                switch (request.executeWithCachedResult(seedString: seedString)) {
-                case .success(let successResponse):
-                    sendResponse(responseUrl, successResponseToDictionary(successResponse: successResponse))
-                case .failure(let error):
-                    sendError(responseUrl, error)
-                }
+                _ = BackgroundCalculationOfApiRequestResult.get(request: request, seedString: seedString).future.sink(
+                    receiveCompletion: { completion in
+                        if case let .failure(error) = completion {
+                            sendError(responseUrl, error)
+                        }
+                    },
+                    receiveValue: {successResponse in
+                        sendResponse(responseUrl, successResponseToDictionary(successResponse: successResponse))
+                    })
+//                switch (request.executeWithCachedResult(seedString: seedString)) {
+//                case .success(let successResponse):
+//                    sendResponse(responseUrl, successResponseToDictionary(successResponse: successResponse))
+//                case .failure(let error):
+//                    sendError(responseUrl, error)
+//                }
             }
         }
     } catch {

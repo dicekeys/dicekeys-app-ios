@@ -112,6 +112,10 @@
 		17E3863425D0ED85004C2701 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863225D0ED85004C2701 /* Data.swift */; };
 		17E3863525D0ED85004C2701 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863225D0ED85004C2701 /* Data.swift */; };
 		17E3863625D0ED85004C2701 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863225D0ED85004C2701 /* Data.swift */; };
+		17E3864025D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863F25D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift */; };
+		17E3864125D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863F25D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift */; };
+		17E3864225D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863F25D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift */; };
+		17E3864325D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863F25D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift */; };
 		26447E7025BAE1C500F2B534 /* KeyboardCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */; };
 		26447E7125BAE1C500F2B534 /* KeyboardCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */; };
 		264CD58325AF1043009D2F5A /* TypeYourDiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */; };
@@ -286,6 +290,7 @@
 		17E3861C25D0C05B004C2701 /* DerivationRecipeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivationRecipeStore.swift; sourceTree = "<group>"; };
 		17E3862925D0EC69004C2701 /* WindowDimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowDimensions.swift; sourceTree = "<group>"; };
 		17E3863225D0ED85004C2701 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		17E3863F25D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundCalculationOfApiRequestResult.swift; sourceTree = "<group>"; };
 		2041EA96DFD46E6AA469E4E3 /* Pods-DiceKeys-DiceKeys (macOS)-Tests macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-DiceKeys (macOS)-Tests macOS.release.xcconfig"; path = "Target Support Files/Pods-DiceKeys-DiceKeys (macOS)-Tests macOS/Pods-DiceKeys-DiceKeys (macOS)-Tests macOS.release.xcconfig"; sourceTree = "<group>"; };
 		26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardCommands.swift; sourceTree = "<group>"; };
 		264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeYourDiceKeyView.swift; sourceTree = "<group>"; };
@@ -531,6 +536,7 @@
 				EC50920625948124007D2B91 /* ApiInterfaces.swift */,
 				17BB393F25CBB5AA0023E430 /* PackagedSealedMessage.swift */,
 				17BB394825CBB63D0023E430 /* Unmarshalling.swift */,
+				17E3863F25D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift */,
 			);
 			path = Api;
 			sourceTree = "<group>";
@@ -1157,6 +1163,7 @@
 				EC50932B2595BD03007D2B91 /* SequenceNumberField.swift in Sources */,
 				EC50920B25948124007D2B91 /* Face.swift in Sources */,
 				17E3860B25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */,
+				17E3864025D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */,
 				EC5092A5259482F5007D2B91 /* SeedHardwareSecurityKey.swift in Sources */,
 				EC509299259482F4007D2B91 /* CameraController.swift in Sources */,
 				17BB394025CBB5AA0023E430 /* PackagedSealedMessage.swift in Sources */,
@@ -1214,6 +1221,7 @@
 				17E385EC25CF4F8A004C2701 /* ApiRequestState.swift in Sources */,
 				17E3863425D0ED85004C2701 /* Data.swift in Sources */,
 				EC50921C25948124007D2B91 /* WebBasedApplicationIdentity.swift in Sources */,
+				17E3864125D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */,
 				EC5092CC259482F5007D2B91 /* BackupToDiceKeysKitIntroduction.swift in Sources */,
 				17B6C68225B9883F007798F3 /* PartialFace.swift in Sources */,
 				EC50920825948124007D2B91 /* DiceKeyMedium.swift in Sources */,
@@ -1278,6 +1286,7 @@
 				17E3861625D0C016004C2701 /* DiceKeyMemoryStore.swift in Sources */,
 				17E3862C25D0EC69004C2701 /* WindowDimensions.swift in Sources */,
 				17BB397125CCC61D0023E430 /* ApiInterfaces.swift in Sources */,
+				17E3864225D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */,
 				17BB398625CCC65B0023E430 /* UnsealingInstructions.swift in Sources */,
 				17E385ED25CF4F8A004C2701 /* ApiRequestState.swift in Sources */,
 				17BB399025CCC6630023E430 /* Base64.swift in Sources */,
@@ -1303,6 +1312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				17BB39A825CCC66A0023E430 /* FaceRead.swift in Sources */,
+				17E3864325D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */,
 				17E3863625D0ED85004C2701 /* Data.swift in Sources */,
 				17BB39A725CCC66A0023E430 /* Derivables.swift in Sources */,
 				17BB39AB25CCC66A0023E430 /* EncryptedDiceKeyFileAccessor.swift in Sources */,

@@ -7,7 +7,6 @@
 
 import Foundation
 import SeededCrypto
-
 enum AuthenticationRequirementIn {
     case DerivationOptions
     case UnsealingInstructions
@@ -30,6 +29,7 @@ protocol ApiRequestCommand {
 }
 
 protocol ApiRequest {
+    var id: String { get }
     var securityContext: RequestSecurityContext { get }
     var derivationOptions: DerivationOptions { get }
     var derivationOptionsJson: String? { get }
@@ -43,36 +43,19 @@ protocol ApiRequest {
 
     /// Calculate the result of the API call, throwing an exception if it fails
     func execute(seedString: String) throws -> SuccessResponse
-    
-    // Wrap the execute function to return a Result instead of throwing
-    func executeIntoResult(seedString: String) -> Result<SuccessResponse, Error>
-
-    var resultCache: [String: Result<SuccessResponse, Error>] {get set}
-    // Wrap the execute function to cache the result in a Result object
-    // so that it only ever needs to be calculated once
-    mutating func executeWithCachedResult(seedString: String) -> Result<SuccessResponse, Error>
+//
+//    // Wrap the execute function to return a Result instead of throwing
+//    func executeIntoResult(seedString: String) -> Result<SuccessResponse, Error>
+//
+//    var resultCache: [String: Result<SuccessResponse, Error>] {get set}
+//    // Wrap the execute function to cache the result in a Result object
+//    // so that it only ever needs to be calculated once
+//    mutating func executeWithCachedResult(seedString: String) -> Result<SuccessResponse, Error>
 
 }
 
 extension ApiRequest {
     var allowNilEmptyDerivationOptions: Bool { get { false } }
-
-    func executeIntoResult(seedString: String) -> Result<SuccessResponse, Error> {
-        do {
-            let successResponse = try execute(seedString: seedString)
-            return .success(successResponse)
-        } catch {
-            return .failure(error)
-        }
-    }
-    
-    mutating func executeWithCachedResult(seedString: String) -> Result<SuccessResponse, Error> {
-        if let cachedValue = resultCache[seedString] {
-            return cachedValue
-        }
-        self.resultCache[seedString] = executeIntoResult(seedString: seedString)
-        return resultCache[seedString]!
-    }
 
     func throwIfNotAuthorized() throws {
         let derivationOptions = self.derivationOptions
@@ -99,11 +82,12 @@ private func getDerivationOptions(json derivationOptionsJson: String?) throws ->
 }
 
 class ApiRequestWithExplicitDerivationOptions: ApiRequest {
+    let id: String
     let derivationOptions: DerivationOptions
     let derivationOptionsJson: String?
     let securityContext: RequestSecurityContext
     let derivationOptionsJsonMayBeModifiedParameter: Bool?
-    internal var resultCache: [String: Result<SuccessResponse, Error>] = [:]
+//    internal var resultCache: [String: Result<SuccessResponse, Error>] = [:]
     var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
     var derivationOptionsJsonMayBeModifiedDefault: Bool { get { false } }
     
@@ -115,7 +99,8 @@ class ApiRequestWithExplicitDerivationOptions: ApiRequest {
     
     func execute(seedString: String) throws -> SuccessResponse { throw RequestException.NotImplemented }
 
-    init(securityContext: RequestSecurityContext, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool?) throws {
+    init(id: String, securityContext: RequestSecurityContext, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool?) throws {
+        self.id = id
         self.securityContext = securityContext
         self.derivationOptionsJson = derivationOptionsJson
         self.derivationOptionsJsonMayBeModifiedParameter = derivationOptionsJsonMayBeModified
@@ -123,7 +108,8 @@ class ApiRequestWithExplicitDerivationOptions: ApiRequest {
         try throwIfNotAuthorized()
     }
 
-    init(securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
+    init(id: String, securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
+        self.id = id
         self.securityContext = securityContext
         self.derivationOptionsJson = unmarshaller.optionalField(name: "derivationOptionsJson")
         self.derivationOptions = try getDerivationOptions(json: self.derivationOptionsJson)
@@ -137,14 +123,14 @@ class ApiRequestGenerateSignature: ApiRequestWithExplicitDerivationOptions, ApiR
     let command: ApiCommand = ApiCommand.generateSignature
     let message: Data
 
-    init(securityContext: RequestSecurityContext, message: Data, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool) throws {
+    init(id: String, securityContext: RequestSecurityContext, message: Data, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool) throws {
         self.message = message
-        try super.init(securityContext: securityContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
+        try super.init(id: id, securityContext: securityContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
     }
 
-    override init(securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
+    override init(id: String, securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
         self.message = base64urlDecode(try unmarshaller.requiredField(name: "message"))!
-        try super.init(securityContext: securityContext, unmarshaller: unmarshaller)
+        try super.init(id: id, securityContext: securityContext, unmarshaller: unmarshaller)
     }
 
     override func execute(seedString: String) throws -> SuccessResponse {
@@ -236,14 +222,14 @@ class ApiRequestSealWithSymmetricKey: ApiRequestWithExplicitDerivationOptions, A
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
     override var derivationOptionsJsonMayBeModifiedDefault: Bool { get { true } }
 
-    init(securityContext: RequestSecurityContext, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool, plaintext: Data) throws {
+    init(id: String, securityContext: RequestSecurityContext, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool, plaintext: Data) throws {
         self.plaintext = plaintext
-        try super.init(securityContext: securityContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
+        try super.init(id: id, securityContext: securityContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
     }
 
-    override init(securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
+    override init(id: String, securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
         self.plaintext = base64urlDecode(try unmarshaller.requiredField(name: "plaintext"))!
-        try super.init(securityContext: securityContext, unmarshaller: unmarshaller)
+        try super.init(id: id, securityContext: securityContext, unmarshaller: unmarshaller)
     }
 
     override func execute(seedString: String) throws -> SuccessResponse {
@@ -262,11 +248,12 @@ private func getPackagedSealedMessageJsonObject(json packagedSealedMessageJson: 
 }
 
 class ApiRequestUnseal: ApiRequest {
+    let id: String
     let securityContext: RequestSecurityContext
     let packagedSealedMessage: PackagedSealedMessageJsonObject
     let packagedSealedMessageJson: String
     let derivationOptions: DerivationOptions
-    internal var resultCache: [String: Result<SuccessResponse, Error>] = [:]
+//    internal var resultCache: [String: Result<SuccessResponse, Error>] = [:]
 
     var derivationOptionsJsonMayBeModifiedDefault: Bool { get { false } }
     let derivationOptionsJsonMayBeModified = false
@@ -284,7 +271,8 @@ class ApiRequestUnseal: ApiRequest {
         return nil
     }
 
-    init(securityContext: RequestSecurityContext, packagedSealedMessageJson: String) throws {
+    init(id: String, securityContext: RequestSecurityContext, packagedSealedMessageJson: String) throws {
+        self.id = id
         self.securityContext = securityContext
         self.packagedSealedMessageJson = packagedSealedMessageJson
         let packagedSealedMessage = try getPackagedSealedMessageJsonObject(json: packagedSealedMessageJson)
@@ -293,7 +281,8 @@ class ApiRequestUnseal: ApiRequest {
         try throwIfNotAuthorized()
     }
 
-    init(securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
+    init(id: String, securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
+        self.id = id
         self.securityContext = securityContext
         self.packagedSealedMessageJson = try unmarshaller.requiredField(name: "packagedSealedMessageJson")
         let packagedSealedMessage = try getPackagedSealedMessageJsonObject(json: packagedSealedMessageJson)
@@ -344,6 +333,7 @@ class ApiRequestUnsealWithUnsealingKey: ApiRequestUnseal, ApiRequestCommand {
 }
 
 func constructApiRequest(
+    id: String,
     securityContext: RequestSecurityContext,
     unmarshaller: ApiRequestParameterUnmarshaller
 ) throws -> ApiRequest {
@@ -352,37 +342,38 @@ func constructApiRequest(
     }
     switch command {
     case ApiCommand.generateSignature:
-        return try ApiRequestGenerateSignature(securityContext: securityContext, unmarshaller: unmarshaller)
+        return try ApiRequestGenerateSignature(id: id, securityContext: securityContext, unmarshaller: unmarshaller)
     case ApiCommand.getPassword:
-        return try ApiRequestGetPassword(securityContext: securityContext, unmarshaller: unmarshaller)
+        return try ApiRequestGetPassword(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
     case ApiCommand.getSealingKey:
-        return try ApiRequestGetSealingKey(securityContext: securityContext, unmarshaller: unmarshaller)
+        return try ApiRequestGetSealingKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
     case ApiCommand.getSecret:
-        return try ApiRequestGetSecret(securityContext: securityContext, unmarshaller: unmarshaller)
+        return try ApiRequestGetSecret(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
     case ApiCommand.getSigningKey:
-        return try ApiRequestGetSigningKey(securityContext: securityContext, unmarshaller: unmarshaller)
+        return try ApiRequestGetSigningKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
     case ApiCommand.getSignatureVerificationKey:
-        return try ApiRequestGetSignatureVerificationKey(securityContext: securityContext, unmarshaller: unmarshaller)
+        return try ApiRequestGetSignatureVerificationKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
     case ApiCommand.getSymmetricKey:
-        return try ApiRequestGetSymmetricKey(securityContext: securityContext, unmarshaller: unmarshaller)
+        return try ApiRequestGetSymmetricKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
     case ApiCommand.getUnsealingKey:
-        return try ApiRequestGetUnsealingKey(securityContext: securityContext, unmarshaller: unmarshaller)
+        return try ApiRequestGetUnsealingKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
     case ApiCommand.sealWithSymmetricKey:
-        return try ApiRequestSealWithSymmetricKey(securityContext: securityContext, unmarshaller: unmarshaller)
+        return try ApiRequestSealWithSymmetricKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
     case ApiCommand.unsealWithSymmetricKey:
-        return try ApiRequestUnsealWithSymmetricKey(securityContext: securityContext, unmarshaller: unmarshaller)
+        return try ApiRequestUnsealWithSymmetricKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
     case ApiCommand.unsealWithUnsealingKey:
-        return try ApiRequestUnsealWithUnsealingKey(securityContext: securityContext, unmarshaller: unmarshaller)
+        return try ApiRequestUnsealWithUnsealingKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
     }
 }
 
 func executeApiRequest(
     getSeedString: @escaping () throws -> String,
+    id: String,
     securityContext: RequestSecurityContext,
     unmarshaller: ApiRequestParameterUnmarshaller
 ) throws -> SuccessResponse {
     // Construct the request and validate all parameters
-    let request = try constructApiRequest(securityContext: securityContext, unmarshaller: unmarshaller)
+    let request = try constructApiRequest(id: id, securityContext: securityContext, unmarshaller: unmarshaller)
 
     // Do not allow the request to proceed unless all authorization checks pass
     try request.throwIfNotAuthorized()
