@@ -95,6 +95,20 @@ private class DerivationRecipeForFromUrlModel: ObservableObject {
 
 struct DerivationRecipeForFromUrl: View {
     @ObservedObject private var model: DerivationRecipeForFromUrlModel
+    var lengthInCharString: Binding<String> {
+        return Binding<String>(
+            get: { String(model.lengthInChars) },
+            set: { newValue in
+                if let newIntValue = Int(newValue.filter { "0123456789".contains($0) }) {
+                    // We don't value to be greater than 999
+                    guard newIntValue <= 999 && newIntValue >= 6 else {
+                        return
+                    }
+                    model.lengthInChars = newIntValue
+                }
+            }
+        )
+    }
 
     init(type: DerivationOptionsType, recipeBuilderState: RecipeBuilderState) {
         self.model = DerivationRecipeForFromUrlModel(type, recipeBuilderState)
@@ -102,6 +116,12 @@ struct DerivationRecipeForFromUrl: View {
     
     var textfield: some View {
         TextField("URL or comma-separated list of domains", text: $model.urlString)
+            .font(.body)
+            .multilineTextAlignment(.center)
+    }
+    
+    var lengthTextfield: some View {
+        TextField("Character Length (6 - 999)", text: lengthInCharString)
             .font(.body)
             .multilineTextAlignment(.center)
     }
@@ -113,10 +133,13 @@ struct DerivationRecipeForFromUrl: View {
                 textfield.keyboardType(.alphabet)
                 #else
                 textfield
+                lengthTextfield
                 #endif
                 Text("URL or comma-separated list of domains").font(.footnote).foregroundColor(.gray)
             }
             SequenceNumberField(sequenceNumber: $model.sequenceNumber)
+            lengthTextfield.keyboardType(.numberPad)
+            Text("Character Length (6 - 999)").font(.footnote).foregroundColor(.gray)
         }
     }
 }

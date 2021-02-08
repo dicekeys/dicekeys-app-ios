@@ -129,7 +129,7 @@ struct DiceKeyWithDerivedValue: View {
             // Spacer()
 
             Spacer()
-        }.padding(.vertical, 5)
+        }
     }
 }
 
