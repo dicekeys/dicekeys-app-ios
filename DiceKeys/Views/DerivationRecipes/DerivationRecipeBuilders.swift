@@ -97,8 +97,17 @@ struct DerivationRecipeForFromUrl: View {
     @ObservedObject private var model: DerivationRecipeForFromUrlModel
     var lengthInCharString: Binding<String> {
         return Binding<String>(
-            get: { String(model.lengthInChars) },
+            get: {
+                if model.lengthInChars == 0 {
+                    return ""
+                }
+                return String(model.lengthInChars)
+                
+            },
             set: { newValue in
+                if (newValue == "") {
+                    model.lengthInChars = 0
+                }
                 if let newIntValue = Int(newValue.filter { "0123456789".contains($0) }) {
                     // We don't value to be greater than 999
                     guard newIntValue <= 999 && newIntValue >= 6 else {
