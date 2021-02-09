@@ -204,13 +204,13 @@ private struct TestBackupDiceKey: View {
 struct BackupDiceKey_Previews: PreviewProvider {
     static var previews: some View {
         TestBackupDiceKey()
-            .previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
+            //.previewDevice(PreviewDevice(rawValue: "iPad (8th generation)"))
 
         TestBackupDiceKey()
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+            //.previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
 
         TestBackupDiceKey()
-            .previewLayout(.fixed(width: 1024, height: 768))
+           // .previewLayout(.fixed(width: 1024, height: 768))
 //        BackupToStickeysIntro(diceKey: DiceKey.createFromRandom())
 //                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
 //
