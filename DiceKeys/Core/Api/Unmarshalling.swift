@@ -13,7 +13,7 @@ protocol ApiRequestParameterUnmarshaller {
 }
 
 class UrlParameterUnmarshaller: ApiRequestParameterUnmarshaller {
-    private let parameters: [String: String?]
+    private let parameters: [String: String]
 
     init(url: URL) {
         var queryDictionary = [String: String]()
