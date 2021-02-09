@@ -51,7 +51,7 @@ struct ValidateBackup: View {
     }
         
     var body: some View {
-        Instruction("Scan your backup to validate it.")
+        Instruction("Scan your backup to validate it.", lineLimit: 1)
         Spacer()
         if scanningCopy || scanningOriginal {
             ScanDiceKey(stickers: target == BackupTarget.Stickeys) { diceKeyScanned in

@@ -63,19 +63,20 @@ private let digitOffset = CGPoint(
     y: 0
 )
 
-
 struct FacesReadOverlay: View {
+    
     let renderedSize: CGSize
-    let imageFrameSize: CGSize
-
-    let facesRead: [FaceRead]?
+    @ObservedObject var facesReadOverlayModel: FacesReadOverlayModel
 
     var renderer: XXGraphicsImageRenderer {
         XXGraphicsImageRenderer(size: renderedSize)
     }
 
     var body: some View {
-        if let facesRead = facesRead {
+        if !facesReadOverlayModel.facesRead.isEmpty {
+            let facesRead = facesReadOverlayModel.facesRead
+            let imageFrameSize = facesReadOverlayModel.imageFrameSize
+            
             let image = renderer.image { context in
                 let cgContext = context.cgContext
                 // Add a red frame rect for debugging bounds
@@ -140,12 +141,6 @@ struct FacesReadOverlay: View {
                 .frame(width: renderedSize.width, height: renderedSize.height)
         }
     }
-
-    init(renderedSize: CGSize, imageFrameSize: CGSize, facesRead: [FaceRead]?) {
-        self.renderedSize = renderedSize
-        self.imageFrameSize = imageFrameSize
-        self.facesRead = facesRead
-    }
 }
 
 let facesReadJson: String = """
@@ -176,14 +171,19 @@ struct RotatedTextTest: View {
 }
 
 struct FacesReadOverlay_Previews: PreviewProvider {
+    
+    static var faceReadOverlayModel: FacesReadOverlayModel = {
+        let model: FacesReadOverlayModel = FacesReadOverlayModel()
+        model.imageFrameSize = CGSize(width: 600, height: 600)
+        model.facesRead = FaceRead.fromJson(facesReadJson)!
+        return model
+    }()
+    
     static var previews: some View {
         RotatedTextTest()
             .previewLayout(PreviewLayout.fixed(width: 700, height: 700))
-        FacesReadOverlay(
-            renderedSize: CGSize(width: 600, height: 600),
-            imageFrameSize: CGSize(width: 600, height: 600),
-            facesRead: FaceRead.fromJson(facesReadJson)!
-        )
-        .previewLayout(PreviewLayout.fixed(width: 600, height: 600))
+        FacesReadOverlay(renderedSize: CGSize(width: 600, height: 600),
+                         facesReadOverlayModel: faceReadOverlayModel)
+            .previewLayout(PreviewLayout.fixed(width: 600, height: 600))
     }
 }
