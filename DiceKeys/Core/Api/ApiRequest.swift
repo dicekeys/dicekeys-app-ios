@@ -136,7 +136,7 @@ class ApiRequestGenerateSignature: ApiRequestWithExplicitDerivationOptions, ApiR
     override func execute(seedString: String) throws -> SuccessResponse {
         let signingKey = try SigningKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson ?? "")
         let signature = try signingKey.generateSignature(with: message)
-        return SuccessResponse.generateSignature(signature: base64urlEncode(signature), signatureVerificationKeyJson: signingKey.signatureVerificationKey.toJson())
+        return SuccessResponse.generateSignature(signature: signature, signatureVerificationKeyJson: signingKey.signatureVerificationKey.toJson())
     }
 }
 
@@ -314,10 +314,10 @@ class ApiRequestUnsealWithSymmetricKey: ApiRequestUnseal, ApiRequestCommand {
     let allowNilEmptyDerivationOptions = false
 
     override func execute(seedString: String) throws -> SuccessResponse {
-        try SuccessResponse.unsealWithSymmetricKey(plaintext: base64urlEncode(
+        try SuccessResponse.unsealWithSymmetricKey(plaintext:
             SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
                 .unseal(withJsonPackagedSealedMessage: packagedSealedMessageJson)
-        ))
+        )
     }
 }
 class ApiRequestUnsealWithUnsealingKey: ApiRequestUnseal, ApiRequestCommand {
@@ -325,10 +325,10 @@ class ApiRequestUnsealWithUnsealingKey: ApiRequestUnseal, ApiRequestCommand {
     let allowNilEmptyDerivationOptions = true
 
     override func execute(seedString: String) throws -> SuccessResponse {
-        try SuccessResponse.unsealWithUnsealingKey(plaintext: base64urlEncode(
+        try SuccessResponse.unsealWithUnsealingKey(plaintext: 
             UnsealingKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
                 .unseal(withJsonPackagedSealedMessage: packagedSealedMessageJson)
-        ))
+        )
     }
 }
 

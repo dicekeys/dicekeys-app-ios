@@ -32,13 +32,13 @@ struct RequestQuestionView: View {
         request is ApiRequestGetUnsealingKey ?
           "May \(hostComponent) use your DiceKey to \(createOrRecreate) keys to encode and decode secrets?" :
         request is ApiRequestGetSymmetricKey ?
-          "May \(hostComponent) use your DiceKey to a \(createOrRecreate) key to encode and decode secrets?" :
+          "May \(hostComponent) use your DiceKey to \(createOrRecreate) a key to encode and decode secrets?" :
         request is ApiRequestSealWithSymmetricKey ?
           "May \(hostComponent) use your DiceKey to encode a secret?" :
         request is ApiRequestUnsealWithSymmetricKey ?
-          "May \(hostComponent) use your DiceKey to allow to decode a secret?" :
+          "May \(hostComponent) use your DiceKey to decode a secret?" :
         request is ApiRequestUnsealWithUnsealingKey ?
-          "May \(hostComponent) use your DiceKey to allow to decode a secret?" :
+          "May \(hostComponent) use your DiceKey to decode a secret?" :
         // Less common
         request is ApiRequestGetSigningKey ?
           "May \(hostComponent) use your DiceKey to \(createOrRecreate) keys to sign data?" :
@@ -55,15 +55,16 @@ struct RequestQuestionView: View {
     var body: some View {
         Text(description)
             .font(.title)
+            .bold()
             .minimumScaleFactor(0.2)
             .lineLimit(/*@START_MENU_TOKEN@*/2/*@END_MENU_TOKEN@*/)
     }
 }
 
 struct RequestDataView: View {
-    let title: String
     let recipe: String
-    let value: String
+    let title: String?
+    let value: String?
     var lineLimit: Int = 2
     
     var body: some View {
@@ -77,14 +78,16 @@ struct RequestDataView: View {
                 .lineLimit(lineLimit)
                 .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
                 .padding(.bottom, 10)
-            Text(title)
-                .italic()
-                .minimumScaleFactor(0.5)
-                .lineLimit(1)
-            Text(value)
-                .minimumScaleFactor(0.2)
-                .lineLimit(lineLimit)
-                .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
+            if let title = title, let value = value {
+                Text(title)
+                    .italic()
+                    .minimumScaleFactor(0.5)
+                    .lineLimit(1)
+                Text(value)
+                    .minimumScaleFactor(0.2)
+                    .lineLimit(lineLimit)
+                    .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
+            }
         }
         
     }
@@ -93,14 +96,68 @@ struct RequestDataView: View {
 struct RequestPreviewPassword: View {
     let password: Password
     var body: some View {
-        RequestDataView(title: "password created", recipe: password.derivationOptionsJson, value: password.password)
+        RequestDataView(recipe: password.derivationOptionsJson, title: "password created:", value: password.password)
     }
 }
 
 struct RequestPreviewSecret: View {
     let secret: Secret
     var body: some View {
-        RequestDataView(title: "secret created", recipe: secret.derivationOptionsJson, value: secret.secretBytes().hexString, lineLimit: 1)
+        RequestDataView(recipe: secret.derivationOptionsJson, title: "secret created:", value: secret.secretBytes().asHexString, lineLimit: 1)
+    }
+}
+
+struct RequestPreviewGetKey: View {
+    let recipe: String
+    let key: Data?
+    
+    init(recipe: String, key: Data? = nil) {
+        self.recipe = recipe
+        self.key = key
+    }
+    
+    var body: some View {
+        RequestDataView(recipe: recipe, title: "key created:", value: key?.asHexString, lineLimit: 1)
+    }
+
+    init(_ sealingKey: SealingKey) {
+        self.init(recipe: sealingKey.derivationOptionsJson, key: nil)
+    }
+    
+    init(_ key: SymmetricKey) {
+        self.init(recipe: key.derivationOptionsJson, key: key.keyBytes)
+    }
+}
+
+struct RequestPreviewSealWithSymmetricKey: View {
+    let recipe: String
+    let plaintext: Data
+    
+    var body: some View {
+        RequestDataView(recipe: recipe, title: "message to seal:", value: plaintext.asReadableString, lineLimit: 4)
+    }
+    
+    init(_ request: ApiRequestSealWithSymmetricKey) {
+        recipe = request.derivationOptionsJson ?? ""
+        plaintext = request.plaintext
+    }
+}
+
+struct RequestPreviewSealUnseal: View {
+    let recipe: String
+    let plaintext: Data
+    
+    var body: some View {
+        RequestDataView(recipe: recipe, title: "message to seal:", value: plaintext.asReadableString, lineLimit: 4)
+    }
+    
+    init(_ request: ApiRequestUnsealWithSymmetricKey, plaintext: Data) {
+        recipe = request.derivationOptionsJson ?? ""
+        self.plaintext = plaintext
+    }
+    init(_ request: ApiRequestUnsealWithUnsealingKey, plaintext: Data) {
+        recipe = request.derivationOptionsJson ?? ""
+        self.plaintext = plaintext
     }
 }
 
@@ -125,20 +182,30 @@ struct RequestPreviewView: View {
                 DiceKeyView(diceKey: diceKey)
                 .frame(maxWidth: WindowDimensions.shorterSide/2)
                 switch successResponse {
-
-        //        case generateSignature(signature: String, signatureVerificationKeyJson: String)
+        //        case .generateSignature(let signature, let signatureVerificationKeyJson):
                 case .getPassword(let passwordJson):
                     RequestPreviewPassword(password: try! Password.from(json: passwordJson))
                 case .getSecret(let secretJson):
                     RequestPreviewSecret(secret: try! Secret.from(json: secretJson))
-        //        case getSealingKey(sealingKeyJson: String)
-        //        case getSigningKey(signingKeyJson: String)
-        //        case getSignatureVerificationKey(signatureVerificationKeyJson: String)
-        //        case getSymmetricKey(symmetricKeyJson: String)
-        //        case getUnsealingKey(unsealingKeyJson: String)
-        //        case sealWithSymmetricKey(packagedSealedMessageJson: String)
-        //        case unsealWithSymmetricKey(plaintext: String)
-        //        case unsealWithUnsealingKey(plaintext: String)
+                case .getSealingKey(let sealingKeyJson):
+                    RequestPreviewGetKey(try! SealingKey.from(json: sealingKeyJson))
+        //        case .getSigningKey(let signingKeyJson):
+        //        case .getSignatureVerificationKey(let signatureVerificationKeyJson):
+                case .getSymmetricKey(let symmetricKeyJson):
+                    RequestPreviewGetKey(try! SymmetricKey.from(json: symmetricKeyJson))
+        //        case .getUnsealingKey(let unsealingKeyJson):
+                case .sealWithSymmetricKey(_):
+                    if let r = request, r is ApiRequestSealWithSymmetricKey {
+                        RequestPreviewSealWithSymmetricKey(r as! ApiRequestSealWithSymmetricKey)
+                    }
+                case .unsealWithSymmetricKey(let plaintext):
+                    if let r = request, r is ApiRequestUnsealWithSymmetricKey {
+                        RequestPreviewSealUnseal(r as! ApiRequestUnsealWithSymmetricKey, plaintext: plaintext)
+                    }
+                case .unsealWithUnsealingKey(let plaintext):
+                    if let r = request, r is ApiRequestUnsealWithUnsealingKey {
+                        RequestPreviewSealUnseal(r as! ApiRequestUnsealWithUnsealingKey, plaintext: plaintext)
+                    }
                 default:
                     EmptyView()
                 }
@@ -221,7 +288,7 @@ struct ApiRequestView: View {
                 Spacer()
             }
             Spacer()
-        }
+        }.padding(.all, 5)
     }
 }
 
@@ -231,27 +298,41 @@ struct ApiRequestView_Previews: PreviewProvider {
         "https://dicekeys.app/?command=\(command)&requestId=1&respondTo=https%3A%2F%2Fpwmgr.app%2F--derived-secret-api--%2F&derivationOptionsJson=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwmgr.app%22%7D%5D%7D&derivationOptionsJsonMayBeModified=false"
     }
     
+    static func recipeForGetKeyCommand(command: String) -> String {
+        "https://dicekeys.app/?command=\(command)&requestId=1&respondTo=https%3A%2F%2Fpwdmgr.app%2F--derived-secret-api--%2F&derivationOptionsJson=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwdmgr.app%22%7D%5D%2C%22clientMayRetrieveKey%22%3Atrue%7D&derivationOptionsJsonMayBeModified=false"
+    }
+    
     @State static var testRequestForPassword =  try! testConstructUrlApiRequest(recipeForGetCommand(command: "getPassword"))!
     @State static var testRequestForSecret =  try! testConstructUrlApiRequest(recipeForGetCommand(command: "getSecret"))!
-    
+    @State static var testRequestForSymmetricKey =  try! testConstructUrlApiRequest(recipeForGetKeyCommand(command: "getSymmetricKey"))!
+
     static var diceKeyMemoryStoreWithKey = DiceKeyMemoryStore(DiceKey.createFromRandom())
 
     static var previews: some View {
         let _ = BackgroundCalculationOfApiRequestResult.precalculateForTestUseOnly(request: testRequestForPassword, seedString: diceKeyMemoryStoreWithKey.diceKeyLoaded!.toSeed())
         let _ = BackgroundCalculationOfApiRequestResult.precalculateForTestUseOnly(request: testRequestForSecret, seedString: diceKeyMemoryStoreWithKey.diceKeyLoaded!.toSeed())
+        let _ = BackgroundCalculationOfApiRequestResult.precalculateForTestUseOnly(request: testRequestForSymmetricKey, seedString: diceKeyMemoryStoreWithKey.diceKeyLoaded!.toSeed())
+
+        ApiRequestView(
+            request: $testRequestForSymmetricKey,
+            diceKeyMemoryStore: diceKeyMemoryStoreWithKey
+        ).previewLayoutMinSupported()
+        
+
         ApiRequestView(
             request: $testRequestForSecret,
             diceKeyMemoryStore: diceKeyMemoryStoreWithKey
-        )
+        ).previewLayoutMinSupported()
+        
         ApiRequestView(
             request: $testRequestForPassword,
             diceKeyMemoryStore: diceKeyMemoryStoreWithKey
-        )
+        ).previewLayoutMinSupported()
 
         ApiRequestView(
             request: $testRequestForPassword,
             diceKeyMemoryStore: DiceKeyMemoryStore()
-        )
+        ).previewLayoutMinSupported()
     }
 }
 

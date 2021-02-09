@@ -12,7 +12,7 @@ import SeededCrypto
 private func successResponseToDictionary(successResponse: SuccessResponse) -> [String: String] {
     switch successResponse {
     case .generateSignature(signature: let signature, signatureVerificationKeyJson: let signatureVerificationKeyJson):
-        return ["signature": signature, "signatureVerificationKeyJson": signatureVerificationKeyJson]
+        return ["signature": base64urlEncode(signature), "signatureVerificationKeyJson": signatureVerificationKeyJson]
     case .getPassword(passwordJson: let passwordJson):
         return ["passwordJson": passwordJson]
     case .getSealingKey(sealingKeyJson: let sealingKeyJson):
@@ -30,9 +30,9 @@ private func successResponseToDictionary(successResponse: SuccessResponse) -> [S
     case .sealWithSymmetricKey(packagedSealedMessageJson: let packagedSealedMessageJson):
         return ["packagedSealedMessageJson": packagedSealedMessageJson]
     case .unsealWithSymmetricKey(plaintext: let plaintext):
-        return ["plaintext": plaintext]
+        return ["plaintext": base64urlEncode(plaintext)]
     case .unsealWithUnsealingKey(plaintext: let plaintext):
-        return ["plaintext": plaintext]
+        return ["plaintext": base64urlEncode(plaintext)]
     }
 }
 
