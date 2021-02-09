@@ -86,17 +86,18 @@ struct ScanDiceKey: View {
                     Text("Selected camera: \(selectedOrNextBestCameraDisplayableCamera?.localizedName ?? "nil")")
                     HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
                         Spacer()
-                            GeometryReader { reader in
-                                ZStack {
-                                    DiceKeysCameraView(selectedCamera: selectedOrNextBestCameraDisplayableCamera, onFrameProcessed: onFrameProcessed, size: reader.size)
-                                    FacesReadOverlay(renderedSize: reader.size,
-                                                     facesReadOverlayModel: facesReadOverlayModel)
-                                }
+                        GeometryReader { reader in
+                            ZStack {
+                                DiceKeysCameraView(selectedCamera: selectedOrNextBestCameraDisplayableCamera, onFrameProcessed: onFrameProcessed, size: reader.size)
+                                FacesReadOverlay(renderedSize: reader.size,
+                                                 facesReadOverlayModel: facesReadOverlayModel)
                             }
                         }
                     }
                     CameraFrameCountView(cameraFrameCountModel: self.cameraFrameCountModel)
-                }.background(Color.black).padding(.vertical, 5)
+                }
+                .background(Color.black)
+                .padding(.vertical, 5)
             } else {
                 Text("Permission to access the camera is required to scan your DiceKey")
             }
@@ -110,6 +111,7 @@ struct ScanDiceKey: View {
                             self.selectedCameraUniqueId = activeCameras.first?.ID ?? ""
                             // self.selectedCamera = activeCameras.first
                         }
+                    }
                     case .notDetermined: // The user has not yet been asked for camera access.
                         AVCaptureDevice.requestAccess(for: .video) { granted in
                             if granted {
