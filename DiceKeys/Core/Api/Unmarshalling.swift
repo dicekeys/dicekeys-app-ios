@@ -16,10 +16,12 @@ class UrlParameterUnmarshaller: ApiRequestParameterUnmarshaller {
     private let parameters: [String: String?]
 
     init(url: URL) {
-        var queryDictionary = [String: String?]()
+        var queryDictionary = [String: String]()
         if let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems {
             for queryItem in queryItems {
-                queryDictionary[queryItem.name] = queryItem.value
+                if let value = queryItem.value {
+                    queryDictionary[queryItem.name] = value
+                }
             }
         }
         self.parameters = queryDictionary
@@ -29,8 +31,7 @@ class UrlParameterUnmarshaller: ApiRequestParameterUnmarshaller {
         return parameters[fieldName] ?? nil
     }
     func requiredField(name fieldName: String) throws -> String {
-        let value = parameters[fieldName] ?? nil
-        guard let nonNilValue = value else {
+        guard let nonNilValue = parameters[fieldName] ?? nil else {
             throw RequestException.ParameterNotFound(fieldName)
         }
         return nonNilValue

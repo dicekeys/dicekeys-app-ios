@@ -54,7 +54,7 @@ class BackgroundCalculationOfApiRequestResult: ObservableObjectUpdatingOnAllChan
         }
         
         let resultFuture = Future<SuccessResponse, Error>{ promise in promise(result!) }
-        let r = BackgroundCalculationOfApiRequestResult.init(resultFuture)
+        let r = BackgroundCalculationOfApiRequestResult(resultFuture)
         r.ready = true
         r.result = result
         if case let .success(sr) = result {
@@ -84,7 +84,7 @@ class BackgroundCalculationOfApiRequestResult: ObservableObjectUpdatingOnAllChan
                 }
             }
         }
-        let result = BackgroundCalculationOfApiRequestResult.init(resultFuture)
+        let result = BackgroundCalculationOfApiRequestResult(resultFuture)
         cache[cacheKey] = result
         
         return result
