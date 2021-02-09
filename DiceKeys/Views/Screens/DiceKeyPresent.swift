@@ -135,6 +135,7 @@ struct DiceKeyPresentNavigationFooter: View {
 struct DiceKeyPresent: View {
     @ObservedObject var diceKeyState: UnlockedDiceKeyState
     let onForget: () -> Void
+    @ObservedObject var diceKeyMemoryStore: DiceKeyMemoryStore = DiceKeyMemoryStore.singleton
 
     @State var pageContent: DiceKeyPresentPageContent = .Default
     
@@ -142,6 +143,10 @@ struct DiceKeyPresent: View {
 
     @State private var navBarHeight: CGFloat = 0
     
+    var diceKey: DiceKey {
+        diceKeyMemoryStore.diceKeyLoaded ?? DiceKey.Example
+    }
+
     private var deviceImageName: String {
         #if os(iOS)
         return "Phonelet"
@@ -199,7 +204,7 @@ struct DiceKeyPresent: View {
                     Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget").foregroundColor(Color.navigationForeground)
                 }.padding(10)
                 .onTapGesture {
-                    GlobalState.instance.topLevelNavigation = .nowhere
+                    onForget()
                 }
                 Spacer()
                 Text("\(diceKeyState.nickname)")
@@ -225,8 +230,8 @@ struct DiceKeyPresent: View {
                     case .Backup: BackupDiceKey(
                         onComplete: { navigate(to: .Default) },
                         diceKey: Binding<DiceKey>(get: { () -> DiceKey in
-                            GlobalState.instance.diceKeyLoaded ?? DiceKey.Example
-                        }, set: {GlobalState.instance.diceKeyLoaded = $0}),
+                            diceKey
+                        }, set: { diceKeyMemoryStore.setDiceKey(diceKey: $0)}),
                         backupDiceKeyState: backupDiceKeyState)
                     case .SeedHardwareKey: SeedHardwareSecurityKey(diceKey: diceKey).padding(.horizontal, defaultContentPadding)
                     default: DiceKeyView(diceKey: diceKey, showLidTab: true).padding(.horizontal, defaultContentPadding)
@@ -264,6 +269,6 @@ struct DiceKeyPresent_Previews: PreviewProvider {
 //
 //        DerivedFromDiceKey(diceKey: diceKey) {
 //            Text("Derive a Password, Key, or Secret")
-//        }
+        //  , topLevelNavigationState: <#TopLevelNavigationState#>      }
     }
 }

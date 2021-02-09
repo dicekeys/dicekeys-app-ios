@@ -40,10 +40,10 @@ struct DerivationRecipeMenu<Content: View>: View {
         self.label = label
     }
 
-    @StateObject private var globalState = GlobalState.instance
+    @StateObject private var recipeStore = DerivationRecipeStore.singleton
 
     var savedRecipes: [DerivationRecipe] {
-        globalState.savedDerivationRecipes
+        recipeStore.savedDerivationRecipes
     }
 
     var passwordDerivables: [DerivationRecipe] {

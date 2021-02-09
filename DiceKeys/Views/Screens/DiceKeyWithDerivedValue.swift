@@ -38,10 +38,10 @@ struct DiceKeyWithDerivedValue: View {
         derivationRecipe?.derivationOptionsJson
     }
 
-    @StateObject private var globalState = GlobalState.instance
+    @StateObject private var recipeStore = DerivationRecipeStore.singleton
 
     private var savedRecipes: [DerivationRecipe] {
-        globalState.savedDerivationRecipes
+        recipeStore.savedDerivationRecipes
     }
 
     private var recipeCanBeSaved: Bool {
@@ -58,7 +58,9 @@ struct DiceKeyWithDerivedValue: View {
     var derivedPassword: String? {
         guard derivationRecipe?.type == .Password else { return nil }
         guard let derivationOptionsJson = self.derivationOptionsJson, derivationOptionsJson.count > 0 else { return nil }
-        return (try? Password.deriveFromSeed(withSeedString: globalState.diceKeyLoaded!.toSeed(), derivationOptionsJson: derivationOptionsJson).password)
+        guard let seed = DiceKeyMemoryStore.singleton.diceKeyLoaded?.toSeed() else { return nil }
+        let password = try? Password.deriveFromSeed(withSeedString: seed, derivationOptionsJson: derivationOptionsJson).password
+        return (password)
     }
 
     var derivedValue: String? {
@@ -89,9 +91,9 @@ struct DiceKeyWithDerivedValue: View {
                             Spacer()
                             Button(action: {
                                 if recipeCanBeDeleted {
-                                    globalState.removeRecipe(derivationRecipe)
+                                    recipeStore.removeRecipe(derivationRecipe)
                                 } else if recipeCanBeSaved {
-                                    globalState.saveRecipe(derivationRecipe)
+                                    recipeStore.saveRecipe(derivationRecipe)
                                 }
                             }, label: { Text(recipeCanBeDeleted ? "Remove recipe from menu" : "Save recipe in the menu")
                             }).showIf(recipeCanBeSaved || recipeCanBeDeleted)

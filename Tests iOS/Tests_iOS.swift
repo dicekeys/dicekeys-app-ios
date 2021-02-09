@@ -38,6 +38,26 @@ class Tests_iOS: XCTestCase {
         XCTAssertNotNil(password)
         XCTAssertNotNil(password.password)
     }
+    
+    func testGetPasswordApi() throws {
+        handleUrlApiRequest(
+            incomingRequestUrl: URL(string: "https://dicekeys.app/?command=getPassword&requestId=1&respondTo=https%3A%2F%2Fpwmgr.app%2F--derived-secret-api--%2F&derivationOptionsJson=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwmgr.app%22%7D%5D%7D&derivationOptionsJsonMayBeModified=false")!,
+            approveApiRequest: { _, callback in
+                callback(.success("A1tB2rC3bD4lE5tF6rG1bH2lI3tJ4rK5bL6lM1tN2rO3bP4lR5tS6rT1bU2lV3tW4rX5bY6lZ1t"))
+            },
+            sendResponse: { baseurl, parameters in
+                guard let passwordJson = parameters["passwordJson"] else {
+                    XCTFail("passwordJson not set")
+                    return
+                }
+                guard let password = try? Password.from(json: passwordJson).password else {
+                    XCTFail("couldn't parse passwordJson")
+                    return
+                }
+                XCTAssertEqual(password, "15-Agent-knelt-doozy-agile-fable-harsh-arose-ionic-dense-getup-until-tacky-books-lucid-savor")
+            }
+        )
+    }
 
     func testLaunchPerformance() throws {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {

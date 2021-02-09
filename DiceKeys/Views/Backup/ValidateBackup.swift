@@ -35,7 +35,21 @@ struct ValidateBackup: View {
     var totalMismatch: Bool {
         invalidIndexes.count > 5
     }
+    
+    #if os(iOS)
+    let scanningImageName = "Scanning Side View"
+    #else
+    let scanningImageName = "Mac Scanning Image"
+    #endif
 
+    var scanningBackupImageName: String {
+        #if os(iOS)
+        return target == BackupTarget.Stickeys ? "Scanning a Stickey" : "Scanning a DiceKey PNG"
+        #else
+        return target == BackupTarget.Stickeys ? "Mac Scanning Image" : "Mac Scanning Image"
+        #endif
+    }
+        
     var body: some View {
         Instruction("Scan your backup to validate it.", lineLimit: 1)
         Spacer()
@@ -90,12 +104,12 @@ struct ValidateBackup: View {
                         DiceKeyView(diceKey: original)
                         RoundedTextButton("Scan DiceKey") { self.scanningOriginal = true }.hidden()
                     } else {
-                        Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).offset(x: 0, y: -50)
+                        Image(scanningImageName).resizable().aspectRatio(contentMode: .fit).offset(x: 0, y: -50)
                         RoundedTextButton("Scan DiceKey") { self.scanningOriginal = true }
                     }
                 }
                 VStack {
-                    Image(target == BackupTarget.Stickeys ? "Scanning a Stickey" : "Scanning a DiceKey PNG")
+                    Image(scanningBackupImageName)
                         .resizable()
                     // Image("Scanning Side View").resizable()
                         .aspectRatio(contentMode: .fit).offset(x: 0, y: -50)

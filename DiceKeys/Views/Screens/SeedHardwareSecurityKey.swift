@@ -81,7 +81,7 @@ struct SeedHardwareSecurityKey: View {
     }
     
     var keySeedAsHexString: String {
-        return keySeedAs32Bytes.reduce("") {$0 + String(format: "%02x", $1)}
+        return keySeedAs32Bytes.asHexString
     }
 
     func write(securityKey: AttachedHidDevice) {

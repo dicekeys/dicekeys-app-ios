@@ -112,6 +112,12 @@ private struct FillEmptySlots: View {
 private struct ScanFirstTime: View {
     @State var scanning: Bool = false
     @Binding var diceKey: DiceKey?
+    
+    #if os(iOS)
+    let scanningImageName = "Scanning Side View"
+    #else
+    let scanningImageName = "Mac Scanning Image"
+    #endif
 
     var body: some View {
         Instruction("Scan the dice in the bottom of the box (without the top.)")
@@ -130,7 +136,7 @@ private struct ScanFirstTime: View {
             Spacer()
             RoundedTextButton("Cancel") { self.scanning = false }
         } else {
-            Image("Scanning Side View").resizable().aspectRatio(contentMode: .fit).offset(x: 0, y: -50)
+            Image(scanningImageName).resizable().aspectRatio(contentMode: .fit).offset(x: 0, y: -50)
             RoundedTextButton("Scan") { self.scanning = true }
         }
         Spacer()
@@ -175,6 +181,7 @@ struct AssemblyInstructions: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     var onSuccess: ((DiceKey) -> Void)?
+    var onBack: (() -> Void)?
 
     enum Step: Int {
         case Randomize = 1
@@ -217,7 +224,7 @@ struct AssemblyInstructions: View {
                     Spacer()
                 }.padding()
                 .onTapGesture {
-                    GlobalState.instance.topLevelNavigation = .nowhere
+                    onBack?()
                 }
         }) { geometry in
             VStack {

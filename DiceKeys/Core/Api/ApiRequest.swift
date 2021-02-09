@@ -7,30 +7,13 @@
 
 import Foundation
 import SeededCrypto
-
-func base64urlDecode(_ base64url: String) -> Data? {
-    var base64 = base64url
-        .replacingOccurrences(of: "-", with: "+")
-        .replacingOccurrences(of: "_", with: "/")
-    if base64.count % 4 != 0 {
-        base64.append(String(repeating: "=", count: 4 - base64.count % 4))
-    }
-    return Data(base64Encoded: base64)
-}
-
-func base64urlEncode(_ data: Data) -> String {
-    return data.base64EncodedString()
-        .replacingOccurrences(of: "+", with: "-")
-        .replacingOccurrences(of: "/", with: "_")
-        .replacingOccurrences(of: "=", with: "")
-}
-
 enum AuthenticationRequirementIn {
     case DerivationOptions
     case UnsealingInstructions
 }
 
 enum RequestException: Error {
+    case UserDeclinedToAuthorizeOperation
     case ClientNotAuthorized(AuthenticationRequirementIn)
     case ComamndRequiresDerivationOptionsWithClientMayRetrieveKeySetToTrue
     case NotImplemented
@@ -41,26 +24,13 @@ enum RequestException: Error {
     case ParameterNotFound(String)
 }
 
-struct PackagedSealedMessageJsonObject: Decodable {
-    var derivationOptionsJson: String
-    var ciphertext: String
-    var unsealingInstructions: String?
-
-    static func from(json: Data) throws -> PackagedSealedMessageJsonObject {
-        return try JSONDecoder().decode(PackagedSealedMessageJsonObject.self, from: json)
-    }
-
-    static func from(json: String) throws -> PackagedSealedMessageJsonObject {
-        return try from(json: json.data(using: .utf8)!)
-    }
-}
-
 protocol ApiRequestCommand {
     var command: ApiCommand { get }
 }
 
 protocol ApiRequest {
-    var requestContext: RequestContext { get }
+    var id: String { get }
+    var securityContext: RequestSecurityContext { get }
     var derivationOptions: DerivationOptions { get }
     var derivationOptionsJson: String? { get }
     var derivationOptionsJsonMayBeModified: Bool { get }
@@ -71,24 +41,29 @@ protocol ApiRequest {
 
     func throwIfNotAuthorized() throws
 
+    /// Calculate the result of the API call, throwing an exception if it fails
     func execute(seedString: String) throws -> SuccessResponse
+//
+//    // Wrap the execute function to return a Result instead of throwing
+//    func executeIntoResult(seedString: String) -> Result<SuccessResponse, Error>
+//
+//    var resultCache: [String: Result<SuccessResponse, Error>] {get set}
+//    // Wrap the execute function to cache the result in a Result object
+//    // so that it only ever needs to be calculated once
+//    mutating func executeWithCachedResult(seedString: String) -> Result<SuccessResponse, Error>
+
 }
 
 extension ApiRequest {
     var allowNilEmptyDerivationOptions: Bool { get { false } }
-    var derivationOptionsJsonMayBeModifiedDefault: Bool { get { false } }
-
-    var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
-
-    func execute(seedString: String) throws -> SuccessResponse { throw RequestException.NotImplemented }
 
     func throwIfNotAuthorized() throws {
         let derivationOptions = self.derivationOptions
 
-        guard !requireClientMayRetrieveKeyToBeSetToTrue || derivationOptions.clientMayRetrieveKey == true else {
+        if (requireClientMayRetrieveKeyToBeSetToTrue && derivationOptions.clientMayRetrieveKey != true) {
             throw RequestException.ComamndRequiresDerivationOptionsWithClientMayRetrieveKeySetToTrue
         }
-        guard requestContext.satisfiesAuthenticationRequirements(
+        guard securityContext.satisfiesAuthenticationRequirements(
             of: derivationOptions,
             allowNullRequirement:
                 // Okay to have null/empty derivationOptionsJson, with no authentication requirements, when getting a sealing key
@@ -96,36 +71,6 @@ extension ApiRequest {
         ) else {
             throw RequestException.ClientNotAuthorized(AuthenticationRequirementIn.DerivationOptions)
         }
-    }
-}
-
-protocol ApiRequestParameterUnmarshaller {
-    func optionalField(name fieldName: String) -> String?
-    func requiredField(name fieldName: String) throws -> String
-}
-
-class UrlParameters: ApiRequestParameterUnmarshaller {
-    private let parameters: [String: String?]
-
-    init(url: URL) {
-        var queryDictionary = [String: String?]()
-        if let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems {
-            for queryItem in queryItems {
-                queryDictionary[queryItem.name] = queryItem.value
-            }
-        }
-        self.parameters = queryDictionary
-    }
-
-    func optionalField(name fieldName: String) -> String? {
-        return parameters[fieldName] ?? nil
-    }
-    func requiredField(name fieldName: String) throws -> String {
-        let value = parameters[fieldName] ?? nil
-        guard let nonNilValue = value else {
-            throw RequestException.ParameterNotFound(fieldName)
-        }
-        return nonNilValue
     }
 }
 
@@ -137,25 +82,35 @@ private func getDerivationOptions(json derivationOptionsJson: String?) throws ->
 }
 
 class ApiRequestWithExplicitDerivationOptions: ApiRequest {
+    let id: String
     let derivationOptions: DerivationOptions
     let derivationOptionsJson: String?
-    let requestContext: RequestContext
+    let securityContext: RequestSecurityContext
     let derivationOptionsJsonMayBeModifiedParameter: Bool?
-
+//    internal var resultCache: [String: Result<SuccessResponse, Error>] = [:]
+    var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
+    var derivationOptionsJsonMayBeModifiedDefault: Bool { get { false } }
+    
     var derivationOptionsJsonMayBeModified: Bool { get {
+        // Whether the recipe (dervivation options) can be modified depends on whehter a parameter
+        // allowing it is set or, failing that, the default for the given command type
         self.derivationOptionsJsonMayBeModifiedParameter ?? derivationOptionsJsonMayBeModifiedDefault
     }}
+    
+    func execute(seedString: String) throws -> SuccessResponse { throw RequestException.NotImplemented }
 
-    init(requestContext: RequestContext, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool?) throws {
-        self.requestContext = requestContext
+    init(id: String, securityContext: RequestSecurityContext, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool?) throws {
+        self.id = id
+        self.securityContext = securityContext
         self.derivationOptionsJson = derivationOptionsJson
         self.derivationOptionsJsonMayBeModifiedParameter = derivationOptionsJsonMayBeModified
         self.derivationOptions = try getDerivationOptions(json: self.derivationOptionsJson)
         try throwIfNotAuthorized()
     }
 
-    init(requestContext: RequestContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
-        self.requestContext = requestContext
+    init(id: String, securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
+        self.id = id
+        self.securityContext = securityContext
         self.derivationOptionsJson = unmarshaller.optionalField(name: "derivationOptionsJson")
         self.derivationOptions = try getDerivationOptions(json: self.derivationOptionsJson)
         let derivationOptionsJsonMayBeModified = unmarshaller.optionalField(name: "derivationOptionsJsonMayBeModified")
@@ -168,28 +123,28 @@ class ApiRequestGenerateSignature: ApiRequestWithExplicitDerivationOptions, ApiR
     let command: ApiCommand = ApiCommand.generateSignature
     let message: Data
 
-    init(requestContext: RequestContext, message: Data, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool) throws {
+    init(id: String, securityContext: RequestSecurityContext, message: Data, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool) throws {
         self.message = message
-        try super.init(requestContext: requestContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
+        try super.init(id: id, securityContext: securityContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
     }
 
-    override init(requestContext: RequestContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
+    override init(id: String, securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
         self.message = base64urlDecode(try unmarshaller.requiredField(name: "message"))!
-        try super.init(requestContext: requestContext, unmarshaller: unmarshaller)
+        try super.init(id: id, securityContext: securityContext, unmarshaller: unmarshaller)
     }
 
-    func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String) throws -> SuccessResponse {
         let signingKey = try SigningKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson ?? "")
         let signature = try signingKey.generateSignature(with: message)
-        return SuccessResponse.generateSignature(signature: base64urlEncode(signature), signatureVerificationKeyJson: signingKey.signatureVerificationKey.toJson())
+        return SuccessResponse.generateSignature(signature: signature, signatureVerificationKeyJson: signingKey.signatureVerificationKey.toJson())
     }
 }
 
 class ApiRequestGetPassword: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
     let command = ApiCommand.getPassword
-    let requireClientMayRetrieveKeyToBeSetToTrue = false
+    override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
 
-    func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getPassword(passwordJson:
             try Password.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .toJson()
@@ -199,9 +154,9 @@ class ApiRequestGetPassword: ApiRequestWithExplicitDerivationOptions, ApiRequest
 
 class ApiRequestGetSecret: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
     let command = ApiCommand.getSecret
-    let requireClientMayRetrieveKeyToBeSetToTrue = false
+    override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
 
-    func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSecret(secretJson:
             try Secret.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .toJson()
@@ -211,10 +166,10 @@ class ApiRequestGetSecret: ApiRequestWithExplicitDerivationOptions, ApiRequestCo
 class ApiRequestGetSealingKey: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
     let command: ApiCommand = ApiCommand.getSealingKey
     let allowNilEmptyDerivationOptions = false
-    let requireClientMayRetrieveKeyToBeSetToTrue = false
-    let derivationOptionsJsonMayBeModifiedDefault = true
-
-    func execute(seedString: String) throws -> SuccessResponse {
+    override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
+    override var derivationOptionsJsonMayBeModifiedDefault: Bool { get { true } }
+    
+    override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSealingKey(sealingKeyJson:
             try SealingKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .toJson()
@@ -224,14 +179,14 @@ class ApiRequestGetSealingKey: ApiRequestWithExplicitDerivationOptions, ApiReque
 
 class ApiRequestGetSignatureVerificationKey: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
     let command = ApiCommand.getSignatureVerificationKey
-    let requireClientMayRetrieveKeyToBeSetToTrue = false
+    override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
 }
 
 class ApiRequestGetSigningKey: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
     let command = ApiCommand.getSigningKey
-    let requireClientMayRetrieveKeyToBeSetToTrue = true
+    override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
 
-    func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSigningKey(signingKeyJson:
             try SigningKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .toJson()
@@ -240,9 +195,9 @@ class ApiRequestGetSigningKey: ApiRequestWithExplicitDerivationOptions, ApiReque
 }
 class ApiRequestGetSymmetricKey: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
     let command = ApiCommand.getSymmetricKey
-    let requireClientMayRetrieveKeyToBeSetToTrue = true
+    override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
 
-    func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSymmetricKey(symmetricKeyJson:
             try SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .toJson()
@@ -251,9 +206,9 @@ class ApiRequestGetSymmetricKey: ApiRequestWithExplicitDerivationOptions, ApiReq
 }
 class ApiRequestGetUnsealingKey: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
     let command = ApiCommand.getUnsealingKey
-    let requireClientMayRetrieveKeyToBeSetToTrue = true
+    override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
 
-    func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getUnsealingKey(unsealingKeyJson:
             try UnsealingKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .toJson()
@@ -264,20 +219,20 @@ class ApiRequestGetUnsealingKey: ApiRequestWithExplicitDerivationOptions, ApiReq
 class ApiRequestSealWithSymmetricKey: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
     let command = ApiCommand.sealWithSymmetricKey
     let plaintext: Data
-    let requireClientMayRetrieveKeyToBeSetToTrue = false
-    let derivationOptionsJsonMayBeModifiedDefault = true
+    override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
+    override var derivationOptionsJsonMayBeModifiedDefault: Bool { get { true } }
 
-    init(requestContext: RequestContext, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool, plaintext: Data) throws {
+    init(id: String, securityContext: RequestSecurityContext, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool, plaintext: Data) throws {
         self.plaintext = plaintext
-        try super.init(requestContext: requestContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
+        try super.init(id: id, securityContext: securityContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
     }
 
-    override init(requestContext: RequestContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
+    override init(id: String, securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
         self.plaintext = base64urlDecode(try unmarshaller.requiredField(name: "plaintext"))!
-        try super.init(requestContext: requestContext, unmarshaller: unmarshaller)
+        try super.init(id: id, securityContext: securityContext, unmarshaller: unmarshaller)
     }
 
-    func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String) throws -> SuccessResponse {
         let packagedSealedMessage = try SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
             .seal(withMessage: "FIXME")// FIXME .seal(withMessage: plaintext)
         return SuccessResponse.sealWithSymmetricKey(packagedSealedMessageJson: packagedSealedMessage.toJson())
@@ -293,14 +248,19 @@ private func getPackagedSealedMessageJsonObject(json packagedSealedMessageJson: 
 }
 
 class ApiRequestUnseal: ApiRequest {
-    let requestContext: RequestContext
+    let id: String
+    let securityContext: RequestSecurityContext
     let packagedSealedMessage: PackagedSealedMessageJsonObject
     let packagedSealedMessageJson: String
     let derivationOptions: DerivationOptions
+//    internal var resultCache: [String: Result<SuccessResponse, Error>] = [:]
 
+    var derivationOptionsJsonMayBeModifiedDefault: Bool { get { false } }
     let derivationOptionsJsonMayBeModified = false
     let requireClientMayRetrieveKeyToBeSetToTrue = false
 
+    func execute(seedString: String) throws -> SuccessResponse { throw RequestException.NotImplemented }
+    
     var derivationOptionsJson: String? { get {
         return self.packagedSealedMessage.derivationOptionsJson
     }}
@@ -311,8 +271,9 @@ class ApiRequestUnseal: ApiRequest {
         return nil
     }
 
-    fileprivate init(requestContext: RequestContext, packagedSealedMessageJson: String) throws {
-        self.requestContext = requestContext
+    init(id: String, securityContext: RequestSecurityContext, packagedSealedMessageJson: String) throws {
+        self.id = id
+        self.securityContext = securityContext
         self.packagedSealedMessageJson = packagedSealedMessageJson
         let packagedSealedMessage = try getPackagedSealedMessageJsonObject(json: packagedSealedMessageJson)
         self.packagedSealedMessage = packagedSealedMessage
@@ -320,8 +281,9 @@ class ApiRequestUnseal: ApiRequest {
         try throwIfNotAuthorized()
     }
 
-    fileprivate init(requestContext: RequestContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
-        self.requestContext = requestContext
+    init(id: String, securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
+        self.id = id
+        self.securityContext = securityContext
         self.packagedSealedMessageJson = try unmarshaller.requiredField(name: "packagedSealedMessageJson")
         let packagedSealedMessage = try getPackagedSealedMessageJsonObject(json: packagedSealedMessageJson)
         self.packagedSealedMessage = packagedSealedMessage
@@ -329,7 +291,7 @@ class ApiRequestUnseal: ApiRequest {
         try throwIfNotAuthorized()
     }
 
-    func throwIfNotAuthorized(requestContext: RequestContext) throws {
+    func throwIfNotAuthorized(requestContext: RequestSecurityContext) throws {
         let unsealingInstructions = try self.unsealingInstructions()
         guard requestContext.satisfiesAuthenticationRequirements(
             of: derivationOptions,
@@ -351,186 +313,76 @@ class ApiRequestUnsealWithSymmetricKey: ApiRequestUnseal, ApiRequestCommand {
     let command = ApiCommand.unsealWithSymmetricKey
     let allowNilEmptyDerivationOptions = false
 
-    func execute(seedString: String) throws -> SuccessResponse {
-        try SuccessResponse.unsealWithSymmetricKey(plaintext: base64urlEncode(
+    override func execute(seedString: String) throws -> SuccessResponse {
+        try SuccessResponse.unsealWithSymmetricKey(plaintext:
             SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
                 .unseal(withJsonPackagedSealedMessage: packagedSealedMessageJson)
-        ))
+        )
     }
 }
 class ApiRequestUnsealWithUnsealingKey: ApiRequestUnseal, ApiRequestCommand {
     let command = ApiCommand.unsealWithUnsealingKey
     let allowNilEmptyDerivationOptions = true
 
-    func execute(seedString: String) throws -> SuccessResponse {
-        try SuccessResponse.unsealWithUnsealingKey(plaintext: base64urlEncode(
+    override func execute(seedString: String) throws -> SuccessResponse {
+        try SuccessResponse.unsealWithUnsealingKey(plaintext: 
             UnsealingKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
                 .unseal(withJsonPackagedSealedMessage: packagedSealedMessageJson)
-        ))
+        )
     }
 }
 
-private func successResponseToDictionary(successResponse: SuccessResponse) -> [String: String] {
-    switch successResponse {
-    case .generateSignature(signature: let signature, signatureVerificationKeyJson: let signatureVerificationKeyJson):
-        return ["signature": signature, "signatureVerificationKeyJson": signatureVerificationKeyJson]
-    case .getPassword(passwordJson: let passwordJson):
-        return ["passwordJson": passwordJson]
-    case .getSealingKey(sealingKeyJson: let sealingKeyJson):
-        return ["sealingKeyJson": sealingKeyJson]
-    case .getSecret(secretJson: let secretJson):
-        return ["secretJson": secretJson]
-    case .getSigningKey(signingKeyJson: let signingKeyJson):
-        return ["signingKeyJson": signingKeyJson]
-    case .getSignatureVerificationKey(signatureVerificationKeyJson: let signatureVerificationKeyJson):
-        return ["signatureVerificationKeyJson": signatureVerificationKeyJson]
-    case .getSymmetricKey(symmetricKeyJson: let symmetricKeyJson):
-        return ["symmetricKeyJson": symmetricKeyJson]
-    case .getUnsealingKey(unsealingKeyJson: let unsealingKeyJson):
-        return ["unsealingKeyJson": unsealingKeyJson]
-    case .sealWithSymmetricKey(packagedSealedMessageJson: let packagedSealedMessageJson):
-        return ["packagedSealedMessageJson": packagedSealedMessageJson]
-    case .unsealWithSymmetricKey(plaintext: let plaintext):
-        return ["plaintext": plaintext]
-    case .unsealWithUnsealingKey(plaintext: let plaintext):
-        return ["plaintext": plaintext]
+func constructApiRequest(
+    id: String,
+    securityContext: RequestSecurityContext,
+    unmarshaller: ApiRequestParameterUnmarshaller
+) throws -> ApiRequest {
+    guard let command = ApiCommand(rawValue: try unmarshaller.requiredField(name: "command")) else {
+        throw RequestException.InvalidCommand
+    }
+    switch command {
+    case ApiCommand.generateSignature:
+        return try ApiRequestGenerateSignature(id: id, securityContext: securityContext, unmarshaller: unmarshaller)
+    case ApiCommand.getPassword:
+        return try ApiRequestGetPassword(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
+    case ApiCommand.getSealingKey:
+        return try ApiRequestGetSealingKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
+    case ApiCommand.getSecret:
+        return try ApiRequestGetSecret(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
+    case ApiCommand.getSigningKey:
+        return try ApiRequestGetSigningKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
+    case ApiCommand.getSignatureVerificationKey:
+        return try ApiRequestGetSignatureVerificationKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
+    case ApiCommand.getSymmetricKey:
+        return try ApiRequestGetSymmetricKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
+    case ApiCommand.getUnsealingKey:
+        return try ApiRequestGetUnsealingKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
+    case ApiCommand.sealWithSymmetricKey:
+        return try ApiRequestSealWithSymmetricKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
+    case ApiCommand.unsealWithSymmetricKey:
+        return try ApiRequestUnsealWithSymmetricKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
+    case ApiCommand.unsealWithUnsealingKey:
+        return try ApiRequestUnsealWithUnsealingKey(id: id,securityContext: securityContext, unmarshaller: unmarshaller)
     }
 }
 
-class AuthenticationTokens {
-    static var tokenToUrl: [String: String] = [:]
+func executeApiRequest(
+    getSeedString: @escaping () throws -> String,
+    id: String,
+    securityContext: RequestSecurityContext,
+    unmarshaller: ApiRequestParameterUnmarshaller
+) throws -> SuccessResponse {
+    // Construct the request and validate all parameters
+    let request = try constructApiRequest(id: id, securityContext: securityContext, unmarshaller: unmarshaller)
 
-    static func setToken(authToken: String, replyToUrl: String) {
-        tokenToUrl[authToken] = replyToUrl
-    }
+    // Do not allow the request to proceed unless all authorization checks pass
+    try request.throwIfNotAuthorized()
 
-    static func validateToken(authToken: String, replyToUrl: String) -> Bool {
-        return tokenToUrl[authToken] == replyToUrl
-    }
-}
+    // Only after authorization checks pass can we get the seed string
+    let seedString = try getSeedString()
 
-class UrlRequestContext: RequestContext {
-    private let getSeedString: () throws -> String
+    // Attempt to execute the request to generate a response to send
+    let successResponse: SuccessResponse = try request.execute(seedString: seedString)
 
-    let requestParameters: UrlParameters
-
-    let replyToUrlString: String
-    let host: String
-    let path: String
-    let validatedByAuthToken: Bool
-    let command: ApiCommand
-    let requestId: String
-
-    var responseUrl: URLComponents
-
-    init(getSeedString: @escaping () throws -> String, incomingRequestUrl: URL) throws {
-        self.getSeedString = getSeedString
-        // Create an accessor for the requests parameters to process them
-        self.requestParameters = UrlParameters(url: incomingRequestUrl)
-
-        // All requests must have a command
-        guard let command = ApiCommand(rawValue: try requestParameters.requiredField(name: "command")) else {
-            throw RequestException.InvalidCommand
-        }
-        self.command = command
-
-        // All requests must have a requestId
-        self.requestId = try requestParameters.requiredField(name: "requestId")
-
-        // All requests must have a replyTo field with the URL to which the response
-        // will be sent
-        self.replyToUrlString = try requestParameters.requiredField(name: "replyTo")
-        guard let replyToUrl = URLComponents(string: replyToUrlString) else {
-            throw RequestException.FailedToParseReplyTo(replyToUrlString)
-        }
-        self.host = replyToUrl.host ?? ""
-        self.path = replyToUrl.path
-        self.responseUrl = replyToUrl
-
-        // Some requests may have an authToken proving that they can receive requests sent
-        // to replyTo
-        if let authToken = requestParameters.optionalField(name: "authToken") {
-            self.validatedByAuthToken = AuthenticationTokens.validateToken(authToken: authToken, replyToUrl: replyToUrlString)
-        } else {
-            self.validatedByAuthToken = false
-        }
-
-        // The rest of the request will be constructed later based on the command.
-    }
-
-    /**
-     In progress
-     */
-    func constructRequest() throws -> ApiRequest {
-        switch command {
-        case ApiCommand.generateSignature:
-            return try ApiRequestGenerateSignature(requestContext: self, unmarshaller: requestParameters)
-        case ApiCommand.getPassword:
-            return try ApiRequestGetPassword(requestContext: self, unmarshaller: requestParameters)
-        case ApiCommand.getSealingKey:
-            return try ApiRequestGetSealingKey(requestContext: self, unmarshaller: requestParameters)
-        case ApiCommand.getSecret:
-            return try ApiRequestGetSecret(requestContext: self, unmarshaller: requestParameters)
-        case ApiCommand.getSigningKey:
-            return try ApiRequestGetSigningKey(requestContext: self, unmarshaller: requestParameters)
-        case ApiCommand.getSignatureVerificationKey:
-            return try ApiRequestGetSignatureVerificationKey(requestContext: self, unmarshaller: requestParameters)
-        case ApiCommand.getSymmetricKey:
-            return try ApiRequestGetSymmetricKey(requestContext: self, unmarshaller: requestParameters)
-        case ApiCommand.getUnsealingKey:
-            return try ApiRequestGetUnsealingKey(requestContext: self, unmarshaller: requestParameters)
-        case ApiCommand.sealWithSymmetricKey:
-            return try ApiRequestSealWithSymmetricKey(requestContext: self, unmarshaller: requestParameters)
-        case ApiCommand.unsealWithSymmetricKey:
-            return try ApiRequestUnsealWithSymmetricKey(requestContext: self, unmarshaller: requestParameters)
-        case ApiCommand.unsealWithUnsealingKey:
-            return try ApiRequestUnsealWithUnsealingKey(requestContext: self, unmarshaller: requestParameters)
-        }
-    }
-
-    private func execute() {
-        var responseDictionary: [String: String] = [:]
-        do {
-            // Construct the request and validate all parameters
-            let request = try constructRequest()
-
-            // Do not allow the request to proceed unless all authorization checks pass
-            try request.throwIfNotAuthorized()
-
-            // Only after authorization checks pass can we get the seed string
-            let seedString = try getSeedString()
-
-            // Attempt to execute the request to generate a response to send
-            let successResponse: SuccessResponse = try request.execute(seedString: seedString)
-
-            // Conert the response into a dictionary
-            responseDictionary = successResponseToDictionary(successResponse: successResponse)
-        } catch RequestException.ClientNotAuthorized(let authenticationRequirementIn) {
-            responseDictionary["exception"] = "ClientNotAuthorizedDueTo" +
-                (authenticationRequirementIn == AuthenticationRequirementIn.DerivationOptions ?
-                "DerivationOptions" : "UnsealingInstructions")
-        } catch {
-            responseDictionary["exception"] = "Unknown"
-            responseDictionary["message"] = error.localizedDescription
-        }
-
-        responseDictionary["requestID"] = self.requestId
-
-        // Put all of the response values into the URL
-        for (name, value) in responseDictionary {
-            self.responseUrl.queryItems?.append(URLQueryItem(name: name, value: value))
-        }
-        guard let url = self.responseUrl.url else {
-            return
-        }
-        
-        #if os(iOS)
-        // Transmit the response
-        UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey.universalLinksOnly: false]) { success in
-            print("Response via URL completion handler returned \(success)")
-        }
-        #else
-        NSWorkspace.shared.open(url)
-        #endif
-    }
+    return successResponse
 }
