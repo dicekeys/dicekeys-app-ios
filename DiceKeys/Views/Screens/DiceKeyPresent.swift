@@ -55,12 +55,7 @@ struct DiceKeyPresentNavigationFooter: View {
                     navigateTo(newPageContent)
                 }) {
                     VStack {
-                        Image(systemName: "arrow.down")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                        Spacer(minLength: 2)
-                        Image(systemName: "ellipsis.rectangle.fill")
-                            .renderingMode(.template)
+                        Image("Secret with Arrow")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                         Spacer(minLength: 2)
