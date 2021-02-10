@@ -123,7 +123,7 @@ struct DerivationRecipeForFromUrl: View {
         self.model = DerivationRecipeForFromUrlModel(type, recipeBuilderState)
     }
     
-    var textfield: some View {
+    var urlTextField: some View {
         TextField("URL or comma-separated list of domains", text: $model.urlString)
             .font(.body)
             .multilineTextAlignment(.center)
@@ -133,22 +133,26 @@ struct DerivationRecipeForFromUrl: View {
         TextField("Character Length (6 - 999)", text: lengthInCharString)
             .font(.body)
             .multilineTextAlignment(.center)
+            .padding(.top, 10)
     }
 
     var body: some View {
         return VStack {
             VStack(alignment: .center, spacing: 0) {
                 #if os(iOS)
-                textfield.keyboardType(.alphabet)
+                urlTextField.keyboardType(.alphabet)
                 #else
-                textfield
-                lengthTextfield
+                urlTextField
                 #endif
                 Text("URL or comma-separated list of domains").font(.footnote).foregroundColor(.gray)
+                
+                #if os(iOS)
+                lengthTextfield.keyboardType(.numberPad)
+                #else
+                lengthTextfield
+                #endif
             }
             SequenceNumberField(sequenceNumber: $model.sequenceNumber)
-            lengthTextfield.keyboardType(.numberPad)
-            Text("Character Length (6 - 999)").font(.footnote).foregroundColor(.gray)
         }
     }
 }
