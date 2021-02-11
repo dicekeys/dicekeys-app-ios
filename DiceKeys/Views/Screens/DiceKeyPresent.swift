@@ -222,6 +222,7 @@ struct DiceKeyPresent: View {
                     switch self.pageContent {
                     case .Save: DiceKeyStorageOptions(diceKey: diceKey, done: { navigate(to: .Default) }).padding(.horizontal, defaultContentPadding)
                     case .Derive(let derivationRecipeBuilder): DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)
+                        .frame(height: geometry.size.height * 0.7)
                     case .Backup: BackupDiceKey(
                         onComplete: { navigate(to: .Default) },
                         diceKey: Binding<DiceKey>(get: { () -> DiceKey in
