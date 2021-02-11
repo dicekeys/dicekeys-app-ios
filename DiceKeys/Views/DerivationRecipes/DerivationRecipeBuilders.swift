@@ -7,9 +7,15 @@
 
 import SwiftUI
 
+enum RecipeBuilderProgress {
+    case incomplete
+    case error(String)
+    case ready(DerivationRecipe)
+}
 
 class RecipeBuilderState: ObservableObject {
-    @Published var derivationRecipe: DerivationRecipe?
+    @Published var progress: RecipeBuilderProgress = .incomplete
+
     init() {}
 }
 
@@ -25,10 +31,10 @@ private class DerivationRecipeBuilderForTemplateModel: ObservableObject {
     }
 
     func update() {
-        recipeBuilderState.derivationRecipe = DerivationRecipe(
+        recipeBuilderState.progress = .ready(DerivationRecipe(
             template: template,
             sequenceNumber: sequenceNumber
-        )
+        ))
     }
 }
 
@@ -49,20 +55,20 @@ struct DerivationRecipeBuilderForTemplate: View {
     }
 }
 
-private class DerivationRecipeForFromUrlModel: ObservableObject {
+private class DerivationRecipeFromUrlModel: ObservableObject {
     @ObservedObject var recipeBuilderState: RecipeBuilderState
-    @Published var urlString: String = "https://example.com" { didSet { update() } }
+    @Published var urlString: String = "" { didSet { update() } }
     @Published var sequenceNumber: Int = 1 { didSet { update() } }
     @Published var lengthInChars: Int = 0 { didSet { update() } }
     let type: DerivationOptionsType
 
-    var hosts: [String] {
-        if let host = URL(string: urlString)?.host, host != "example.com" {
+    var hosts: [String]? {
+        if let host = URL(string: urlString)?.host {
             // The field contains a valid URL from which to take a host
             return [host]
         } else if urlString.contains("/") || urlString.contains(":") {
             // The field was an invalid URL and not a list of URLs
-            return []
+            return nil
         } else {
             // Assume the field was meant to be a URL or list of URLs
             return urlString
@@ -77,13 +83,16 @@ private class DerivationRecipeForFromUrlModel: ObservableObject {
                 }
         }
     }
-    var name: String { hosts.joined(separator: ", ") }
+    var name: String { hosts?.joined(separator: ", ") ?? "" }
 
     func update() {
-        guard hosts.count > 0 else { recipeBuilderState.derivationRecipe = nil; return }
-        self.recipeBuilderState.derivationRecipe = DerivationRecipe(
+        guard let hosts = self.hosts else { recipeBuilderState.progress = .error("Field does not contain a valid URL or domain list"); return }
+        guard hosts.contains(where: { $0 != "example.com" }) else {
+            recipeBuilderState.progress = .incomplete ; return
+        }
+        self.recipeBuilderState.progress = .ready(DerivationRecipe(
             type: type, name: name,
-            derivationOptionsJson: getDerivationOptionsJson(hosts: hosts, sequenceNumber: sequenceNumber, lengthInChars: type == .Password ? lengthInChars : 0))
+            derivationOptionsJson: getDerivationOptionsJson(hosts: hosts, sequenceNumber: sequenceNumber, lengthInChars: type == .Password ? lengthInChars : 0)))
     }
 
     init(_ type: DerivationOptionsType, _ recipeBuilderState: RecipeBuilderState) {
@@ -94,27 +103,75 @@ private class DerivationRecipeForFromUrlModel: ObservableObject {
 }
 
 struct DerivationRecipeForFromUrl: View {
-    @ObservedObject private var model: DerivationRecipeForFromUrlModel
+    @ObservedObject private var model: DerivationRecipeFromUrlModel
+    var lengthInCharString: Binding<String> {
+        return Binding<String>(
+            get: {
+                if model.lengthInChars == 0 {
+                    return ""
+                }
+                return String(model.lengthInChars)
+                
+            },
+            set: { newValue in
+                if (newValue == "") {
+                    model.lengthInChars = 0
+                }
+                if let newIntValue = Int(newValue.filter { "0123456789".contains($0) }) {
+                    // We don't value to be greater than 999
+                    guard newIntValue <= 999 && newIntValue >= 6 else {
+                        return
+                    }
+                    model.lengthInChars = newIntValue
+                }
+            }
+        )
+    }
 
     init(type: DerivationOptionsType, recipeBuilderState: RecipeBuilderState) {
-        self.model = DerivationRecipeForFromUrlModel(type, recipeBuilderState)
+        self.model = DerivationRecipeFromUrlModel(type, recipeBuilderState)
     }
     
-    var textfield: some View {
-        TextField("URL or comma-separated list of domains", text: $model.urlString)
+    var urlTextField: some View {
+        #if os(iOS)
+        return TextField("https://example.com", text: $model.urlString)
+            .disableAutocorrection(true)
+            .autocapitalization(.none)
             .font(.body)
             .multilineTextAlignment(.center)
+        #else
+        return TextField("https://example.com", text: $model.urlString)
+            .disableAutocorrection(true)
+            .font(.body)
+            .multilineTextAlignment(.center)
+        #endif
+    }
+    
+    var lengthTextfield: some View {
+        TextField("no limit", text: lengthInCharString)
+            .font(.body)
+            .multilineTextAlignment(.center)
+            .padding(.top, 10)
     }
 
     var body: some View {
         return VStack {
             VStack(alignment: .center, spacing: 0) {
                 #if os(iOS)
-                textfield.keyboardType(.alphabet)
+                urlTextField.keyboardType(.alphabet)
                 #else
-                textfield
+                urlTextField
                 #endif
                 Text("URL or comma-separated list of domains").font(.footnote).foregroundColor(.gray)
+                if case let RecipeBuilderProgress.error(errorString) = model.recipeBuilderState.progress {
+                    Text(errorString).font(.footnote).foregroundColor(.red)
+                }
+                #if os(iOS)
+                lengthTextfield.keyboardType(.numberPad)
+                #else
+                lengthTextfield
+                #endif
+                Text("Maximum Character Length (6 - 999)").font(.footnote).foregroundColor(.gray)
             }
             SequenceNumberField(sequenceNumber: $model.sequenceNumber)
         }
@@ -128,9 +185,9 @@ private class DerivationRecipeForFromDerivationOptionsJsonModel: ObservableObjec
     @Published var derivationOptionsJson: String = "" { didSet { update() } }
 
     func update() {
-        self.recipeBuilderState.derivationRecipe = DerivationRecipe(
+        self.recipeBuilderState.progress = .ready(DerivationRecipe(
             type: type, name: name, derivationOptionsJson: derivationOptionsJson
-        )
+        ))
     }
 
     init(_ recipeBuilderState: RecipeBuilderState) {
@@ -168,16 +225,37 @@ struct DerivationRecipeBuilder: View {
 }
 
 struct DerivationRecipeView: View {
-    let recipe: DerivationRecipe?
-
+    let recipeBuilderProgress: RecipeBuilderProgress
+    
     var body: some View {
         VStack {
-            Text(recipe?.derivationOptionsJson ?? "{}")
-                .font(Font.system(.footnote, design: .monospaced))
-                .scaledToFit()
-                .minimumScaleFactor(0.01)
-                .fixedSize(horizontal: false, vertical: true)
-                .lineLimit(1)
+            switch (recipeBuilderProgress) {
+            case .incomplete:
+                Text("Complete the recipe above to see the output")
+                    .font(Font.system(.footnote, design: .monospaced))
+                    .foregroundColor(.gray)
+                    .scaledToFit()
+                    .minimumScaleFactor(0.01)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(1)
+            case .error(let errorString):
+                Text(errorString)
+                    .font(Font.system(.footnote, design: .monospaced))
+                    .foregroundColor(.red)
+                    .scaledToFit()
+                    .minimumScaleFactor(0.01)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(1)
+            case .ready(let recipe):
+                if let recipeJson = recipe.derivationOptionsJson {
+                    Text(recipeJson)
+                        .font(Font.system(.footnote, design: .monospaced))
+                        .scaledToFit()
+                        .minimumScaleFactor(0.01)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .lineLimit(1)
+                }
+            }
         }
     }
 }

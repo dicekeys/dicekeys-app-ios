@@ -27,11 +27,8 @@ struct DiceKeyWithDerivedValue: View {
 //    }
 
     var derivationRecipe: DerivationRecipe? {
-//        guard let derivationRecipeBuilder = derivationRecipeBuilder else { return nil }
-        switch derivationRecipeBuilder {
-        case .recipe(let chosenRecipe): return chosenRecipe
-        default: return recipeBuilderState.derivationRecipe
-        }
+        guard case let .ready(derivationRecipe) = recipeBuilderState.progress else { return nil }
+            return derivationRecipe
     }
 
     var derivationOptionsJson: String? {
@@ -69,14 +66,11 @@ struct DiceKeyWithDerivedValue: View {
 
     var body: some View {
         VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
-//            DerivationRecipeMenu({ menuOptionChosen in self.menuOptionChosen = menuOptionChosen }) { Text(derivationRecipe?.name ?? "Derive...") }
-            if let derivationRecipeBuilder = self.derivationRecipeBuilder {
+           if let derivationRecipeBuilder = self.derivationRecipeBuilder {
                 FormCard(title: "Recipe\( derivationRecipe == nil ? "" : " for \( derivationRecipe?.name ?? "" )")") {
                     VStack(alignment: .leading) {
                         if derivationRecipeBuilder.isBuilder {
-//                            Section(header: Text("Settings").font(.title2) ) {
                             DerivationRecipeBuilder(derivableMenuChoice: derivationRecipeBuilder, recipeBuilderState: recipeBuilderState)
-//                            }
                         }
                         Divider().hideIf(derivationRecipe == nil)
                         Text("Internal representation of your recipe").hideIf(derivationRecipe == nil)
@@ -85,7 +79,7 @@ struct DiceKeyWithDerivedValue: View {
                             .minimumScaleFactor(0.01)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
-                        DerivationRecipeView(recipe: derivationRecipe).padding(.top, 3).hideIf(derivationRecipe == nil)
+                        DerivationRecipeView(recipeBuilderProgress: self.recipeBuilderState.progress).padding(.top, 3)
                         Divider()
                         HStack {
                             Spacer()
@@ -109,7 +103,6 @@ struct DiceKeyWithDerivedValue: View {
                                 .font(.body)
                                 .multilineTextAlignment(.center)
                                 .lineLimit(2)
-    //                            .scaledToFit()
                                 .minimumScaleFactor(0.1)
                                 .fixedSize(horizontal: false, vertical: true)
 //                                .padding(.horizontal, 5)
@@ -131,7 +124,7 @@ struct DiceKeyWithDerivedValue: View {
             // Spacer()
 
             Spacer()
-        }.padding(.vertical, 5)
+        }
     }
 }
 
