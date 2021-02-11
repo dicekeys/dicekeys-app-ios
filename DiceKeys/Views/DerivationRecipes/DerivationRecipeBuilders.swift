@@ -57,7 +57,7 @@ struct DerivationRecipeBuilderForTemplate: View {
 
 private class DerivationRecipeFromUrlModel: ObservableObject {
     @ObservedObject var recipeBuilderState: RecipeBuilderState
-    @Published var urlString: String = "https://example.com" { didSet { update() } }
+    @Published var urlString: String = "" { didSet { update() } }
     @Published var sequenceNumber: Int = 1 { didSet { update() } }
     @Published var lengthInChars: Int = 0 { didSet { update() } }
     let type: DerivationOptionsType
@@ -133,13 +133,22 @@ struct DerivationRecipeForFromUrl: View {
     }
     
     var urlTextField: some View {
-        TextField("no limit", text: $model.urlString)
+        #if os(iOS)
+        return TextField("https://example.com", text: $model.urlString)
+            .disableAutocorrection(true)
+            .autocapitalization(.none)
             .font(.body)
             .multilineTextAlignment(.center)
+        #else
+        return TextField("https://example.com", text: $model.urlString)
+            .disableAutocorrection(true)
+            .font(.body)
+            .multilineTextAlignment(.center)
+        #endif
     }
     
     var lengthTextfield: some View {
-        TextField("Character Length (6 - 999)", text: lengthInCharString)
+        TextField("no limit", text: lengthInCharString)
             .font(.body)
             .multilineTextAlignment(.center)
             .padding(.top, 10)
