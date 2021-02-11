@@ -55,22 +55,22 @@ struct DiceKeyPresentNavigationFooter: View {
             }) {
                 VStack {
                     Image("Secret with Arrow")
+                        .renderingMode(.template)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                     Spacer(minLength: 2)
                     Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
-                }
-                .foregroundColor(.black)
+                }.foregroundColor(Color.footerForeground)
+                .if({
+                    switch pageContent {
+                    case .Derive : return true
+                    default: return false
+                    }
+                }() ) { $0.colorInvert() }
             }
             .frame(width: geometry.size.width * BottomButtonFractionalWidth,
                    height: navBarContentHeight,
                    alignment: .center)
-            .if( {
-                switch pageContent {
-                case .Derive : return true
-                default: return false
-                }
-            }() ) { $0.colorInvert() }
             #elseif os(macOS)
             VStack {
                 Image(systemName: "arrow.down")
