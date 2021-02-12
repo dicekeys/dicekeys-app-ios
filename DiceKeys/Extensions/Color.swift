@@ -45,6 +45,7 @@ extension Color {
     static var formContentBackground: Color { Color("formContentBackground") }
     static var formInstructions: Color { Color("formInstructions") }
     static var funnelBackground: Color { Color("funnelBackground") }
+    static var footerForeground: Color { Color("footerForeground") }
 
 }
 

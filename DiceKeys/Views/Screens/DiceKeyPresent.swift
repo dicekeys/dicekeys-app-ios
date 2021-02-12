@@ -31,90 +31,88 @@ struct DiceKeyPresentNavigationFooter: View {
     var navBarImageHeight: CGFloat { navBarContentHeight * 0.75 }
 
     var body: some View {
-        let view = VStack {
-        ZStack {
-            HStack(alignment: .top) {
-                Spacer()
+        let view = VStack(alignment: .center, spacing: 0) {
+        HStack(alignment: .top) {
+            Spacer()
+            VStack {
+                Image("USB Key")
+                    .renderingMode(.template)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .onTapGesture { navigateTo(.SeedHardwareKey) }
+                Text("Seed a SoloKey").multilineTextAlignment(.center).font(.footnote)
+
+            }.frame(width: geometry.size.width * BottomButtonFractionalWidth,
+                    height: navBarContentHeight, alignment: .center)
+            .onTapGesture {
+                navigateTo(.SeedHardwareKey)
+            }
+            .if( pageContent == .SeedHardwareKey ) { $0.colorInvert()
+            }
+            #if os(iOS)
+            DerivationRecipeMenu({ newPageContent in
+                navigateTo(newPageContent)
+            }) {
                 VStack {
-                    Image("USB Key")
+                    Image("Secret with Arrow")
                         .renderingMode(.template)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .onTapGesture { navigateTo(.SeedHardwareKey) }
-                    Text("Seed a SoloKey").multilineTextAlignment(.center).font(.footnote)
-
-                }.frame(width: geometry.size.width * BottomButtonFractionalWidth,
-                        height: navBarContentHeight, alignment: .center)
-                .onTapGesture {
-                    navigateTo(.SeedHardwareKey)
-                }
-                .if( pageContent == .SeedHardwareKey ) { $0.colorInvert()
-                }
-                #if os(iOS)
-                DerivationRecipeMenu({ newPageContent in
-                    navigateTo(newPageContent)
-                }) {
-                    VStack {
-                        Image("Secret with Arrow")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                        Spacer(minLength: 2)
-                        Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
-                    }
-                    .foregroundColor(.black)
-                }
-                .frame(width: geometry.size.width * BottomButtonFractionalWidth,
-                       height: navBarContentHeight,
-                       alignment: .center)
-                .if( {
+                    Spacer(minLength: 2)
+                    Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
+                }.foregroundColor(Color.footerForeground)
+                .if({
                     switch pageContent {
                     case .Derive : return true
                     default: return false
                     }
                 }() ) { $0.colorInvert() }
-                #elseif os(macOS)
-                VStack {
-                    Image(systemName: "arrow.down")
-                        
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                    Spacer(minLength: 2)
-                    Image(systemName: "ellipsis.rectangle.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                    Spacer(minLength: 2)
-                    DerivationRecipeMenu({ newPageContent in
-                        navigateTo(newPageContent)
-                    }) {
-                        Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
-                    }
-                }.frame(width: geometry.size.width * BottomButtonFractionalWidth,
-                        height: navBarContentHeight)
-                .if( {
-                    switch pageContent {
-                    case .Derive : return true
-                    default: return false
-                    }
-                }() ) { $0.colorInvert() }                #endif
+            }
+            .frame(width: geometry.size.width * BottomButtonFractionalWidth,
+                   height: navBarContentHeight,
+                   alignment: .center)
+            #elseif os(macOS)
+            VStack {
+                Image(systemName: "arrow.down")
+                    
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                Spacer(minLength: 2)
+                Image(systemName: "ellipsis.rectangle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                Spacer(minLength: 2)
+                DerivationRecipeMenu({ newPageContent in
+                    navigateTo(newPageContent)
+                }) {
+                    Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
+                }
+            }.frame(width: geometry.size.width * BottomButtonFractionalWidth,
+                    height: navBarContentHeight)
+            .if( {
+                switch pageContent {
+                case .Derive : return true
+                default: return false
+                }
+            }() ) { $0.colorInvert() }                #endif
 //                .frame(width: geometry.size.width * BottomButtonFractionalWidth,
 //                       height: geometry.size.height / 12, alignment: .center)
 
-                VStack {
-                    Image("Backup to DiceKey")
-                        .renderingMode(.template)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(
-                            maxWidth: geometry.size.width * BottomButtonFractionalWidth,
-                            maxHeight: navBarContentHeight,
-                            alignment: .center
-                        )
-                    Text("Backup this Key").multilineTextAlignment(.center).font(.footnote)
-                }.frame(width: geometry.size.width * BottomButtonFractionalWidth, height: navBarContentHeight, alignment: .center)
-                .onTapGesture { navigateTo(.Backup) }
-                .if( pageContent == .Backup ) { $0.colorInvert() }
-                Spacer()
-            }
+            VStack {
+                Image("Backup to DiceKey")
+                    .renderingMode(.template)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(
+                        maxWidth: geometry.size.width * BottomButtonFractionalWidth,
+                        maxHeight: navBarContentHeight,
+                        alignment: .center
+                    )
+                Text("Backup this Key").multilineTextAlignment(.center).font(.footnote)
+            }.frame(width: geometry.size.width * BottomButtonFractionalWidth, height: navBarContentHeight, alignment: .center)
+            .onTapGesture { navigateTo(.Backup) }
+            .if( pageContent == .Backup ) { $0.colorInvert() }
+            Spacer()
         }
         .padding(.bottom, geometry.safeAreaInsets.bottom)
         .padding(.top, 5)
@@ -216,12 +214,12 @@ struct DiceKeyPresent: View {
                 }
             }
         }) { geometry in
-            VStack {
+            VStack(alignment: .center, spacing: 0) {
                 Spacer()
                 if let diceKey = diceKeyState.diceKey {
                     switch self.pageContent {
                     case .Save: DiceKeyStorageOptions(diceKey: diceKey, done: { navigate(to: .Default) }).padding(.horizontal, defaultContentPadding)
-                    case .Derive(let derivationRecipeBuilder): DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)
+                    case .Derive(let derivationRecipeBuilder): DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)//.layoutPriority(-1)
                     case .Backup: BackupDiceKey(
                         onComplete: { navigate(to: .Default) },
                         diceKey: Binding<DiceKey>(get: { () -> DiceKey in
@@ -235,6 +233,7 @@ struct DiceKeyPresent: View {
                 }
 //                Text("--\(geometry.safeAreaInsets.bottom)")
                 DiceKeyPresentNavigationFooter(pageContent: pageContent, navigateTo: navigate, geometry: geometry)
+                    .layoutPriority(100)
             }
         }//.ignoresSafeArea(.all, edges: .bottom)
     }

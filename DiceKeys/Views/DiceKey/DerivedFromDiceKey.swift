@@ -57,41 +57,37 @@ struct DerivedFromDiceKey<Content: View>: View {
 
     var body: some View {
         CalculateBounds(bounds: $bounds) {
-//        HStack(alignment: .center, spacing: 0) {
-//            Spacer()
-                VStack(alignment: .center, spacing: 0) {
-                    DiceKeyView(
-                        diceKey: diceKey ?? DiceKey.createFromRandom(),
-                        showLidTab: false,
-                        leaveSpaceForTab: false,
-                        diceBoxColor: Color.diceBox
-                    )
-                    // Frame to size
-                    .frame(width: diceKeySize, height: diceKeySize)
-                    // Remove the part to hide
-                    .frame(height: diceKeySize - verticalOverlap, alignment: .top).clipped()
-                    ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
-                        Funnel(topWidth: diceKeySize, bottomWidth: bottomWidth, bottleneckWidth: bottleneckWidth, paddingBottom: contentHeight, bottleneckFractionFromTop: bottleneckFractionFromTop)
-                            .fill(LinearGradient(gradient: Gradient(colors: [Color.diceBox, Color.funnelBackground]), startPoint: .top, endPoint: .bottom))
-                            .frame(width: width, height: totalFunnelHeight, alignment: .center)
-                        Funnel(topWidth: diceKeySize, bottomWidth: bottomWidth, bottleneckWidth: bottleneckWidth, paddingBottom: contentHeight, bottleneckFractionFromTop: bottleneckFractionFromTop)
-                            .stroke(lineWidth: 1)
-                            .foregroundColor(Color.diceBox)
-                            .frame(width: width, height: totalFunnelHeight, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                        Image(systemName: "arrow.down").resizable().frame(width: arrowSize, height: arrowSize).foregroundColor(.yellow)
-                            .offset(
-                                x: 0,
-                                y: -contentHeight - funnelBottomPadding + (arrowSize - funnelHeight) / 2
-                            )
-                        ChildSizeReader<Content>(size: $contentSize, content: content)
-                            .frame(maxWidth: bounds.width > 0 ? bounds.width : CGFloat.infinity)
-                            .offset(x: 0, y: -funnelBottomPadding )
+            VStack(alignment: .center, spacing: 0) {
+                DiceKeyView(
+                    diceKey: diceKey ?? DiceKey.createFromRandom(),
+                    showLidTab: false,
+                    leaveSpaceForTab: false,
+                    diceBoxColor: Color.diceBox
+                )
+                // Frame to size
+                .frame(width: diceKeySize, height: diceKeySize)
+                // Remove the part to hide
+                .frame(height: diceKeySize - verticalOverlap, alignment: .top).clipped()
+                ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
+                    Funnel(topWidth: diceKeySize, bottomWidth: bottomWidth, bottleneckWidth: bottleneckWidth, paddingBottom: contentHeight, bottleneckFractionFromTop: bottleneckFractionFromTop)
+                        .fill(LinearGradient(gradient: Gradient(colors: [Color.diceBox, Color.funnelBackground]), startPoint: .top, endPoint: .bottom))
+                        .frame(width: width, height: totalFunnelHeight, alignment: .center)
+                    Funnel(topWidth: diceKeySize, bottomWidth: bottomWidth, bottleneckWidth: bottleneckWidth, paddingBottom: contentHeight, bottleneckFractionFromTop: bottleneckFractionFromTop)
+                        .stroke(lineWidth: 1)
+                        .foregroundColor(Color.diceBox)
+                        .frame(width: width, height: totalFunnelHeight, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                    Image(systemName: "arrow.down").resizable().frame(width: arrowSize, height: arrowSize).foregroundColor(.yellow)
+                        .offset(
+                            x: 0,
+                            y: -contentHeight - funnelBottomPadding + (arrowSize - funnelHeight) / 2
+                        )
+                    ChildSizeReader<Content>(size: $contentSize, content: content)
+                        .frame(maxWidth: bounds.width > 0 ? bounds.width : CGFloat.infinity)
+                        .offset(x: 0, y: -funnelBottomPadding )
 //                        Text("ContentHight: \(contentHeight), fh:\(totalFunnelHeight) height: \(totalHeight)").foregroundColor(.red).background(Color.black)
-                    }.if(aspectRatio != nil) { $0.frame(height: funnelHeight + contentHeight) }
-                }.if(aspectRatio != nil) { $0.frame(height: totalHeight) }
-//            Spacer()
-//        }
-    }.if(aspectRatio != nil) { $0.frame(height: frameHeight).aspectRatio(aspectRatio, contentMode: .fit) }
+                }.if(aspectRatio != nil) { $0.frame(height: funnelHeight + contentHeight) }
+            }
+    }.if(aspectRatio != nil) { $0.aspectRatio(aspectRatio, contentMode: .fit) }
     }
 }
 
