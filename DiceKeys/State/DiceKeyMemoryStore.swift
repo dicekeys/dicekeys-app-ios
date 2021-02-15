@@ -14,7 +14,7 @@ final class DiceKeyMemoryStore: ObservableObjectUpdatingOnAllChangesToUserDefaul
     /// It exists eexclusively for the purpose of allowing previews and tests to create
     /// different test memory store states.
     init(_ diceKeyLoaded: DiceKey? = nil) {
-        self.diceKeyLoaded = diceKeyLoaded
+        self.diceKeyLoaded = diceKeyLoaded // Uncomment to make demo images ?? DiceKey.Example
     }
 
     @Published var diceKeyLoaded: DiceKey? = nil {
