@@ -66,8 +66,8 @@ struct SeedHardwareSecurityKey: View {
     @State var writeSecurityKeySeedState: WriteSecurityKeySeedState?
     @State var secondsLeft: Int = 0
     
-    var derivationOptionsJson: String {
-        addSequenceNumberToDerivationOptionsJson(seedSecurityKeyRecipeTemplate, sequenceNumber: sequenceNumber)
+    var recipe: String {
+        addSequenceNumberToRecipeJson(seedSecurityKeyRecipeTemplate, sequenceNumber: sequenceNumber)
     }
     
     var extState: Data {
@@ -77,7 +77,7 @@ struct SeedHardwareSecurityKey: View {
     }
     
     var keySeedAs32Bytes: Data {
-        return try! SeededCrypto.Secret.deriveFromSeed(withSeedString: diceKey.toSeed(), derivationOptionsJson: derivationOptionsJson).secretBytes()
+        return try! SeededCrypto.Secret.deriveFromSeed(withSeedString: diceKey.toSeed(), recipe: recipe).secretBytes()
     }
     
     var keySeedAsHexString: String {
@@ -177,7 +177,7 @@ struct SeedHardwareSecurityKey: View {
                     .minimumScaleFactor(0.01)
                     .fixedSize(horizontal: false, vertical: true)
                     .lineLimit(1)
-                Text(derivationOptionsJson)
+                Text(recipe)
                     .font(Font.system(.footnote, design: .monospaced))
                     .scaledToFit()
                     .minimumScaleFactor(0.01)

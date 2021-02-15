@@ -8,7 +8,7 @@
 import Foundation
 
 struct PackagedSealedMessageJsonObject: Decodable {
-    var derivationOptionsJson: String
+    var recipe: String
     var ciphertext: String
     var unsealingInstructions: String?
 

@@ -243,7 +243,7 @@ class DiceKey: Identifiable, Equatable {
 
     /// A 16-byte unique identifier for this DiceKey derived via hashing
     var idBytes: Data {
-        try! Secret.deriveFromSeed(withSeedString: toSeed(), derivationOptionsJson: recipeFor16ByteUniqueIdentifier).secretBytes()
+        try! Secret.deriveFromSeed(withSeedString: toSeed(), recipe: recipeFor16ByteUniqueIdentifier).secretBytes()
     }
 
     /// A url-safe base64 encoded 16-byte unique identifier for this DiceKey derived via hashing

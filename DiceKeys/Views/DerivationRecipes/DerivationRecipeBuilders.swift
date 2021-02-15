@@ -60,7 +60,7 @@ private class DerivationRecipeFromUrlModel: ObservableObject {
     @Published var urlString: String = "" { didSet { update() } }
     @Published var sequenceNumber: Int = 1 { didSet { update() } }
     @Published var lengthInChars: Int = 0 { didSet { update() } }
-    let type: DerivationOptionsType
+    let type: SeededCryptoRecipeType
 
     var hosts: [String]? {
         if let host = URL(string: urlString)?.host {
@@ -92,10 +92,10 @@ private class DerivationRecipeFromUrlModel: ObservableObject {
         }
         self.recipeBuilderState.progress = .ready(DerivationRecipe(
             type: type, name: name,
-            derivationOptionsJson: getDerivationOptionsJson(hosts: hosts, sequenceNumber: sequenceNumber, lengthInChars: type == .Password ? lengthInChars : 0)))
+            recipe: getRecipeJson(hosts: hosts, sequenceNumber: sequenceNumber, lengthInChars: type == .Password ? lengthInChars : 0)))
     }
 
-    init(_ type: DerivationOptionsType, _ recipeBuilderState: RecipeBuilderState) {
+    init(_ type: SeededCryptoRecipeType, _ recipeBuilderState: RecipeBuilderState) {
         self.type = type
         self.recipeBuilderState = recipeBuilderState
         update()
@@ -128,7 +128,7 @@ struct DerivationRecipeForFromUrl: View {
         )
     }
 
-    init(type: DerivationOptionsType, recipeBuilderState: RecipeBuilderState) {
+    init(type: SeededCryptoRecipeType, recipeBuilderState: RecipeBuilderState) {
         self.model = DerivationRecipeFromUrlModel(type, recipeBuilderState)
     }
     
@@ -178,15 +178,15 @@ struct DerivationRecipeForFromUrl: View {
     }
 }
 
-private class DerivationRecipeForFromDerivationOptionsJsonModel: ObservableObject {
+private class DerivationRecipeForFromRecipeJsonModel: ObservableObject {
     @ObservedObject var recipeBuilderState: RecipeBuilderState
-    @Published var type: DerivationOptionsType = .Password { didSet { update() } }
+    @Published var type: SeededCryptoRecipeType = .Password { didSet { update() } }
     @Published var name: String = "My custom derivation options" { didSet { update() } }
-    @Published var derivationOptionsJson: String = "" { didSet { update() } }
+    @Published var recipe: String = "" { didSet { update() } }
 
     func update() {
         self.recipeBuilderState.progress = .ready(DerivationRecipe(
-            type: type, name: name, derivationOptionsJson: derivationOptionsJson
+            type: type, name: name, recipe: recipe
         ))
     }
 
@@ -196,11 +196,11 @@ private class DerivationRecipeForFromDerivationOptionsJsonModel: ObservableObjec
     }
 }
 
-struct DerivationRecipeForFromDerivationOptionsJson: View {
-    @ObservedObject private var model: DerivationRecipeForFromDerivationOptionsJsonModel
+struct DerivationRecipeForFromRecipeJson: View {
+    @ObservedObject private var model: DerivationRecipeForFromRecipeJsonModel
 
     init(recipeBuilderState: RecipeBuilderState) {
-        self.model = DerivationRecipeForFromDerivationOptionsJsonModel(recipeBuilderState)
+        self.model = DerivationRecipeForFromRecipeJsonModel(recipeBuilderState)
     }
     var body: some View {
         VStack {
@@ -218,7 +218,7 @@ struct DerivationRecipeBuilder: View {
         switch derivableMenuChoice {
         case .template(let template): DerivationRecipeBuilderForTemplate(recipeBuilderState: recipeBuilderState, template: template)
         case .customFromUrl(let secretType): DerivationRecipeForFromUrl(type: secretType, recipeBuilderState: recipeBuilderState)
-//        case .custom: DerivationRecipeForFromDerivationOptionsJson(recipeBuilderState: recipeBuilderState)
+//        case .custom: DerivationRecipeForFromRecipeJson(recipeBuilderState: recipeBuilderState)
         case .recipe: EmptyView()
         }
     }
@@ -247,7 +247,7 @@ struct DerivationRecipeView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .lineLimit(1)
             case .ready(let recipe):
-                if let recipeJson = recipe.derivationOptionsJson {
+                if let recipeJson = recipe.recipe {
                     Text(recipeJson)
                         .font(Font.system(.footnote, design: .monospaced))
                         .scaledToFit()

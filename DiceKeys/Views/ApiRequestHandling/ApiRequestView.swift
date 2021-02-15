@@ -21,7 +21,7 @@ struct RequestQuestionView: View {
         default: return request.securityContext.host
     } }
     
-    // FIXME  --  areDerivationOptionsSigned ? "recreate" : "create";
+    // FIXME  --  areRecipeSigned ? "recreate" : "create";
     var createOrRecreate: String { "create" }
 
     var description: String {
@@ -96,14 +96,14 @@ struct RequestDataView: View {
 struct RequestPreviewPassword: View {
     let password: Password
     var body: some View {
-        RequestDataView(recipe: password.derivationOptionsJson, title: "password created:", value: password.password)
+        RequestDataView(recipe: password.recipe, title: "password created:", value: password.password)
     }
 }
 
 struct RequestPreviewSecret: View {
     let secret: Secret
     var body: some View {
-        RequestDataView(recipe: secret.derivationOptionsJson, title: "secret created:", value: secret.secretBytes().asHexString, lineLimit: 1)
+        RequestDataView(recipe: secret.recipe, title: "secret created:", value: secret.secretBytes().asHexString, lineLimit: 1)
     }
 }
 
@@ -121,11 +121,11 @@ struct RequestPreviewGetKey: View {
     }
 
     init(_ sealingKey: SealingKey) {
-        self.init(recipe: sealingKey.derivationOptionsJson, key: nil)
+        self.init(recipe: sealingKey.recipe, key: nil)
     }
     
     init(_ key: SymmetricKey) {
-        self.init(recipe: key.derivationOptionsJson, key: key.keyBytes)
+        self.init(recipe: key.recipe, key: key.keyBytes)
     }
 }
 
@@ -138,7 +138,7 @@ struct RequestPreviewSealWithSymmetricKey: View {
     }
     
     init(_ request: ApiRequestSealWithSymmetricKey) {
-        recipe = request.derivationOptionsJson ?? ""
+        recipe = request.recipeJson ?? ""
         plaintext = request.plaintext
     }
 }
@@ -152,11 +152,11 @@ struct RequestPreviewSealUnseal: View {
     }
     
     init(_ request: ApiRequestUnsealWithSymmetricKey, plaintext: Data) {
-        recipe = request.derivationOptionsJson ?? ""
+        recipe = request.recipeJson ?? ""
         self.plaintext = plaintext
     }
     init(_ request: ApiRequestUnsealWithUnsealingKey, plaintext: Data) {
-        recipe = request.derivationOptionsJson ?? ""
+        recipe = request.recipeJson ?? ""
         self.plaintext = plaintext
     }
 }
@@ -295,11 +295,11 @@ struct ApiRequestView: View {
 struct ApiRequestView_Previews: PreviewProvider {
     
     static func recipeForGetCommand(command: String) -> String {
-        "https://dicekeys.app/?command=\(command)&requestId=1&respondTo=https%3A%2F%2Fpwmgr.app%2F--derived-secret-api--%2F&derivationOptionsJson=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwmgr.app%22%7D%5D%7D&derivationOptionsJsonMayBeModified=false"
+        "https://dicekeys.app/?command=\(command)&requestId=1&respondTo=https%3A%2F%2Fpwmgr.app%2F--derived-secret-api--%2F&recipe=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwmgr.app%22%7D%5D%7D&recipeMayBeModified=false"
     }
     
     static func recipeForGetKeyCommand(command: String) -> String {
-        "https://dicekeys.app/?command=\(command)&requestId=1&respondTo=https%3A%2F%2Fpwdmgr.app%2F--derived-secret-api--%2F&derivationOptionsJson=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwdmgr.app%22%7D%5D%2C%22clientMayRetrieveKey%22%3Atrue%7D&derivationOptionsJsonMayBeModified=false"
+        "https://dicekeys.app/?command=\(command)&requestId=1&respondTo=https%3A%2F%2Fpwdmgr.app%2F--derived-secret-api--%2F&recipe=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwdmgr.app%22%7D%5D%2C%22clientMayRetrieveKey%22%3Atrue%7D&recipeMayBeModified=false"
     }
     
     @State static var testRequestForPassword =  try! testConstructUrlApiRequest(recipeForGetCommand(command: "getPassword"))!

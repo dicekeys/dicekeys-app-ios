@@ -10,7 +10,7 @@ import SwiftUI
 enum DerivationRecipeBuilderType: Equatable {
     case recipe(DerivationRecipe)
     case template(DerivationRecipe)
-    case customFromUrl(DerivationOptionsType)
+    case customFromUrl(SeededCryptoRecipeType)
 //    case custom
 
     var isRecipe: Bool {

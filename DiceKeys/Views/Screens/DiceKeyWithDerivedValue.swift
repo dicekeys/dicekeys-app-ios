@@ -31,8 +31,8 @@ struct DiceKeyWithDerivedValue: View {
             return derivationRecipe
     }
 
-    var derivationOptionsJson: String? {
-        derivationRecipe?.derivationOptionsJson
+    var recipe: String? {
+        derivationRecipe?.recipe
     }
 
     @StateObject private var recipeStore = DerivationRecipeStore.singleton
@@ -54,9 +54,9 @@ struct DiceKeyWithDerivedValue: View {
 
     var derivedPassword: String? {
         guard derivationRecipe?.type == .Password else { return nil }
-        guard let derivationOptionsJson = self.derivationOptionsJson, derivationOptionsJson.count > 0 else { return nil }
+        guard let recipe = self.recipe, recipe.count > 0 else { return nil }
         guard let seed = DiceKeyMemoryStore.singleton.diceKeyLoaded?.toSeed() else { return nil }
-        let password = try? Password.deriveFromSeed(withSeedString: seed, derivationOptionsJson: derivationOptionsJson).password
+        let password = try? Password.deriveFromSeed(withSeedString: seed, recipe: recipe).password
         return (password)
     }
 

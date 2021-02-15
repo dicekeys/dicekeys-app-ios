@@ -11,7 +11,7 @@ enum HashFunction: String, Codable {
     case BLAKE2b, Argon2id
 }
 
-enum DerivationOptionsType: String, Codable {
+enum SeededCryptoRecipeType: String, Codable {
     case Password, Secret, SigningKey, SymmetricKey, UnsealingKey
 }
 
@@ -20,8 +20,8 @@ enum WordListName: String, Codable {
          EN_1024_words_6_chars_max_ed_4_20200917
 }
 
-struct DerivationOptions: AuthenticationRequirements, Codable {
-    var type: DerivationOptionsType?
+struct SeededCryptoRecipeObject: AuthenticationRequirements, Codable {
+    var type: SeededCryptoRecipeType?
     var allow: [WebBasedApplicationIdentity]?
     var requireAuthenticationHandshake: Bool?
     var allowAndroidPrefixes: [String]?
@@ -47,11 +47,11 @@ struct DerivationOptions: AuthenticationRequirements, Codable {
    * The DiceKeys app will want to get a user's consent before deriving a
    * secret on behalf of an app.
    *
-   * When a user approves a set of DerivationOptions, this field
+   * When a user approves a set of Recipe, this field
    * allows us to record that the options were, at least at one time, approved
    * by the holder of this DiceKey.
    *
-   * Set this field to empty (two double quotes, ""), call DerivationOptions.derivePrimarySecret
+   * Set this field to empty (two double quotes, ""), call Recipe.derivePrimarySecret
    * with the seed (DiceKey) and these derivation options.  Take that primary secret,
    * turn it into url-safe base64, and then re-run derivePrimarySecret with that
    * base64 encoding as the seed. Insert the base64 encoding of the first 128 bits
@@ -107,16 +107,16 @@ struct DerivationOptions: AuthenticationRequirements, Codable {
     var lengthInBits: Int32?
     var wordList: WordListName?
 
-    static func fromJson(_ json: Data) throws -> DerivationOptions {
-        return try JSONDecoder().decode(DerivationOptions.self, from: json)
+    static func fromJson(_ json: Data) throws -> SeededCryptoRecipeObject {
+        return try JSONDecoder().decode(SeededCryptoRecipeObject.self, from: json)
     }
 
-    static func fromJson(_ json: String?) throws -> DerivationOptions? {
+    static func fromJson(_ json: String?) throws -> SeededCryptoRecipeObject? {
         guard let nonNilJson = json else {
-            return DerivationOptions()
+            return SeededCryptoRecipeObject()
         }
         if nonNilJson == "" {
-            return DerivationOptions()
+            return SeededCryptoRecipeObject()
         }
         return try fromJson(nonNilJson.data(using: .utf8)!)
     }
