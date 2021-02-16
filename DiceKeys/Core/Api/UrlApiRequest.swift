@@ -109,8 +109,8 @@ func handleUrlApiRequest(
         switch error {
         case RequestException.ClientNotAuthorized(let authenticationRequirementIn):
             sendResponse(responseUrl, ["exception": "ClientNotAuthorizedDueTo" +
-                (authenticationRequirementIn == AuthenticationRequirementIn.DerivationOptions ?
-                    "DerivationOptions" : "UnsealingInstructions")
+                (authenticationRequirementIn == AuthenticationRequirementIn.Recipe ?
+                    "Recipe" : "UnsealingInstructions")
             ])
         default:
             sendResponse(responseUrl, ["exception": "Unknown", "message": error.localizedDescription])

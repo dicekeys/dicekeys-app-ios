@@ -26,7 +26,7 @@ extension RequestSecurityContext {
         let pathExpected = (pathRequirement.hasPrefix("/")) ? pathRequirement :
             // Paths must start with a "/".  If the path requirement didn't start with a "/",
             // we'll insert one assuming this was a mistake by the developer of the client software
-            // that created the derivationOptionsJson string.
+            // that created the recipe string.
             "/" + pathRequirement
         if pathExpected.hasSuffix("/*") {
             return

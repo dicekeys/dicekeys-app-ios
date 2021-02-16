@@ -21,7 +21,7 @@ func restrictionsJson(_ hosts: String...) -> String {
     return "{\"allow\":\(getHostRestrictionsArrayAsString(hosts))}"
 }
 
-func getDerivationOptionsJson(hosts: [String], sequenceNumber: Int = 1, lengthInChars: Int = -1) -> String {
+func getRecipeJson(hosts: [String], sequenceNumber: Int = 1, lengthInChars: Int = -1) -> String {
     let sortedHosts = hosts.sorted()
     return """
 {"allow":\(getHostRestrictionsArrayAsString(sortedHosts))\(
@@ -31,8 +31,8 @@ func getDerivationOptionsJson(hosts: [String], sequenceNumber: Int = 1, lengthIn
 """
 }
 
-func getDerivationOptionsJson(_ hosts: String..., sequenceNumber: Int = 1) -> String {
-    getDerivationOptionsJson(hosts: hosts, sequenceNumber: sequenceNumber)
+func getRecipeJson(_ hosts: String..., sequenceNumber: Int = 1) -> String {
+    getRecipeJson(hosts: hosts, sequenceNumber: sequenceNumber)
 }
 
 func addFieldToEndOfJsonObjectString(_ originalJsonObjectString: String, fieldName: String, fieldValue: String) -> String {
@@ -43,28 +43,28 @@ func addFieldToEndOfJsonObjectString(_ originalJsonObjectString: String, fieldNa
     return String(prefixUpToFinalClosingBrace) + "\(commaIfObjectNonEmpty)\"\(fieldName)\":\(fieldValue)" + suffixIncludingFinalCloseBrace
 }
 
-func addLengthInCharsToDerivationOptionsJson(_ derivationOptionsWithoutLengthInChars: String, lengthInChars: Int = 0 ) -> String {
-    guard lengthInChars > 0 else { return derivationOptionsWithoutLengthInChars }
-    return addFieldToEndOfJsonObjectString(derivationOptionsWithoutLengthInChars, fieldName: "lengthInChars", fieldValue: String(describing: lengthInChars))
+func addLengthInCharsToRecipeJson(_ recipeWithoutLengthInChars: String, lengthInChars: Int = 0 ) -> String {
+    guard lengthInChars > 0 else { return recipeWithoutLengthInChars }
+    return addFieldToEndOfJsonObjectString(recipeWithoutLengthInChars, fieldName: "lengthInChars", fieldValue: String(describing: lengthInChars))
 }
 
-func addSequenceNumberToDerivationOptionsJson(_ derivationOptionsWithoutSequenceNumber: String, sequenceNumber: Int) -> String {
-    guard sequenceNumber != 1 else { return derivationOptionsWithoutSequenceNumber }
-    return addFieldToEndOfJsonObjectString(derivationOptionsWithoutSequenceNumber, fieldName: "#", fieldValue: String(describing: sequenceNumber))
+func addSequenceNumberToRecipeJson(_ recipeWithoutSequenceNumber: String, sequenceNumber: Int) -> String {
+    guard sequenceNumber != 1 else { return recipeWithoutSequenceNumber }
+    return addFieldToEndOfJsonObjectString(recipeWithoutSequenceNumber, fieldName: "#", fieldValue: String(describing: sequenceNumber))
 }
 
 
 struct DerivationRecipe: Identifiable, Codable, Equatable {
-    let type: DerivationOptionsType
+    let type: SeededCryptoRecipeType
     let name: String
-    let derivationOptionsJson: String
+    let recipe: String
     
-    var id: String { "\(type):\(name):\(derivationOptionsJson)" }
+    var id: String { "\(type):\(name):\(recipe)" }
 
-    init(type: DerivationOptionsType, name: String, derivationOptionsJson: String) {
+    init(type: SeededCryptoRecipeType, name: String, recipe: String) {
         self.type = type
         self.name = name
-        self.derivationOptionsJson = derivationOptionsJson
+        self.recipe = recipe
     }
 
     init(template: DerivationRecipe, sequenceNumber: Int, lengthInChars: Int = 0) {
@@ -72,13 +72,13 @@ struct DerivationRecipe: Identifiable, Codable, Equatable {
         let typeSuffix = template.type == .Password ? " Password" : template.type == .SymmetricKey ? " Key" : template.type == .UnsealingKey ? " Key Pair" : ""
         let sequenceSuffix = sequenceNumber == 1 ? "" : " (\(String(sequenceNumber)))"
         self.name = template.name + typeSuffix + sequenceSuffix
-        var derivationOptionsJson = template.derivationOptionsJson
+        var recipe = template.recipe
         if (template.type == .Password && lengthInChars > 0) {
-            derivationOptionsJson = addLengthInCharsToDerivationOptionsJson(derivationOptionsJson, lengthInChars: lengthInChars)
+            recipe = addLengthInCharsToRecipeJson(recipe, lengthInChars: lengthInChars)
         }
-        derivationOptionsJson =
-            addSequenceNumberToDerivationOptionsJson(derivationOptionsJson, sequenceNumber: sequenceNumber)
-        self.derivationOptionsJson = derivationOptionsJson
+        recipe =
+            addSequenceNumberToRecipeJson(recipe, sequenceNumber: sequenceNumber)
+        self.recipe = recipe
     }
 
     static func listFromJson(_ json: String) throws -> [DerivationRecipe]? {

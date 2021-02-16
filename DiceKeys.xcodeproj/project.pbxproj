@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		172057B125C2DBF800282E21 /* SupportsBackNavigationHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172057B025C2DBF800282E21 /* SupportsBackNavigationHeader.swift */; };
 		172057B225C2DBF800282E21 /* SupportsBackNavigationHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172057B025C2DBF800282E21 /* SupportsBackNavigationHeader.swift */; };
-		172057CB25C4E7F500282E21 /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* DerivationOptions.swift */; };
-		172057D025C4E7F500282E21 /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* DerivationOptions.swift */; };
+		172057CB25C4E7F500282E21 /* SeededCryptoRecipeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* SeededCryptoRecipeObject.swift */; };
+		172057D025C4E7F500282E21 /* SeededCryptoRecipeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* SeededCryptoRecipeObject.swift */; };
 		1720581725C50CBE00282E21 /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */; };
 		1720581C25C50CBE00282E21 /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */; };
 		17B6C5A125A43AAB007798F3 /* CtapHidConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */; };
@@ -149,8 +149,8 @@
 		EC50921225948124007D2B91 /* FaceSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FE25948124007D2B91 /* FaceSpecification.swift */; };
 		EC50921325948124007D2B91 /* Derivables.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FF25948124007D2B91 /* Derivables.swift */; };
 		EC50921425948124007D2B91 /* Derivables.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FF25948124007D2B91 /* Derivables.swift */; };
-		EC50921525948124007D2B91 /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* DerivationOptions.swift */; };
-		EC50921625948124007D2B91 /* DerivationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* DerivationOptions.swift */; };
+		EC50921525948124007D2B91 /* SeededCryptoRecipeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* SeededCryptoRecipeObject.swift */; };
+		EC50921625948124007D2B91 /* SeededCryptoRecipeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* SeededCryptoRecipeObject.swift */; };
 		EC50921725948124007D2B91 /* UnsealingInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920225948124007D2B91 /* UnsealingInstructions.swift */; };
 		EC50921825948124007D2B91 /* UnsealingInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920225948124007D2B91 /* UnsealingInstructions.swift */; };
 		EC50921B25948124007D2B91 /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */; };
@@ -320,7 +320,7 @@
 		EC5091FD25948124007D2B91 /* DiceKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKey.swift; sourceTree = "<group>"; };
 		EC5091FE25948124007D2B91 /* FaceSpecification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSpecification.swift; sourceTree = "<group>"; };
 		EC5091FF25948124007D2B91 /* Derivables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Derivables.swift; sourceTree = "<group>"; };
-		EC50920125948124007D2B91 /* DerivationOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DerivationOptions.swift; sourceTree = "<group>"; };
+		EC50920125948124007D2B91 /* SeededCryptoRecipeObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeededCryptoRecipeObject.swift; sourceTree = "<group>"; };
 		EC50920225948124007D2B91 /* UnsealingInstructions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnsealingInstructions.swift; sourceTree = "<group>"; };
 		EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebBasedApplicationIdentity.swift; sourceTree = "<group>"; };
 		EC50920525948124007D2B91 /* ApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
@@ -552,7 +552,7 @@
 			isa = PBXGroup;
 			children = (
 				17BB395125CBB6C20023E430 /* AuthenticationTokens.swift */,
-				EC50920125948124007D2B91 /* DerivationOptions.swift */,
+				EC50920125948124007D2B91 /* SeededCryptoRecipeObject.swift */,
 				EC50920225948124007D2B91 /* UnsealingInstructions.swift */,
 				17BB392525CBB3470023E430 /* RequestSecurityContext.swift */,
 				EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */,
@@ -1186,7 +1186,7 @@
 				17B6C68125B9883F007798F3 /* PartialFace.swift in Sources */,
 				EC5092AD259482F5007D2B91 /* AssemblyInstructions.swift in Sources */,
 				17B6C69325BA8285007798F3 /* FaceOrientationLetterTrbl.swift in Sources */,
-				EC50921525948124007D2B91 /* DerivationOptions.swift in Sources */,
+				EC50921525948124007D2B91 /* SeededCryptoRecipeObject.swift in Sources */,
 				EC50921725948124007D2B91 /* UnsealingInstructions.swift in Sources */,
 				EC50929F259482F4007D2B91 /* DiceKeysCameraView.swift in Sources */,
 				EC5092C9259482F5007D2B91 /* BackupDiceKey.swift in Sources */,
@@ -1279,7 +1279,7 @@
 				264CD58425AF1044009D2F5A /* TypeYourDiceKeyView.swift in Sources */,
 				17E3861525D0C016004C2701 /* DiceKeyMemoryStore.swift in Sources */,
 				268E3DDE25BFF81D008B6DE6 /* CameraFrameCountView.swift in Sources */,
-				EC50921625948124007D2B91 /* DerivationOptions.swift in Sources */,
+				EC50921625948124007D2B91 /* SeededCryptoRecipeObject.swift in Sources */,
 				EC50921825948124007D2B91 /* UnsealingInstructions.swift in Sources */,
 				EC5092CA259482F5007D2B91 /* BackupDiceKey.swift in Sources */,
 				EC509290259482F4007D2B91 /* Funnel.swift in Sources */,
@@ -1339,7 +1339,7 @@
 				EC561299258B827300A056B8 /* Tests_iOS.swift in Sources */,
 				17BB396725CCC6130023E430 /* ApiRequest.swift in Sources */,
 				17E3863525D0ED85004C2701 /* Data.swift in Sources */,
-				172057CB25C4E7F500282E21 /* DerivationOptions.swift in Sources */,
+				172057CB25C4E7F500282E21 /* SeededCryptoRecipeObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1377,7 +1377,7 @@
 				17BB39AC25CCC66A0023E430 /* DiceKeyMedium.swift in Sources */,
 				EC5612A4258B827300A056B8 /* Tests_macOS.swift in Sources */,
 				17BB396C25CCC6140023E430 /* ApiRequest.swift in Sources */,
-				172057D025C4E7F500282E21 /* DerivationOptions.swift in Sources */,
+				172057D025C4E7F500282E21 /* SeededCryptoRecipeObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,17 +8,17 @@
 import Foundation
 import SeededCrypto
 enum AuthenticationRequirementIn {
-    case DerivationOptions
+    case Recipe
     case UnsealingInstructions
 }
 
 enum RequestException: Error {
     case UserDeclinedToAuthorizeOperation
     case ClientNotAuthorized(AuthenticationRequirementIn)
-    case ComamndRequiresDerivationOptionsWithClientMayRetrieveKeySetToTrue
+    case ComamndRequiresRecipeWithClientMayRetrieveKeySetToTrue
     case NotImplemented
     case InvalidCommand
-    case InvalidDerivationOptionsJson
+    case InvalidRecipeJson
     case InvalidPackagedSealedMessage
     case FailedToParseReplyTo(String)
     case ParameterNotFound(String)
@@ -31,13 +31,13 @@ protocol ApiRequestCommand {
 protocol ApiRequest {
     var id: String { get }
     var securityContext: RequestSecurityContext { get }
-    var derivationOptions: DerivationOptions { get }
-    var derivationOptionsJson: String? { get }
-    var derivationOptionsJsonMayBeModified: Bool { get }
+    var recipe: SeededCryptoRecipeObject { get }
+    var recipeJson: String? { get }
+    var recipeMayBeModified: Bool { get }
 
-    var allowNilEmptyDerivationOptions: Bool { get }
+    var allowNilEmptyRecipe: Bool { get }
     var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get }
-    var derivationOptionsJsonMayBeModifiedDefault: Bool { get }
+    var recipeMayBeModifiedDefault: Bool { get }
 
     func throwIfNotAuthorized() throws
 
@@ -55,77 +55,77 @@ protocol ApiRequest {
 }
 
 extension ApiRequest {
-    var allowNilEmptyDerivationOptions: Bool { get { false } }
+    var allowNilEmptyRecipe: Bool { get { false } }
 
     func throwIfNotAuthorized() throws {
-        let derivationOptions = self.derivationOptions
+        let recipe = self.recipe
 
-        if (requireClientMayRetrieveKeyToBeSetToTrue && derivationOptions.clientMayRetrieveKey != true) {
-            throw RequestException.ComamndRequiresDerivationOptionsWithClientMayRetrieveKeySetToTrue
+        if (requireClientMayRetrieveKeyToBeSetToTrue && recipe.clientMayRetrieveKey != true) {
+            throw RequestException.ComamndRequiresRecipeWithClientMayRetrieveKeySetToTrue
         }
         guard securityContext.satisfiesAuthenticationRequirements(
-            of: derivationOptions,
+            of: recipe,
             allowNullRequirement:
-                // Okay to have null/empty derivationOptionsJson, with no authentication requirements, when getting a sealing key
-                (allowNilEmptyDerivationOptions && (derivationOptionsJson == nil || derivationOptionsJson == ""))
+                // Okay to have null/empty recipe, with no authentication requirements, when getting a sealing key
+                (allowNilEmptyRecipe && (recipe == nil || recipeJson == ""))
         ) else {
-            throw RequestException.ClientNotAuthorized(AuthenticationRequirementIn.DerivationOptions)
+            throw RequestException.ClientNotAuthorized(AuthenticationRequirementIn.Recipe)
         }
     }
 }
 
-private func getDerivationOptions(json derivationOptionsJson: String?) throws -> DerivationOptions {
-    guard let derivationOptions = try DerivationOptions.fromJson(derivationOptionsJson!) else {
-        throw RequestException.InvalidDerivationOptionsJson
+private func getRecipe(json recipe: String?) throws -> SeededCryptoRecipeObject {
+    guard let recipe = try SeededCryptoRecipeObject.fromJson(recipe!) else {
+        throw RequestException.InvalidRecipeJson
     }
-    return derivationOptions
+    return recipe
 }
 
-class ApiRequestWithExplicitDerivationOptions: ApiRequest {
+class ApiRequestWithExplicitRecipe: ApiRequest {
     let id: String
-    let derivationOptions: DerivationOptions
-    let derivationOptionsJson: String?
+    let recipe: SeededCryptoRecipeObject
+    let recipeJson: String?
     let securityContext: RequestSecurityContext
-    let derivationOptionsJsonMayBeModifiedParameter: Bool?
+    let recipeMayBeModifiedParameter: Bool?
 //    internal var resultCache: [String: Result<SuccessResponse, Error>] = [:]
     var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
-    var derivationOptionsJsonMayBeModifiedDefault: Bool { get { false } }
+    var recipeMayBeModifiedDefault: Bool { get { false } }
     
-    var derivationOptionsJsonMayBeModified: Bool { get {
+    var recipeMayBeModified: Bool { get {
         // Whether the recipe (dervivation options) can be modified depends on whehter a parameter
         // allowing it is set or, failing that, the default for the given command type
-        self.derivationOptionsJsonMayBeModifiedParameter ?? derivationOptionsJsonMayBeModifiedDefault
+        self.recipeMayBeModifiedParameter ?? recipeMayBeModifiedDefault
     }}
     
     func execute(seedString: String) throws -> SuccessResponse { throw RequestException.NotImplemented }
 
-    init(id: String, securityContext: RequestSecurityContext, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool?) throws {
+    init(id: String, securityContext: RequestSecurityContext, recipeJson: String?, recipeMayBeModified: Bool?) throws {
         self.id = id
         self.securityContext = securityContext
-        self.derivationOptionsJson = derivationOptionsJson
-        self.derivationOptionsJsonMayBeModifiedParameter = derivationOptionsJsonMayBeModified
-        self.derivationOptions = try getDerivationOptions(json: self.derivationOptionsJson)
+        self.recipeJson = recipeJson
+        self.recipeMayBeModifiedParameter = recipeMayBeModified
+        self.recipe = try getRecipe(json: self.recipeJson)
         try throwIfNotAuthorized()
     }
 
     init(id: String, securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
         self.id = id
         self.securityContext = securityContext
-        self.derivationOptionsJson = unmarshaller.optionalField(name: "derivationOptionsJson")
-        self.derivationOptions = try getDerivationOptions(json: self.derivationOptionsJson)
-        let derivationOptionsJsonMayBeModified = unmarshaller.optionalField(name: "derivationOptionsJsonMayBeModified")
-        self.derivationOptionsJsonMayBeModifiedParameter = derivationOptionsJsonMayBeModified == "true" ? true : derivationOptionsJsonMayBeModified == "false" ? false : nil
+        self.recipeJson = unmarshaller.optionalField(name: "recipe")
+        self.recipe = try getRecipe(json: self.recipeJson)
+        let recipeMayBeModified = unmarshaller.optionalField(name: "recipeMayBeModified")
+        self.recipeMayBeModifiedParameter = recipeMayBeModified == "true" ? true : recipeMayBeModified == "false" ? false : nil
         try throwIfNotAuthorized()
     }
 }
 
-class ApiRequestGenerateSignature: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
+class ApiRequestGenerateSignature: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command: ApiCommand = ApiCommand.generateSignature
     let message: Data
 
-    init(id: String, securityContext: RequestSecurityContext, message: Data, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool) throws {
+    init(id: String, securityContext: RequestSecurityContext, message: Data, recipeJson: String?, recipeMayBeModified: Bool) throws {
         self.message = message
-        try super.init(id: id, securityContext: securityContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
+        try super.init(id: id, securityContext: securityContext, recipeJson: recipeJson, recipeMayBeModified: recipeMayBeModified)
     }
 
     override init(id: String, securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
@@ -134,97 +134,97 @@ class ApiRequestGenerateSignature: ApiRequestWithExplicitDerivationOptions, ApiR
     }
 
     override func execute(seedString: String) throws -> SuccessResponse {
-        let signingKey = try SigningKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson ?? "")
+        let signingKey = try SigningKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson ?? "")
         let signature = try signingKey.generateSignature(with: message)
         return SuccessResponse.generateSignature(signature: signature, signatureVerificationKeyJson: signingKey.signatureVerificationKey.toJson())
     }
 }
 
-class ApiRequestGetPassword: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
+class ApiRequestGetPassword: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command = ApiCommand.getPassword
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
 
     override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getPassword(passwordJson:
-            try Password.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            try Password.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
             .toJson()
         )
     }
 }
 
-class ApiRequestGetSecret: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
+class ApiRequestGetSecret: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command = ApiCommand.getSecret
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
 
     override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSecret(secretJson:
-            try Secret.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            try Secret.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
             .toJson()
         )
     }
 }
-class ApiRequestGetSealingKey: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
+class ApiRequestGetSealingKey: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command: ApiCommand = ApiCommand.getSealingKey
-    let allowNilEmptyDerivationOptions = false
+    let allowNilEmptyRecipe = false
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
-    override var derivationOptionsJsonMayBeModifiedDefault: Bool { get { true } }
+    override var recipeMayBeModifiedDefault: Bool { get { true } }
     
     override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSealingKey(sealingKeyJson:
-            try SealingKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            try SealingKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
             .toJson()
         )
     }
 }
 
-class ApiRequestGetSignatureVerificationKey: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
+class ApiRequestGetSignatureVerificationKey: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command = ApiCommand.getSignatureVerificationKey
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
 }
 
-class ApiRequestGetSigningKey: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
+class ApiRequestGetSigningKey: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command = ApiCommand.getSigningKey
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
 
     override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSigningKey(signingKeyJson:
-            try SigningKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            try SigningKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
             .toJson()
         )
     }
 }
-class ApiRequestGetSymmetricKey: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
+class ApiRequestGetSymmetricKey: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command = ApiCommand.getSymmetricKey
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
 
     override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSymmetricKey(symmetricKeyJson:
-            try SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            try SymmetricKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
             .toJson()
         )
     }
 }
-class ApiRequestGetUnsealingKey: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
+class ApiRequestGetUnsealingKey: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command = ApiCommand.getUnsealingKey
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
 
     override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getUnsealingKey(unsealingKeyJson:
-            try UnsealingKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            try UnsealingKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
             .toJson()
         )
     }
 }
 
-class ApiRequestSealWithSymmetricKey: ApiRequestWithExplicitDerivationOptions, ApiRequestCommand {
+class ApiRequestSealWithSymmetricKey: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command = ApiCommand.sealWithSymmetricKey
     let plaintext: Data
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
-    override var derivationOptionsJsonMayBeModifiedDefault: Bool { get { true } }
+    override var recipeMayBeModifiedDefault: Bool { get { true } }
 
-    init(id: String, securityContext: RequestSecurityContext, derivationOptionsJson: String?, derivationOptionsJsonMayBeModified: Bool, plaintext: Data) throws {
+    init(id: String, securityContext: RequestSecurityContext, recipeJson: String?, recipeMayBeModified: Bool, plaintext: Data) throws {
         self.plaintext = plaintext
-        try super.init(id: id, securityContext: securityContext, derivationOptionsJson: derivationOptionsJson, derivationOptionsJsonMayBeModified: derivationOptionsJsonMayBeModified)
+        try super.init(id: id, securityContext: securityContext, recipeJson: recipeJson, recipeMayBeModified: recipeMayBeModified)
     }
 
     override init(id: String, securityContext: RequestSecurityContext, unmarshaller: ApiRequestParameterUnmarshaller) throws {
@@ -233,7 +233,7 @@ class ApiRequestSealWithSymmetricKey: ApiRequestWithExplicitDerivationOptions, A
     }
 
     override func execute(seedString: String) throws -> SuccessResponse {
-        let packagedSealedMessage = try SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+        let packagedSealedMessage = try SymmetricKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
             .seal(withMessage: "FIXME")// FIXME .seal(withMessage: plaintext)
         return SuccessResponse.sealWithSymmetricKey(packagedSealedMessageJson: packagedSealedMessage.toJson())
     }
@@ -252,17 +252,17 @@ class ApiRequestUnseal: ApiRequest {
     let securityContext: RequestSecurityContext
     let packagedSealedMessage: PackagedSealedMessageJsonObject
     let packagedSealedMessageJson: String
-    let derivationOptions: DerivationOptions
+    let recipe: SeededCryptoRecipeObject
 //    internal var resultCache: [String: Result<SuccessResponse, Error>] = [:]
 
-    var derivationOptionsJsonMayBeModifiedDefault: Bool { get { false } }
-    let derivationOptionsJsonMayBeModified = false
+    var recipeMayBeModifiedDefault: Bool { get { false } }
+    let recipeMayBeModified = false
     let requireClientMayRetrieveKeyToBeSetToTrue = false
 
     func execute(seedString: String) throws -> SuccessResponse { throw RequestException.NotImplemented }
     
-    var derivationOptionsJson: String? { get {
-        return self.packagedSealedMessage.derivationOptionsJson
+    var recipeJson: String? { get {
+        return self.packagedSealedMessage.recipe
     }}
     func unsealingInstructions() throws -> UnsealingInstructions? {
         if let unsealingInstructionsJson = packagedSealedMessage.unsealingInstructions {
@@ -277,7 +277,7 @@ class ApiRequestUnseal: ApiRequest {
         self.packagedSealedMessageJson = packagedSealedMessageJson
         let packagedSealedMessage = try getPackagedSealedMessageJsonObject(json: packagedSealedMessageJson)
         self.packagedSealedMessage = packagedSealedMessage
-        self.derivationOptions = try getDerivationOptions(json: packagedSealedMessage.derivationOptionsJson)
+        self.recipe = try getRecipe(json: packagedSealedMessage.recipe)
         try throwIfNotAuthorized()
     }
 
@@ -287,19 +287,19 @@ class ApiRequestUnseal: ApiRequest {
         self.packagedSealedMessageJson = try unmarshaller.requiredField(name: "packagedSealedMessageJson")
         let packagedSealedMessage = try getPackagedSealedMessageJsonObject(json: packagedSealedMessageJson)
         self.packagedSealedMessage = packagedSealedMessage
-        self.derivationOptions = try getDerivationOptions(json: packagedSealedMessage.derivationOptionsJson)
+        self.recipe = try getRecipe(json: packagedSealedMessage.recipe)
         try throwIfNotAuthorized()
     }
 
     func throwIfNotAuthorized(requestContext: RequestSecurityContext) throws {
         let unsealingInstructions = try self.unsealingInstructions()
         guard requestContext.satisfiesAuthenticationRequirements(
-            of: derivationOptions,
+            of: recipe,
             allowNullRequirement:
                 // Okay to have no authentication requiements in derivation options if the unsealing instructions have authentiation requirements
-                (allowNilEmptyDerivationOptions && unsealingInstructions?.allow != nil)
+                (allowNilEmptyRecipe && unsealingInstructions?.allow != nil)
         ) else {
-            throw RequestException.ClientNotAuthorized(AuthenticationRequirementIn.DerivationOptions)
+            throw RequestException.ClientNotAuthorized(AuthenticationRequirementIn.Recipe)
         }
         if unsealingInstructions != nil {
             guard requestContext.satisfiesAuthenticationRequirements(of: unsealingInstructions!, allowNullRequirement: true) else {
@@ -311,22 +311,22 @@ class ApiRequestUnseal: ApiRequest {
 
 class ApiRequestUnsealWithSymmetricKey: ApiRequestUnseal, ApiRequestCommand {
     let command = ApiCommand.unsealWithSymmetricKey
-    let allowNilEmptyDerivationOptions = false
+    let allowNilEmptyRecipe = false
 
     override func execute(seedString: String) throws -> SuccessResponse {
         try SuccessResponse.unsealWithSymmetricKey(plaintext:
-            SymmetricKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            SymmetricKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
                 .unseal(withJsonPackagedSealedMessage: packagedSealedMessageJson)
         )
     }
 }
 class ApiRequestUnsealWithUnsealingKey: ApiRequestUnseal, ApiRequestCommand {
     let command = ApiCommand.unsealWithUnsealingKey
-    let allowNilEmptyDerivationOptions = true
+    let allowNilEmptyRecipe = true
 
     override func execute(seedString: String) throws -> SuccessResponse {
         try SuccessResponse.unsealWithUnsealingKey(plaintext: 
-            UnsealingKey.deriveFromSeed(withSeedString: seedString, derivationOptionsJson: self.derivationOptionsJson!)
+            UnsealingKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
                 .unseal(withJsonPackagedSealedMessage: packagedSealedMessageJson)
         )
     }

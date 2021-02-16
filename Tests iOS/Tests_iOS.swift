@@ -34,14 +34,14 @@ class Tests_iOS: XCTestCase {
     
     func testIssue56PasswordCannotBeDerived() throws {
         let recipeJson = "{\"allow\":[{\"host\":\"*.exampl.com\"}],\"lengthInChars\":0}"
-        let password = try Password.deriveFromSeed(withSeedString: "this string is seedy", derivationOptionsJson: recipeJson)
+        let password = try Password.deriveFromSeed(withSeedString: "this string is seedy", recipe: recipeJson)
         XCTAssertNotNil(password)
         XCTAssertNotNil(password.password)
     }
     
     func testGetPasswordApi() throws {
         handleUrlApiRequest(
-            incomingRequestUrl: URL(string: "https://dicekeys.app/?command=getPassword&requestId=1&respondTo=https%3A%2F%2Fpwmgr.app%2F--derived-secret-api--%2F&derivationOptionsJson=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwmgr.app%22%7D%5D%7D&derivationOptionsJsonMayBeModified=false")!,
+            incomingRequestUrl: URL(string: "https://dicekeys.app/?command=getPassword&requestId=1&respondTo=https%3A%2F%2Fpwmgr.app%2F--derived-secret-api--%2F&recipe=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwmgr.app%22%7D%5D%7D&recipeMayBeModified=false")!,
             approveApiRequest: { _, callback in
                 callback(.success("A1tB2rC3bD4lE5tF6rG1bH2lI3tJ4rK5bL6lM1tN2rO3bP4lR5tS6rT1bU2lV3tW4rX5bY6lZ1t"))
             },
