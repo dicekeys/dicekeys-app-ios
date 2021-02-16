@@ -27,6 +27,7 @@ final class DiceKeyMemoryStore: ObservableObjectUpdatingOnAllChangesToUserDefaul
     
     func clearDiceKey() {
         self.diceKeyLoaded = nil
+        cachedDiceKeyState = nil
     }
     
     private var cachedDiceKeyState: UnlockedDiceKeyState? = nil
