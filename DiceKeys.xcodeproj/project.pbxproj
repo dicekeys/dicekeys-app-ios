@@ -15,6 +15,8 @@
 		1720581C25C50CBE00282E21 /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */; };
 		1757499F25DE08BF0026BE32 /* ApiRequestResultPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1757499E25DE08BF0026BE32 /* ApiRequestResultPreviewView.swift */; };
 		175749A025DE08BF0026BE32 /* ApiRequestResultPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1757499E25DE08BF0026BE32 /* ApiRequestResultPreviewView.swift */; };
+		175749A625DE8BFC0026BE32 /* SavedDiceKeysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175749A525DE8BFC0026BE32 /* SavedDiceKeysView.swift */; };
+		175749A725DE8BFC0026BE32 /* SavedDiceKeysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175749A525DE8BFC0026BE32 /* SavedDiceKeysView.swift */; };
 		17B6C5A125A43AAB007798F3 /* CtapHidConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */; };
 		17B6C5AB25A494CB007798F3 /* AttachedHidDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */; };
 		17B6C5D525A52A69007798F3 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17B6C5D425A52A69007798F3 /* Colors.xcassets */; };
@@ -274,6 +276,7 @@
 		14C38080E39571B13473B619 /* Pods-DiceKeys (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (iOS).release.xcconfig"; path = "Target Support Files/Pods-DiceKeys (iOS)/Pods-DiceKeys (iOS).release.xcconfig"; sourceTree = "<group>"; };
 		172057B025C2DBF800282E21 /* SupportsBackNavigationHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportsBackNavigationHeader.swift; sourceTree = "<group>"; };
 		1757499E25DE08BF0026BE32 /* ApiRequestResultPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequestResultPreviewView.swift; sourceTree = "<group>"; };
+		175749A525DE8BFC0026BE32 /* SavedDiceKeysView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDiceKeysView.swift; sourceTree = "<group>"; };
 		17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CtapHidConnection.swift; sourceTree = "<group>"; };
 		17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachedHidDevice.swift; sourceTree = "<group>"; };
 		17B6C5D425A52A69007798F3 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
@@ -664,6 +667,7 @@
 				EC509275259482F4007D2B91 /* AssemblyInstructions.swift */,
 				267F67DE25B2CA3600F2324A /* EditableDiceKeyView */,
 				17B6C6E525BE6309007798F3 /* LoadDiceKey.swift */,
+				175749A525DE8BFC0026BE32 /* SavedDiceKeysView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -1193,6 +1197,7 @@
 				EC50921525948124007D2B91 /* SeededCryptoRecipeObject.swift in Sources */,
 				EC50921725948124007D2B91 /* UnsealingInstructions.swift in Sources */,
 				EC50929F259482F4007D2B91 /* DiceKeysCameraView.swift in Sources */,
+				175749A625DE8BFC0026BE32 /* SavedDiceKeysView.swift in Sources */,
 				EC5092C9259482F5007D2B91 /* BackupDiceKey.swift in Sources */,
 				1757499F25DE08BF0026BE32 /* ApiRequestResultPreviewView.swift in Sources */,
 				EC50928F259482F4007D2B91 /* Funnel.swift in Sources */,
@@ -1305,6 +1310,7 @@
 				ECFC52312599CD21008D0598 /* DiceKeysCameraView.swift in Sources */,
 				EC5092C4259482F5007D2B91 /* StickerTargetSheet.swift in Sources */,
 				EC509294259482F4007D2B91 /* DiceKeyView.swift in Sources */,
+				175749A725DE8BFC0026BE32 /* SavedDiceKeysView.swift in Sources */,
 				EC5093332595C043007D2B91 /* RoundedRectCard.swift in Sources */,
 				EC5092A4259482F4007D2B91 /* AppMainView.swift in Sources */,
 				EC5092CE259482F5007D2B91 /* TransferDie.swift in Sources */,

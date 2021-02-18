@@ -140,10 +140,22 @@ struct ApiRequestView: View {
             } else if let diceKey = diceKeyLoaded {
                 ApiRequestResultPreviewView(request: $request, diceKey: diceKey)
             } else {
-                VStack {
-                    Text("To allow this action, you'll first need to load your DiceKey.")
-                    Button(action: { userAskedToLoadDiceKey = true }, label: { Text("Load DiceKey") })
-                }
+                Text("To allow this action, you'll first need to load your DiceKey.")
+                Spacer()
+                SavedDiceKeysView()
+                Button(action: { userAskedToLoadDiceKey = true }) {
+                    VStack(alignment: .center) {
+                        HStack {
+                            Spacer()
+                            Image("Scanning a DiceKey PNG")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                            Spacer()
+                        }
+                        Text("Load your DiceKey").font(.title2)
+                    }
+                    .aspectRatio(3.0, contentMode: .fit)
+                }.buttonStyle(PlainButtonStyle())
             }
             Spacer()
             HStack {
