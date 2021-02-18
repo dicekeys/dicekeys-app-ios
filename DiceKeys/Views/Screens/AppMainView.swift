@@ -11,6 +11,7 @@ struct AppMainView: View {
     @StateObject var knownDiceKeysStore = KnownDiceKeysStore.singleton
     @StateObject var navigationState = WindowNavigationState()
     @StateObject var diceKeyMemoryStore = DiceKeyMemoryStore.singleton
+    @StateObject var requestState = ApiRequestState.singleton
 
     var knownDiceKeysState: [KnownDiceKeyState] {
         knownDiceKeysStore.knownDiceKeys.map { keyId in KnownDiceKeyState.forKeyId(keyId) }.filter {
@@ -45,95 +46,99 @@ struct AppMainView: View {
     #endif
 
     var body: some View {
-        switch navigationState.topLevelNavigation {
-        case .loadDiceKey:
-            LoadDiceKey(
-                onDiceKeyLoaded: { diceKey, _ in
-                    diceKeyLoaded(diceKey)
-                },
-                onBack: { navigationState.topLevelNavigation = .nowhere }
-            )
-        case .assemblyInstructions:
-            AssemblyInstructions(onSuccess: { diceKey in
-                diceKeyLoaded(diceKey)
-            }, onBack: {
-                navigationState.topLevelNavigation = .nowhere
-            })
-        default:
-            if let unlockedDiceKeyState = diceKeyMemoryStore.diceKeyState {
-                DiceKeyPresent(
-                    diceKeyState: unlockedDiceKeyState,
-                    onForget: { diceKeyMemoryStore.clearDiceKey() }
+        if let requestForUserToApprove = requestState.requestForUserToApprove {
+            ApiRequestView(request: requestForUserToApprove, diceKeyMemoryStore: diceKeyMemoryStore)
+        } else {
+            switch navigationState.topLevelNavigation {
+            case .loadDiceKey:
+                LoadDiceKey(
+                    onDiceKeyLoaded: { diceKey, _ in
+                        diceKeyLoaded(diceKey)
+                    },
+                    onBack: { navigationState.topLevelNavigation = .nowhere }
                 )
-            } else {
-                // Main page view
-                let view = VStack {
-                Spacer()
-                ForEach(knownDiceKeysState) { knownDiceKeyState in
-                    Button(action: {
-                        EncryptedDiceKeyFileAccessor.instance.getDiceKey(fromKeyId: knownDiceKeyState.id, centerFace: knownDiceKeyState.centerFace) { result in
-                                switch result {
-                                case .success(let diceKey):
-                                    diceKeyLoaded(diceKey)
-                                default: ()
-                            }
-                        }
-                    }, label: {
-                        VStack {
-                            if let centerFace = knownDiceKeyState.centerFace {
-                                HStack {
-                                    Spacer()
-                                    DiceKeyCenterFaceOnlyView(centerFace: centerFace)
-                                    Spacer()
-                                }.frame(
-                                    maxHeight: screenHeight / 5
-                                )
-                            }
-                            Text("Unlock " + knownDiceKeyState.nickname).font(.title2)
-                        }
-                    }).buttonStyle(PlainButtonStyle())
+            case .assemblyInstructions:
+                AssemblyInstructions(onSuccess: { diceKey in
+                    diceKeyLoaded(diceKey)
+                }, onBack: {
+                    navigationState.topLevelNavigation = .nowhere
+                })
+            default:
+                if let unlockedDiceKeyState = diceKeyMemoryStore.diceKeyState {
+                    DiceKeyPresent(
+                        diceKeyState: unlockedDiceKeyState,
+                        onForget: { diceKeyMemoryStore.clearDiceKey() }
+                    )
+                } else {
+                    // Main page view
+                    let view = VStack {
                     Spacer()
-                }
-                Button(action: { showLoadDiceKey() }) {
-                    VStack(alignment: .center) {
-                        HStack {
-                            Spacer()
-                            Image("Scanning a DiceKey PNG")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                            Spacer()
-                        }
-    //                        .frame(maxHeight: 0.3 * screenShorterSide)
-                        Text("Load your DiceKey").font(.title2)
+                    ForEach(knownDiceKeysState) { knownDiceKeyState in
+                        Button(action: {
+                            EncryptedDiceKeyFileAccessor.instance.getDiceKey(fromKeyId: knownDiceKeyState.id, centerFace: knownDiceKeyState.centerFace) { result in
+                                    switch result {
+                                    case .success(let diceKey):
+                                        diceKeyLoaded(diceKey)
+                                    default: ()
+                                }
+                            }
+                        }, label: {
+                            VStack {
+                                if let centerFace = knownDiceKeyState.centerFace {
+                                    HStack {
+                                        Spacer()
+                                        DiceKeyCenterFaceOnlyView(centerFace: centerFace)
+                                        Spacer()
+                                    }.frame(
+                                        maxHeight: screenHeight / 5
+                                    )
+                                }
+                                Text("Unlock " + knownDiceKeyState.nickname).font(.title2)
+                            }
+                        }).buttonStyle(PlainButtonStyle())
+                        Spacer()
                     }
-                    .aspectRatio(3.0, contentMode: .fit)
-                }.buttonStyle(PlainButtonStyle())
-                Spacer()
-                Button(action: { showAssemblyInstructions() } ) {
-                    VStack(alignment: .center) {
-                        HStack {
-                            Spacer()
-                            Image("Illustration of shaking bag")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                            Spacer(minLength: 10)
-                            Image("Box Bottom After Roll").resizable().aspectRatio(contentMode: .fit)
-                            Spacer(minLength: 10)
-                            Image("Seal Box").resizable().aspectRatio(contentMode: .fit)
-                            Spacer(minLength: 10)
+                    Button(action: { showLoadDiceKey() }) {
+                        VStack(alignment: .center) {
+                            HStack {
+                                Spacer()
+                                Image("Scanning a DiceKey PNG")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                Spacer()
+                            }
+        //                        .frame(maxHeight: 0.3 * screenShorterSide)
+                            Text("Load your DiceKey").font(.title2)
                         }
-                        .aspectRatio(4, contentMode: .fit)
-                        //.frame(maxHeight: screenShorterSide / 2)
-                        Text("Assemble \(knownDiceKeysState.count == 0 ? "your First" : "a") DiceKey").font(.title2)
+                        .aspectRatio(3.0, contentMode: .fit)
+                    }.buttonStyle(PlainButtonStyle())
+                    Spacer()
+                    Button(action: { showAssemblyInstructions() } ) {
+                        VStack(alignment: .center) {
+                            HStack {
+                                Spacer()
+                                Image("Illustration of shaking bag")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                Spacer(minLength: 10)
+                                Image("Box Bottom After Roll").resizable().aspectRatio(contentMode: .fit)
+                                Spacer(minLength: 10)
+                                Image("Seal Box").resizable().aspectRatio(contentMode: .fit)
+                                Spacer(minLength: 10)
+                            }
+                            .aspectRatio(4, contentMode: .fit)
+                            //.frame(maxHeight: screenShorterSide / 2)
+                            Text("Assemble \(knownDiceKeysState.count == 0 ? "your First" : "a") DiceKey").font(.title2)
+                        }
+                    }.buttonStyle(PlainButtonStyle())
+                    Spacer()
                     }
-                }.buttonStyle(PlainButtonStyle())
-                Spacer()
+                    #if os(macOS)
+                    view.frame(width: 480, height: 700)
+                    #else
+                    view
+                    #endif
                 }
-                #if os(macOS)
-                view.frame(width: 480, height: 700)
-                #else
-                view
-                #endif
             }
     }
 }

@@ -9,17 +9,18 @@ import Foundation
 import Combine
 import CryptoKit
 
+enum BackgroundCalculationError: Error {
+    case inProgress
+}
 
 /// The calculated result of an API request, which runs in the background
 /// and is cached so that a request never causes more than one calculation.
 class BackgroundCalculationOfApiRequestResult: ObservableObjectUpdatingOnAllChangesToUserDefaults {
     @Published var ready: Bool = false
-    @Published var successResponse: SuccessResponse? = nil
-    @Published var result: Result<SuccessResponse,Error>? = nil
-    let future: Future<SuccessResponse, Error>
+    @Published var result: Result<SuccessResponse,Error> = .failure(BackgroundCalculationError.inProgress)
+    private var onResultCallbacks: [(Result<SuccessResponse, Error>) throws -> Void] = []
     
     private func setSuccess(_ resultIfSuccess: SuccessResponse) {
-        self.successResponse = resultIfSuccess
         self.result = .success(resultIfSuccess)
         self.ready = true
         self.sendChangeEventOnMainThread()
@@ -31,36 +32,55 @@ class BackgroundCalculationOfApiRequestResult: ObservableObjectUpdatingOnAllChan
         self.sendChangeEventOnMainThread()
     }
     
-    private init (_ resultFuture: Future<SuccessResponse, Error>) {
-        self.future = resultFuture
-        super.init()
-        _ = future.sink(
-            receiveCompletion: { completion in
-                if case let .failure(error) = completion { self.setError(error) }
-            }, receiveValue: { resultIfSuccess in self.setSuccess(resultIfSuccess)
-        })
+    private func callCallbacks(result: Result<SuccessResponse, Error>) {
+        self.result = result
+        for callback in onResultCallbacks {
+            try? callback(result)
+        }
+    }
+    
+    private func onResult(_ callback: @escaping (Result<SuccessResponse, Error>) throws -> Void) {
+        if case let .failure(error) = result, case BackgroundCalculationError.inProgress = error {
+            // The calculation is ongoing. Defer the callback until th result is ready
+            onResultCallbacks.append(callback)
+        } else {
+            // The result is ready so call the callback immediately.
+            try? callback(result)
+        }
     }
     
     static var cache: [String: BackgroundCalculationOfApiRequestResult] = [:]
     
-    static func precalculateForTestUseOnly(request: ApiRequest, seedString: String) {
+    private init(request: ApiRequest, seedString: String) {
+        super.init()
+        execute(request: request, seedString: seedString)
+    }
+    
+    private func execute(request: ApiRequest, seedString: String) {
+        DispatchQueue.global(qos: .background).async {
+            do {
+                let result = try request.execute(seedString: seedString)
+                DispatchQueue.main.async {
+                    self.setSuccess(result)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.setError(error)
+                }
+            }
+        }
+    }
+    
+    static func get(request: ApiRequest, seedString: String, callback: @escaping (Result<SuccessResponse, Error>) throws -> Void) {
         let cacheKeyPreimage: String = request.id + seedString
         let cacheKey = SHA256.hash(data: cacheKeyPreimage.data(using: .utf8)!).description
-        var result: Result<SuccessResponse,Error>?
-        do {
-            try result = .success(request.execute(seedString: seedString))
-        } catch {
-            result = .failure(error)
+        if let cachedResult = cache[cacheKey] {
+            cachedResult.onResult(callback)
+        } else {
+            let result = BackgroundCalculationOfApiRequestResult(request: request, seedString: seedString)
+            cache[cacheKey] = result
+            result.onResult(callback)
         }
-        
-        let resultFuture = Future<SuccessResponse, Error>{ promise in promise(result!) }
-        let r = BackgroundCalculationOfApiRequestResult(resultFuture)
-        r.ready = true
-        r.result = result
-        if case let .success(sr) = result {
-            r.successResponse = sr
-        }
-        cache[cacheKey] = r
     }
     
     static func get(request: ApiRequest, seedString: String) -> BackgroundCalculationOfApiRequestResult {
@@ -70,21 +90,7 @@ class BackgroundCalculationOfApiRequestResult: ObservableObjectUpdatingOnAllChan
             return cachedResult
         }
 
-        let resultFuture = Future<SuccessResponse, Error>{ promise in
-            DispatchQueue.global(qos: .background).async {
-                do {
-                    let result = try request.execute(seedString: seedString)
-                    DispatchQueue.main.async {
-                        promise(.success(result))
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        promise(.failure(error))
-                    }
-                }
-            }
-        }
-        let result = BackgroundCalculationOfApiRequestResult(resultFuture)
+        let result = BackgroundCalculationOfApiRequestResult(request: request, seedString: seedString)
         cache[cacheKey] = result
         
         return result
