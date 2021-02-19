@@ -81,8 +81,12 @@ private func describeApproval(_ request: ApiRequest) -> String {
     "Approve"
 }
 
+/// This view display an API request, a request made by another
+/// application (or website) to perform a cryptographic operation
+/// or key generation with the user's DiceEey.
+///
+/// It gives the option for the user to cancel or continue
 struct ApiRequestView: View {
-//    @Binding var request: ApiRequest
     var request: ApiRequest
     @ObservedObject var diceKeyMemoryStore: DiceKeyMemoryStore
     @ObservedObject var backgroundCalculationOfApiRequestResult: BackgroundCalculationOfApiRequestResult

@@ -78,18 +78,6 @@ class BackgroundCalculationOfApiRequestResult: ObservableObjectUpdatingOnAllChan
         }
     }
     
-//    static func get(request: ApiRequest, seedString: String, callback: @escaping (Result<SuccessResponse, Error>) throws -> Void) {
-//        let cacheKeyPreimage: String = request.id + seedString
-//        let cacheKey = SHA256.hash(data: cacheKeyPreimage.data(using: .utf8)!).description
-//        if let cachedResult = cache[cacheKey] {
-//            cachedResult.onResult(callback)
-//        } else {
-//            let result = BackgroundCalculationOfApiRequestResult(request: request, seedString: seedString)
-//            cache[cacheKey] = result
-//            result.onResult(callback)
-//        }
-//    }
-    
     static func get(request: ApiRequest, seedString: String? = nil) -> BackgroundCalculationOfApiRequestResult {
         let cacheKeyPreimage: String = request.id
         let cacheKey = SHA256.hash(data: cacheKeyPreimage.data(using: .utf8)!).description

@@ -8,6 +8,8 @@
 import SwiftUI
 import SeededCrypto
 
+/// Display derived data as a combination of a recipe field (used to derive the necessary secrets)
+/// and a field that will be sent back to the caller (e.g. a derived password, key, or decrypted message.)
 private struct RequestDataView: View {
     let recipe: String
     let title: String?
@@ -40,6 +42,7 @@ private struct RequestDataView: View {
     }
 }
 
+/// Preview a derived password
 private struct RequestPreviewPassword: View {
     let password: Password
     var body: some View {
@@ -47,6 +50,7 @@ private struct RequestPreviewPassword: View {
     }
 }
 
+/// Preview a derived secret
 private struct RequestPreviewSecret: View {
     let secret: Secret
     var body: some View {
@@ -54,6 +58,7 @@ private struct RequestPreviewSecret: View {
     }
 }
 
+/// Preview a derived cryptographic key
 private struct RequestPreviewGetKey: View {
     let recipe: String
     let key: Data?
@@ -74,8 +79,29 @@ private struct RequestPreviewGetKey: View {
     init(_ key: SymmetricKey) {
         self.init(recipe: key.recipe, key: key.keyBytes)
     }
+    
+    init(_ key: UnsealingKey) {
+        self.init(recipe: key.recipe, key: key.unsealingKeyBytes)
+    }
+    
+    init(_ key: SigningKey) {
+        self.init(recipe: key.recipe, key: key.signingKeyBytes)
+    }
+    
+    init (_ key: SignatureVerificationKey) {
+        self.init(recipe: key.recipe, key: key.signatureVerificationKeyBytes)
+    }
 }
 
+private struct RequestPreviewGenerateSignature: View {
+    let request: ApiRequestGenerateSignature
+    
+    var body: some View {
+        RequestDataView(recipe: request.recipeJson ?? "", title: "message to sign:", value: request.message.asReadableString, lineLimit: 4)
+    }
+}
+
+/// Preview data to be sealed with a symmetric key
 private struct RequestPreviewSealWithSymmetricKey: View {
     let recipe: String
     let plaintext: Data
@@ -90,6 +116,7 @@ private struct RequestPreviewSealWithSymmetricKey: View {
     }
 }
 
+/// Preview data to be unsealed
 private struct RequestPreviewSealUnseal: View {
     let recipe: String
     let plaintext: Data
@@ -108,6 +135,9 @@ private struct RequestPreviewSealUnseal: View {
     }
 }
 
+/// A view to preview the result of an API request.
+/// For example, if an app requested a password derived from the user's DiceKey,
+/// this preview would display the password to be shared.
 struct ApiRequestResultPreviewView: View {
     let request: ApiRequest
     let diceKey: DiceKey
@@ -129,18 +159,24 @@ struct ApiRequestResultPreviewView: View {
                 DiceKeyView(diceKey: diceKey)
                 .frame(maxWidth: WindowDimensions.shorterSide/2)
                 switch successResponse {
-        //        case .generateSignature(let signature, let signatureVerificationKeyJson):
+                case .generateSignature:
+                    if let generateSignatureRequest = self.request as? ApiRequestGenerateSignature {
+                        RequestPreviewGenerateSignature(request: generateSignatureRequest)
+                    }
                 case .getPassword(let passwordJson):
                     RequestPreviewPassword(password: try! Password.from(json: passwordJson))
                 case .getSecret(let secretJson):
                     RequestPreviewSecret(secret: try! Secret.from(json: secretJson))
                 case .getSealingKey(let sealingKeyJson):
                     RequestPreviewGetKey(try! SealingKey.from(json: sealingKeyJson))
-        //        case .getSigningKey(let signingKeyJson):
-        //        case .getSignatureVerificationKey(let signatureVerificationKeyJson):
+                case .getSignatureVerificationKey(let signatureVerificationKeyJson):
+                    RequestPreviewGetKey(try! SignatureVerificationKey.from(json: signatureVerificationKeyJson))
+                case .getSigningKey(let signingKeyJson):
+                    RequestPreviewGetKey(try! SigningKey.from(json: signingKeyJson))
                 case .getSymmetricKey(let symmetricKeyJson):
                     RequestPreviewGetKey(try! SymmetricKey.from(json: symmetricKeyJson))
-        //        case .getUnsealingKey(let unsealingKeyJson):
+                case .getUnsealingKey(let unsealingKeyJson):
+                    RequestPreviewGetKey(try! UnsealingKey.from(json: unsealingKeyJson))
                 case .sealWithSymmetricKey(_):
                     if let r = request, r is ApiRequestSealWithSymmetricKey {
                         RequestPreviewSealWithSymmetricKey(r as! ApiRequestSealWithSymmetricKey)
@@ -153,8 +189,6 @@ struct ApiRequestResultPreviewView: View {
                     if let r = request, r is ApiRequestUnsealWithUnsealingKey {
                         RequestPreviewSealUnseal(r as! ApiRequestUnsealWithUnsealingKey, plaintext: plaintext)
                     }
-                default:
-                    EmptyView()
                 }
             } else {
                 Text("Loading result preview...")

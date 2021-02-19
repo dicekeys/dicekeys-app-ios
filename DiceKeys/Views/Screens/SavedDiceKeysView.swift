@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-
-import SwiftUI
-
+/// This view shows the list of DiceKeys saved in the keychain and provides the ability to
+/// unlock (open) them.
 struct SavedDiceKeysView: View {
     var onDiceKeyLoaded: (DiceKey) -> Void = { diceKey in
         DiceKeyMemoryStore.singleton.setDiceKey(diceKey: diceKey)
