@@ -31,7 +31,7 @@ protocol ApiRequestCommand {
 protocol ApiRequest {
     var id: String { get }
     var securityContext: RequestSecurityContext { get }
-    var recipe: SeededCryptoRecipeObject { get }
+    var recipeObj: SeededCryptoRecipeObject { get }
     var recipeJson: String? { get }
     var recipeMayBeModified: Bool { get }
 
@@ -58,16 +58,16 @@ extension ApiRequest {
     var allowNilEmptyRecipe: Bool { get { false } }
 
     func throwIfNotAuthorized() throws {
-        let recipe = self.recipe
+        let recipeObj = self.recipeObj
 
-        if (requireClientMayRetrieveKeyToBeSetToTrue && recipe.clientMayRetrieveKey != true) {
+        if (requireClientMayRetrieveKeyToBeSetToTrue && recipeObj.clientMayRetrieveKey != true) {
             throw RequestException.ComamndRequiresRecipeWithClientMayRetrieveKeySetToTrue
         }
         guard securityContext.satisfiesAuthenticationRequirements(
-            of: recipe,
+            of: recipeObj,
             allowNullRequirement:
                 // Okay to have null/empty recipe, with no authentication requirements, when getting a sealing key
-                (allowNilEmptyRecipe && (recipe == nil || recipeJson == ""))
+                (allowNilEmptyRecipe && (recipeJson == nil || recipeJson == ""))
         ) else {
             throw RequestException.ClientNotAuthorized(AuthenticationRequirementIn.Recipe)
         }
@@ -83,7 +83,7 @@ private func getRecipe(json recipe: String?) throws -> SeededCryptoRecipeObject 
 
 class ApiRequestWithExplicitRecipe: ApiRequest {
     let id: String
-    let recipe: SeededCryptoRecipeObject
+    let recipeObj: SeededCryptoRecipeObject
     let recipeJson: String?
     let securityContext: RequestSecurityContext
     let recipeMayBeModifiedParameter: Bool?
@@ -104,7 +104,7 @@ class ApiRequestWithExplicitRecipe: ApiRequest {
         self.securityContext = securityContext
         self.recipeJson = recipeJson
         self.recipeMayBeModifiedParameter = recipeMayBeModified
-        self.recipe = try getRecipe(json: self.recipeJson)
+        self.recipeObj = try getRecipe(json: self.recipeJson)
         try throwIfNotAuthorized()
     }
 
@@ -112,7 +112,7 @@ class ApiRequestWithExplicitRecipe: ApiRequest {
         self.id = id
         self.securityContext = securityContext
         self.recipeJson = unmarshaller.optionalField(name: "recipe")
-        self.recipe = try getRecipe(json: self.recipeJson)
+        self.recipeObj = try getRecipe(json: self.recipeJson)
         let recipeMayBeModified = unmarshaller.optionalField(name: "recipeMayBeModified")
         self.recipeMayBeModifiedParameter = recipeMayBeModified == "true" ? true : recipeMayBeModified == "false" ? false : nil
         try throwIfNotAuthorized()
@@ -252,7 +252,7 @@ class ApiRequestUnseal: ApiRequest {
     let securityContext: RequestSecurityContext
     let packagedSealedMessage: PackagedSealedMessageJsonObject
     let packagedSealedMessageJson: String
-    let recipe: SeededCryptoRecipeObject
+    let recipeObj: SeededCryptoRecipeObject
 //    internal var resultCache: [String: Result<SuccessResponse, Error>] = [:]
 
     var recipeMayBeModifiedDefault: Bool { get { false } }
@@ -277,7 +277,7 @@ class ApiRequestUnseal: ApiRequest {
         self.packagedSealedMessageJson = packagedSealedMessageJson
         let packagedSealedMessage = try getPackagedSealedMessageJsonObject(json: packagedSealedMessageJson)
         self.packagedSealedMessage = packagedSealedMessage
-        self.recipe = try getRecipe(json: packagedSealedMessage.recipe)
+        self.recipeObj = try getRecipe(json: packagedSealedMessage.recipe)
         try throwIfNotAuthorized()
     }
 
@@ -287,14 +287,14 @@ class ApiRequestUnseal: ApiRequest {
         self.packagedSealedMessageJson = try unmarshaller.requiredField(name: "packagedSealedMessageJson")
         let packagedSealedMessage = try getPackagedSealedMessageJsonObject(json: packagedSealedMessageJson)
         self.packagedSealedMessage = packagedSealedMessage
-        self.recipe = try getRecipe(json: packagedSealedMessage.recipe)
+        self.recipeObj = try getRecipe(json: packagedSealedMessage.recipe)
         try throwIfNotAuthorized()
     }
 
     func throwIfNotAuthorized(requestContext: RequestSecurityContext) throws {
         let unsealingInstructions = try self.unsealingInstructions()
         guard requestContext.satisfiesAuthenticationRequirements(
-            of: recipe,
+            of: recipeObj,
             allowNullRequirement:
                 // Okay to have no authentication requiements in derivation options if the unsealing instructions have authentiation requirements
                 (allowNilEmptyRecipe && unsealingInstructions?.allow != nil)

@@ -77,7 +77,7 @@ struct AppMainView: View {
     
     var body: some View {
         if let requestForUserToApprove = requestState.requestForUserToApprove {
-            ApiRequestView(request: requestForUserToApprove, diceKeyMemoryStore: diceKeyMemoryStore)
+            ApiRequestView(requestForUserToApprove, diceKeyMemoryStore: diceKeyMemoryStore)
         } else if (navigationState.showLoadDiceKey) {
             LoadDiceKey(
                 onDiceKeyLoaded: { diceKey, _ in

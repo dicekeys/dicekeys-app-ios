@@ -83,10 +83,21 @@ private func describeApproval(_ request: ApiRequest) -> String {
 
 struct ApiRequestView: View {
 //    @Binding var request: ApiRequest
-    @State var request: ApiRequest
+    var request: ApiRequest
     @ObservedObject var diceKeyMemoryStore: DiceKeyMemoryStore
+    @ObservedObject var backgroundCalculationOfApiRequestResult: BackgroundCalculationOfApiRequestResult
+        @State var userAskedToLoadDiceKey: Bool = false
     
-    @State var userAskedToLoadDiceKey: Bool = false
+    init (_ apiRequest: ApiRequest, diceKeyMemoryStore: DiceKeyMemoryStore = DiceKeyMemoryStore.singleton) {
+        self.request = apiRequest
+        self._diceKeyMemoryStore = ObservedObject(initialValue: diceKeyMemoryStore)
+        let newBackgroundCalculationOfApiRequestResult =
+            BackgroundCalculationOfApiRequestResult.get(request: apiRequest)
+        self._backgroundCalculationOfApiRequestResult = ObservedObject(initialValue: newBackgroundCalculationOfApiRequestResult)
+            _ = diceKeyMemoryStore.diceKeyLoaded.publisher.sink{ diceKey in
+                newBackgroundCalculationOfApiRequestResult.execute(seedString: diceKey.toSeed())
+        }
+    }
     
     var diceKeyLoaded: DiceKey? {
         get { diceKeyMemoryStore.diceKeyLoaded }
@@ -100,13 +111,26 @@ struct ApiRequestView: View {
         return BackgroundCalculationOfApiRequestResult.get(request: request, seedString: diceKey.toSeed() ).result
     }
     
+    var successful: Bool {
+        if case .success = apiResult { return true } else { return false }
+    }
+        
     var successResponse: SuccessResponse? {
         guard case let .success(response) = apiResult else { return nil }
         return response
     }
     
+    var awaitingResult: Bool {
+        if case let .failure(error) = apiResult, case BackgroundCalculationError.inProgress = error {
+            return true
+        } else {
+            return false
+        }
+    }
+
     var error: Error? {
-        guard case let .failure(error) = apiResult, case BackgroundCalculationError.inProgress = error else { return nil }
+        guard case let .failure(error) = apiResult else { return nil }
+        if case BackgroundCalculationError.inProgress = error { return nil }
         return error
     }
     
@@ -116,8 +140,8 @@ struct ApiRequestView: View {
     var failed: Bool { error != nil }
         
     func approveRequest() {
-        if let successResponse = successResponse {
-            ApiRequestState.singleton.completeApiRequest(.success(successResponse))
+        if (!awaitingResult) {
+            ApiRequestState.singleton.completeApiRequest(apiResult)
         }
     }
   
@@ -137,8 +161,13 @@ struct ApiRequestView: View {
                 }, onBack: {
                     userAskedToLoadDiceKey = false
                 })
+            } else if let error = error {
+                Text("There was an error computing the result of the request. It may be malformed.")
+                Text("\(error.localizedDescription)")
+            } else if (diceKeyLoaded != nil && awaitingResult) {
+                Text("Calculating requested value.")
             } else if let diceKey = diceKeyLoaded {
-                ApiRequestResultPreviewView(request: $request, diceKey: diceKey)
+                ApiRequestResultPreviewView(request: request, diceKey: diceKey)
             } else {
                 Text("To allow this action, you'll first need to load your DiceKey.")
                 Spacer()
@@ -162,7 +191,7 @@ struct ApiRequestView: View {
                 Spacer()
                 Button(action: { self.declineRequest() }, label: { Text("Cancel") })
                 Spacer()
-                Button(action: { self.approveRequest() }, label: { Text(describeApproval(request)) }).showIf( mayApprove)
+                Button(action: { self.approveRequest() }, label: { Text(awaitingResult || successful ? describeApproval(request) : "Return error") }).hideIf( awaitingResult )
                 Spacer()
             }
             Spacer()
@@ -192,23 +221,23 @@ struct ApiRequestView_Previews: PreviewProvider {
 //        let _ = BackgroundCalculationOfApiRequestResult.precalculateForTestUseOnly(request: testRequestForSymmetricKey, seedString: diceKeyMemoryStoreWithKey.diceKeyLoaded!.toSeed())
 
         ApiRequestView(
-            request: testRequestForSymmetricKey,
+            testRequestForSymmetricKey,
             diceKeyMemoryStore: diceKeyMemoryStoreWithKey
         ).previewLayoutMinSupported()
         
 
         ApiRequestView(
-            request: testRequestForSecret,
+            testRequestForSecret,
             diceKeyMemoryStore: diceKeyMemoryStoreWithKey
         ).previewLayoutMinSupported()
         
         ApiRequestView(
-            request: testRequestForPassword,
+            testRequestForPassword,
             diceKeyMemoryStore: diceKeyMemoryStoreWithKey
         ).previewLayoutMinSupported()
 
         ApiRequestView(
-            request: testRequestForPassword,
+            testRequestForPassword,
             diceKeyMemoryStore: DiceKeyMemoryStore()
         ).previewLayoutMinSupported()
     }

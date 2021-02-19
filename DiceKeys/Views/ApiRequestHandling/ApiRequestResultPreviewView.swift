@@ -109,23 +109,23 @@ private struct RequestPreviewSealUnseal: View {
 }
 
 struct ApiRequestResultPreviewView: View {
-    @Binding var request: ApiRequest
+    let request: ApiRequest
     let diceKey: DiceKey
 
     @ObservedObject var apiResultObservable: BackgroundCalculationOfApiRequestResult // = ObservableApiRequestResult.get(request: request, seedString: diceKey.toSeed())
     
     init(
-        request: Binding<ApiRequest>,
+        request: ApiRequest,
         diceKey: DiceKey
     ) {
-        self._request = request
+        self.request = request
         self.diceKey = diceKey
-        self._apiResultObservable = ObservedObject(initialValue: BackgroundCalculationOfApiRequestResult.get(request: request.wrappedValue, seedString: diceKey.toSeed()))
+        self._apiResultObservable = ObservedObject(initialValue: BackgroundCalculationOfApiRequestResult.get(request: request, seedString: diceKey.toSeed()))
     }
     
     var body: some View {
         VStack {
-            if self.apiResultObservable.ready, case let .success(successResponse) = self.apiResultObservable.result {
+            if case let .success(successResponse) = self.apiResultObservable.result {
                 DiceKeyView(diceKey: diceKey)
                 .frame(maxWidth: WindowDimensions.shorterSide/2)
                 switch successResponse {

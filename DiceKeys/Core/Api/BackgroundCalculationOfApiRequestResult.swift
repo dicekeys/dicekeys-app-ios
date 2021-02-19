@@ -16,22 +16,17 @@ enum BackgroundCalculationError: Error {
 /// The calculated result of an API request, which runs in the background
 /// and is cached so that a request never causes more than one calculation.
 class BackgroundCalculationOfApiRequestResult: ObservableObjectUpdatingOnAllChangesToUserDefaults {
-    @Published var ready: Bool = false
-    @Published var result: Result<SuccessResponse,Error> = .failure(BackgroundCalculationError.inProgress)
+    @Published var result: Result<SuccessResponse,Error> = .failure(BackgroundCalculationError.inProgress) {
+        didSet { self.sendChangeEventOnMainThread() }
+    }
     private var onResultCallbacks: [(Result<SuccessResponse, Error>) throws -> Void] = []
+    private var request: ApiRequest
+    private var seedString: String?
     
-    private func setSuccess(_ resultIfSuccess: SuccessResponse) {
-        self.result = .success(resultIfSuccess)
-        self.ready = true
-        self.sendChangeEventOnMainThread()
+    private func setResult(_ result: Result<SuccessResponse, Error>) {
+        self.result = result
     }
-    
-    private func setError(_ error: Error) {
-        self.result = .failure(error)
-        self.ready = true
-        self.sendChangeEventOnMainThread()
-    }
-    
+        
     private func callCallbacks(result: Result<SuccessResponse, Error>) {
         self.result = result
         for callback in onResultCallbacks {
@@ -51,48 +46,65 @@ class BackgroundCalculationOfApiRequestResult: ObservableObjectUpdatingOnAllChan
     
     static var cache: [String: BackgroundCalculationOfApiRequestResult] = [:]
     
-    private init(request: ApiRequest, seedString: String) {
+    private init(request: ApiRequest, seedString: String? = nil) {
+        self.request = request
         super.init()
-        execute(request: request, seedString: seedString)
+        if let seedString = seedString {
+            execute(seedString: seedString)
+        }
     }
     
-    private func execute(request: ApiRequest, seedString: String) {
+    func execute(seedString: String) {
+        if (self.seedString == seedString) {
+            // Already executing
+            return
+        }
+        self.seedString = seedString
         DispatchQueue.global(qos: .background).async {
             do {
-                let result = try request.execute(seedString: seedString)
+                let successResponse = try self.request.execute(seedString: seedString)
                 DispatchQueue.main.async {
-                    self.setSuccess(result)
+                    if (self.seedString == seedString) {
+                        self.setResult(.success(successResponse))
+                    }
                 }
             } catch {
                 DispatchQueue.main.async {
-                    self.setError(error)
+                    if (self.seedString == seedString) {
+                        self.setResult(.failure(error))
+                    }
                 }
             }
         }
     }
     
-    static func get(request: ApiRequest, seedString: String, callback: @escaping (Result<SuccessResponse, Error>) throws -> Void) {
-        let cacheKeyPreimage: String = request.id + seedString
-        let cacheKey = SHA256.hash(data: cacheKeyPreimage.data(using: .utf8)!).description
-        if let cachedResult = cache[cacheKey] {
-            cachedResult.onResult(callback)
-        } else {
-            let result = BackgroundCalculationOfApiRequestResult(request: request, seedString: seedString)
-            cache[cacheKey] = result
-            result.onResult(callback)
-        }
-    }
+//    static func get(request: ApiRequest, seedString: String, callback: @escaping (Result<SuccessResponse, Error>) throws -> Void) {
+//        let cacheKeyPreimage: String = request.id + seedString
+//        let cacheKey = SHA256.hash(data: cacheKeyPreimage.data(using: .utf8)!).description
+//        if let cachedResult = cache[cacheKey] {
+//            cachedResult.onResult(callback)
+//        } else {
+//            let result = BackgroundCalculationOfApiRequestResult(request: request, seedString: seedString)
+//            cache[cacheKey] = result
+//            result.onResult(callback)
+//        }
+//    }
     
-    static func get(request: ApiRequest, seedString: String) -> BackgroundCalculationOfApiRequestResult {
-        let cacheKeyPreimage: String = request.id + seedString
+    static func get(request: ApiRequest, seedString: String? = nil) -> BackgroundCalculationOfApiRequestResult {
+        let cacheKeyPreimage: String = request.id
         let cacheKey = SHA256.hash(data: cacheKeyPreimage.data(using: .utf8)!).description
         if let cachedResult = cache[cacheKey] {
+            if let seedString = seedString {
+                cachedResult.execute(seedString: seedString)
+            }
             return cachedResult
         }
 
         let result = BackgroundCalculationOfApiRequestResult(request: request, seedString: seedString)
         cache[cacheKey] = result
-        
+        if let seedString = seedString {
+            result.execute(seedString: seedString)
+        }
         return result
     }
 }
