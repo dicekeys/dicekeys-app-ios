@@ -34,7 +34,7 @@ extension DiceKeyState {
 
     var isDiceKeySaved: Bool {
         get {
-            return EncryptedDiceKeyFileAccessor.instance.hasDiceKey(forKeyId: keyId)
+            return EncryptedDiceKeyStore.hasDiceKey(forKeyId: keyId)
         }
     }
 }
@@ -130,13 +130,13 @@ final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefa
 
     var isDiceKeySaved: Bool {
         get {
-            return EncryptedDiceKeyFileAccessor.instance.hasDiceKey(forKeyId: keyId)
+            return EncryptedDiceKeyStore.hasDiceKey(forKeyId: keyId)
         }
         set {
             // Currently we are storing the center face IFF we are storing the DiceKey
             isCenterFaceStored = newValue
             if newValue {
-                EncryptedDiceKeyFileAccessor.instance.put(diceKey: diceKey) { result in
+                EncryptedDiceKeyStore.put(diceKey: diceKey) { result in
                     switch result {
                     case .failure(let error): print(error)
                     case .success:
@@ -145,7 +145,7 @@ final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefa
                 }
                 KnownDiceKeysStore.singleton.addKnownDiceKey(keyId: diceKey.id)
             } else {
-                _  = EncryptedDiceKeyFileAccessor.instance.delete(keyId: keyId)
+                _  = EncryptedDiceKeyStore.delete(keyId: keyId)
                 self.protectedCacheOfIsDiceKeyStored = false
                 KnownDiceKeysStore.singleton.removeKnownDiceKey(keyId: diceKey.id)
             }

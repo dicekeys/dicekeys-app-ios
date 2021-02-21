@@ -71,7 +71,7 @@ struct AppMainView: View {
                 Spacer()
                 ForEach(knownDiceKeysState) { knownDiceKeyState in
                     Button(action: {
-                        EncryptedDiceKeyFileAccessor.instance.getDiceKey(fromKeyId: knownDiceKeyState.id, centerFace: knownDiceKeyState.centerFace) { result in
+                        EncryptedDiceKeyStore.getDiceKey(fromKeyId: knownDiceKeyState.id, centerFace: knownDiceKeyState.centerFace) { result in
                                 switch result {
                                 case .success(let diceKey):
                                     diceKeyLoaded(diceKey)
