@@ -22,7 +22,7 @@ struct DiceKeyPresentNavigationFooter: View {
 
     @State private var isBackupActive = false
 
-    var BottomButtonCount: Int = 3
+    var BottomButtonCount: Int = 4
     var BottomButtonFractionalWidth: CGFloat {
         0.9 / CGFloat(BottomButtonCount)
     }
@@ -34,6 +34,20 @@ struct DiceKeyPresentNavigationFooter: View {
         let view = VStack(alignment: .center, spacing: 0) {
         HStack(alignment: .top) {
             Spacer()
+            VStack {
+                Image("Backup to DiceKey")
+                    .renderingMode(.template)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(
+                        maxWidth: geometry.size.width * BottomButtonFractionalWidth,
+                        maxHeight: navBarContentHeight,
+                        alignment: .center
+                    )
+                Text("DiceKey").multilineTextAlignment(.center).font(.footnote)
+            }.frame(width: geometry.size.width * BottomButtonFractionalWidth, height: navBarContentHeight, alignment: .center)
+            .onTapGesture { navigateTo(.Default) }
+            .if( pageContent == .Default ) { $0.colorInvert() }
             VStack {
                 Image("USB Key")
                     .renderingMode(.template)
@@ -108,7 +122,7 @@ struct DiceKeyPresentNavigationFooter: View {
                         maxHeight: navBarContentHeight,
                         alignment: .center
                     )
-                Text("Backup this Key").multilineTextAlignment(.center).font(.footnote)
+                Text("Backup this Key").lineLimit(2).multilineTextAlignment(.center).font(.footnote)
             }.frame(width: geometry.size.width * BottomButtonFractionalWidth, height: navBarContentHeight, alignment: .center)
             .onTapGesture { navigateTo(.Backup) }
             .if( pageContent == .Backup ) { $0.colorInvert() }
@@ -180,11 +194,11 @@ struct DiceKeyPresent: View {
     }
 
     func navigate(to destination: DiceKeyPresentPageContent) {
-           if pageContent == destination {
-               pageContent = .Default
-           } else {
-               self.pageContent = destination
-           }
+//           if pageContent == destination {
+//               pageContent = .Default
+//           } else {
+           self.pageContent = destination
+//           }
     }
 
     let defaultContentPadding: CGFloat = 15
