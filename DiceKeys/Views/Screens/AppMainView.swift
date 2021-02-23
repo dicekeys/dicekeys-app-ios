@@ -42,7 +42,6 @@ struct AppMainView: View {
                             .aspectRatio(contentMode: .fit)
                         Spacer()
                     }
-//                        .frame(maxHeight: 0.3 * screenShorterSide)
                     Text("Load your DiceKey").font(.title2)
                 }
                 .aspectRatio(3.0, contentMode: .fit)

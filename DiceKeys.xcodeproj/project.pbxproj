@@ -72,7 +72,7 @@
 		17BB399C25CCC6690023E430 /* FaceRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FC25948124007D2B91 /* FaceRead.swift */; };
 		17BB399D25CCC6690023E430 /* FaceSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FE25948124007D2B91 /* FaceSpecification.swift */; };
 		17BB399E25CCC6690023E430 /* DiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FD25948124007D2B91 /* DiceKey.swift */; };
-		17BB399F25CCC6690023E430 /* EncryptedDiceKeyFileAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FA25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift */; };
+		17BB399F25CCC6690023E430 /* EncryptedDiceKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FA25948124007D2B91 /* EncryptedDiceKeyStore.swift */; };
 		17BB39A025CCC6690023E430 /* DiceKeyMedium.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091F925948124007D2B91 /* DiceKeyMedium.swift */; };
 		17BB39A125CCC6690023E430 /* DerivationRecipeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C61B25AD52C6007798F3 /* DerivationRecipeTemplates.swift */; };
 		17BB39A625CCC66A0023E430 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FB25948124007D2B91 /* Face.swift */; };
@@ -80,7 +80,7 @@
 		17BB39A825CCC66A0023E430 /* FaceRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FC25948124007D2B91 /* FaceRead.swift */; };
 		17BB39A925CCC66A0023E430 /* FaceSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FE25948124007D2B91 /* FaceSpecification.swift */; };
 		17BB39AA25CCC66A0023E430 /* DiceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FD25948124007D2B91 /* DiceKey.swift */; };
-		17BB39AB25CCC66A0023E430 /* EncryptedDiceKeyFileAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FA25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift */; };
+		17BB39AB25CCC66A0023E430 /* EncryptedDiceKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FA25948124007D2B91 /* EncryptedDiceKeyStore.swift */; };
 		17BB39AC25CCC66A0023E430 /* DiceKeyMedium.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091F925948124007D2B91 /* DiceKeyMedium.swift */; };
 		17BB39AD25CCC66A0023E430 /* DerivationRecipeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C61B25AD52C6007798F3 /* DerivationRecipeTemplates.swift */; };
 		17BB39B225CCC6700023E430 /* AttachedHidDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C62625B58252007798F3 /* AttachedHidDevices.swift */; };
@@ -141,8 +141,8 @@
 		EC5091F2259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091EC259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */; };
 		EC50920725948124007D2B91 /* DiceKeyMedium.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091F925948124007D2B91 /* DiceKeyMedium.swift */; };
 		EC50920825948124007D2B91 /* DiceKeyMedium.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091F925948124007D2B91 /* DiceKeyMedium.swift */; };
-		EC50920925948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FA25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift */; };
-		EC50920A25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FA25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift */; };
+		EC50920925948124007D2B91 /* EncryptedDiceKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FA25948124007D2B91 /* EncryptedDiceKeyStore.swift */; };
+		EC50920A25948124007D2B91 /* EncryptedDiceKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FA25948124007D2B91 /* EncryptedDiceKeyStore.swift */; };
 		EC50920B25948124007D2B91 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FB25948124007D2B91 /* Face.swift */; };
 		EC50920C25948124007D2B91 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FB25948124007D2B91 /* Face.swift */; };
 		EC50920D25948124007D2B91 /* FaceRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5091FC25948124007D2B91 /* FaceRead.swift */; };
@@ -320,7 +320,7 @@
 		EC5091EB259480BE007D2B91 /* UnlockedDiceKeyState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockedDiceKeyState.swift; sourceTree = "<group>"; };
 		EC5091EC259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableObjectUpdatingOnAllChangesToUserDefaults.swift; sourceTree = "<group>"; };
 		EC5091F925948124007D2B91 /* DiceKeyMedium.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKeyMedium.swift; sourceTree = "<group>"; };
-		EC5091FA25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptedDiceKeyFileAccessor.swift; sourceTree = "<group>"; };
+		EC5091FA25948124007D2B91 /* EncryptedDiceKeyStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptedDiceKeyStore.swift; sourceTree = "<group>"; };
 		EC5091FB25948124007D2B91 /* Face.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
 		EC5091FC25948124007D2B91 /* FaceRead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceRead.swift; sourceTree = "<group>"; };
 		EC5091FD25948124007D2B91 /* DiceKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiceKey.swift; sourceTree = "<group>"; };
@@ -518,6 +518,7 @@
 		EC5091E9259480BE007D2B91 /* State */ = {
 			isa = PBXGroup;
 			children = (
+				EC5091FA25948124007D2B91 /* EncryptedDiceKeyStore.swift */,
 				EC5091EB259480BE007D2B91 /* UnlockedDiceKeyState.swift */,
 				EC5091EC259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift */,
 				17E385EA25CF4F8A004C2701 /* ApiRequestState.swift */,
@@ -544,7 +545,6 @@
 			isa = PBXGroup;
 			children = (
 				EC5091F925948124007D2B91 /* DiceKeyMedium.swift */,
-				EC5091FA25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift */,
 				EC5091FB25948124007D2B91 /* Face.swift */,
 				EC5091FC25948124007D2B91 /* FaceRead.swift */,
 				EC5091FD25948124007D2B91 /* DiceKey.swift */,
@@ -1219,7 +1219,7 @@
 				EC5092A3259482F4007D2B91 /* AppMainView.swift in Sources */,
 				EC5092CD259482F5007D2B91 /* TransferDie.swift in Sources */,
 				EC5092AF259482F5007D2B91 /* NavigationBar.swift in Sources */,
-				EC50920925948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift in Sources */,
+				EC50920925948124007D2B91 /* EncryptedDiceKeyStore.swift in Sources */,
 				EC50921D25948124007D2B91 /* ApiRequest.swift in Sources */,
 				ECFC5237259A194F008D0598 /* PlatformTypes.swift in Sources */,
 			);
@@ -1315,7 +1315,7 @@
 				EC5092A4259482F4007D2B91 /* AppMainView.swift in Sources */,
 				EC5092CE259482F5007D2B91 /* TransferDie.swift in Sources */,
 				17BB392725CBB3470023E430 /* RequestSecurityContext.swift in Sources */,
-				EC50920A25948124007D2B91 /* EncryptedDiceKeyFileAccessor.swift in Sources */,
+				EC50920A25948124007D2B91 /* EncryptedDiceKeyStore.swift in Sources */,
 				EC50921E25948124007D2B91 /* ApiRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1326,7 +1326,7 @@
 			files = (
 				17BB399C25CCC6690023E430 /* FaceRead.swift in Sources */,
 				17BB399B25CCC6690023E430 /* Derivables.swift in Sources */,
-				17BB399F25CCC6690023E430 /* EncryptedDiceKeyFileAccessor.swift in Sources */,
+				17BB399F25CCC6690023E430 /* EncryptedDiceKeyStore.swift in Sources */,
 				17BB399D25CCC6690023E430 /* FaceSpecification.swift in Sources */,
 				17BB394B25CBB63D0023E430 /* Unmarshalling.swift in Sources */,
 				1720581725C50CBE00282E21 /* WebBasedApplicationIdentity.swift in Sources */,
@@ -1363,7 +1363,7 @@
 				17E3864325D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */,
 				17E3863625D0ED85004C2701 /* Data.swift in Sources */,
 				17BB39A725CCC66A0023E430 /* Derivables.swift in Sources */,
-				17BB39AB25CCC66A0023E430 /* EncryptedDiceKeyFileAccessor.swift in Sources */,
+				17BB39AB25CCC66A0023E430 /* EncryptedDiceKeyStore.swift in Sources */,
 				17BB39A925CCC66A0023E430 /* FaceSpecification.swift in Sources */,
 				17E3862D25D0EC69004C2701 /* WindowDimensions.swift in Sources */,
 				17E3860E25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */,
