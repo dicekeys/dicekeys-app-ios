@@ -13,6 +13,10 @@
 		172057D025C4E7F500282E21 /* SeededCryptoRecipeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920125948124007D2B91 /* SeededCryptoRecipeObject.swift */; };
 		1720581725C50CBE00282E21 /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */; };
 		1720581C25C50CBE00282E21 /* WebBasedApplicationIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50920425948124007D2B91 /* WebBasedApplicationIdentity.swift */; };
+		1757499F25DE08BF0026BE32 /* ApiRequestResultPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1757499E25DE08BF0026BE32 /* ApiRequestResultPreviewView.swift */; };
+		175749A025DE08BF0026BE32 /* ApiRequestResultPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1757499E25DE08BF0026BE32 /* ApiRequestResultPreviewView.swift */; };
+		175749A625DE8BFC0026BE32 /* SavedDiceKeysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175749A525DE8BFC0026BE32 /* SavedDiceKeysView.swift */; };
+		175749A725DE8BFC0026BE32 /* SavedDiceKeysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175749A525DE8BFC0026BE32 /* SavedDiceKeysView.swift */; };
 		17B6C5A125A43AAB007798F3 /* CtapHidConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */; };
 		17B6C5AB25A494CB007798F3 /* AttachedHidDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */; };
 		17B6C5D525A52A69007798F3 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17B6C5D425A52A69007798F3 /* Colors.xcassets */; };
@@ -271,6 +275,8 @@
 		1397E5F18A65098140DBC5BB /* Pods_DiceKeys_DiceKeys__macOS__Tests_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeys__macOS__Tests_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14C38080E39571B13473B619 /* Pods-DiceKeys (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (iOS).release.xcconfig"; path = "Target Support Files/Pods-DiceKeys (iOS)/Pods-DiceKeys (iOS).release.xcconfig"; sourceTree = "<group>"; };
 		172057B025C2DBF800282E21 /* SupportsBackNavigationHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportsBackNavigationHeader.swift; sourceTree = "<group>"; };
+		1757499E25DE08BF0026BE32 /* ApiRequestResultPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequestResultPreviewView.swift; sourceTree = "<group>"; };
+		175749A525DE8BFC0026BE32 /* SavedDiceKeysView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDiceKeysView.swift; sourceTree = "<group>"; };
 		17B6C5A025A43AAB007798F3 /* CtapHidConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CtapHidConnection.swift; sourceTree = "<group>"; };
 		17B6C5AA25A494CB007798F3 /* AttachedHidDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachedHidDevice.swift; sourceTree = "<group>"; };
 		17B6C5D425A52A69007798F3 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
@@ -446,6 +452,7 @@
 			isa = PBXGroup;
 			children = (
 				17E385E425CE5DED004C2701 /* ApiRequestView.swift */,
+				1757499E25DE08BF0026BE32 /* ApiRequestResultPreviewView.swift */,
 			);
 			path = ApiRequestHandling;
 			sourceTree = "<group>";
@@ -660,6 +667,7 @@
 				EC509275259482F4007D2B91 /* AssemblyInstructions.swift */,
 				267F67DE25B2CA3600F2324A /* EditableDiceKeyView */,
 				17B6C6E525BE6309007798F3 /* LoadDiceKey.swift */,
+				175749A525DE8BFC0026BE32 /* SavedDiceKeysView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -1189,7 +1197,9 @@
 				EC50921525948124007D2B91 /* SeededCryptoRecipeObject.swift in Sources */,
 				EC50921725948124007D2B91 /* UnsealingInstructions.swift in Sources */,
 				EC50929F259482F4007D2B91 /* DiceKeysCameraView.swift in Sources */,
+				175749A625DE8BFC0026BE32 /* SavedDiceKeysView.swift in Sources */,
 				EC5092C9259482F5007D2B91 /* BackupDiceKey.swift in Sources */,
+				1757499F25DE08BF0026BE32 /* ApiRequestResultPreviewView.swift in Sources */,
 				EC50928F259482F4007D2B91 /* Funnel.swift in Sources */,
 				EC50932B2595BD03007D2B91 /* SequenceNumberField.swift in Sources */,
 				EC50920B25948124007D2B91 /* Face.swift in Sources */,
@@ -1234,6 +1244,7 @@
 				17BB395C25CBB6FC0023E430 /* UrlApiRequest.swift in Sources */,
 				EC509296259482F4007D2B91 /* DieView.swift in Sources */,
 				EC50932C2595BD03007D2B91 /* SequenceNumberField.swift in Sources */,
+				175749A025DE08BF0026BE32 /* ApiRequestResultPreviewView.swift in Sources */,
 				17BB394125CBB5AA0023E430 /* PackagedSealedMessage.swift in Sources */,
 				EC50921025948124007D2B91 /* DiceKey.swift in Sources */,
 				EC5092B8259482F5007D2B91 /* RoundedTextButton.swift in Sources */,
@@ -1299,6 +1310,7 @@
 				ECFC52312599CD21008D0598 /* DiceKeysCameraView.swift in Sources */,
 				EC5092C4259482F5007D2B91 /* StickerTargetSheet.swift in Sources */,
 				EC509294259482F4007D2B91 /* DiceKeyView.swift in Sources */,
+				175749A725DE8BFC0026BE32 /* SavedDiceKeysView.swift in Sources */,
 				EC5093332595C043007D2B91 /* RoundedRectCard.swift in Sources */,
 				EC5092A4259482F4007D2B91 /* AppMainView.swift in Sources */,
 				EC5092CE259482F5007D2B91 /* TransferDie.swift in Sources */,
@@ -1517,7 +1529,7 @@
 				CODE_SIGN_ENTITLEMENTS = DiceKeys.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0.023;
+				CURRENT_PROJECT_VERSION = 0.024;
 				DEVELOPMENT_TEAM = CTDV6HX5KK;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -1526,7 +1538,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
 				PRODUCT_NAME = DiceKeys;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1545,7 +1557,7 @@
 				CODE_SIGN_ENTITLEMENTS = DiceKeys.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0.023;
+				CURRENT_PROJECT_VERSION = 0.024;
 				DEVELOPMENT_TEAM = CTDV6HX5KK;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -1554,7 +1566,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
 				PRODUCT_NAME = DiceKeys;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1575,7 +1587,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = CTDV6HX5KK;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
@@ -1585,7 +1597,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
 				PRODUCT_NAME = DiceKeys;
 				SDKROOT = macosx;
@@ -1603,7 +1615,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = CTDV6HX5KK;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
@@ -1613,7 +1625,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
 				PRODUCT_NAME = DiceKeys;
 				SDKROOT = macosx;

@@ -17,7 +17,10 @@ enum TopLevelNavigateTo {
 final class WindowNavigationState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
     static private(set) var singleton = WindowNavigationState()
     
-    @Published var topLevelNavigation: TopLevelNavigateTo = .nowhere {
-        didSet { self.sendChangeEventOnMainThread() }
-    }
+    @Published var showLoadDiceKey: Bool = false { didSet { self.sendChangeEventOnMainThread()} }
+    @Published var showAssemblyInstructions: Bool = false { didSet { self.sendChangeEventOnMainThread()} }
+
+//    @Published var topLevelNavigation: TopLevelNavigateTo = .nowhere {
+//        didSet { self.sendChangeEventOnMainThread() }
+//    }
 }

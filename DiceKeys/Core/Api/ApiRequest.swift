@@ -28,52 +28,65 @@ protocol ApiRequestCommand {
     var command: ApiCommand { get }
 }
 
+/// Encapsulates information about an API request so that common code such as security checks
+/// can be shared among all requests.
 protocol ApiRequest {
+    /// A unique ID for indexing/hashing
     var id: String { get }
+    
+    /// The security context used for authorization decisions)
     var securityContext: RequestSecurityContext { get }
-    var recipe: SeededCryptoRecipeObject { get }
+
+    /// The recipe in the request (specified in JSON format)
     var recipeJson: String? { get }
+
+    /// A Recipe object instantiated from the recipeJson
+    var recipeObj: SeededCryptoRecipeObject { get }
+
     var recipeMayBeModified: Bool { get }
 
+    /// These read-only properties are set by instances of different types of requests
+    /// to indicate whether that type supports a given behavior
+    
+    /// Does this API Request type all a recipe of nil (not specified) an an empthy string?
     var allowNilEmptyRecipe: Bool { get }
+    
+    /// Is this a getKey request which can only be permitted if the recipe includes "clientMayRetreiveKey": true
     var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get }
+    
+    /// Is this a request for which the DiceKeys app is permitted to modify the recipe by default
+    /// (if not explicitly specified in the recipe itself)
     var recipeMayBeModifiedDefault: Bool { get }
 
+    /// Tests whether the caller is authorized to execute the request and throws an exception
+    /// if the request is not authorized
     func throwIfNotAuthorized() throws
 
     /// Calculate the result of the API call, throwing an exception if it fails
     func execute(seedString: String) throws -> SuccessResponse
-//
-//    // Wrap the execute function to return a Result instead of throwing
-//    func executeIntoResult(seedString: String) -> Result<SuccessResponse, Error>
-//
-//    var resultCache: [String: Result<SuccessResponse, Error>] {get set}
-//    // Wrap the execute function to cache the result in a Result object
-//    // so that it only ever needs to be calculated once
-//    mutating func executeWithCachedResult(seedString: String) -> Result<SuccessResponse, Error>
-
 }
 
 extension ApiRequest {
     var allowNilEmptyRecipe: Bool { get { false } }
 
     func throwIfNotAuthorized() throws {
-        let recipe = self.recipe
+        let recipeObj = self.recipeObj
 
-        if (requireClientMayRetrieveKeyToBeSetToTrue && recipe.clientMayRetrieveKey != true) {
+        if (requireClientMayRetrieveKeyToBeSetToTrue && recipeObj.clientMayRetrieveKey != true) {
             throw RequestException.ComamndRequiresRecipeWithClientMayRetrieveKeySetToTrue
         }
         guard securityContext.satisfiesAuthenticationRequirements(
-            of: recipe,
+            of: recipeObj,
             allowNullRequirement:
                 // Okay to have null/empty recipe, with no authentication requirements, when getting a sealing key
-                (allowNilEmptyRecipe && (recipe == nil || recipeJson == ""))
+                (allowNilEmptyRecipe && (recipeJson == nil || recipeJson == ""))
         ) else {
             throw RequestException.ClientNotAuthorized(AuthenticationRequirementIn.Recipe)
         }
     }
 }
 
+/// A wrapper function to create a recipe object from json or to throw an exception trying
 private func getRecipe(json recipe: String?) throws -> SeededCryptoRecipeObject {
     guard let recipe = try SeededCryptoRecipeObject.fromJson(recipe!) else {
         throw RequestException.InvalidRecipeJson
@@ -81,9 +94,12 @@ private func getRecipe(json recipe: String?) throws -> SeededCryptoRecipeObject 
     return recipe
 }
 
+/// A base implemtatnion of API requests for which one of the parameters is a JSON recipe
+/// (effectively all requsts except unseal requests, where the recipe is embedded in a
+/// PackagedSealedMessage)
 class ApiRequestWithExplicitRecipe: ApiRequest {
     let id: String
-    let recipe: SeededCryptoRecipeObject
+    let recipeObj: SeededCryptoRecipeObject
     let recipeJson: String?
     let securityContext: RequestSecurityContext
     let recipeMayBeModifiedParameter: Bool?
@@ -104,7 +120,7 @@ class ApiRequestWithExplicitRecipe: ApiRequest {
         self.securityContext = securityContext
         self.recipeJson = recipeJson
         self.recipeMayBeModifiedParameter = recipeMayBeModified
-        self.recipe = try getRecipe(json: self.recipeJson)
+        self.recipeObj = try getRecipe(json: self.recipeJson)
         try throwIfNotAuthorized()
     }
 
@@ -112,13 +128,14 @@ class ApiRequestWithExplicitRecipe: ApiRequest {
         self.id = id
         self.securityContext = securityContext
         self.recipeJson = unmarshaller.optionalField(name: "recipe")
-        self.recipe = try getRecipe(json: self.recipeJson)
+        self.recipeObj = try getRecipe(json: self.recipeJson)
         let recipeMayBeModified = unmarshaller.optionalField(name: "recipeMayBeModified")
         self.recipeMayBeModifiedParameter = recipeMayBeModified == "true" ? true : recipeMayBeModified == "false" ? false : nil
         try throwIfNotAuthorized()
     }
 }
 
+/// An API Rueqest object for generating a signature
 class ApiRequestGenerateSignature: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command: ApiCommand = ApiCommand.generateSignature
     let message: Data
@@ -247,13 +264,13 @@ private func getPackagedSealedMessageJsonObject(json packagedSealedMessageJson: 
     }
 }
 
+/// A base request onto which unsealing requests are built, since recipes are embedded in their PackagedSealedMessage parameters.
 class ApiRequestUnseal: ApiRequest {
     let id: String
     let securityContext: RequestSecurityContext
     let packagedSealedMessage: PackagedSealedMessageJsonObject
     let packagedSealedMessageJson: String
-    let recipe: SeededCryptoRecipeObject
-//    internal var resultCache: [String: Result<SuccessResponse, Error>] = [:]
+    let recipeObj: SeededCryptoRecipeObject
 
     var recipeMayBeModifiedDefault: Bool { get { false } }
     let recipeMayBeModified = false
@@ -277,7 +294,7 @@ class ApiRequestUnseal: ApiRequest {
         self.packagedSealedMessageJson = packagedSealedMessageJson
         let packagedSealedMessage = try getPackagedSealedMessageJsonObject(json: packagedSealedMessageJson)
         self.packagedSealedMessage = packagedSealedMessage
-        self.recipe = try getRecipe(json: packagedSealedMessage.recipe)
+        self.recipeObj = try getRecipe(json: packagedSealedMessage.recipe)
         try throwIfNotAuthorized()
     }
 
@@ -287,14 +304,14 @@ class ApiRequestUnseal: ApiRequest {
         self.packagedSealedMessageJson = try unmarshaller.requiredField(name: "packagedSealedMessageJson")
         let packagedSealedMessage = try getPackagedSealedMessageJsonObject(json: packagedSealedMessageJson)
         self.packagedSealedMessage = packagedSealedMessage
-        self.recipe = try getRecipe(json: packagedSealedMessage.recipe)
+        self.recipeObj = try getRecipe(json: packagedSealedMessage.recipe)
         try throwIfNotAuthorized()
     }
 
     func throwIfNotAuthorized(requestContext: RequestSecurityContext) throws {
         let unsealingInstructions = try self.unsealingInstructions()
         guard requestContext.satisfiesAuthenticationRequirements(
-            of: recipe,
+            of: recipeObj,
             allowNullRequirement:
                 // Okay to have no authentication requiements in derivation options if the unsealing instructions have authentiation requirements
                 (allowNilEmptyRecipe && unsealingInstructions?.allow != nil)
@@ -332,6 +349,7 @@ class ApiRequestUnsealWithUnsealingKey: ApiRequestUnseal, ApiRequestCommand {
     }
 }
 
+/// Constructs an API request of the correct type
 func constructApiRequest(
     id: String,
     securityContext: RequestSecurityContext,
@@ -366,6 +384,7 @@ func constructApiRequest(
     }
 }
 
+/// Execute an API request, which should only be called this way from tests.
 func executeApiRequest(
     getSeedString: @escaping () throws -> String,
     id: String,

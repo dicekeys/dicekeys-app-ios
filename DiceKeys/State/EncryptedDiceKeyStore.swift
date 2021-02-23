@@ -91,10 +91,11 @@ private class KeyChain {
     }
 }
 
+fileprivate let defaultReason: String = "Unlock your DiceKey"
+
 /// A store for raw DiceKeys that represents them as password credentials
 /// in the Apple KeyChain for use only by this app on this device.
 class EncryptedDiceKeyStore {
-    let defaultReason = "Unlock your DiceKey"
 
     class func getReason(forCenterFace centerFace: Face?) -> String {
         if let face = centerFace {

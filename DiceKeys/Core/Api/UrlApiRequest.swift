@@ -65,6 +65,9 @@ fileprivate class UrlRequestSecurityContext: RequestSecurityContext {
 
 fileprivate func sendResponse(_ responseUrl: URLComponents, _ additionalParameters: [String:String]) {
     var mutableResponseUrl = responseUrl
+    if (mutableResponseUrl.queryItems == nil) {
+        mutableResponseUrl.queryItems = []
+    }
     for (name, value) in additionalParameters {
         mutableResponseUrl.queryItems?.append(URLQueryItem(name: name, value: value))
     }
@@ -99,7 +102,7 @@ func testConstructUrlApiRequest(_ requestUrlString: String) throws -> ApiRequest
 // Handles API requests arriving via URL
 func handleUrlApiRequest(
     incomingRequestUrl: URL,
-    approveApiRequest: @escaping (_ forRequest: ApiRequest, _ callback: @escaping (Result</* seed */String, Error>) -> Void) -> Void,
+    approveApiRequest: @escaping (_ forRequest: ApiRequest, _ callback: @escaping (Result<SuccessResponse, Error>) -> Void) -> Void,
     // Set only for testing, otherwise, use the default
     sendResponse: @escaping (_ responseUrl: URLComponents, _ additionalParameters: [String:String]) -> Void = sendResponse
 ) {
@@ -131,10 +134,13 @@ func handleUrlApiRequest(
     }
 
     var responseUrl = securityContext.responseUrl
+    if (responseUrl.queryItems == nil) {
+        responseUrl.queryItems = []
+    }
     responseUrl.queryItems?.append(URLQueryItem(name: "requestId", value: requestId))
 
     do {
-        var request = try constructApiRequest(id: incomingRequestUrl.absoluteString,securityContext: securityContext, unmarshaller: parameterUnmarshaller)
+        let request = try constructApiRequest(id: incomingRequestUrl.absoluteString,securityContext: securityContext, unmarshaller: parameterUnmarshaller)
 
         // Do not allow the request to proceed unless all authorization checks pass
         // try request.throwIfNotAuthorized()
@@ -144,22 +150,8 @@ func handleUrlApiRequest(
             switch result {
             case .failure(let error):
                 sendError(responseUrl, error)
-            case .success(let seedString):
-                _ = BackgroundCalculationOfApiRequestResult.get(request: request, seedString: seedString).future.sink(
-                    receiveCompletion: { completion in
-                        if case let .failure(error) = completion {
-                            sendError(responseUrl, error)
-                        }
-                    },
-                    receiveValue: {successResponse in
-                        sendResponse(responseUrl, successResponseToDictionary(successResponse: successResponse))
-                    })
-//                switch (request.executeWithCachedResult(seedString: seedString)) {
-//                case .success(let successResponse):
-//                    sendResponse(responseUrl, successResponseToDictionary(successResponse: successResponse))
-//                case .failure(let error):
-//                    sendError(responseUrl, error)
-//                }
+            case .success(let successResponse):
+                sendResponse(responseUrl, successResponseToDictionary(successResponse: successResponse))
             }
         }
     } catch {
