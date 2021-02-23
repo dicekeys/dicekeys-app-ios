@@ -34,6 +34,7 @@ private struct CharacterKey: View {
         KeyboardKey(size: size, action: { editableDiceKeyState.keyDown(char: char) } , label: {
             Text("\(String(char))")
                 .font(.system(size: 256, design: .monospaced))
+                .foregroundColor(.white)
                 .scaledToFit()
                 .minimumScaleFactor(0.01)
                 .lineLimit(1)
@@ -51,6 +52,7 @@ private struct ImageKey: View {
             image
             .resizable()
             .aspectRatio(contentMode: .fit)
+                .foregroundColor(.white)
         })
     }
 }
