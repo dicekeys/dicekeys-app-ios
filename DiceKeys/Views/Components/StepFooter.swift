@@ -66,28 +66,33 @@ struct StepFooterView: View {
                 Spacer()
             }
             HStack {
+                Spacer()
                 Button(action: { prevPrev?() }) {
                     HStack {
                         Image(systemName: "chevron.backward.2")
                     }
                 }.showIf( prevPrev != nil )
+                Spacer()
                 Button(action: { prev?() }) {
                     HStack {
                         Image(systemName: "chevron.backward")
                         Text("Previous").font(.title2)
                     }
                 }.showIf( prev != nil )
+                Spacer()
                 Button(action: { next?() }) {
                     HStack {
                         Text( isLastStep ? "Done" : "Next").font(.title2)
                         Image(systemName: "chevron.forward")
                     }
                 }.disabled( setMaySkip != nil ).showIf( next != nil )
+                Spacer()
                 Button(action: { nextNext?() }) {
                     HStack {
                         Image(systemName: "chevron.forward.2")
                     }
                 }.showIf( nextNext != nil )
+                Spacer()
             }
             .frame(alignment: .center)
         }
