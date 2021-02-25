@@ -54,11 +54,6 @@ private struct DiceKeyInMemory: View {
                 }
             }).buttonStyle(PlainButtonStyle())
             HStack {
-//                if case .keysNeverExpire = diceKeyMemoryStore.memoryStoreExpirationState {
-//                    Text("\( EncryptedDiceKeyStore.hasDiceKey(forKeyId: diceKey.id) ? "Unlocked" : "Will not be erased") until the app is closed")
-//                } else if isCountdownRunning {
-//                    Text("\( self.isInEncryptedDataStore ? "Locking" : "Erasing" ) in \( diceKeyMemoryStore.formattedTimeRemaining )")
-//                }
                 Menu(content: {
                     if let saveCallback = self.saveCallback, !self.isInEncryptedDataStore {
                         Button("Save this DiceKey", action: { saveCallback(diceKey) })

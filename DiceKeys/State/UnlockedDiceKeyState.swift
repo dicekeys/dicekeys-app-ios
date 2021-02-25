@@ -23,7 +23,7 @@ protocol DiceKeyMetadata {
 extension DiceKeyMetadata {
     var nickname: String {
         guard let centerFace = self.centerFace else { return "Unknown DiceKey" }
-        return "DiceKey with \(centerFace.letter.rawValue)\(centerFace.digit.rawValue) in center"
+        return nicknameForDiceKey(centerFace: centerFace)
     }
     
     var isCenterFaceStored: Bool {
