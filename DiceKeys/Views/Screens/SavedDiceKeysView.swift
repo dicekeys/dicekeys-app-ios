@@ -29,6 +29,16 @@ private struct DiceKeyInMemory: View {
         isCountdownRunning ? "Add" : "\(expirationActionText) in"
     }
     
+    var menuText: String {
+        if case .keysNeverExpire = diceKeyMemoryStore.memoryStoreExpirationState {
+            return "\( EncryptedDiceKeyStore.hasDiceKey(forKeyId: diceKey.id) ? "Unlocked" : "Will not be erased") until the app is closed"
+        } else if isCountdownRunning {
+            return "\( self.isInEncryptedDataStore ? "Locking" : "Erasing" ) in \( diceKeyMemoryStore.formattedTimeRemaining )"
+        } else {
+            return ""
+        }
+    }
+    
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Button(action: {
@@ -44,11 +54,11 @@ private struct DiceKeyInMemory: View {
                 }
             }).buttonStyle(PlainButtonStyle())
             HStack {
-                if case .keysNeverExpire = diceKeyMemoryStore.memoryStoreExpirationState {
-                    Text("\( EncryptedDiceKeyStore.hasDiceKey(forKeyId: diceKey.id) ? "Unlocked" : "Will not be erased") until the app is closed")
-                } else if isCountdownRunning {
-                    Text("\( self.isInEncryptedDataStore ? "Locking" : "Erasing" ) in \( diceKeyMemoryStore.formattedTimeRemaining )")
-                }
+//                if case .keysNeverExpire = diceKeyMemoryStore.memoryStoreExpirationState {
+//                    Text("\( EncryptedDiceKeyStore.hasDiceKey(forKeyId: diceKey.id) ? "Unlocked" : "Will not be erased") until the app is closed")
+//                } else if isCountdownRunning {
+//                    Text("\( self.isInEncryptedDataStore ? "Locking" : "Erasing" ) in \( diceKeyMemoryStore.formattedTimeRemaining )")
+//                }
                 Menu(content: {
                     if let saveCallback = self.saveCallback, !self.isInEncryptedDataStore {
                         Button("Save this DiceKey", action: { saveCallback(diceKey) })
@@ -62,7 +72,7 @@ private struct DiceKeyInMemory: View {
                     }
                     Button("\(expirationActionText) Immediately", action: { diceKeyMemoryStore.expireKey(self.diceKey) })
 
-                }, label: { Image(systemName: "ellipsis") })
+                }, label: { HStack { Text(menuText); Image(systemName: "ellipsis") } })
             }.padding(.top, 10).padding(.bottom, 10)
         }
     }

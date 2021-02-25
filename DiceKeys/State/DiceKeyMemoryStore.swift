@@ -140,7 +140,7 @@ final class DiceKeyMemoryStore: ObservableObjectUpdatingOnAllChangesToUserDefaul
     }
     
     var minutesRemaining: Int {
-        (Int(timeRemainingInFractionalSeconds ) / 60) % 60
+        (Int(timeRemainingInFractionalSeconds ) / 60)
     }
     
     var formattedTimeRemaining: String {
