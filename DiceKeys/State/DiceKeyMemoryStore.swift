@@ -37,10 +37,12 @@ final class DiceKeyMemoryStore: ObservableObjectUpdatingOnAllChangesToUserDefaul
         self.timer?.invalidate()
         self.timer = nil
     }
-
+    
+    private var lastWhenExpiring: Date?
     @Published private(set) var memoryStoreExpirationState: MemoryStoreExpirationState = .empty {
         didSet {
-            if case .countdownInProgress = oldValue {
+            if case let .countdownInProgress(whenExpiring) = oldValue {
+                self.lastWhenExpiring = whenExpiring
                 self.clearTimer()
             }
             if case .countdownInProgress = self.memoryStoreExpirationState {
@@ -74,7 +76,19 @@ final class DiceKeyMemoryStore: ObservableObjectUpdatingOnAllChangesToUserDefaul
         self.keyCache = [:]
         self.memoryStoreExpirationState = .empty
     }
+
+    func extendDeadlineBy(seconds: TimeInterval) {
+        if case let .countdownInProgress(whenExpiring) = self.memoryStoreExpirationState {
+            self.memoryStoreExpirationState = .countdownInProgress(whenExpiring: whenExpiring + seconds)
+        } else {
+            self.memoryStoreExpirationState = .countdownInProgress(whenExpiring: Date.init(timeIntervalSinceNow: seconds))
+        }
+    }
     
+    func setKeysNeverExpire() {
+        self.memoryStoreExpirationState = .keysNeverExpire
+    }
+
     var allDiceKeys: [DiceKey] {
         keyCache.values.sorted{ $0.centerFace.humanReadableForm < $1.centerFace.humanReadableForm }
     }
@@ -100,6 +114,10 @@ final class DiceKeyMemoryStore: ObservableObjectUpdatingOnAllChangesToUserDefaul
     }
 
     func startExpirationCountdown(_ whenExpiring: Date = Date().addingTimeInterval(TimeInterval(defaultExpirationPeriodInSeconds))) {
+        if let lastWhenExpiring = self.lastWhenExpiring, lastWhenExpiring > whenExpiring {
+            // Don't set whenExpiring to something earlier than it is already set to.
+            self.memoryStoreExpirationState = .countdownInProgress(whenExpiring: lastWhenExpiring)
+        }
         self.memoryStoreExpirationState = .countdownInProgress(whenExpiring: whenExpiring)
     }
 

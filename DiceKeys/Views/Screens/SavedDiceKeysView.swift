@@ -7,6 +7,67 @@
 
 import SwiftUI
 
+private struct DiceKeyInMemory: View {
+    @StateObject var diceKeyMemoryStore: DiceKeyMemoryStore = DiceKeyMemoryStore.singleton
+    let diceKey: DiceKey
+    var saveCallback: ((_ diceKey: DiceKey) -> Void)?
+    var onDiceKeySelected: ((DiceKey) -> Void)?
+    
+    var isInEncryptedDataStore: Bool {
+        EncryptedDiceKeyStore.hasDiceKey(forKeyId: self.diceKey.id)
+    }
+    
+    var isCountdownRunning: Bool {
+        diceKeyMemoryStore.isCountdownTimerRunning
+    }
+    
+    var expirationActionText: String {
+        self.isInEncryptedDataStore ? "Lock" : "Erase"
+    }
+    
+    var extensionActionText: String {
+        isCountdownRunning ? "Add" : "\(expirationActionText) in"
+    }
+    
+    var body: some View {
+        VStack(alignment: .center, spacing: 0) {
+            Button(action: {
+                onDiceKeySelected?(diceKey)
+            }, label: {
+                VStack {
+                    HStack {
+                        Spacer()
+                        DiceKeyView(diceKey: self.diceKey)
+                        Spacer()
+                    }
+                    Text(diceKey.nickname).font(.title2)
+                }
+            }).buttonStyle(PlainButtonStyle())
+            HStack {
+                if case .keysNeverExpire = diceKeyMemoryStore.memoryStoreExpirationState {
+                    Text("\( EncryptedDiceKeyStore.hasDiceKey(forKeyId: diceKey.id) ? "Unlocked" : "Will not be erased") until the app is closed")
+                } else if isCountdownRunning {
+                    Text("\( self.isInEncryptedDataStore ? "Locking" : "Erasing" ) in \( diceKeyMemoryStore.formattedTimeRemaining )")
+                }
+                Menu(content: {
+                    if let saveCallback = self.saveCallback, !self.isInEncryptedDataStore {
+                        Button("Save this DiceKey", action: { saveCallback(diceKey) })
+                        Spacer(minLength: 20)
+                    }
+                    if (isCountdownRunning) {
+                        Button("\(self.extensionActionText) five minutes", action: { diceKeyMemoryStore.extendDeadlineBy(seconds: 5 * 60) })
+                        Button("\(self.extensionActionText) one hour", action: { diceKeyMemoryStore.extendDeadlineBy(seconds: 60 * 60) })
+                        Button("Keep keys in memory until I quit", action: { diceKeyMemoryStore.setKeysNeverExpire() })
+                        Spacer(minLength: 20)
+                    }
+                    Button("\(expirationActionText) Immediately", action: { diceKeyMemoryStore.expireKey(self.diceKey) })
+
+                }, label: { Image(systemName: "ellipsis") })
+            }.padding(.top, 10).padding(.bottom, 10)
+        }
+    }
+}
+
 /// This view shows the list of DiceKeys saved in the keychain and provides the ability to
 /// unlock (open) them.
 struct SavedDiceKeysView: View {
@@ -40,38 +101,13 @@ struct SavedDiceKeysView: View {
     }
     
     var body: some View {
-        if (diceKeyMemoryStore.isCountdownTimerRunning) {
-            Text("Keys will locked/\( diceKeyMemoryStore.formattedTimeRemaining )")
-        }
         ForEach(diceKeysStoredInMemory) { diceKeyStoredInMemory in
-            Button(action: {
-                onDiceKeyLoaded(diceKeyStoredInMemory)
-            }, label: {
-                VStack {
-                    HStack {
-                        Spacer()
-                        DiceKeyView(diceKey: diceKeyStoredInMemory)
-                        Spacer()
-                    }
-                    Text("Open " + diceKeyStoredInMemory.nickname).font(.title2)
-                    // Text("\(EncryptedDiceKeyStore.hasDiceKey(forKeyId: knownDiceKeysState.keyId) ? "Locking" : "Forgetting") in \(diceKeyMemoryStore.formattedTimeRemaining)")"
-                }.frame(maxHeight: maxItemHeight)
-            }).buttonStyle(PlainButtonStyle())
-            if case .keysNeverExpire = diceKeyMemoryStore.memoryStoreExpirationState {
-                Text("\( EncryptedDiceKeyStore.hasDiceKey(forKeyId: diceKeyStoredInMemory.id) ? "Unlocked" : "Open") until the app is closed")
-            } else if EncryptedDiceKeyStore.hasDiceKey(forKeyId: diceKeyStoredInMemory.id) {
-                if (diceKeyMemoryStore.isCountdownTimerRunning) {
-                    Text("Locking in \( diceKeyMemoryStore.formattedTimeRemaining )")
-                }
-            } else if let saveCallback = self.saveCallback {
-                if (diceKeyMemoryStore.isCountdownTimerRunning) {
-                    Text("Erasing in \( diceKeyMemoryStore.formattedTimeRemaining )")
-                }
-                Button("Save this DiceKey", action: { saveCallback(diceKeyStoredInMemory) })
-            }
-            
+            DiceKeyInMemory(
+                diceKey: diceKeyStoredInMemory,
+                saveCallback: self.saveCallback,
+                onDiceKeySelected: { self.onDiceKeyLoaded($0) }
+            ).frame(maxHeight: maxItemHeight)
             Spacer()
-
         }
         ForEach(metadataForDiceKeysOnlyStoredEncrypted) { knownDiceKeyState in
             Button(action: {

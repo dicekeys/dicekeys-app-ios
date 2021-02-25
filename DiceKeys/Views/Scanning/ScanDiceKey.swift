@@ -92,7 +92,7 @@ struct ScanDiceKey: View {
                                 FacesReadOverlay(renderedSize: reader.size,
                                                  facesReadOverlayModel: facesReadOverlayModel)
                             }
-                        }
+                        }.aspectRatio(1, contentMode: .fit)
                     }
                     CameraFrameCountView(cameraFrameCountModel: self.cameraFrameCountModel)
                 }
