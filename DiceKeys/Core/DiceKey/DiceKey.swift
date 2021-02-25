@@ -32,6 +32,10 @@ enum IllegalCharacterError: Error {
     case inOrientation(position: Int)
 }
 
+func nicknameForDiceKey(centerFace: Face) -> String {
+    "DiceKey with \(centerFace.letter.rawValue)\(centerFace.digit.rawValue) in center"
+}
+
 class DiceKey: Identifiable, Equatable {
     static func == (lhs: DiceKey, rhs: DiceKey) -> Bool {
         (0..<25).allSatisfy { index in lhs.faces[index] == rhs.faces[index] }
@@ -73,6 +77,12 @@ class DiceKey: Identifiable, Equatable {
     /// The center face of a DiceKey, useful as the most salient face for users to
     /// associate with the key.
     var centerFace: Face { faces[12] }
+    
+    /// A common nickname for the DiceKey
+    var nickname: String {
+        nicknameForDiceKey(centerFace: self.centerFace)
+    }
+
 
     /// Creae a DiceKey from a low-quality random number generator for testing purposes
     /// (not for cryptographic-quality DiceKey production)

@@ -12,10 +12,11 @@ struct AppMainView: View {
     @StateObject var navigationState = WindowNavigationState()
     @StateObject var diceKeyMemoryStore = DiceKeyMemoryStore.singleton
     @StateObject var requestState = ApiRequestState.singleton
+    @State var showSave: Bool = false
 
-    var knownDiceKeysState: [KnownDiceKeyState] {
-        knownDiceKeysStore.knownDiceKeys.map { keyId in KnownDiceKeyState.forKeyId(keyId) }.filter {
-            $0.isDiceKeySaved
+    var knownDiceKeysState: [StoredEncryptedDiceKeyMetadata] {
+        knownDiceKeysStore.knownDiceKeys.map { keyId in StoredEncryptedDiceKeyMetadata.forKeyId(keyId) }.filter {
+            $0.isDiceKeyStored
         }
     }
     
@@ -25,14 +26,17 @@ struct AppMainView: View {
     }
     
     func diceKeyRemove() {
-        diceKeyMemoryStore.clearDiceKey()
+        diceKeyMemoryStore.clearForegroundDiceKey()
     }
     
     var mainPageView: some View {
         // Main page view
         let view = VStack {
             Spacer()
-            SavedDiceKeysView()
+            SavedDiceKeysView(saveCallback: { diceKey in
+                self.showSave = true
+                diceKeyMemoryStore.setDiceKey(diceKey: diceKey)
+            })
             Button(action: { navigationState.showLoadDiceKey = true }) {
                 VStack(alignment: .center) {
                     HStack {
@@ -94,7 +98,11 @@ struct AppMainView: View {
         } else if let unlockedDiceKeyState = diceKeyMemoryStore.diceKeyState {
             DiceKeyPresent(
                 diceKeyState: unlockedDiceKeyState,
-                onForget: { diceKeyMemoryStore.clearDiceKey() }
+                onComplete: {
+                    self.showSave = false
+                    diceKeyMemoryStore.clearForegroundDiceKey()
+                },
+                pageContent: self.showSave ? .Save : .Default
             )
         } else {
             mainPageView

@@ -22,9 +22,13 @@ struct DiceKeyPresentNavigationFooter: View {
 
     @State private var isBackupActive = false
 
-    var BottomButtonCount: Int = 3
+    var BottomButtonCount: Int = 4
     var BottomButtonFractionalWidth: CGFloat {
         0.9 / CGFloat(BottomButtonCount)
+    }
+    
+    var BottomButtonRealWidth: CGFloat {
+        geometry.size.width * BottomButtonFractionalWidth
     }
     
     var navBarContentHeight: CGFloat { geometry.size.height / 12 }
@@ -35,14 +39,28 @@ struct DiceKeyPresentNavigationFooter: View {
         HStack(alignment: .top) {
             Spacer()
             VStack {
+                Image("DiceKey Icon")
+                    .renderingMode(.template)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .onTapGesture { navigateTo(.Default) }
+                Text("DiceKey").multilineTextAlignment(.center).font(.footnote)
+            }.frame(width: BottomButtonRealWidth,
+                    height: navBarContentHeight, alignment: .center)
+            .onTapGesture {
+                navigateTo(.SeedHardwareKey)
+            }
+            .if( pageContent == .Default ) { $0.colorInvert() }
+            Spacer()
+            VStack {
                 Image("USB Key")
                     .renderingMode(.template)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .onTapGesture { navigateTo(.SeedHardwareKey) }
-                Text("Seed a SoloKey").multilineTextAlignment(.center).font(.footnote)
+                Text("SoloKey").multilineTextAlignment(.center).font(.footnote)
 
-            }.frame(width: geometry.size.width * BottomButtonFractionalWidth,
+            }.frame(width: BottomButtonRealWidth,
                     height: navBarContentHeight, alignment: .center)
             .onTapGesture {
                 navigateTo(.SeedHardwareKey)
@@ -59,7 +77,7 @@ struct DiceKeyPresentNavigationFooter: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                     Spacer(minLength: 2)
-                    Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
+                    Text("Secrets").multilineTextAlignment(.center).font(.footnote)
                 }.foregroundColor(Color.footerForeground)
                 .if({
                     switch pageContent {
@@ -68,7 +86,7 @@ struct DiceKeyPresentNavigationFooter: View {
                     }
                 }() ) { $0.colorInvert() }
             }
-            .frame(width: geometry.size.width * BottomButtonFractionalWidth,
+            .frame(width: BottomButtonRealWidth,
                    height: navBarContentHeight,
                    alignment: .center)
             #elseif os(macOS)
@@ -85,9 +103,9 @@ struct DiceKeyPresentNavigationFooter: View {
                 DerivationRecipeMenu({ newPageContent in
                     navigateTo(newPageContent)
                 }) {
-                    Text("Derive a Secret").multilineTextAlignment(.center).font(.footnote)
+                    Text("Secrets").multilineTextAlignment(.center).font(.footnote)
                 }
-            }.frame(width: geometry.size.width * BottomButtonFractionalWidth,
+            }.frame(width: BottomButtonRealWidth,
                     height: navBarContentHeight)
             .if( {
                 switch pageContent {
@@ -95,7 +113,7 @@ struct DiceKeyPresentNavigationFooter: View {
                 default: return false
                 }
             }() ) { $0.colorInvert() }                #endif
-//                .frame(width: geometry.size.width * BottomButtonFractionalWidth,
+//                .frame(width: BottomButtonRealWidth,
 //                       height: geometry.size.height / 12, alignment: .center)
 
             VStack {
@@ -104,12 +122,12 @@ struct DiceKeyPresentNavigationFooter: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(
-                        maxWidth: geometry.size.width * BottomButtonFractionalWidth,
+                        maxWidth: BottomButtonRealWidth,
                         maxHeight: navBarContentHeight,
                         alignment: .center
                     )
-                Text("Backup this Key").multilineTextAlignment(.center).font(.footnote)
-            }.frame(width: geometry.size.width * BottomButtonFractionalWidth, height: navBarContentHeight, alignment: .center)
+                Text("Backup").multilineTextAlignment(.center).font(.footnote)
+            }.frame(width: BottomButtonRealWidth, height: navBarContentHeight, alignment: .center)
             .onTapGesture { navigateTo(.Backup) }
             .if( pageContent == .Backup ) { $0.colorInvert() }
             Spacer()
@@ -127,7 +145,7 @@ struct DiceKeyPresentNavigationFooter: View {
 
 struct DiceKeyPresent: View {
     @ObservedObject var diceKeyState: UnlockedDiceKeyState
-    let onForget: () -> Void
+    let onComplete: () -> Void
     @ObservedObject var diceKeyMemoryStore: DiceKeyMemoryStore = DiceKeyMemoryStore.singleton
 
     @State var pageContent: DiceKeyPresentPageContent = .Default
@@ -164,7 +182,7 @@ struct DiceKeyPresent: View {
                     .renderingMode(.template)
                     .foregroundColor(deviceImageColor)
                     .aspectRatio(contentMode: .fit)
-                if diceKeyState.isDiceKeySaved {
+                if diceKeyState.isDiceKeyStored {
                     Image("DiceKey Icon")
                         .renderingMode(.template)
                         .resizable()
@@ -174,7 +192,7 @@ struct DiceKeyPresent: View {
                 }
             }).aspectRatio(contentMode: .fit)
             .frame(maxHeight: 30)
-            Text(diceKeyState.isDiceKeySaved ? "Saved" : "Save").foregroundColor(Color.navigationForeground)
+            Text(diceKeyState.isDiceKeyStored ? "Saved" : "Save").foregroundColor(Color.navigationForeground)
         }
         .if( pageContent == .Save ) { $0.colorInvert() }
     }
@@ -193,11 +211,12 @@ struct DiceKeyPresent: View {
         WithNavigationHeader(header: {
             HStack {
                 VStack {
-                    Image(systemName: "lock").foregroundColor(Color.navigationForeground)
-                    Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget").foregroundColor(Color.navigationForeground)
+                    Image(systemName: "arrow.backward").foregroundColor(Color.navigationForeground)
+                    // Text("Back").foregroundColor(Color.navigationForeground)
+                    // Text(diceKeyState.isDiceKeySaved ? "Lock" : "Forget").foregroundColor(Color.navigationForeground)
                 }.padding(10)
                 .onTapGesture {
-                    onForget()
+                    onComplete()
                 }
                 Spacer()
                 Text("\(diceKeyState.nickname)")
@@ -247,7 +266,7 @@ struct TestDiceKeyPresent: View {
     var body: some View {
         DiceKeyPresent(
             diceKeyState: diceKeyUnlocked,
-            onForget: {}
+            onComplete: {}
         )
     }
 }
