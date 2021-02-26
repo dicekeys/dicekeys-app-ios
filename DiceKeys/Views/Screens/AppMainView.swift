@@ -72,7 +72,7 @@ struct AppMainView: View {
             Spacer()
         }
         #if os(macOS)
-        return view.frame(width: 480, height: 700)
+        return view.frame(width: WindowDimensions.size.width, height: WindowDimensions.size.height)
         #else
         return view
         #endif
