@@ -8,7 +8,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-protocol DiceKeyState {
+protocol DiceKeyMetadata {
     var keyId: String { get }
     
     var nickname: String { get }
@@ -17,13 +17,13 @@ protocol DiceKeyState {
     
     var isCenterFaceStored: Bool { get }
     
-    var isDiceKeySaved: Bool { get }
+    var isDiceKeyStored: Bool { get }
 }
 
-extension DiceKeyState {
+extension DiceKeyMetadata {
     var nickname: String {
         guard let centerFace = self.centerFace else { return "Unknown DiceKey" }
-        return "DiceKey with \(centerFace.letter.rawValue)\(centerFace.digit.rawValue) in center"
+        return nicknameForDiceKey(centerFace: centerFace)
     }
     
     var isCenterFaceStored: Bool {
@@ -32,28 +32,24 @@ extension DiceKeyState {
         }
     }
 
-    var isDiceKeySaved: Bool {
+    var isDiceKeyStored: Bool {
         get {
             return EncryptedDiceKeyStore.hasDiceKey(forKeyId: keyId)
         }
     }
 }
 
-class KnownDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, DiceKeyState, Identifiable {
+class StoredEncryptedDiceKeyMetadata: ObservableObjectUpdatingOnAllChangesToUserDefaults, DiceKeyMetadata, Identifiable {
     let keyId: String
 
     enum FieldName: String {
         case centerFace
-//        case nickname
     }
 
     // To comply with Identifiable protocol
     var id: String { keyId }
 
-//    @UserDefault var nickname: String
     @UserDefault var centerFaceInHumanReadableForm: String
-
-    //    @UserDefault var whatToStoreRaw: String?
 
     var nickname: String {
         guard let centerFace = self.centerFace else { return "Unknown DiceKey" }
@@ -79,15 +75,15 @@ class KnownDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, Dic
 
     private init(_ forKeyId: String) {
         self.keyId = forKeyId
-        self._centerFaceInHumanReadableForm = UserDefault(KnownDiceKeyState.fieldKey(.centerFace, keyId), "?")
+        self._centerFaceInHumanReadableForm = UserDefault(StoredEncryptedDiceKeyMetadata.fieldKey(.centerFace, keyId), "?")
         super.init()
     }
     
-    private static var known: [String: KnownDiceKeyState] = [:]
+    private static var known: [String: StoredEncryptedDiceKeyMetadata] = [:]
 
-    static func forKeyId(_ forKeyId: String) -> KnownDiceKeyState {
+    static func forKeyId(_ forKeyId: String) -> StoredEncryptedDiceKeyMetadata {
         guard let existingRecord = known[forKeyId] else {
-            let result = KnownDiceKeyState(forKeyId)
+            let result = StoredEncryptedDiceKeyMetadata(forKeyId)
             known[forKeyId] = result
             return result
         }
@@ -96,7 +92,7 @@ class KnownDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, Dic
 
 }
 
-final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, DiceKeyState {
+final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefaults, DiceKeyMetadata {
     @Published var diceKey: DiceKey {
         didSet { self.sendChangeEventOnMainThread() }
     }
@@ -116,19 +112,19 @@ final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefa
     }
 
     var isCenterFaceStored: Bool {
-        get { KnownDiceKeyState.forKeyId(keyId).isCenterFaceStored }
+        get { StoredEncryptedDiceKeyMetadata.forKeyId(keyId).isCenterFaceStored }
         set {
             if newValue{
-                KnownDiceKeyState.forKeyId(keyId).centerFaceInHumanReadableForm = diceKey.faces[12].humanReadableForm
+                StoredEncryptedDiceKeyMetadata.forKeyId(keyId).centerFaceInHumanReadableForm = diceKey.faces[12].humanReadableForm
             } else {
-                KnownDiceKeyState.forKeyId(keyId).centerFaceInHumanReadableForm = ""
+                StoredEncryptedDiceKeyMetadata.forKeyId(keyId).centerFaceInHumanReadableForm = ""
             }
         }
     }
 
     @Published fileprivate var protectedCacheOfIsDiceKeyStored: Bool?
 
-    var isDiceKeySaved: Bool {
+    var isDiceKeyStored: Bool {
         get {
             return EncryptedDiceKeyStore.hasDiceKey(forKeyId: keyId)
         }
@@ -154,7 +150,7 @@ final class UnlockedDiceKeyState: ObservableObjectUpdatingOnAllChangesToUserDefa
     }
 
     var isDiceKeyStoredBinding: Binding<Bool> { Binding<Bool>(
-        get: { self.isDiceKeySaved }, set: { self.isDiceKeySaved = $0 })
+        get: { self.isDiceKeyStored }, set: { self.isDiceKeyStored = $0 })
     }
 
     init(diceKey: DiceKey) {

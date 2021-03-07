@@ -8,19 +8,19 @@
 import SwiftUI
 import SeededCrypto
 
-#if os(iOS)
-struct SeedHardwareSecurityKey: View {
-    let diceKey: DiceKey
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("Apple prevents apps on iPhones and iPads from writing to USB devices.").font(.title)
-            
-            Text("To seed a SoloKey, you will need to use this app on a Mac, Android device, or PC.").font(.title).padding(.top, 10)
-        }
-    }
-}
-#elseif os(macOS)
+//#if os(iOS)
+//struct SeedHardwareSecurityKey: View {
+//    let diceKey: DiceKey
+//
+//    var body: some View {
+//        VStack(alignment: .leading) {
+//            Text("Apple prevents apps on iPhones and iPads from writing to USB devices.").font(.title)
+//
+//            Text("To seed a SoloKey, you will need to use this app on a Mac, Android device, or PC.").font(.title).padding(.top, 10)
+//        }
+//    }
+//}
+//#elseif os(macOS)
 private let soloKeyButtonTimeoutInSeconds: Int = 8
 private let buttonTimeoutErrorCode: UInt8 = 0x27
 
@@ -44,44 +44,27 @@ struct SeedSequenceNumberField: View {
     }
 }
 
+#if os(macOS)
 enum WriteSecurityKeySeedState {
     case inProgress
     case success(AttachedHidDevice)
     case error(CtapRequestError)
 }
+#endif
 
 private let seedSecurityKeyRecipeTemplate = "{\"purpose\":\"seedSecurityKey\"}"
 
 struct SeedHardwareSecurityKey: View {
     let diceKey: DiceKey
-    
+
+    #if os(macOS)
+    let seedingSupported = true
+
     @ObservedObject var attachedHidDevicesObj: AttachedHidDevices =
         AttachedHidDevices.singleton
     
     var securityKeys: [AttachedHidDevice] {
         attachedHidDevicesObj.connectedDevices
-    }
-    
-    @State var sequenceNumber: Int = 1
-    @State var writeSecurityKeySeedState: WriteSecurityKeySeedState?
-    @State var secondsLeft: Int = 0
-    
-    var recipe: String {
-        addSequenceNumberToRecipeJson(seedSecurityKeyRecipeTemplate, sequenceNumber: sequenceNumber)
-    }
-    
-    var extState: Data {
-        var sequenceNumberAsSingleByteArray = Data()
-        sequenceNumberAsSingleByteArray.append(UInt8(sequenceNumber & 0xff))
-        return sequenceNumberAsSingleByteArray
-    }
-    
-    var keySeedAs32Bytes: Data {
-        return try! SeededCrypto.Secret.deriveFromSeed(withSeedString: diceKey.toSeed(), recipe: recipe).secretBytes()
-    }
-    
-    var keySeedAsHexString: String {
-        return keySeedAs32Bytes.asHexString
     }
 
     func write(securityKey: AttachedHidDevice) {
@@ -107,6 +90,9 @@ struct SeedHardwareSecurityKey: View {
             }
         }
     }
+
+    @State var writeSecurityKeySeedState: WriteSecurityKeySeedState?
+    @State var secondsLeft: Int = 0
     
     var writeToSeedInProgress: Bool {
         switch writeSecurityKeySeedState {
@@ -122,7 +108,7 @@ struct SeedHardwareSecurityKey: View {
         default: return nil
         }
     }
-
+    
     var errorMessageIfSeedFailedToWrite: String? {
         switch writeSecurityKeySeedState {
         case .error(let err):
@@ -143,18 +129,90 @@ struct SeedHardwareSecurityKey: View {
         default: return nil
         }
     }
+    #else
+    // Bogus values of fields on mac so that iOS will ignore writing
+    let seedingSupported = false
+    let writeToSeedInProgress = false
+    let errorMessageIfSeedFailedToWrite: String? = nil
+    let nameOfKeyIfSeedWrittenSuccessfully: String? = nil
+    let securityKeys: [Any] = []
+    #endif
+    
+    @State var sequenceNumber: Int = 1
+    
+    var recipe: String {
+        addSequenceNumberToRecipeJson(seedSecurityKeyRecipeTemplate, sequenceNumber: sequenceNumber)
+    }
+    
+    var extState: Data {
+        var sequenceNumberAsSingleByteArray = Data()
+        sequenceNumberAsSingleByteArray.append(UInt8(sequenceNumber & 0xff))
+        return sequenceNumberAsSingleByteArray
+    }
+    
+    var keySeedAs32Bytes: Data {
+        return try! SeededCrypto.Secret.deriveFromSeed(withSeedString: diceKey.toSeed(), recipe: recipe).secretBytes()
+    }
+    
+    var keySeedAsHexString: String {
+        return keySeedAs32Bytes.asHexString
+    }
+
+    #if os(macOS)
+    var pressNudgeView: some View {
+        VStack(alignment: .center) {
+            Text("Press the button on your security key three times.").font(.headline)
+            Text("You have \(secondsLeft) seconds to do so").onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { input in
+                self.secondsLeft = max(self.secondsLeft - 1 , 0)
+            }.font(.headline).padding(.top, 20)
+        }
+    }
+    #else
+    var pressNudgeView: some View { EmptyView() }
+    #endif
+
+    #if os(macOS)
+    var actionView: some View {
+        VStack {
+            if (securityKeys.count == 0) {
+                Text("Please connect a SoloKey.").font(.title)
+            } else {
+                ForEach(self.securityKeys) { securityKey in
+                    Button(
+                        action: { write(securityKey: securityKey) },
+                        label: {
+                            Text("Seed \(securityKey.product) SN#\(securityKey.serialNumber ?? "unknown")")
+                        }
+                    )
+                }
+            }
+        }
+    }
+    #else
+    var actionView: some View {
+        VStack(alignment: .leading) {
+            Text("Apple prevents apps on iPhones and iPads from writing to USB devices.").font(.title2)
+            Text("To seed a security key, you will need to use this app on a Mac, Android device, or PC.").font(.title2).padding(.top, 10)
+        }
+    }
+    #endif
+    
+    func copy() {
+        #if os(iOS)
+        UIPasteboard.general.string = keySeedAsHexString
+        #else
+        let pasteboard = NSPasteboard.general
+        pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
+        pasteboard.setString(keySeedAsHexString, forType: .string)
+        #endif
+    }
+    
 
     var body: some View {
-
-        VStack(alignment: .center) {
-            if (writeToSeedInProgress) {
-                Text("Press the button on your security key three times.").font(.headline)
-                Text("You have \(secondsLeft) seconds to do so").onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { input in
-                    self.secondsLeft = max(self.secondsLeft - 1 , 0)
-                }.font(.headline).padding(.top, 20)
-            } else if (securityKeys.count == 0) {
-                Text("Please connect a SoloKey.")
-            } else {
+        if (writeToSeedInProgress) {
+            pressNudgeView
+        } else {
+            VStack(alignment: .center) {
                 if let errorMessage = errorMessageIfSeedFailedToWrite {
                     Text(errorMessage)
                         .font(.headline)
@@ -163,10 +221,10 @@ struct SeedHardwareSecurityKey: View {
                     Divider()
                 }
                 if let nameOfSecurityKey = nameOfKeyIfSeedWrittenSuccessfully {
-                        Text("Successfully wrote to key \(nameOfSecurityKey)")
-                            .font(.headline)
-                            .foregroundColor(.green)
-                            .padding(.bottom, 20)
+                    Text("Successfully wrote to key \(nameOfSecurityKey)")
+                        .font(.headline)
+                        .foregroundColor(.green)
+                        .padding(.bottom, 20)
                     Divider()
                 }
                 SeedSequenceNumberField(sequenceNumber: $sequenceNumber)
@@ -190,25 +248,21 @@ struct SeedHardwareSecurityKey: View {
                     .minimumScaleFactor(0.01)
                     .fixedSize(horizontal: false, vertical: true)
                     .lineLimit(1)
-                Text("\(keySeedAsHexString)")
-                    .font(Font.system(.footnote, design: .monospaced))
-                    .scaledToFit()
-                    .minimumScaleFactor(0.01)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .lineLimit(1).padding(.top, 3)
-                ForEach(self.securityKeys) { securityKey in
-                    Button(
-                        action: { write(securityKey: securityKey) },
-                        label: {
-                            Text("Seed \(securityKey.product) SN#\(securityKey.serialNumber ?? "unknown")")
-                        }
-                    )
+                HStack {
+                    Text("\(keySeedAsHexString)")
+                        .font(Font.system(.footnote, design: .monospaced))
+                        .scaledToFit()
+                        .minimumScaleFactor(0.01)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .lineLimit(1).padding(.top, 3)
+                    Button(action: self.copy, label: { Text("Copy") } )
                 }
+                actionView.padding(.top, 30)
             }
         }
     }
 }
-#endif
+// #endif
 
 struct SeedHardwareSecurityKey_Previews: PreviewProvider {
     static var previews: some View {

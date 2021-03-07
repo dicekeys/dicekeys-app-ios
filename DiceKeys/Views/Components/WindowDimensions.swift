@@ -12,6 +12,8 @@ struct WindowDimensions {
     #if os(iOS)
     static let shorterSide = UIScreen.main.bounds.size.shorterSide
     #else
-    static let shorterSide = NSScreen.main!.frame.size.height
+    static let size: CGSize = CGSize(width: 480, height: 700)
+    static let shorterSide = size.shorterSide
+//    static let shorterSide = NSScreen.main!.frame.size.height
     #endif
 }
