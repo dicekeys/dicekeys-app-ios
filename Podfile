@@ -27,6 +27,21 @@ abstract_target 'DiceKeys' do
       inherit! :complete
     end
   end
+
+  post_integrate do |installer|
+    file_name = project_file = "Pods/Pods.xcodeproj/project.pbxproj"
+    lines = File.readlines(file_name)
+    for line in lines
+      if line.include?( "opencv2.xcframework/ios-arm64_armv7/opencv2.framework/Versions/A/Headers/Core.h") and line.include?("lastKnownFileType = sourcecode.c.h")
+          line.sub!("lastKnownFileType = sourcecode.c.h", "explicitFileType = sourcecode.c.objc")
+          f = File.open(file_name, "w")
+          f << lines.join("\n")
+          f.close
+        break
+      end
+    end
+  end
+
 end
 
 #target 'DiceKeys (macOS)' do
