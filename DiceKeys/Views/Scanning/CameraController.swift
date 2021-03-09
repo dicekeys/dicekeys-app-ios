@@ -70,7 +70,12 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
             self.isProcessingFrame = false
             return
         }
+
+        #if os(macOS)
+        let ciImage = CIImage(cvPixelBuffer: imageBuffer).oriented(forExifOrientation: 8)
+        #else
         let ciImage = CIImage(cvPixelBuffer: imageBuffer)
+        #endif
 
         let frameWidth = ciImage.extent.width
         let frameHeight = ciImage.extent.height
@@ -199,6 +204,12 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
             layer.insertSublayer(previewLayer, at: 0)
         }
         previewLayer.frame = view.frame
+        #if os(macOS)
+        if let connection = previewLayer.connection, connection.isVideoMirroringSupported {
+            connection.automaticallyAdjustsVideoMirroring = false
+            connection.isVideoMirrored = true
+        }
+        #endif
         self.previewLayer = previewLayer
     }
 }
