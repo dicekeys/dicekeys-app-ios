@@ -19,14 +19,12 @@ struct DiceKeyWithDerivedValue: View {
         UnlockedDiceKeyState.forDiceKey(diceKey)
     }
 
-//    var derivationRecipeBuilder: DerivationRecipeBuilderType? {
-//        switch pageContent {
-//        case .Derive(let derivationBuilder): return derivationBuilder
-//        default: return nil
-//        }
-//    }
-
     var derivationRecipe: DerivationRecipe? {
+        // This is a complete final recipe
+        if case let .recipe(recipe) = derivationRecipeBuilder {
+            return recipe
+        }
+        // This is a template for building recipes
         guard case let .ready(derivationRecipe) = recipeBuilderState.progress else { return nil }
             return derivationRecipe
     }
@@ -79,7 +77,11 @@ struct DiceKeyWithDerivedValue: View {
                             .minimumScaleFactor(0.01)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
-                        DerivationRecipeView(recipeBuilderProgress: self.recipeBuilderState.progress).padding(.top, 3)
+                        DerivationRecipeView(recipeBuilderProgress:
+                            self.derivationRecipeBuilder.isRecipe ?
+                                .ready(self.derivationRecipe!) :
+                                self.recipeBuilderState.progress
+                        ).padding(.top, 3)
                         Divider()
                         HStack {
                             Spacer()
