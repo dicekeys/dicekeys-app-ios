@@ -77,7 +77,11 @@ struct DiceKeyWithDerivedValue: View {
                             .minimumScaleFactor(0.01)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
-                        DerivationRecipeView(recipeBuilderProgress: self.recipeBuilderState.progress).padding(.top, 3)
+                        DerivationRecipeView(recipeBuilderProgress:
+                            self.derivationRecipeBuilder.isRecipe ?
+                                .ready(self.derivationRecipe!) :
+                                self.recipeBuilderState.progress
+                        ).padding(.top, 3)
                         Divider()
                         HStack {
                             Spacer()
