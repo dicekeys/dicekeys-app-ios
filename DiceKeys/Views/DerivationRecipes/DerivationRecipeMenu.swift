@@ -24,7 +24,6 @@ enum DerivationRecipeBuilderType: Equatable {
         switch self {
         case .template: return true
         case .customFromUrl: return true
-//        case .custom: return true
         case .recipe: return false
 //        default: return false
         }
