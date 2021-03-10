@@ -19,14 +19,12 @@ struct DiceKeyWithDerivedValue: View {
         UnlockedDiceKeyState.forDiceKey(diceKey)
     }
 
-//    var derivationRecipeBuilder: DerivationRecipeBuilderType? {
-//        switch pageContent {
-//        case .Derive(let derivationBuilder): return derivationBuilder
-//        default: return nil
-//        }
-//    }
-
     var derivationRecipe: DerivationRecipe? {
+        // This is a complete final recipe
+        if case let .recipe(recipe) = derivationRecipeBuilder {
+            return recipe
+        }
+        // This is a template for building recipes
         guard case let .ready(derivationRecipe) = recipeBuilderState.progress else { return nil }
             return derivationRecipe
     }
