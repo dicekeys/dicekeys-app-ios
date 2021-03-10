@@ -70,7 +70,15 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
             self.isProcessingFrame = false
             return
         }
+
+        #if os(macOS)
+        // Frames are captured in portrait mode by default and need to be rotated 90 degrees counterclockwise on Macs
+        // where landscape is the default orientation of webcams
+        let ciImage = CIImage(cvPixelBuffer: imageBuffer).oriented(.left)
+        #else
+        // TODO: fix device orientation change
         let ciImage = CIImage(cvPixelBuffer: imageBuffer)
+        #endif
 
         let frameWidth = ciImage.extent.width
         let frameHeight = ciImage.extent.height
@@ -199,6 +207,15 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
             layer.insertSublayer(previewLayer, at: 0)
         }
         previewLayer.frame = view.frame
+
+        // Auto-mirroring feature for front camera is not working on macOS
+        // because AVCaptureDevice.Position set as `unspecified`
+        #if os(macOS)
+        if let connection = previewLayer.connection, connection.isVideoMirroringSupported {
+            connection.automaticallyAdjustsVideoMirroring = false
+            connection.isVideoMirrored = true
+        }
+        #endif
         self.previewLayer = previewLayer
     }
 }
