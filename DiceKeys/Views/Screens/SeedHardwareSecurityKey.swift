@@ -174,6 +174,7 @@ struct SeedHardwareSecurityKey: View {
     #if os(macOS)
     var actionView: some View {
         VStack {
+            Divider()
             if (securityKeys.count == 0) {
                 Text("Please connect a SoloKey.").font(.title)
             } else {
@@ -191,9 +192,17 @@ struct SeedHardwareSecurityKey: View {
     #else
     var actionView: some View {
         VStack(alignment: .leading) {
-            Text("Apple prevents apps on iPhones and iPads from writing to USB devices.").font(.title2)
-            Text("To seed a security key, you will need to use this app on a Mac, Android device, or PC.").font(.title2).padding(.top, 10)
-        }
+            Divider()
+            Text("Apple prevents apps on iPhones and iPads from writing to USB devices.")
+                .font(.title2)
+                .foregroundColor(.red)
+                .lineLimit(2)
+            Text("To seed a security key, you will need to use this app on a Mac or Android device.")
+                .font(.title2)
+                .foregroundColor(.red)
+                .lineLimit(2)
+                .padding(.top, 10)
+        }.padding(.horizontal, 5)
     }
     #endif
     
@@ -207,26 +216,34 @@ struct SeedHardwareSecurityKey: View {
         #endif
     }
     
+    var header: some View {
+        VStack {
+            if let errorMessage = errorMessageIfSeedFailedToWrite {
+                Text(errorMessage)
+                    .font(.headline)
+                    .foregroundColor(.red)
+                    .padding(.bottom, 20)
+                Divider()
+                Spacer()
+            } else if let nameOfSecurityKey = nameOfKeyIfSeedWrittenSuccessfully {
+                Text("Successfully wrote to key \(nameOfSecurityKey)")
+                    .font(.headline)
+                    .foregroundColor(.green)
+                    .padding(.bottom, 20)
+                Divider()
+                Spacer()
+            } else {
+                EmptyView()
+            }
+        }
+    }
 
     var body: some View {
         if (writeToSeedInProgress) {
             pressNudgeView
         } else {
             VStack(alignment: .center) {
-                if let errorMessage = errorMessageIfSeedFailedToWrite {
-                    Text(errorMessage)
-                        .font(.headline)
-                        .foregroundColor(.red)
-                        .padding(.bottom, 20)
-                    Divider()
-                }
-                if let nameOfSecurityKey = nameOfKeyIfSeedWrittenSuccessfully {
-                    Text("Successfully wrote to key \(nameOfSecurityKey)")
-                        .font(.headline)
-                        .foregroundColor(.green)
-                        .padding(.bottom, 20)
-                    Divider()
-                }
+                header
                 SeedSequenceNumberField(sequenceNumber: $sequenceNumber)
                 Divider()
                 Text("Internal representation of the recipe used to derive the seed")
@@ -248,7 +265,7 @@ struct SeedHardwareSecurityKey: View {
                     .minimumScaleFactor(0.01)
                     .fixedSize(horizontal: false, vertical: true)
                     .lineLimit(1)
-                HStack {
+                VStack {
                     Text("\(keySeedAsHexString)")
                         .font(Font.system(.footnote, design: .monospaced))
                         .scaledToFit()
@@ -257,7 +274,11 @@ struct SeedHardwareSecurityKey: View {
                         .lineLimit(1).padding(.top, 3)
                     Button(action: self.copy, label: { Text("Copy") } )
                 }
-                actionView.padding(.top, 30)
+                VStack {
+                    actionView
+                }
+                    //.aspectRatio(contentMode: .fit)
+//                    .padding(.top, 20)
             }
         }
     }
