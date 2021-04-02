@@ -76,8 +76,38 @@ final class DiceKeysCameraController: NSObject, AVCaptureVideoDataOutputSampleBu
         // where landscape is the default orientation of webcams
         let ciImage = CIImage(cvPixelBuffer: imageBuffer).oriented(.left)
         #else
-        // TODO: fix device orientation change
-        let ciImage = CIImage(cvPixelBuffer: imageBuffer)
+        // preview layer orientation
+        if let previewLayerConnection = previewLayer?.connection {
+          let orientation = UIDevice.current.orientation
+          if (previewLayerConnection.isVideoOrientationSupported) {
+            switch (orientation) {
+            case .portrait:
+              previewLayerConnection.videoOrientation = .portrait
+            case .landscapeRight:
+              previewLayerConnection.videoOrientation = .landscapeLeft
+            case .landscapeLeft:
+              previewLayerConnection.videoOrientation = .landscapeRight
+            case .portraitUpsideDown:
+              previewLayerConnection.videoOrientation = .portraitUpsideDown
+            default: break
+            }
+          }
+        }
+
+        // frame buffer orientation
+        var ciImageOrientation = CGImagePropertyOrientation.up
+        if let previewLayerOrientation = previewLayer?.connection?.videoOrientation {
+          switch previewLayerOrientation {
+          case .landscapeLeft:
+            ciImageOrientation = CGImagePropertyOrientation.right
+          case .landscapeRight:
+            ciImageOrientation = CGImagePropertyOrientation.left
+          case .portraitUpsideDown:
+            ciImageOrientation = CGImagePropertyOrientation.down
+          default: break
+          }
+        }
+        let ciImage = CIImage(cvPixelBuffer: imageBuffer).oriented(ciImageOrientation)
         #endif
 
         let frameWidth = ciImage.extent.width
