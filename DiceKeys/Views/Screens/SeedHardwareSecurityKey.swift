@@ -196,10 +196,15 @@ struct SeedHardwareSecurityKey: View {
             Text("Apple prevents apps on iPhones and iPads from writing to USB devices.")
                 .font(.title2)
                 .foregroundColor(.red)
+                .minimumScaleFactor(0.1)
+                .fixedSize(horizontal: false, vertical: true)
                 .lineLimit(2)
+                .padding(.top, 10)
             Text("To seed a security key, you will need to use this app on a Mac or Android device.")
                 .font(.title2)
                 .foregroundColor(.red)
+                .minimumScaleFactor(0.1)
+                .fixedSize(horizontal: false, vertical: true)
                 .lineLimit(2)
                 .padding(.top, 10)
         }.padding(.horizontal, 5)
@@ -288,6 +293,7 @@ struct SeedHardwareSecurityKey: View {
 struct SeedHardwareSecurityKey_Previews: PreviewProvider {
     static var previews: some View {
         SeedHardwareSecurityKey(diceKey: DiceKey.createFromRandom())
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+            .previewLayoutMinSupported()
+//            .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
     }
 }
