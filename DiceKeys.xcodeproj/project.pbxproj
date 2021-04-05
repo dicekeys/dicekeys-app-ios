@@ -132,6 +132,8 @@
 		2669052E25C17AC60078CF55 /* FacesReadOverlayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2669050B25C16B610078CF55 /* FacesReadOverlayModel.swift */; };
 		268E3DDD25BFF81D008B6DE6 /* CameraFrameCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268E3DDC25BFF81D008B6DE6 /* CameraFrameCountView.swift */; };
 		268E3DDE25BFF81D008B6DE6 /* CameraFrameCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268E3DDC25BFF81D008B6DE6 /* CameraFrameCountView.swift */; };
+		93813D81261B67FF003E3211 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93813D80261B67FF003E3211 /* Settings.swift */; };
+		93813D82261B67FF003E3211 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93813D80261B67FF003E3211 /* Settings.swift */; };
 		C12763A084D675535C4C583C /* Pods_DiceKeys_DiceKeys__iOS__Tests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE730BB0AD520FB48D20673B /* Pods_DiceKeys_DiceKeys__iOS__Tests_iOS.framework */; };
 		C3191A6507C20AF840F4054E /* Pods_DiceKeys_DiceKeys__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 061985777EDBE015A8A6CD60 /* Pods_DiceKeys_DiceKeys__iOS_.framework */; };
 		D47C9F2B23F56353525EA408 /* Pods_DiceKeys_DiceKeys__macOS__Tests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1397E5F18A65098140DBC5BB /* Pods_DiceKeys_DiceKeys__macOS__Tests_macOS.framework */; };
@@ -312,6 +314,7 @@
 		268E3DDC25BFF81D008B6DE6 /* CameraFrameCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFrameCountView.swift; sourceTree = "<group>"; };
 		349BE82A357ED684A2430E54 /* Pods-DiceKeys-DiceKeys (iOS)-Tests iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-DiceKeys (iOS)-Tests iOS.debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys-DiceKeys (iOS)-Tests iOS/Pods-DiceKeys-DiceKeys (iOS)-Tests iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		81E686DCFFCE5769AB6D0DF8 /* Pods_DiceKeys_DiceKeys__macOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeys__macOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		93813D80261B67FF003E3211 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		A12F40698764C98F698C6350 /* Pods-DiceKeys (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (macOS).release.xcconfig"; path = "Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS).release.xcconfig"; sourceTree = "<group>"; };
 		B09CA29A4B28E9D780FE3E0E /* Pods-DiceKeys (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (macOS).debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS).debug.xcconfig"; sourceTree = "<group>"; };
 		BE730BB0AD520FB48D20673B /* Pods_DiceKeys_DiceKeys__iOS__Tests_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeys__iOS__Tests_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -537,6 +540,7 @@
 				EC5091F825948124007D2B91 /* DiceKey */,
 				EC50920025948124007D2B91 /* Api */,
 				ECFC5236259A194F008D0598 /* PlatformTypes.swift */,
+				93813D80261B67FF003E3211 /* Settings.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1157,6 +1161,7 @@
 				EC50920F25948124007D2B91 /* DiceKey.swift in Sources */,
 				EC5092B7259482F5007D2B91 /* RoundedTextButton.swift in Sources */,
 				17E3862A25D0EC69004C2701 /* WindowDimensions.swift in Sources */,
+				93813D81261B67FF003E3211 /* Settings.swift in Sources */,
 				EC5092BB259482F5007D2B91 /* DerivationRecipeMenu.swift in Sources */,
 				EC509291259482F4007D2B91 /* DiceKeyCenterFaceOnlyView.swift in Sources */,
 				268E3DDD25BFF81D008B6DE6 /* CameraFrameCountView.swift in Sources */,
@@ -1313,6 +1318,7 @@
 				175749A725DE8BFC0026BE32 /* SavedDiceKeysView.swift in Sources */,
 				EC5093332595C043007D2B91 /* RoundedRectCard.swift in Sources */,
 				EC5092A4259482F4007D2B91 /* AppMainView.swift in Sources */,
+				93813D82261B67FF003E3211 /* Settings.swift in Sources */,
 				EC5092CE259482F5007D2B91 /* TransferDie.swift in Sources */,
 				17BB392725CBB3470023E430 /* RequestSecurityContext.swift in Sources */,
 				EC50920A25948124007D2B91 /* EncryptedDiceKeyStore.swift in Sources */,
