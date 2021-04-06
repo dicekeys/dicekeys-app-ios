@@ -89,37 +89,23 @@
 		17E385E525CE5DED004C2701 /* ApiRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385E425CE5DED004C2701 /* ApiRequestView.swift */; };
 		17E385EB25CF4F8A004C2701 /* ApiRequestState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385EA25CF4F8A004C2701 /* ApiRequestState.swift */; };
 		17E385EC25CF4F8A004C2701 /* ApiRequestState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385EA25CF4F8A004C2701 /* ApiRequestState.swift */; };
-		17E385ED25CF4F8A004C2701 /* ApiRequestState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385EA25CF4F8A004C2701 /* ApiRequestState.swift */; };
-		17E385EE25CF4F8A004C2701 /* ApiRequestState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385EA25CF4F8A004C2701 /* ApiRequestState.swift */; };
 		17E385F325CF56BB004C2701 /* ApiRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E385E425CE5DED004C2701 /* ApiRequestView.swift */; };
 		17E3860225CF5C10004C2701 /* WindowNavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860125CF5C10004C2701 /* WindowNavigationState.swift */; };
 		17E3860325CF5C10004C2701 /* WindowNavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860125CF5C10004C2701 /* WindowNavigationState.swift */; };
-		17E3860425CF5C10004C2701 /* WindowNavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860125CF5C10004C2701 /* WindowNavigationState.swift */; };
-		17E3860525CF5C10004C2701 /* WindowNavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860125CF5C10004C2701 /* WindowNavigationState.swift */; };
 		17E3860B25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860A25CF5CB9004C2701 /* KnownDiceKeysStore.swift */; };
 		17E3860C25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860A25CF5CB9004C2701 /* KnownDiceKeysStore.swift */; };
-		17E3860D25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860A25CF5CB9004C2701 /* KnownDiceKeysStore.swift */; };
-		17E3860E25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3860A25CF5CB9004C2701 /* KnownDiceKeysStore.swift */; };
 		17E3861425D0C016004C2701 /* DiceKeyMemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3861325D0C016004C2701 /* DiceKeyMemoryStore.swift */; };
 		17E3861525D0C016004C2701 /* DiceKeyMemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3861325D0C016004C2701 /* DiceKeyMemoryStore.swift */; };
-		17E3861625D0C016004C2701 /* DiceKeyMemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3861325D0C016004C2701 /* DiceKeyMemoryStore.swift */; };
-		17E3861725D0C016004C2701 /* DiceKeyMemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3861325D0C016004C2701 /* DiceKeyMemoryStore.swift */; };
 		17E3861D25D0C05B004C2701 /* DerivationRecipeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3861C25D0C05B004C2701 /* DerivationRecipeStore.swift */; };
 		17E3861E25D0C05B004C2701 /* DerivationRecipeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3861C25D0C05B004C2701 /* DerivationRecipeStore.swift */; };
-		17E3861F25D0C05B004C2701 /* DerivationRecipeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3861C25D0C05B004C2701 /* DerivationRecipeStore.swift */; };
-		17E3862025D0C05B004C2701 /* DerivationRecipeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3861C25D0C05B004C2701 /* DerivationRecipeStore.swift */; };
 		17E3862A25D0EC69004C2701 /* WindowDimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3862925D0EC69004C2701 /* WindowDimensions.swift */; };
 		17E3862B25D0EC69004C2701 /* WindowDimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3862925D0EC69004C2701 /* WindowDimensions.swift */; };
-		17E3862C25D0EC69004C2701 /* WindowDimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3862925D0EC69004C2701 /* WindowDimensions.swift */; };
-		17E3862D25D0EC69004C2701 /* WindowDimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3862925D0EC69004C2701 /* WindowDimensions.swift */; };
 		17E3863325D0ED85004C2701 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863225D0ED85004C2701 /* Data.swift */; };
 		17E3863425D0ED85004C2701 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863225D0ED85004C2701 /* Data.swift */; };
 		17E3863525D0ED85004C2701 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863225D0ED85004C2701 /* Data.swift */; };
 		17E3863625D0ED85004C2701 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863225D0ED85004C2701 /* Data.swift */; };
 		17E3864025D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863F25D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift */; };
 		17E3864125D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863F25D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift */; };
-		17E3864225D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863F25D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift */; };
-		17E3864325D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E3863F25D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift */; };
 		26447E7025BAE1C500F2B534 /* KeyboardCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */; };
 		26447E7125BAE1C500F2B534 /* KeyboardCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26447E6F25BAE1C500F2B534 /* KeyboardCommands.swift */; };
 		264CD58325AF1043009D2F5A /* TypeYourDiceKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264CD58225AF1043009D2F5A /* TypeYourDiceKeyView.swift */; };
@@ -1331,23 +1317,16 @@
 				17BB394B25CBB63D0023E430 /* Unmarshalling.swift in Sources */,
 				1720581725C50CBE00282E21 /* WebBasedApplicationIdentity.swift in Sources */,
 				17BB39A125CCC6690023E430 /* DerivationRecipeTemplates.swift in Sources */,
-				17E3861625D0C016004C2701 /* DiceKeyMemoryStore.swift in Sources */,
-				17E3862C25D0EC69004C2701 /* WindowDimensions.swift in Sources */,
 				17BB397125CCC61D0023E430 /* ApiInterfaces.swift in Sources */,
-				17E3864225D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */,
 				17BB398625CCC65B0023E430 /* UnsealingInstructions.swift in Sources */,
-				17E385ED25CF4F8A004C2701 /* ApiRequestState.swift in Sources */,
 				17BB399025CCC6630023E430 /* Base64.swift in Sources */,
 				17BB399A25CCC6690023E430 /* Face.swift in Sources */,
 				17BB394225CBB5AA0023E430 /* PackagedSealedMessage.swift in Sources */,
 				17BB395D25CBB6FC0023E430 /* UrlApiRequest.swift in Sources */,
 				17BB398025CCC6290023E430 /* RequestSecurityContext.swift in Sources */,
-				17E3860425CF5C10004C2701 /* WindowNavigationState.swift in Sources */,
 				17BB395425CBB6C20023E430 /* AuthenticationTokens.swift in Sources */,
 				17BB399E25CCC6690023E430 /* DiceKey.swift in Sources */,
-				17E3861F25D0C05B004C2701 /* DerivationRecipeStore.swift in Sources */,
 				17BB39A025CCC6690023E430 /* DiceKeyMedium.swift in Sources */,
-				17E3860D25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */,
 				EC561299258B827300A056B8 /* Tests_iOS.swift in Sources */,
 				17BB396725CCC6130023E430 /* ApiRequest.swift in Sources */,
 				17E3863525D0ED85004C2701 /* Data.swift in Sources */,
@@ -1360,24 +1339,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				17BB39A825CCC66A0023E430 /* FaceRead.swift in Sources */,
-				17E3864325D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */,
 				17E3863625D0ED85004C2701 /* Data.swift in Sources */,
 				17BB39A725CCC66A0023E430 /* Derivables.swift in Sources */,
 				17BB39AB25CCC66A0023E430 /* EncryptedDiceKeyStore.swift in Sources */,
 				17BB39A925CCC66A0023E430 /* FaceSpecification.swift in Sources */,
-				17E3862D25D0EC69004C2701 /* WindowDimensions.swift in Sources */,
-				17E3860E25CF5CB9004C2701 /* KnownDiceKeysStore.swift in Sources */,
 				17BB394C25CBB63D0023E430 /* Unmarshalling.swift in Sources */,
 				1720581C25C50CBE00282E21 /* WebBasedApplicationIdentity.swift in Sources */,
-				17E3861725D0C016004C2701 /* DiceKeyMemoryStore.swift in Sources */,
 				17BB39AD25CCC66A0023E430 /* DerivationRecipeTemplates.swift in Sources */,
 				17BB397625CCC61E0023E430 /* ApiInterfaces.swift in Sources */,
 				17BB398B25CCC65C0023E430 /* UnsealingInstructions.swift in Sources */,
 				17BB39B225CCC6700023E430 /* AttachedHidDevices.swift in Sources */,
-				17E3862025D0C05B004C2701 /* DerivationRecipeStore.swift in Sources */,
 				17BB39B425CCC6700023E430 /* AttachedHidDevice.swift in Sources */,
 				17BB399525CCC6640023E430 /* Base64.swift in Sources */,
-				17E385EE25CF4F8A004C2701 /* ApiRequestState.swift in Sources */,
 				17BB39B325CCC6700023E430 /* CtapHidConnection.swift in Sources */,
 				17BB39A625CCC66A0023E430 /* Face.swift in Sources */,
 				17BB394325CBB5AA0023E430 /* PackagedSealedMessage.swift in Sources */,
@@ -1385,7 +1358,6 @@
 				17BB398125CCC6290023E430 /* RequestSecurityContext.swift in Sources */,
 				17BB395525CBB6C20023E430 /* AuthenticationTokens.swift in Sources */,
 				17BB39AA25CCC66A0023E430 /* DiceKey.swift in Sources */,
-				17E3860525CF5C10004C2701 /* WindowNavigationState.swift in Sources */,
 				17BB39AC25CCC66A0023E430 /* DiceKeyMedium.swift in Sources */,
 				EC5612A4258B827300A056B8 /* Tests_macOS.swift in Sources */,
 				17BB396C25CCC6140023E430 /* ApiRequest.swift in Sources */,

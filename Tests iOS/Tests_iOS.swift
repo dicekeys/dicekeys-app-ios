@@ -22,15 +22,6 @@ class Tests_iOS: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
     
     func testIssue56PasswordCannotBeDerived() throws {
         let recipeJson = "{\"allow\":[{\"host\":\"*.exampl.com\"}],\"lengthInChars\":0}"
@@ -38,12 +29,12 @@ class Tests_iOS: XCTestCase {
         XCTAssertNotNil(password)
         XCTAssertNotNil(password.password)
     }
-    
+// TODO: outdated test, should be updated
     func testGetPasswordApi() throws {
         handleUrlApiRequest(
             incomingRequestUrl: URL(string: "https://dicekeys.app/?command=getPassword&requestId=1&respondTo=https%3A%2F%2Fpwmgr.app%2F--derived-secret-api--%2F&recipe=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwmgr.app%22%7D%5D%7D&recipeMayBeModified=false")!,
             approveApiRequest: { _, callback in
-                callback(.success("A1tB2rC3bD4lE5tF6rG1bH2lI3tJ4rK5bL6lM1tN2rO3bP4lR5tS6rT1bU2lV3tW4rX5bY6lZ1t"))
+                callback(.success(SuccessResponse.getPassword(passwordJson: "{\"password\":\"15-Rerun-pound-grout-limit-ladle-flock-quote-flock-dance-human-envoy-aloof-myth-exert-foyer\",\"recipe\":\"{\\\"allow\\\":[{\\\"host\\\":\\\"api.dicekeys.app\\\"}]}\"}")))
             },
             sendResponse: { baseurl, parameters in
                 guard let passwordJson = parameters["passwordJson"] else {
@@ -51,20 +42,12 @@ class Tests_iOS: XCTestCase {
                     return
                 }
                 guard let password = try? Password.from(json: passwordJson).password else {
-                    XCTFail("couldn't parse passwordJson")
+                    XCTFail("couldn't parse passwordJson" + passwordJson)
                     return
                 }
-                XCTAssertEqual(password, "15-Agent-knelt-doozy-agile-fable-harsh-arose-ionic-dense-getup-until-tacky-books-lucid-savor")
+                XCTAssertEqual(password, "15-Rerun-pound-grout-limit-ladle-flock-quote-flock-dance-human-envoy-aloof-myth-exert-foyer")
             }
         )
     }
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
-    }
 }
