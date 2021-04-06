@@ -8,6 +8,7 @@
 import Foundation
 
 let arguments = CommandLine.arguments
+
 if arguments.count >= 2 {
   let seed = arguments[1]
   if let seedAs32bytes = seed.data(using: .hexadecimal), seedAs32bytes.count == 32 {
@@ -20,16 +21,7 @@ if arguments.count >= 2 {
       securityKey.writeSecurityKeySeed(keySeedAs32Bytes: seedAs32bytes) { (result) in
         switch (result) {
         case .failure(let err):
-          switch err {
-          case .couldNotOpenDevice:
-            print("Error: could not open device.")
-          case .invalidSeedLength:
-            print("Error: invalid seed length.")
-          case .couldNotGenerateRandomNonce:
-            print("Error: could not generate random nonce.")
-          case .errorReturned(let errMessage):
-            print("Error: code \([UInt8](errMessage)).")
-          }
+          printErrorMessage(err)
         default: print("Success.")
         }
         semaphore.signal()
@@ -44,6 +36,19 @@ if arguments.count >= 2 {
   }
 } else {
   print("No seed provided.")
+}
+
+fileprivate func printErrorMessage(_ err: (CtapRequestError)) {
+  switch err {
+  case .couldNotOpenDevice:
+    print("Error: could not open device.")
+  case .invalidSeedLength:
+    print("Error: invalid seed length.")
+  case .couldNotGenerateRandomNonce:
+    print("Error: could not generate random nonce.")
+  case .errorReturned(let errMessage):
+    print("Error: code \([UInt8](errMessage)).")
+  }
 }
 
 // ----------------------------------------------------------------
