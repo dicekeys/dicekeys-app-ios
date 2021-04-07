@@ -47,7 +47,7 @@ private struct DiceKeyInMemory: View {
                 VStack {
                     HStack {
                         Spacer()
-                        DiceKeyView(diceKey: self.diceKey)
+                        DiceKeyView(diceKey: self.diceKey, hideFaces: true)
                         Spacer()
                     }
                     Text(diceKey.nickname).font(.title2)
@@ -137,7 +137,8 @@ struct SavedDiceKeysView: View {
                         // Text("\(EncryptedDiceKeyStore.hasDiceKey(forKeyId: knownDiceKeysState.keyId) ? "Locking" : "Forgetting") in \(diceKeyMemoryStore.formattedTimeRemaining)")"
                     }
                 }.frame(maxHeight: maxItemHeight)
-            }).buttonStyle(PlainButtonStyle())
+            })
+            .buttonStyle(DefaultButtonStyle())
             Spacer()
         }
     }

@@ -246,7 +246,7 @@ struct DiceKeyPresent: View {
                         }, set: { diceKeyMemoryStore.setDiceKey(diceKey: $0)}),
                         backupDiceKeyState: backupDiceKeyState)
                     case .SeedHardwareKey: SeedHardwareSecurityKey(diceKey: diceKey).padding(.horizontal, defaultContentPadding)
-                    default: DiceKeyView(diceKey: diceKey, showLidTab: true).padding(.horizontal, defaultContentPadding)
+                    default: DiceKeyView(diceKey: diceKey, showLidTab: true, hideFaces: true, withShowDiceLabel: true).padding(.horizontal, defaultContentPadding)
                     }
                     Spacer()
                 }
