@@ -26,7 +26,7 @@ struct ChooseBackupTarget: View {
                     VStack {
                         HStack(alignment: .center, spacing: 0) {
                             Spacer()
-                            DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue,
+                            DiceKeyView(diceKey: diceKey, hideFaces: true, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue,
                                 aspectRatioMatchStickeys: true
                             ).frame(minWidth: 0, maxWidth: .infinity)
                             Image(systemName: "arrow.right.circle.fill")
@@ -49,7 +49,7 @@ struct ChooseBackupTarget: View {
                     VStack {
                         HStack(alignment: .center, spacing: 0) {
                             Spacer()
-                            DiceKeyView(diceKey: diceKey, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue,
+                            DiceKeyView(diceKey: diceKey, hideFaces: true, diceBoxColor: .alexandrasBlue, diePenColor: .alexandrasBlue,
                                 aspectRatioMatchStickeys: true
                             ).frame(minWidth: 0, maxWidth: .infinity)
                             Image(systemName: "arrow.right.circle.fill")

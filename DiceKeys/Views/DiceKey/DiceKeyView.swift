@@ -101,15 +101,20 @@ struct DiceKeyView: View {
     var partialFaces: [PartialFace]?
     var centerFace: Face?
     var showLidTab: Bool = false
+    var hideFaces: Bool = false
+    var withShowDiceLabel: Bool = false
     var leaveSpaceForTab: Bool = false
     var diceBoxColor: Color = Color.diceBox
     var diceBoxDieSlotColor: Color = Color.diceBoxDieSlot
+    var diceBoxDieSlotHiddenColor: Color = Color.diceBox.opacity(0.8)
     var diePenColor: Color = Color.black
     var faceSurfaceColor: Color = Color.white
     var highlightIndexes: Set<Int> = Set()
     var showDiceAtIndexes: Set<Int>?
     var aspectRatioMatchStickeys: Bool = false
     var onFacePressed: ((_ faceIndex: Int) -> Void)?
+    
+    @AppStorage(Settings.hideDiceExceptCenterDie) var hideDiceExceptCenterDie: Bool = false
 
     @State private var viewSize: CGSize = CGSize.zero
 
@@ -171,44 +176,82 @@ struct DiceKeyView: View {
         }
     }
 
+    func toggleHideFaces() {
+        if(hideFaces){
+            UserDefaults.standard.set(!self.hideDiceExceptCenterDie, forKey: Settings.hideDiceExceptCenterDie)
+        }
+    }
+
     var body: some View {
-        CalculateBounds(bounds: self.$viewSize) {
-            ZStack(alignment: .center) {
-                // The box
-                RoundedRectangle(cornerRadius: sizeModel.boxCornerRadius)
-                    .size(width: linearSizeOfBox, height: linearSizeOfBox)
-                    .fill(diceBoxColor)
-                    .frame(width: linearSizeOfBox, height: linearSizeOfBox)
-                    .position(x: hCenter, y: vCenterOfBox)
-                // The lid
-                if showLidTab {
-                    DieLidView(radius: sizeModel.lidTabRadius, color: diceBoxColor)
-                        .position(x: hCenter, y: vCenterOfBox + sizeModel.linearSizeOfBox/2 + sizeModel.lidTabRadius/2)
-                }
-                // The dice
-                ForEach(facePositions) { facePosition in
-                    if computedShowDiceAtIndexes.contains(facePosition.id) {
-                        DieView(partialFace: facePosition.partialFace, dieSize: faceSize, penColor: diePenColor, faceSurfaceColor: highlightIndexes.contains(facePosition.indexInArray) ? Color.highlighter : faceSurfaceColor )
-                            .position(
-                                x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
-                                y: vCenterOfBox + CGFloat(-2 + facePosition.row) * dieStepSize
-                            )
-                            .onTapGesture {
-                                onFacePressed?(facePosition.indexInArray)
-                            }
-                    } else {
-                        RoundedRectangle(cornerRadius: sizeModel.faceRadius)
-                            .size(width: faceSize, height: faceSize)
-                            .fill(diceBoxDieSlotColor)
-                            .frame(width: faceSize, height: faceSize)
-                            .position(
-                                x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
-                                y: vCenterOfBox + CGFloat(-2 + facePosition.row) * dieStepSize
-                            )
+        VStack{
+            CalculateBounds(bounds: self.$viewSize) {
+                ZStack(alignment: .center) {
+                    // The box
+                    RoundedRectangle(cornerRadius: sizeModel.boxCornerRadius)
+                        .size(width: linearSizeOfBox, height: linearSizeOfBox)
+                        .fill(diceBoxColor)
+                        .frame(width: linearSizeOfBox, height: linearSizeOfBox)
+                        .position(x: hCenter, y: vCenterOfBox)
+                    // The lid
+                    if showLidTab && (!hideFaces || hideDiceExceptCenterDie) {
+                        DieLidView(radius: sizeModel.lidTabRadius, color: diceBoxColor)
+                            .position(x: hCenter, y: vCenterOfBox + sizeModel.linearSizeOfBox/2 + sizeModel.lidTabRadius/2)
+                    }
+                    // The dice
+                    ForEach(facePositions) { facePosition in
+                        
+                        let dieIsCenterDie = (facePosition.indexInArray == 12)
+                        if (computedShowDiceAtIndexes.contains(facePosition.id) && (!hideFaces || !hideDiceExceptCenterDie || dieIsCenterDie)) {
+                            DieView(partialFace: facePosition.partialFace, dieSize: faceSize, penColor: diePenColor, faceSurfaceColor: highlightIndexes.contains(facePosition.indexInArray) ? Color.highlighter : faceSurfaceColor )
+                                .position(
+                                    x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
+                                    y: vCenterOfBox + CGFloat(-2 + facePosition.row) * dieStepSize
+                                )
+                                .if(onFacePressed != nil) {
+                                    $0.onTapGesture {
+                                        onFacePressed?(facePosition.indexInArray)
+                                    }
+                                }
+                        }else{
+                            RoundedRectangle(cornerRadius: sizeModel.faceRadius)
+                                .size(width: faceSize, height: faceSize)
+                                .fill(diceBoxDieSlotColor)
+                                .frame(width: faceSize, height: faceSize)
+                                .position(
+                                    x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
+                                    y: vCenterOfBox + CGFloat(-2 + facePosition.row) * dieStepSize
+                                )
+                        }
+
+                        
+                        if(hideFaces && hideDiceExceptCenterDie) {
+                            RoundedRectangle(cornerRadius: sizeModel.faceRadius)
+                                .size(width: faceSize, height: faceSize)
+                                .fill(dieIsCenterDie ? diceBoxDieSlotHiddenColor.opacity(0.5) : diceBoxDieSlotHiddenColor)
+                                .frame(width: faceSize, height: faceSize)
+                                .position(
+                                    x: hCenter + CGFloat(-2 + facePosition.column) * dieStepSize,
+                                    y: vCenterOfBox + CGFloat(-2 + facePosition.row) * dieStepSize
+                                )
+                        }
                     }
                 }
+
             }
-        }.aspectRatio(aspectRatioMatchStickeys ? 130/155 : sizeModel.aspectRatio, contentMode: .fit)
+            .aspectRatio(aspectRatioMatchStickeys ? 130/155 : sizeModel.aspectRatio, contentMode: .fit)
+            .if(hideFaces) {
+                $0.onTapGesture {
+                    toggleHideFaces()
+                }
+            }
+            
+            if(withShowDiceLabel){
+                Text("tap to show dice")
+                    .font(.footnote)
+                    .opacity(hideDiceExceptCenterDie ? 1 : 0)
+                    .padding()
+            }
+        }
     }
 }
 

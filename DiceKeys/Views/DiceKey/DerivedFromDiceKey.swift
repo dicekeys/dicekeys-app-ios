@@ -61,6 +61,7 @@ struct DerivedFromDiceKey<Content: View>: View {
                 DiceKeyView(
                     diceKey: diceKey ?? DiceKey.createFromRandom(),
                     showLidTab: false,
+                    hideFaces: true,
                     leaveSpaceForTab: false,
                     diceBoxColor: Color.diceBox
                 )
