@@ -9,13 +9,16 @@ abstract_target 'DiceKeys' do
 
   pod 'SwiftLint'
 
-  # Pods for DiceKeys
-  pod 'SeededCrypto', :git => 'https://github.com/dicekeys/seeded-crypto-ios.git', :submodules => true, :branch => 'replace-all-derivation-options-with-recipe'
-  pod 'OpenCVXF', :git => 'https://github.com/dicekeys/opencv-xf.git'
-  pod "ReadDiceKey", :git => 'https://github.com/dicekeys/read-dicekey-ios.git', :submodules => true
+  def shared_pods
+    # Pods for DiceKeys
+    pod 'SeededCrypto', :git => 'https://github.com/dicekeys/seeded-crypto-ios.git', :submodules => true, :branch => 'replace-all-derivation-options-with-recipe'
+    pod 'OpenCVXF', :git => 'https://github.com/dicekeys/opencv-xf.git'
+    pod "ReadDiceKey", :git => 'https://github.com/dicekeys/read-dicekey-ios.git', :submodules => true
+  end
 
   target 'DiceKeys (iOS)' do
     platform :ios, '14.0'
+    shared_pods
     target 'Tests iOS' do
       inherit! :complete
     end
@@ -23,9 +26,14 @@ abstract_target 'DiceKeys' do
   
   target 'DiceKeys (macOS)' do
     platform :osx, '11.0'
+    shared_pods
     target 'Tests macOS' do
       inherit! :complete
     end
+  end
+
+  target 'seed-security-key' do
+    platform :osx, '10.15'
   end
 
   post_integrate do |installer|
