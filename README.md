@@ -12,13 +12,9 @@ or init submodules manually:
 
 2. Install pods (use latest CocoaPods version, tested with 1.10.0)
 
-pod install
+`pod install`
 
 3. Open `DiceKeys/DiceKeys.xcworkspace`
-
-3.5 Due to [issue 36](https://github.com/dicekeys/dicekeys-app-ios/issues/36), you will need to use the xcode file navigator to go to Pods->Pods->OpenCVXF->Core.h and in the file manager change the file type to "Objective-C Source"
-
-![image](https://user-images.githubusercontent.com/8259431/104119697-8d7ca500-5374-11eb-9e28-a3ccec651383.png)
 
 4. Select `DiceKeys` → `iOS Device` scheme
 
@@ -42,3 +38,9 @@ seed-security-key 0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
 ```
 
  (DO NOT USE THE ABOVE SEED!)
+
+### Build Security Key Seed Writer
+```
+xcodebuild -workspace DiceKeys.xcworkspace -scheme seed-security-key -configuration Release clean build SYMROOT=$(PWD)/build
+```
+Get built executable binary at `$(PWD)/build/Release/seed-security-key`.
