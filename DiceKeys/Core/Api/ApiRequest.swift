@@ -188,7 +188,7 @@ class ApiRequestGetSealingKey: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     
     override func execute(seedString: String) throws -> SuccessResponse {
         SuccessResponse.getSealingKey(sealingKeyJson:
-            try SealingKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
+            try UnsealingKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!).sealingKey()
             .toJson()
         )
     }
