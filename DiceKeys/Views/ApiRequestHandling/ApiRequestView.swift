@@ -18,8 +18,9 @@ struct RequestQuestionView: View {
             case "microsoft.com": return "Microsoft"
             case "bitwarden.com": return "BitWarden"
             case "1password.com": return "1Password"
-        default: return request.securityContext.host
-    } }
+            default: return request.securityContext.host;
+        }
+    }
     
     // FIXME  --  areRecipeSigned ? "recreate" : "create";
     var createOrRecreate: String { "create" }
