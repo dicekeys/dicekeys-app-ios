@@ -34,7 +34,7 @@ class Tests_iOS: XCTestCase {
         handleUrlApiRequest(
             incomingRequestUrl: URL(string: "https://dicekeys.app/?command=getPassword&requestId=1&respondTo=https%3A%2F%2Fpwmgr.app%2F--derived-secret-api--%2F&recipe=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwmgr.app%22%7D%5D%7D&recipeMayBeModified=false")!,
             approveApiRequest: { _, callback in
-                callback(.success(SuccessResponse.getPassword(passwordJson: "{\"password\":\"15-Rerun-pound-grout-limit-ladle-flock-quote-flock-dance-human-envoy-aloof-myth-exert-foyer\",\"recipe\":\"{\\\"allow\\\":[{\\\"host\\\":\\\"api.dicekeys.app\\\"}]}\"}")))
+                callback(.success((SuccessResponse.getPassword(passwordJson: "{\"password\":\"15-Rerun-pound-grout-limit-ladle-flock-quote-flock-dance-human-envoy-aloof-myth-exert-foyer\",\"recipe\":\"{\\\"allow\\\":[{\\\"host\\\":\\\"api.dicekeys.app\\\"}]}\"}"),nil)))
             },
             sendResponse: { baseurl, parameters in
                 guard let passwordJson = parameters["passwordJson"] else {

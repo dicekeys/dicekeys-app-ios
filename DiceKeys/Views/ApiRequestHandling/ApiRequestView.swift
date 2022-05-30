@@ -93,14 +93,17 @@ struct ApiRequestView: View {
     @ObservedObject var backgroundCalculationOfApiRequestResult: BackgroundCalculationOfApiRequestResult
         @State var userAskedToLoadDiceKey: Bool = false
     
+    @State private var sendCenterLetterAndDigit = true
+    
     init (_ apiRequest: ApiRequest, diceKeyMemoryStore: DiceKeyMemoryStore = DiceKeyMemoryStore.singleton) {
         self.request = apiRequest
         self._diceKeyMemoryStore = ObservedObject(initialValue: diceKeyMemoryStore)
-        let newBackgroundCalculationOfApiRequestResult =
-            BackgroundCalculationOfApiRequestResult.get(request: apiRequest)
+        let newBackgroundCalculationOfApiRequestResult = BackgroundCalculationOfApiRequestResult.get(request: apiRequest)
+        
         self._backgroundCalculationOfApiRequestResult = ObservedObject(initialValue: newBackgroundCalculationOfApiRequestResult)
-            _ = diceKeyMemoryStore.diceKeyLoaded.publisher.sink{ diceKey in
-                newBackgroundCalculationOfApiRequestResult.execute(seedString: diceKey.toSeed())
+        
+        _ = diceKeyMemoryStore.diceKeyLoaded.publisher.sink{ diceKey in
+            newBackgroundCalculationOfApiRequestResult.execute(seedString: diceKey.toSeed())
         }
     }
     
@@ -111,16 +114,22 @@ struct ApiRequestView: View {
     var diceKeyAbsent: Bool { diceKeyLoaded == nil }
     var showLoadDiceKey: Bool { diceKeyAbsent && userAskedToLoadDiceKey }
     
-    var apiResult: Result<SuccessResponse, Error> {
+    var apiResult: Result<(response: SuccessResponse, centerLetterAndDigit: String?), Error> {
         guard let diceKey = diceKeyLoaded else { return .failure(BackgroundCalculationError.inProgress) }
-        return BackgroundCalculationOfApiRequestResult.get(request: request, seedString: diceKey.toSeed() ).result
+        
+        switch BackgroundCalculationOfApiRequestResult.get(request: request, seedString: diceKey.toSeed()).result {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let successResponse):
+            return .success((successResponse, sendCenterLetterAndDigit ? diceKey.centerFace.letterAndDigit : nil))
+        }
     }
     
     var successful: Bool {
         if case .success = apiResult { return true } else { return false }
     }
         
-    var successResponse: SuccessResponse? {
+    var successResponse: (response: SuccessResponse, centerLetterAndDigit: String?)? {
         guard case let .success(response) = apiResult else { return nil }
         return response
     }
@@ -191,6 +200,11 @@ struct ApiRequestView: View {
                     .aspectRatio(3.0, contentMode: .fit)
                 }.buttonStyle(PlainButtonStyle())
             }
+            if diceKeyLoaded != nil {
+                Spacer()
+                Toggle("Send Center Letter and Digit as a hint", isOn: $sendCenterLetterAndDigit)
+                    .font(.body)
+            }
             Spacer()
             HStack {
                 Spacer()
@@ -200,7 +214,7 @@ struct ApiRequestView: View {
                 Spacer()
             }
             Spacer()
-        }.padding(.all, 5)
+        }.padding(.all, 10)
     }
 }
 
