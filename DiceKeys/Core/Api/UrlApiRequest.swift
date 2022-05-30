@@ -102,7 +102,7 @@ func testConstructUrlApiRequest(_ requestUrlString: String) throws -> ApiRequest
 // Handles API requests arriving via URL
 func handleUrlApiRequest(
     incomingRequestUrl: URL,
-    approveApiRequest: @escaping (_ forRequest: ApiRequest, _ callback: @escaping (Result<SuccessResponse, Error>) -> Void) -> Void,
+    approveApiRequest: @escaping (_ forRequest: ApiRequest, _ callback: @escaping (Result<(response: SuccessResponse, centerLetterAndDigit: String?), Error>) -> Void) -> Void,
     // Set only for testing, otherwise, use the default
     sendResponse: @escaping (_ responseUrl: URLComponents, _ additionalParameters: [String:String]) -> Void = sendResponse
 ) {
@@ -151,7 +151,12 @@ func handleUrlApiRequest(
             case .failure(let error):
                 sendError(responseUrl, error)
             case .success(let successResponse):
-                sendResponse(responseUrl, successResponseToDictionary(successResponse: successResponse))
+                
+                if(successResponse.centerLetterAndDigit != nil){
+                    responseUrl.queryItems?.append(URLQueryItem(name: "centerLetterAndDigit", value: successResponse.centerLetterAndDigit))
+                }
+                
+                sendResponse(responseUrl, successResponseToDictionary(successResponse: successResponse.response))
             }
         }
     } catch {

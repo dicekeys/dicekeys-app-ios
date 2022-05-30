@@ -29,9 +29,11 @@ struct AppView: App {
             .onOpenURL { url in
                 //                print("\(url.absoluteString)")
                 handleUrlApiRequest(
-                    incomingRequestUrl: url, approveApiRequest: { apiRequest, callback in
-                    ApiRequestState.singleton.askUserToApproveApiRequest(apiRequest, callback)
-                })
+                    incomingRequestUrl: url,
+                    approveApiRequest: { apiRequest, callback in
+                        ApiRequestState.singleton.askUserToApproveApiRequest(apiRequest, callback)
+                    }
+                )
             }
         }.onChange(of: scenePhase) { phase in
             switch phase {
