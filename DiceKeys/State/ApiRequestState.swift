@@ -9,7 +9,7 @@ import Foundation
 
 fileprivate struct ApiRequestWithCompletionCallback {
     let request: ApiRequest
-    let callback: (Result<(response: SuccessResponse, centerLetterAndDigit: String?), Error>) -> Void
+    let callback: (Result<(response: SuccessResponse, sequence: Int?, centerLetterAndDigit: String?), Error>) -> Void
 }
 
 final class ApiRequestState: ObservableObjectUpdatingOnAllChangesToUserDefaults {
@@ -22,7 +22,7 @@ final class ApiRequestState: ObservableObjectUpdatingOnAllChangesToUserDefaults 
     }
     var requestForUserToApprove: ApiRequest? { requestForUserToApproveWithCallback?.request }
 
-    func askUserToApproveApiRequest(_ request: ApiRequest, _ callback: @escaping (Result<(response: SuccessResponse, centerLetterAndDigit: String?), Error>) -> Void) -> Void {
+    func askUserToApproveApiRequest(_ request: ApiRequest, _ callback: @escaping (Result<(response: SuccessResponse, sequence: Int?, centerLetterAndDigit: String?), Error>) -> Void) -> Void {
         apiRequestApprovalQueue.append(ApiRequestWithCompletionCallback(request: request, callback: callback))
         self.sendChangeEventOnMainThread()
     }
@@ -33,7 +33,7 @@ final class ApiRequestState: ObservableObjectUpdatingOnAllChangesToUserDefaults 
     }
 
     /// Complete the request and remove it from the set of pending requests
-    func completeApiRequest(_ result: Result<(response: SuccessResponse, centerLetterAndDigit: String?), Error>) {
+    func completeApiRequest(_ result: Result<(response: SuccessResponse, sequence: Int?, centerLetterAndDigit: String?), Error>) {
         // Send the resposne
         self.requestForUserToApproveWithCallback?.callback(result)
         // Remove the request

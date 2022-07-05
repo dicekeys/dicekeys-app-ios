@@ -20,13 +20,12 @@ private struct RequestDataView: View {
         VStack(alignment: .center) {
             Text("recipe:")
                 .italic()
-                .minimumScaleFactor(0.5)
+                .minimumScaleFactor(0.2)
                 .lineLimit(1)
             Text(recipe)
+                .padding(.all, 3)
                 .minimumScaleFactor(0.2)
-                .lineLimit(lineLimit)
-                .padding(3)
-                .border(Color.black/*@END_MENU_TOKEN@*/, width: /*@START_MENU_TOKEN@*/1)
+                .border(Color.black, width: 1)
                 .padding(.bottom, 10)
             if let title = title, let value = value {
                 Text(title)
@@ -37,7 +36,7 @@ private struct RequestDataView: View {
                     .padding(3)
                     .minimumScaleFactor(0.2)
                     .lineLimit(lineLimit)
-                    .border(Color.black/*@END_MENU_TOKEN@*/, width: /*@START_MENU_TOKEN@*/1)
+                    .border(Color.black, width: 1)
                     
             }
         }
@@ -145,19 +144,11 @@ struct ApiRequestResultPreviewView: View {
     let request: ApiRequest
     let diceKey: DiceKey
 
-    @ObservedObject var apiResultObservable: BackgroundCalculationOfApiRequestResult // = ObservableApiRequestResult.get(request: request, seedString: diceKey.toSeed())
-    
-    init(
-        request: ApiRequest,
-        diceKey: DiceKey
-    ) {
-        self.request = request
-        self.diceKey = diceKey
-        self._apiResultObservable = ObservedObject(initialValue: BackgroundCalculationOfApiRequestResult.get(request: request, seedString: diceKey.toSeed()))
-    }
+    @ObservedObject var apiResultObservable: BackgroundCalculationOfApiRequestResult
+    @Binding var sequence: Int
     
     var body: some View {
-        VStack {
+        return VStack {
             if case let .success(successResponse) = self.apiResultObservable.result {
                 DiceKeyView(diceKey: diceKey)
                 .frame(maxWidth: WindowDimensions.shorterSide/2)
@@ -210,7 +201,9 @@ struct ApiRequestResultPreviewView_Previews: PreviewProvider {
     
     @State static var testRequestForPassword =  try! testConstructUrlApiRequest(recipeForGetCommand(command: "getPassword"))!
     
+    static var diceKey = DiceKey.Example
+    
     static var previews: some View {
-        ApiRequestResultPreviewView(request: testRequestForPassword, diceKey: DiceKey.Example)
+        ApiRequestResultPreviewView(request: testRequestForPassword, diceKey: diceKey, apiResultObservable: BackgroundCalculationOfApiRequestResult.get(request: testRequestForPassword, seedString: diceKey.toSeed(), sequence: 1), sequence: .constant(1))
     }
 }

@@ -22,6 +22,7 @@ class BackgroundCalculationOfApiRequestResult: ObservableObjectUpdatingOnAllChan
     private var onResultCallbacks: [(Result<SuccessResponse, Error>) throws -> Void] = []
     private var request: ApiRequest
     private var seedString: String?
+    private(set) var sequence: Int?
     
     private func setResult(_ result: Result<SuccessResponse, Error>) {
         self.result = result
@@ -46,31 +47,32 @@ class BackgroundCalculationOfApiRequestResult: ObservableObjectUpdatingOnAllChan
     
     static var cache: [String: BackgroundCalculationOfApiRequestResult] = [:]
     
-    private init(request: ApiRequest, seedString: String? = nil) {
+    private init(request: ApiRequest, seedString: String? = nil, sequence: Int = 1) {
         self.request = request
         super.init()
         if let seedString = seedString {
-            execute(seedString: seedString)
+            execute(seedString: seedString, sequence: sequence)
         }
     }
     
-    func execute(seedString: String) {
-        if (self.seedString == seedString) {
+    func execute(seedString: String, sequence: Int) {
+        if (self.seedString == seedString && self.sequence == sequence) {
             // Already executing
             return
         }
         self.seedString = seedString
+        self.sequence = sequence
         DispatchQueue.global(qos: .background).async {
             do {
-                let successResponse = try self.request.execute(seedString: seedString)
+                let successResponse = try self.request.execute(seedString: seedString, sequence: sequence)
                 DispatchQueue.main.async {
-                    if (self.seedString == seedString) {
+                    if (self.seedString == seedString && self.sequence == sequence) {
                         self.setResult(.success(successResponse))
                     }
                 }
             } catch {
                 DispatchQueue.main.async {
-                    if (self.seedString == seedString) {
+                    if (self.seedString == seedString && self.sequence == sequence) {
                         self.setResult(.failure(error))
                     }
                 }
@@ -78,12 +80,12 @@ class BackgroundCalculationOfApiRequestResult: ObservableObjectUpdatingOnAllChan
         }
     }
     
-    static func get(request: ApiRequest, seedString: String? = nil) -> BackgroundCalculationOfApiRequestResult {
-        let cacheKeyPreimage: String = request.id
+    static func get(request: ApiRequest, seedString: String? = nil, sequence: Int) -> BackgroundCalculationOfApiRequestResult {
+        let cacheKeyPreimage: String = request.id + String(sequence)
         let cacheKey = SHA256.hash(data: cacheKeyPreimage.data(using: .utf8)!).description
         if let cachedResult = cache[cacheKey] {
             if let seedString = seedString {
-                cachedResult.execute(seedString: seedString)
+                cachedResult.execute(seedString: seedString, sequence: sequence)
             }
             return cachedResult
         }
@@ -91,7 +93,7 @@ class BackgroundCalculationOfApiRequestResult: ObservableObjectUpdatingOnAllChan
         let result = BackgroundCalculationOfApiRequestResult(request: request, seedString: seedString)
         cache[cacheKey] = result
         if let seedString = seedString {
-            result.execute(seedString: seedString)
+            result.execute(seedString: seedString, sequence: sequence)
         }
         return result
     }

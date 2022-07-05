@@ -49,8 +49,17 @@ func addLengthInCharsToRecipeJson(_ recipeWithoutLengthInChars: String, lengthIn
 }
 
 func addSequenceNumberToRecipeJson(_ recipeWithoutSequenceNumber: String, sequenceNumber: Int) -> String {
-    guard sequenceNumber != 1 else { return recipeWithoutSequenceNumber }
+    guard sequenceNumber > 1 else { return recipeWithoutSequenceNumber }
     return addFieldToEndOfJsonObjectString(recipeWithoutSequenceNumber, fieldName: "#", fieldValue: String(describing: sequenceNumber))
+}
+
+// This is a temporary solution. Refactor is needed as per Android implementation. Issue #149
+func addSequenceNumberIfNotExistsToRecipeJson(_ recipeWithoutSequenceNumber: String, sequenceNumber: Int) -> String {
+    if(recipeWithoutSequenceNumber.contains("\"#\":")){
+        return recipeWithoutSequenceNumber
+    }else{
+        return addSequenceNumberToRecipeJson(recipeWithoutSequenceNumber, sequenceNumber: sequenceNumber)
+    }
 }
 
 
