@@ -63,7 +63,7 @@ protocol ApiRequest {
     func throwIfNotAuthorized() throws
 
     /// Calculate the result of the API call, throwing an exception if it fails
-    func execute(seedString: String) throws -> SuccessResponse
+    func execute(seedString: String, sequence: Int?) throws -> SuccessResponse
 }
 
 extension ApiRequest {
@@ -126,7 +126,7 @@ class ApiRequestWithExplicitRecipe: ApiRequest {
         self.recipeMayBeModifiedParameter ?? recipeMayBeModifiedDefault
     }}
     
-    func execute(seedString: String) throws -> SuccessResponse { throw RequestException.NotImplemented }
+    func execute(seedString: String, sequence: Int?) throws -> SuccessResponse { throw RequestException.NotImplemented }
 
     init(id: String, securityContext: RequestSecurityContext, recipeJson: String?, recipeMayBeModified: Bool?) throws {
         self.id = id
@@ -163,7 +163,7 @@ class ApiRequestGenerateSignature: ApiRequestWithExplicitRecipe, ApiRequestComma
         try super.init(id: id, securityContext: securityContext, unmarshaller: unmarshaller)
     }
 
-    override func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String, sequence: Int?) throws -> SuccessResponse {
         let signingKey = try SigningKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson ?? "")
         let signature = try signingKey.generateSignature(with: message)
         return SuccessResponse.generateSignature(signature: signature, signatureVerificationKeyJson: signingKey.signatureVerificationKey.toJson())
@@ -174,9 +174,9 @@ class ApiRequestGetPassword: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command = ApiCommand.getPassword
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
 
-    override func execute(seedString: String) throws -> SuccessResponse {
-        SuccessResponse.getPassword(passwordJson:
-            try Password.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
+    override func execute(seedString: String, sequence: Int?) throws -> SuccessResponse {
+        return SuccessResponse.getPassword(passwordJson:
+            try Password.deriveFromSeed(withSeedString: seedString, recipe: addSequenceNumberIfNotExistsToRecipeJson(self.recipeJson!, sequenceNumber: sequence ?? 1))
             .toJson()
         )
     }
@@ -186,9 +186,9 @@ class ApiRequestGetSecret: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command = ApiCommand.getSecret
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
 
-    override func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String, sequence: Int?) throws -> SuccessResponse {
         SuccessResponse.getSecret(secretJson:
-            try Secret.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
+            try Secret.deriveFromSeed(withSeedString: seedString, recipe: addSequenceNumberIfNotExistsToRecipeJson(self.recipeJson!, sequenceNumber: sequence ?? 1))
             .toJson()
         )
     }
@@ -199,7 +199,7 @@ class ApiRequestGetSealingKey: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { false } }
     override var recipeMayBeModifiedDefault: Bool { get { true } }
     
-    override func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String, sequence: Int?) throws -> SuccessResponse {
         SuccessResponse.getSealingKey(sealingKeyJson:
             try UnsealingKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!).sealingKey()
             .toJson()
@@ -216,7 +216,7 @@ class ApiRequestGetSigningKey: ApiRequestWithExplicitRecipe, ApiRequestCommand {
     let command = ApiCommand.getSigningKey
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
 
-    override func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String, sequence: Int?) throws -> SuccessResponse {
         SuccessResponse.getSigningKey(signingKeyJson:
             try SigningKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
             .toJson()
@@ -227,7 +227,7 @@ class ApiRequestGetSymmetricKey: ApiRequestWithExplicitRecipe, ApiRequestCommand
     let command = ApiCommand.getSymmetricKey
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
 
-    override func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String, sequence: Int?) throws -> SuccessResponse {
         SuccessResponse.getSymmetricKey(symmetricKeyJson:
             try SymmetricKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
             .toJson()
@@ -238,7 +238,7 @@ class ApiRequestGetUnsealingKey: ApiRequestWithExplicitRecipe, ApiRequestCommand
     let command = ApiCommand.getUnsealingKey
     override var requireClientMayRetrieveKeyToBeSetToTrue: Bool { get { true } }
 
-    override func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String, sequence: Int?) throws -> SuccessResponse {
         SuccessResponse.getUnsealingKey(unsealingKeyJson:
             try UnsealingKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
             .toJson()
@@ -262,7 +262,7 @@ class ApiRequestSealWithSymmetricKey: ApiRequestWithExplicitRecipe, ApiRequestCo
         try super.init(id: id, securityContext: securityContext, unmarshaller: unmarshaller)
     }
 
-    override func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String, sequence: Int?) throws -> SuccessResponse {
         let packagedSealedMessage = try SymmetricKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
             .seal(withMessage: "FIXME")// FIXME .seal(withMessage: plaintext)
         return SuccessResponse.sealWithSymmetricKey(packagedSealedMessageJson: packagedSealedMessage.toJson())
@@ -289,7 +289,7 @@ class ApiRequestUnseal: ApiRequest {
     let recipeMayBeModified = false
     let requireClientMayRetrieveKeyToBeSetToTrue = false
 
-    func execute(seedString: String) throws -> SuccessResponse { throw RequestException.NotImplemented }
+    func execute(seedString: String, sequence: Int?) throws -> SuccessResponse { throw RequestException.NotImplemented }
     
     var recipeJson: String? { get {
         return self.packagedSealedMessage.recipe
@@ -343,7 +343,7 @@ class ApiRequestUnsealWithSymmetricKey: ApiRequestUnseal, ApiRequestCommand {
     let command = ApiCommand.unsealWithSymmetricKey
     let allowNilEmptyRecipe = false
 
-    override func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String, sequence: Int?) throws -> SuccessResponse {
         try SuccessResponse.unsealWithSymmetricKey(plaintext:
             SymmetricKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
                 .unseal(withJsonPackagedSealedMessage: packagedSealedMessageJson)
@@ -354,7 +354,7 @@ class ApiRequestUnsealWithUnsealingKey: ApiRequestUnseal, ApiRequestCommand {
     let command = ApiCommand.unsealWithUnsealingKey
     let allowNilEmptyRecipe = true
 
-    override func execute(seedString: String) throws -> SuccessResponse {
+    override func execute(seedString: String, sequence: Int?) throws -> SuccessResponse {
         try SuccessResponse.unsealWithUnsealingKey(plaintext: 
             UnsealingKey.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!)
                 .unseal(withJsonPackagedSealedMessage: packagedSealedMessageJson)
@@ -414,7 +414,7 @@ func executeApiRequest(
     let seedString = try getSeedString()
 
     // Attempt to execute the request to generate a response to send
-    let successResponse: SuccessResponse = try request.execute(seedString: seedString)
+    let successResponse: SuccessResponse = try request.execute(seedString: seedString, sequence: nil)
 
     return successResponse
 }

@@ -61,6 +61,7 @@ enum SuccessResponse {
 enum MetaOutput: String, Codable, CaseIterable {
     case requestId
     case centerLetterAndDigit
+    case sequence
 }
 
 enum ExceptionMetaOutput: String, Codable, CaseIterable {

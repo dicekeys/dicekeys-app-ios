@@ -83,16 +83,18 @@ struct ApiRequestView: View {
         @State var userAskedToLoadDiceKey: Bool = false
     
     @State private var sendCenterLetterAndDigit = true
+    @State private var sequence = 1
+
     
     init (_ apiRequest: ApiRequest, diceKeyMemoryStore: DiceKeyMemoryStore = DiceKeyMemoryStore.singleton) {
         self.request = apiRequest
         self._diceKeyMemoryStore = ObservedObject(initialValue: diceKeyMemoryStore)
-        let newBackgroundCalculationOfApiRequestResult = BackgroundCalculationOfApiRequestResult.get(request: apiRequest)
+        let newBackgroundCalculationOfApiRequestResult = BackgroundCalculationOfApiRequestResult.get(request: apiRequest, sequence: 1)
         
         self._backgroundCalculationOfApiRequestResult = ObservedObject(initialValue: newBackgroundCalculationOfApiRequestResult)
         
-        _ = diceKeyMemoryStore.diceKeyLoaded.publisher.sink{ diceKey in
-            newBackgroundCalculationOfApiRequestResult.execute(seedString: diceKey.toSeed())
+        _ = diceKeyMemoryStore.diceKeyLoaded.publisher.sink { diceKey in
+            newBackgroundCalculationOfApiRequestResult.execute(seedString: diceKey.toSeed(), sequence: 1)
         }
     }
     
@@ -103,14 +105,16 @@ struct ApiRequestView: View {
     var diceKeyAbsent: Bool { diceKeyLoaded == nil }
     var showLoadDiceKey: Bool { diceKeyAbsent && userAskedToLoadDiceKey }
     
-    var apiResult: Result<(response: SuccessResponse, centerLetterAndDigit: String?), Error> {
+    var apiResult: Result<(response: SuccessResponse, sequence: Int?, centerLetterAndDigit: String?), Error> {
         guard let diceKey = diceKeyLoaded else { return .failure(BackgroundCalculationError.inProgress) }
         
-        switch BackgroundCalculationOfApiRequestResult.get(request: request, seedString: diceKey.toSeed()).result {
+        let apiRequestResult = BackgroundCalculationOfApiRequestResult.get(request: request, seedString: diceKey.toSeed(), sequence: self.sequence)
+        
+        switch apiRequestResult.result {
         case .failure(let error):
             return .failure(error)
         case .success(let successResponse):
-            return .success((successResponse, sendCenterLetterAndDigit ? diceKey.centerFace.letterAndDigit : nil))
+            return .success((successResponse, apiRequestResult.sequence, sendCenterLetterAndDigit ? diceKey.centerFace.letterAndDigit : nil))
         }
     }
     
@@ -118,7 +122,7 @@ struct ApiRequestView: View {
         if case .success = apiResult { return true } else { return false }
     }
         
-    var successResponse: (response: SuccessResponse, centerLetterAndDigit: String?)? {
+    var successResponse: (response: SuccessResponse, sequence: Int?, centerLetterAndDigit: String?)? {
         guard case let .success(response) = apiResult else { return nil }
         return response
     }
@@ -169,7 +173,7 @@ struct ApiRequestView: View {
             } else if (diceKeyLoaded != nil && awaitingResult) {
                 Text("Calculating requested value.")
             } else if let diceKey = diceKeyLoaded {
-                ApiRequestResultPreviewView(request: request, diceKey: diceKey)
+                ApiRequestResultPreviewView(request: request, diceKey: diceKey, apiResultObservable: backgroundCalculationOfApiRequestResult, sequence: $sequence)
             } else {
                 Text("To allow this action, you'll first need to load your DiceKey.")
                 Spacer()
@@ -190,6 +194,10 @@ struct ApiRequestView: View {
             }
             if let diceKey = diceKeyLoaded {
                 Spacer()
+                Stepper(value: $sequence, in: 1...9999, step: 1) {
+                    Text("Sequence: \(sequence > 1 ? String(sequence) : "none")")
+                }
+                Spacer()
                 Toggle("Reveal that the center die is **\(diceKey.centerFace.letterAndDigit)** so that **\(request.hostOrName)** can remind you next time", isOn: $sendCenterLetterAndDigit)
             }
             Spacer()
@@ -201,6 +209,11 @@ struct ApiRequestView: View {
                 Spacer()
             }
         }.padding(.all, 20)
+        .onChange(of: sequence, perform: { _ in
+            if let diceKey = diceKeyLoaded {
+                backgroundCalculationOfApiRequestResult.execute(seedString: diceKey.toSeed(), sequence: self.sequence)
+            }
+        })
     }
 }
 
