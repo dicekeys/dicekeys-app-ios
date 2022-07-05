@@ -25,7 +25,8 @@ private struct RequestDataView: View {
             Text(recipe)
                 .minimumScaleFactor(0.2)
                 .lineLimit(lineLimit)
-                .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
+                .padding(3)
+                .border(Color.black/*@END_MENU_TOKEN@*/, width: /*@START_MENU_TOKEN@*/1)
                 .padding(.bottom, 10)
             if let title = title, let value = value {
                 Text(title)
@@ -33,9 +34,11 @@ private struct RequestDataView: View {
                     .minimumScaleFactor(0.5)
                     .lineLimit(1)
                 Text(value)
+                    .padding(3)
                     .minimumScaleFactor(0.2)
                     .lineLimit(lineLimit)
-                    .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
+                    .border(Color.black/*@END_MENU_TOKEN@*/, width: /*@START_MENU_TOKEN@*/1)
+                    
             }
         }
         
@@ -198,8 +201,16 @@ struct ApiRequestResultPreviewView: View {
 }
 
 
-//struct ApiRequestResultPreviewView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ApiRequestResultPreviewView()
-//    }
-//}
+struct ApiRequestResultPreviewView_Previews: PreviewProvider {
+    
+    static func recipeForGetCommand(command: String) -> String {
+        "https://dicekeys.app/?command=\(command)&requestId=1&respondTo=https%3A%2F%2Fpwmgr.app%2F--derived-secret-api--%2F&recipe=%7B%22allow%22%3A%5B%7B%22host%22%3A%22pwmgr.app%22%7D%5D%7D&recipeMayBeModified=false"
+    }
+    
+    
+    @State static var testRequestForPassword =  try! testConstructUrlApiRequest(recipeForGetCommand(command: "getPassword"))!
+    
+    static var previews: some View {
+        ApiRequestResultPreviewView(request: testRequestForPassword, diceKey: DiceKey.Example)
+    }
+}

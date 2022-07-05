@@ -11,45 +11,34 @@ import SeededCrypto
 struct RequestQuestionView: View {
     let request: ApiRequest
     
-    var hostComponent: String {
-        switch request.securityContext.host {
-            case "apple.com": return "Apple"
-            case "live.com": fallthrough
-            case "microsoft.com": return "Microsoft"
-            case "bitwarden.com": return "BitWarden"
-            case "1password.com": return "1Password"
-            default: return request.securityContext.host;
-        }
-    }
-    
     // FIXME  --  areRecipeSigned ? "recreate" : "create";
     var createOrRecreate: String { "create" }
 
     var description: String {
         request is ApiRequestGetPassword ?
-          "May \(hostComponent) use your DiceKey to \(createOrRecreate) a password?" :
+        "May \(request.hostOrName) use your DiceKey to \(createOrRecreate) a password?" :
         request is ApiRequestGetSecret ?
-          "May \(hostComponent) use your DiceKey to \(createOrRecreate) a secret security code?" :
+        "May \(request.hostOrName) use your DiceKey to \(createOrRecreate) a secret security code?" :
         request is ApiRequestGetUnsealingKey ?
-          "May \(hostComponent) use your DiceKey to \(createOrRecreate) keys to encode and decode secrets?" :
+        "May \(request.hostOrName) use your DiceKey to \(createOrRecreate) keys to encode and decode secrets?" :
         request is ApiRequestGetSymmetricKey ?
-          "May \(hostComponent) use your DiceKey to \(createOrRecreate) a key to encode and decode secrets?" :
+        "May \(request.hostOrName) use your DiceKey to \(createOrRecreate) a key to encode and decode secrets?" :
         request is ApiRequestSealWithSymmetricKey ?
-          "May \(hostComponent) use your DiceKey to encode a secret?" :
+        "May \(request.hostOrName) use your DiceKey to encode a secret?" :
         request is ApiRequestUnsealWithSymmetricKey ?
-          "May \(hostComponent) use your DiceKey to decode a secret?" :
+        "May \(request.hostOrName) use your DiceKey to decode a secret?" :
         request is ApiRequestUnsealWithUnsealingKey ?
-          "May \(hostComponent) use your DiceKey to decode a secret?" :
+        "May \(request.hostOrName) use your DiceKey to decode a secret?" :
         // Less common
         request is ApiRequestGetSigningKey ?
-          "May \(hostComponent) use your DiceKey to \(createOrRecreate) keys to sign data?" :
+        "May \(request.hostOrName) use your DiceKey to \(createOrRecreate) keys to sign data?" :
         request is ApiRequestGenerateSignature ?
-          "May \(hostComponent) use your DiceKey to add its digital signature to data?" :
+        "May \(request.hostOrName) use your DiceKey to add its digital signature to data?" :
         request is ApiRequestGetSignatureVerificationKey ?
-          "May \(hostComponent) use your DiceKey to \(createOrRecreate) a key used to verify data it has signed?" :
+        "May \(request.hostOrName) use your DiceKey to \(createOrRecreate) a key used to verify data it has signed?" :
           // Uncommon
         request is ApiRequestGetSealingKey ?
-          "May \(hostComponent) use your DiceKey to \(createOrRecreate) keys to store secrets?" :
+        "May \(request.hostOrName) use your DiceKey to \(createOrRecreate) keys to store secrets?" :
           ""
     }
     
@@ -165,7 +154,6 @@ struct ApiRequestView: View {
     
     var body: some View {
         VStack {
-            Spacer()
             RequestQuestionView(request: request)
             Spacer()
             if showLoadDiceKey {
@@ -200,10 +188,9 @@ struct ApiRequestView: View {
                     .aspectRatio(3.0, contentMode: .fit)
                 }.buttonStyle(PlainButtonStyle())
             }
-            if diceKeyLoaded != nil {
+            if let diceKey = diceKeyLoaded {
                 Spacer()
-                Toggle("Send Center Letter and Digit as a hint", isOn: $sendCenterLetterAndDigit)
-                    .font(.body)
+                Toggle("Reveal that the center die is **\(diceKey.centerFace.letterAndDigit)** so that **\(request.hostOrName)** can remind you next time", isOn: $sendCenterLetterAndDigit)
             }
             Spacer()
             HStack {
@@ -213,8 +200,7 @@ struct ApiRequestView: View {
                 Button(action: { self.approveRequest() }, label: { Text(awaitingResult || successful ? describeApproval(request) : "Return error") }).hideIf( awaitingResult )
                 Spacer()
             }
-            Spacer()
-        }.padding(.all, 10)
+        }.padding(.all, 20)
     }
 }
 

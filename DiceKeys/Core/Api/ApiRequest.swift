@@ -67,6 +67,19 @@ protocol ApiRequest {
 }
 
 extension ApiRequest {
+    var hostOrName: String {
+        switch securityContext.host {
+            case "apple.com": return "Apple"
+            case "live.com": fallthrough
+            case "microsoft.com": return "Microsoft"
+            case "bitwarden.com": return "BitWarden"
+            case "1password.com": return "1Password"
+            default: return securityContext.host;
+        }
+    }
+}
+
+extension ApiRequest {
     var allowNilEmptyRecipe: Bool { get { false } }
 
     func throwIfNotAuthorized() throws {
