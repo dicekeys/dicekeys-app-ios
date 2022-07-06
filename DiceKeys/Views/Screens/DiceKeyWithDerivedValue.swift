@@ -33,7 +33,7 @@ struct DiceKeyWithDerivedValue: View {
         derivationRecipe?.recipe
     }
 
-    @StateObject private var recipeStore = DerivationRecipeStore.singleton
+    @EnvironmentObject private var recipeStore: DerivationRecipeStore
 
     private var savedRecipes: [DerivationRecipe] {
         recipeStore.savedDerivationRecipes

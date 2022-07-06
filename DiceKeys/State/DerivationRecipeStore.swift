@@ -8,7 +8,6 @@
 import Foundation
 
 final class DerivationRecipeStore: ObservableObjectUpdatingOnAllChangesToUserDefaults {
-    static private(set) var singleton = DerivationRecipeStore()
 
     static let fieldNameSavedDerivationRecipes: String = "savedDerivationRecipes"
     @UserDefault(fieldNameSavedDerivationRecipes, "") private var savedDerivationRecipesJson: String

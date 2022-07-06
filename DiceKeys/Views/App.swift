@@ -25,6 +25,7 @@ struct AppView: App {
     var body: some Scene {
         WindowGroup {
             AppMainView()
+            .environmentObject(DerivationRecipeStore())
             .onOpenURL { url in
                 //                print("\(url.absoluteString)")
                 handleUrlApiRequest(
