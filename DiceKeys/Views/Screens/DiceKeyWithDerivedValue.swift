@@ -13,6 +13,8 @@ struct DiceKeyWithDerivedValue: View {
     let diceKey: DiceKey
     let derivationRecipeBuilder: DerivationRecipeBuilderType
 
+    @EnvironmentObject private var recipeStore: DerivationRecipeStore
+    @State var view : DerivedValueView = .JSON
     @StateObject var recipeBuilderState = RecipeBuilderState()
 
     var diceKeyState: UnlockedDiceKeyState {
@@ -28,12 +30,14 @@ struct DiceKeyWithDerivedValue: View {
         guard case let .ready(derivationRecipe) = recipeBuilderState.progress else { return nil }
             return derivationRecipe
     }
+    
+    var derivedValue: DerivedValue?{
+        return derivationRecipe?.derivedValue(diceKey: diceKey)
+    }
 
     var recipe: String? {
         derivationRecipe?.recipe
     }
-
-    @EnvironmentObject private var recipeStore: DerivationRecipeStore
 
     private var savedRecipes: [DerivationRecipe] {
         recipeStore.savedDerivationRecipes
@@ -50,20 +54,13 @@ struct DiceKeyWithDerivedValue: View {
         return savedRecipes.contains { $0.id == recipe.id }
     }
 
-    var derivedPassword: String? {
-        guard derivationRecipe?.type == .Password else { return nil }
-        guard let recipe = self.recipe, recipe.count > 0 else { return nil }
-        guard let seed = DiceKeyMemoryStore.singleton.diceKeyLoaded?.toSeed() else { return nil }
-        let password = try? Password.deriveFromSeed(withSeedString: seed, recipe: recipe).password
-        return (password)
-    }
-
-    var derivedValue: String? {
-        derivedPassword ?? "(nothing derived)"
-    }
-
     var body: some View {
-        VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 0) {
+        if #available(iOS 15.0, *) {
+            Self._printChanges()
+        } else {
+            // Fallback on earlier versions
+        }
+        return VStack(alignment: .center, spacing: 0) {
            if let derivationRecipeBuilder = self.derivationRecipeBuilder {
                 FormCard(title: "Recipe\( derivationRecipe == nil ? "" : " for \( derivationRecipe?.name ?? "" )")") {
                     VStack(alignment: .leading) {
@@ -72,7 +69,7 @@ struct DiceKeyWithDerivedValue: View {
                         }
                         Divider().hideIf(derivationRecipe == nil)
                         Text("Internal representation of your recipe").hideIf(derivationRecipe == nil)
-                            .font(.title3)
+                            //.font(.title2)
                             .scaledToFit()
                             .minimumScaleFactor(0.01)
                             .fixedSize(horizontal: false, vertical: true)
@@ -99,33 +96,58 @@ struct DiceKeyWithDerivedValue: View {
                 }.padding(.horizontal, 10)
                 .layoutPriority(1)
                 Spacer()
+               if let derivedValue = derivedValue {
+                   HStack{
+                       Text("Format Output:")
+                       Picker("Output Format", selection: $view) {
+                           ForEach(derivedValue.views) { view in
+                               Text(view.description).tag(view)
+                           }
+                       }.pickerStyle(.menu)
+                       Spacer()
+                   }
+                   .padding(.leading, 10)
+                   .padding(.trailing, 10)
+               
+               }
                 VStack(alignment: .center, spacing: 0) {
                     DerivedFromDiceKey(diceKey: diceKeyState.diceKey, content: {
-                            Text(derivedValue ?? "")
+                        Text(derivedValue?.valueForView(view: view) ?? "")
+                                .padding(3)
                                 .font(.body)
                                 .multilineTextAlignment(.center)
-                                .lineLimit(2)
-                                .minimumScaleFactor(0.1)
+                                .lineLimit(8)
+                                .minimumScaleFactor(0.5)
                                 .fixedSize(horizontal: false, vertical: true)
 //                                .padding(.horizontal, 5)
                     }).padding(.horizontal, 5).layoutPriority(-1)
-                    if let derivedValue = derivedValue, derivedValue != "" {
-                        Button("Copy\( derivationRecipe?.type == .Password ? " Password" : "" )") {
+                    if let derivedValue = derivedValue , let value = derivedValue.valueForView(view: view), value != "" {
+                        Button("Copy \( view.description )") {
                             #if os(iOS)
-                            UIPasteboard.general.string = derivedValue
+                            UIPasteboard.general.string = value
                             #else
                             let pasteboard = NSPasteboard.general
                             pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
-                            pasteboard.setString(derivedValue, forType: .string)
+                            pasteboard.setString(value, forType: .string)
                             #endif
                         }
                     }
                 }.hideIf(derivationRecipe == nil)
-                Spacer()
             }
-            // Spacer()
-
-            Spacer()
+        }.onAppear() {
+            
+            self.view = derivedValue?.views.first ?? .JSON
+            
+            if let derivationRecipe = derivationRecipe, let firstView = derivationRecipe.derivedValue(diceKey: diceKey).views.first{
+                if let purpose = derivationRecipe.purpose(){
+                    if(purpose == "pgp" && derivationRecipe.type == .SigningKey){
+                        self.view = .OpenPGPPrivateKey
+                    }else if(purpose == "ssh" && derivationRecipe.type == .SigningKey){
+                        self.view = .OpenSSHPrivateKey
+                    }
+                }
+                
+            }
         }
     }
 }
@@ -149,7 +171,7 @@ struct FormCard<Content: View, TitleContent: View>: View {
                     titleViewBuilder().padding(.leading, 10)
                 } else if let titleString = self.titleString {
                     Text(titleString)
-                        .font(.title)
+                        .font(.headline)
                         .foregroundColor(Color.formHeadingForeground)
                         .lineLimit(1)
                         .minimumScaleFactor(0.01)
@@ -173,11 +195,18 @@ extension FormCard where TitleContent == Text {
 }
 
 struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
+    static let derivationRecipeStore = DerivationRecipeStore()
     static var previews: some View {
 //        NavigationView {
-            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
-//        }
-//        .navigationBarDiceKeyStyle()
-        .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+        Group {
+            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(),
+                                        derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
+            .environmentObject(derivationRecipeStore)
+            .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+            
+            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(),
+                                    derivationRecipeBuilder: .template(derivationRecipeTemplates[10]))
+            .environmentObject(derivationRecipeStore)
+        }
     }
 }

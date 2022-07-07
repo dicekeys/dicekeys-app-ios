@@ -31,7 +31,7 @@ struct SecretsView: View {
             }
 
             Section(header: Text("Built-in Recipes")) {
-                ForEach(derivablePasswordTemplates) { template in
+                ForEach(derivableTemplates) { template in
                     HStack{
                         Text(template.name)
                         Spacer()
@@ -44,14 +44,16 @@ struct SecretsView: View {
             }
             
             Section(header: Text("Custom Recipe")) {
-                HStack{
-                    Text("Password")
-                    Spacer()
+                ForEach(SeededCryptoRecipeType.allCases) { type in
+                    HStack{
+                        Text(type.description)
+                        Spacer()
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture(perform: {
+                        navigateTo(.Derive(DerivationRecipeBuilderType.customFromUrl(type)))
+                    })
                 }
-                .contentShape(Rectangle())
-                .onTapGesture(perform: {
-                    navigateTo(.Derive(DerivationRecipeBuilderType.customFromUrl(.Password)))
-                })
             }
         }
     }

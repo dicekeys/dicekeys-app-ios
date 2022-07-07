@@ -96,5 +96,45 @@ struct DerivationRecipe: Identifiable, Codable, Equatable {
     static func listToJson(_ derivables: [DerivationRecipe]) throws -> String { String(decoding: try JSONEncoder().encode(derivables), as: UTF8.self) }
 }
 
+extension DerivationRecipe{
+    
+    func derivedValue(diceKey: DiceKey) -> DerivedValue{
+        
+        let seed = diceKey.toSeed()
+        let recipe = self.recipe
+        
+        switch self.type{
+            case .Password:
+                return DerivedValuePassword(password: try! Password.deriveFromSeed(withSeedString: seed, recipe: recipe))
+            case .Secret:
+                return DerivedValueSecret(secret: try! Secret.deriveFromSeed(withSeedString: seed, recipe: recipe))
+            case .SigningKey:
+                return DerivedValueSigningKey(signingKey: try! SigningKey.deriveFromSeed(withSeedString: seed, recipe: recipe))
+            case .SymmetricKey:
+                return DerivedValueSymmetricKey(symmetricKey: try! SymmetricKey.deriveFromSeed(withSeedString: seed, recipe: recipe))
+            case .UnsealingKey:
+                return DerivedValueUnsealingKey(unsealingKey: try! UnsealingKey.deriveFromSeed(withSeedString: seed, recipe: recipe))
+        }
+    }
+    
+    func purpose() -> String?{
+        do {
+            // make sure this JSON is in the format we expect
+            if let json = try JSONSerialization.jsonObject(with: Data(recipe.utf8), options: []) as? [String: Any] {
+                if let purpose = json["purpose"] as? String {
+                    return purpose
+                }
+            }
+        } catch { }
+        
+        return nil
+    }
+}
+
+
+// Deprecated
 let derivablePasswordTemplates = derivationRecipeTemplates
     .filter { $0.type == .Password }
+
+let derivableTemplates = derivationRecipeTemplates
+

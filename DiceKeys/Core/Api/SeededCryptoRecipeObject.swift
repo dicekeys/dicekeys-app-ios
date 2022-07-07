@@ -11,8 +11,20 @@ enum HashFunction: String, Codable {
     case BLAKE2b, Argon2id
 }
 
-enum SeededCryptoRecipeType: String, Codable {
+enum SeededCryptoRecipeType: String, Codable, CaseIterable, Identifiable {
     case Password, Secret, SigningKey, SymmetricKey, UnsealingKey
+    
+    var id: String { self.rawValue }
+    
+    var description: String {
+        switch self{
+            case .Password : return "Password"
+            case .Secret : return "Secret"
+            case .SigningKey: return "Signing Key"
+            case .SymmetricKey : return "Symmetric Key"
+            case .UnsealingKey : return "Unsealing Key"
+        }
+    }
 }
 
 enum WordListName: String, Codable {

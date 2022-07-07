@@ -122,7 +122,7 @@
 		93813D81261B67FF003E3211 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93813D80261B67FF003E3211 /* Settings.swift */; };
 		93813D82261B67FF003E3211 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93813D80261B67FF003E3211 /* Settings.swift */; };
 		939B65A728759B8400295D14 /* SecretsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B65A628759B8400295D14 /* SecretsView.swift */; };
-		939B65A828759B8400295D14 /* SecretsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B65A628759B8400295D14 /* SecretsView.swift */; };
+		939B65AA2875DE8D00295D14 /* DerivedValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B65A92875DE8D00295D14 /* DerivedValueView.swift */; };
 		C12763A084D675535C4C583C /* Pods_DiceKeys_DiceKeys__iOS__Tests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE730BB0AD520FB48D20673B /* Pods_DiceKeys_DiceKeys__iOS__Tests_iOS.framework */; };
 		C3191A6507C20AF840F4054E /* Pods_DiceKeys_DiceKeys__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 061985777EDBE015A8A6CD60 /* Pods_DiceKeys_DiceKeys__iOS_.framework */; };
 		D47C9F2B23F56353525EA408 /* Pods_DiceKeys_DiceKeys__macOS__Tests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1397E5F18A65098140DBC5BB /* Pods_DiceKeys_DiceKeys__macOS__Tests_macOS.framework */; };
@@ -323,6 +323,7 @@
 		81E686DCFFCE5769AB6D0DF8 /* Pods_DiceKeys_DiceKeys__macOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeys__macOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93813D80261B67FF003E3211 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		939B65A628759B8400295D14 /* SecretsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsView.swift; sourceTree = "<group>"; };
+		939B65A92875DE8D00295D14 /* DerivedValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivedValueView.swift; sourceTree = "<group>"; };
 		A12F40698764C98F698C6350 /* Pods-DiceKeys (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (macOS).release.xcconfig"; path = "Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS).release.xcconfig"; sourceTree = "<group>"; };
 		B09CA29A4B28E9D780FE3E0E /* Pods-DiceKeys (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys (macOS).debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys (macOS)/Pods-DiceKeys (macOS).debug.xcconfig"; sourceTree = "<group>"; };
 		BE730BB0AD520FB48D20673B /* Pods_DiceKeys_DiceKeys__iOS__Tests_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeys__iOS__Tests_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -585,6 +586,7 @@
 				EC5091FE25948124007D2B91 /* FaceSpecification.swift */,
 				EC5091FF25948124007D2B91 /* Derivables.swift */,
 				17B6C61B25AD52C6007798F3 /* DerivationRecipeTemplates.swift */,
+				939B65A92875DE8D00295D14 /* DerivedValueView.swift */,
 			);
 			path = DiceKey;
 			sourceTree = "<group>";
@@ -1269,6 +1271,7 @@
 				172057B125C2DBF800282E21 /* SupportsBackNavigationHeader.swift in Sources */,
 				EC5092C1259482F5007D2B91 /* TransferSticker.swift in Sources */,
 				EC5092C7259482F5007D2B91 /* ValidateBackup.swift in Sources */,
+				939B65AA2875DE8D00295D14 /* DerivedValueView.swift in Sources */,
 				17B6C5AB25A494CB007798F3 /* AttachedHidDevice.swift in Sources */,
 				EC5092CF259482F5007D2B91 /* DiceKeyCopyInProgress.swift in Sources */,
 				EC5093322595C043007D2B91 /* RoundedRectCard.swift in Sources */,
@@ -1395,7 +1398,6 @@
 				172057B225C2DBF800282E21 /* SupportsBackNavigationHeader.swift in Sources */,
 				17BB394A25CBB63D0023E430 /* Unmarshalling.swift in Sources */,
 				EC5092B4259482F5007D2B91 /* ChildSizeReader.swift in Sources */,
-				939B65A828759B8400295D14 /* SecretsView.swift in Sources */,
 				EC5091F2259480BE007D2B91 /* ObservableObjectUpdatingOnAllChangesToUserDefaults.swift in Sources */,
 				17E3862B25D0EC69004C2701 /* WindowDimensions.swift in Sources */,
 				2669052E25C17AC60078CF55 /* FacesReadOverlayModel.swift in Sources */,
