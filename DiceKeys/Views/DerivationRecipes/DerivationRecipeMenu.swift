@@ -30,6 +30,7 @@ enum DerivationRecipeBuilderType: Equatable {
     }
 }
 
+// Deprecated
 struct DerivationRecipeMenu<Content: View>: View {
     let onItemSelected: (DiceKeyPresentPageContent) -> Void
     let label: () -> Content
@@ -39,7 +40,7 @@ struct DerivationRecipeMenu<Content: View>: View {
         self.label = label
     }
 
-    @StateObject private var recipeStore = DerivationRecipeStore.singleton
+    @EnvironmentObject private var recipeStore: DerivationRecipeStore
 
     var savedRecipes: [DerivationRecipe] {
         recipeStore.savedDerivationRecipes
