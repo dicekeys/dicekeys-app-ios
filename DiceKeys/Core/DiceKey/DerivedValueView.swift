@@ -79,7 +79,7 @@ struct DerivedValueSecret : DerivedValue {
     func valueForView(view: DerivedValueView) -> String {
         switch view{
         case .Hex: return secret.secretBytes().asHexString
-        case .BIP39: return "BIP"
+        case .BIP39: return try! Mnemonic.toMnemonic([UInt8](secret.secretBytes())).joined(separator: " ")
         default: return secret.toJson()
         }
     }

@@ -11,7 +11,7 @@ abstract_target 'DiceKeys' do
 
   def shared_pods
     # Pods for DiceKeys
-    pod 'SeededCrypto', :git => 'https://github.com/dicekeys/seeded-crypto-ios.git', :submodules => true , :branch => 'ave-update'
+    pod 'SeededCrypto', :git => 'https://github.com/dicekeys/seeded-crypto-ios.git', :submodules => true , :branch => 'main'
     pod 'OpenCVXF', :git => 'https://github.com/dicekeys/opencv-xf.git'
     pod "ReadDiceKey", :git => 'https://github.com/dicekeys/read-dicekey-ios.git', :submodules => true
   end

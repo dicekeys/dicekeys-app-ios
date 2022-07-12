@@ -207,6 +207,10 @@ struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(),
                                     derivationRecipeBuilder: .template(derivationRecipeTemplates[10]))
             .environmentObject(derivationRecipeStore)
+            
+            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(),
+                                    derivationRecipeBuilder: .customFromUrl(.Password))
+            .environmentObject(derivationRecipeStore)
         }
     }
 }
