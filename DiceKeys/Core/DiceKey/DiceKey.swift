@@ -249,6 +249,16 @@ class DiceKey: Identifiable, Equatable {
         return diceKeyWithEarliestHumanReadableForm
     }
     
+    func toCenterUprightRotation() -> DiceKey {
+        for candidateDiceKey in threeAlternateRotations {
+            if(candidateDiceKey.centerFace.orientationAsLowercaseLetterTrbl.asClockwiseDegrees == 0){
+                return candidateDiceKey
+            }
+        }
+        
+        return self
+    }
+    
     private let recipeFor16ByteUniqueIdentifier = "{\"purpose\":\"a unique identifier for this DiceKey\",\"lengthInBytes\":16}"
 
     /// A 16-byte unique identifier for this DiceKey derived via hashing

@@ -168,8 +168,9 @@ final class DiceKeyMemoryStore: ObservableObjectUpdatingOnAllChangesToUserDefaul
     }
     
     func setDiceKey(diceKey: DiceKey) {
-        let keyId = diceKey.id
-        self.keyCache[keyId] = diceKey
+        let centerUprightDiceKey = diceKey.toCenterUprightRotation()
+        let keyId = centerUprightDiceKey.id
+        self.keyCache[keyId] = centerUprightDiceKey
         self.foregroundDiceKeyId = keyId
         // Defer expiration whle we use this DiceKey
         self.memoryStoreExpirationState = .countdownDeferred

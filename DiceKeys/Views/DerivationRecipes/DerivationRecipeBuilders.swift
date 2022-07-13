@@ -265,9 +265,11 @@ struct DerivationRecipeBuilders_Previews: PreviewProvider {
         #if os(iOS)
         DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .customFromUrl(.Password))
         .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
-        .environment(\.colorScheme, .dark)
+        .environmentObject(DerivationRecipeStore())
+//        .environment(\.colorScheme, .dark)
 
         DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .template( derivationRecipeTemplates[0]))
+        .environmentObject(DerivationRecipeStore())
         .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
         .environment(\.colorScheme, .dark)
 

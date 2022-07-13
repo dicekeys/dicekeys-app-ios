@@ -44,5 +44,11 @@ let derivationRecipeTemplates: [DerivationRecipe] = [
 """),
 	DerivationRecipe(type: .Password, name: "Microsoft", recipe: """
 {"allow":[{"host":"*.microsoft.com"},{"host":"*.live.com"}]}
+"""),
+    DerivationRecipe(type: .SigningKey, name: "SSH", recipe: """
+{"purpose":"ssh"}
+"""),
+    DerivationRecipe(type: .SigningKey, name: "PGP", recipe: """
+{"purpose":"pgp"}
 """)
 ];
