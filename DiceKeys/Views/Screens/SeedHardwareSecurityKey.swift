@@ -200,7 +200,7 @@ struct SeedHardwareSecurityKey: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .lineLimit(2)
                 .padding(.top, 10)
-            Text("To seed a security key, you will need to use this app on a Mac or Android device.")
+            Text("To seed a security key, you will need to use this app on a Mac, Windows, or Android device.")
                 .font(.title2)
                 .foregroundColor(.red)
                 .minimumScaleFactor(0.1)
