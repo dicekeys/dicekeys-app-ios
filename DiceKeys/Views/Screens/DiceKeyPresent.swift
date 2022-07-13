@@ -238,7 +238,8 @@ struct DiceKeyPresent: View {
                 DiceKeyPresentNavigationFooter(pageContent: pageContent, navigateTo: navigate, geometry: geometry)
                     .layoutPriority(100)
             }
-        }//.ignoresSafeArea(.all, edges: .bottom)
+        }.ignoresSafeArea(.keyboard)
+        //.ignoresSafeArea(.all, edges: .bottom)
     }
 }
 

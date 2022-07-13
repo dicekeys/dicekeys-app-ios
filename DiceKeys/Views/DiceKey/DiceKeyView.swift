@@ -71,11 +71,7 @@ struct DiceKeySizeModel {
 
     let marginOfBoxEdgeAsFractionOfDieSize: CGFloat = 0.25
     let distanceBetweenFacesAsFractionOfFaceSize: CGFloat = 0.15
-    var faceSize: CGFloat { return ( linearSizeOfBox / (
-      5 +
-      4 * distanceBetweenFacesAsFractionOfFaceSize +
-      2 * marginOfBoxEdgeAsFractionOfDieSize
-    ) ) }
+    var faceSize: CGFloat { return ( linearSizeOfBox / (5 + 4 * distanceBetweenFacesAsFractionOfFaceSize + 2 * marginOfBoxEdgeAsFractionOfDieSize) ) }
 
     let faceRadiusAsFractionOfSize: CGFloat = 1/8
     var faceRadius: CGFloat { faceSize * faceRadiusAsFractionOfSize }

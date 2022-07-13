@@ -98,8 +98,8 @@ struct DiceKeyWithDerivedValue: View {
                 Spacer()
                if let derivedValue = derivedValue {
                    HStack{
-                       Text("Format Output:")
-                       Picker("Output Format", selection: $view) {
+                       Text("Output Format:")
+                       Picker("", selection: $view) {
                            ForEach(derivedValue.views) { view in
                                Text(view.description).tag(view)
                            }
@@ -116,8 +116,8 @@ struct DiceKeyWithDerivedValue: View {
                                 .padding(3)
                                 .font(.body)
                                 .multilineTextAlignment(.center)
-                                .lineLimit(8)
-                                .minimumScaleFactor(0.5)
+                                .lineLimit(5)
+                                .minimumScaleFactor(0.4)
                                 .fixedSize(horizontal: false, vertical: true)
 //                                .padding(.horizontal, 5)
                     }).padding(.horizontal, 5).layoutPriority(-1)
