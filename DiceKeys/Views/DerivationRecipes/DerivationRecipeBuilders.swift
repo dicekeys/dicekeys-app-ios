@@ -120,7 +120,7 @@ struct DerivationRecipeForFromUrl: View {
                 }
                 if let newIntValue = Int(newValue.filter { "0123456789".contains($0) }) {
                     // We don't value to be greater than 999
-                    guard newIntValue <= 999 && newIntValue >= 16 else {
+                    guard newIntValue <= 999 && newIntValue >= 8 else {
                         return
                     }
                     model.lengthInChars = newIntValue
@@ -207,10 +207,10 @@ struct DerivationRecipeForFromUrl: View {
             
                 if model.type == .Password{
                     lengthInCharsTextfield
-                    Text("Maximum length, in characters (16 - 999)").font(.footnote).foregroundColor(.gray)
+                    Text("Maximum length, in characters (8 - 999)").font(.footnote).foregroundColor(.gray)
                 }else if model.type == .Secret{
                     lengthInBytesTextfield
-                    Text("Length, in (16 - 999)").font(.footnote).foregroundColor(.gray)
+                    Text("Length, in bytes (16 - 999)").font(.footnote).foregroundColor(.gray)
                 }
             }
             SequenceNumberField(sequenceNumber: $model.sequenceNumber)
