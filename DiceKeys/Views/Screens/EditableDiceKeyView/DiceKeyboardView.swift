@@ -9,6 +9,7 @@ import SwiftUI
 
 private struct KeyboardKey<Content: View>: View {
     let size: CGSize
+    let withBackground: Bool
     let action: () -> Void
     let label: () -> Content
 
@@ -18,7 +19,7 @@ private struct KeyboardKey<Content: View>: View {
 //            .aspectRatio(2, contentMode: .fit)
             .frame(width: size.width * 0.95, height: size.height * 0.95)
             .clipped()
-            .background(Color.gray)
+            .background(withBackground ? Color.gray : Color.clear)
             .padding(.horizontal, size.width * 0.025)
             .padding(.vertical, size.height * 0.025)
         })
@@ -31,9 +32,11 @@ private struct CharacterKey: View {
     var char: Character
 
     var body: some View {
-        KeyboardKey(size: size, action: { editableDiceKeyState.keyDown(char: char) } , label: {
+        KeyboardKey(size: size, withBackground: true, action: { editableDiceKeyState.keyDown(char: char) } , label: {
             Text("\(String(char))")
                 .font(.system(size: 256, design: .monospaced))
+                .padding(.top, 2)
+                .padding(.bottom, 2)
                 .foregroundColor(.white)
                 .scaledToFit()
                 .minimumScaleFactor(0.01)
@@ -48,11 +51,12 @@ private struct ImageKey: View {
     var image: Image
 
     var body: some View {
-        KeyboardKey(size: size, action: action, label: {
+        KeyboardKey(size: size, withBackground: false, action: action, label: {
             image
             .resizable()
+            .padding(2)
             .aspectRatio(contentMode: .fit)
-                .foregroundColor(.white)
+            .foregroundColor(.alexandrasBlue)
         })
     }
 }
@@ -67,7 +71,7 @@ struct DiceKeyboardView: View {
 
     @State private var bounds: CGSize = CGSize(width: 1, height: 1)
     var width: CGFloat { bounds.width / CGFloat(columns) }
-    var height: CGFloat { width / 2 }
+    var height: CGFloat { min(bounds.height, width / 1.2)}
     var padding: CGFloat { fractionalSpaceBetween * width / 2 }
     var buttonWidth: CGFloat { width - 2 * padding }
     var buttonHeight: CGFloat { height - 2 * padding }
@@ -109,7 +113,7 @@ struct DiceKeyboardView: View {
                 }
                 ForEach(0..<FaceDigits.count) { faceDigitIndex in
                     CharacterKey(size: buttonSize, editableDiceKeyState: editableDiceKeyState, char: FaceDigits[faceDigitIndex].rawValue.first!)
-                    .offset(buttonOffset(x: faceDigitIndex + 2, y: 2))
+                    .offset(buttonOffset(x: faceDigitIndex, y: 1))
                     .hideIf(showLetterKeys)
                 }
             }.frame(width: width * CGFloat(columns), height: height * CGFloat(rows))

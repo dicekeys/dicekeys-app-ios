@@ -55,11 +55,6 @@ struct DiceKeyWithDerivedValue: View {
     }
 
     var body: some View {
-        if #available(iOS 15.0, *) {
-            Self._printChanges()
-        } else {
-            // Fallback on earlier versions
-        }
         return VStack(alignment: .center, spacing: 0) {
            if let derivationRecipeBuilder = self.derivationRecipeBuilder {
                 FormCard(title: "Recipe\( derivationRecipe == nil ? "" : " for \( derivationRecipe?.name ?? "" )")") {
