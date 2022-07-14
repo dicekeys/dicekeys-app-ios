@@ -32,6 +32,16 @@ func getRecipeJson(hosts: [String], sequenceNumber: Int = 1, lengthInChars: Int 
 """
 }
 
+func getRecipeJson(purpose: String, sequenceNumber: Int = 1, lengthInChars: Int = -1, lengthInBytes: Int = -1) -> String {
+    return """
+{"purpose":"\(purpose)"\(
+    (lengthInChars <= 0 ? "" : ",\"lengthInChars\":\(String(lengthInChars))") +
+    (lengthInBytes <= 0 ? "" : ",\"lengthInBytes\":\(String(lengthInBytes))") +
+    (sequenceNumber == 1 ? "" : ",\"#\":\(String(sequenceNumber))")
+)}
+"""
+}
+
 func getRecipeJson(_ hosts: String..., sequenceNumber: Int = 1) -> String {
     getRecipeJson(hosts: hosts, sequenceNumber: sequenceNumber)
 }

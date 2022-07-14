@@ -25,6 +25,16 @@ enum SeededCryptoRecipeType: String, Codable, CaseIterable, Identifiable {
             case .UnsealingKey : return "Unsealing Key"
         }
     }
+    
+    var descriptionForRecipeBuilder: String {
+        switch self{
+            case .Password : return "password"
+            case .Secret : return "seed or other secret"
+            case .SigningKey: return "signing/authentication key"
+            case .SymmetricKey : return "symmetric cryptographic key"
+            case .UnsealingKey : return "public/private key pair"
+        }
+    }
 }
 
 enum WordListName: String, Codable {

@@ -13,6 +13,11 @@ enum RecipeBuilderProgress {
     case ready(DerivationRecipe)
 }
 
+enum RecipeBuildType {
+    case hosts
+    case purpose
+}
+
 class RecipeBuilderState: ObservableObject {
     @Published var progress: RecipeBuilderProgress = .incomplete
 
@@ -57,7 +62,9 @@ struct DerivationRecipeBuilderForTemplate: View {
 
 private class DerivationRecipeFromUrlModel: ObservableObject {
     @ObservedObject var recipeBuilderState: RecipeBuilderState
+    @Published var buildType: RecipeBuildType = .hosts { didSet { update() } }
     @Published var urlString: String = "" { didSet { update() } }
+    @Published var purposeString: String = "" { didSet { update() } }
     @Published var sequenceNumber: Int = 1 { didSet { update() } }
     @Published var lengthInChars: Int = 0 { didSet { update() } }
     @Published var lengthInBytes: Int = 0 { didSet { update() } }
@@ -84,16 +91,22 @@ private class DerivationRecipeFromUrlModel: ObservableObject {
                 }
         }
     }
-    var name: String { hosts?.joined(separator: ", ") ?? "" }
+    var name: String { buildType == .hosts ? hosts?.joined(separator: ", ") ?? "" : purposeString }
 
     func update() {
-        guard let hosts = self.hosts else { recipeBuilderState.progress = .error("Field does not contain a valid URL or domain list"); return }
-        guard hosts.contains(where: { $0 != "example.com" }) else {
-            recipeBuilderState.progress = .incomplete ; return
+        if(buildType == .hosts){
+            guard let hosts = self.hosts else { recipeBuilderState.progress = .error("Field does not contain a valid URL or domain list"); return }
+            guard hosts.contains(where: { $0 != "example.com" }) else {
+                recipeBuilderState.progress = .incomplete ; return
+            }
+        }else{
+            guard !purposeString.isBlank else {
+                recipeBuilderState.progress = .incomplete ; return
+            }
         }
         self.recipeBuilderState.progress = .ready(DerivationRecipe(
             type: type, name: name,
-            recipe: getRecipeJson(hosts: hosts, sequenceNumber: sequenceNumber, lengthInChars: type == .Password ? lengthInChars : 0, lengthInBytes: type == .Secret ? lengthInBytes : 0)))
+            recipe: buildType == .hosts ? getRecipeJson(hosts: hosts ?? [""], sequenceNumber: sequenceNumber, lengthInChars: type == .Password ? lengthInChars : 0, lengthInBytes: type == .Secret ? lengthInBytes : 0) : getRecipeJson(purpose: purposeString.trim(), sequenceNumber: sequenceNumber, lengthInChars: type == .Password ? lengthInChars : 0, lengthInBytes: type == .Secret ? lengthInBytes : 0)))
     }
 
     init(_ type: SeededCryptoRecipeType, _ recipeBuilderState: RecipeBuilderState) {
@@ -164,8 +177,25 @@ struct DerivationRecipeForFromUrl: View {
             .autocapitalization(.none)
             .font(.body)
             .multilineTextAlignment(.center)
+            .keyboardType(.alphabet)
         #else
         return TextField("https://example.com", text: $model.urlString)
+            .disableAutocorrection(true)
+            .font(.body)
+            .multilineTextAlignment(.center)
+        #endif
+    }
+    
+    var purposeTextField: some View {
+        #if os(iOS)
+        return TextField("purpose", text: $model.purposeString)
+            .disableAutocorrection(true)
+            .autocapitalization(.none)
+            .font(.body)
+            .multilineTextAlignment(.center)
+            .keyboardType(.alphabet)
+        #else
+        return TextField("purpose", text: $model.purposeString)
             .disableAutocorrection(true)
             .font(.body)
             .multilineTextAlignment(.center)
@@ -194,13 +224,30 @@ struct DerivationRecipeForFromUrl: View {
 
     var body: some View {
         return VStack {
-            VStack(alignment: .center, spacing: 0) {
-                #if os(iOS)
-                urlTextField.keyboardType(.alphabet)
-                #else
-                urlTextField
-                #endif
-                Text("URL or comma-separated list of domains").font(.footnote).foregroundColor(.gray)
+            VStack(alignment: .leading, spacing: 0) {
+                Text("What is this recipe for?")
+                    .font(.caption)
+                Picker("", selection: $model.buildType ) {
+                    Text("Web Address").tag(RecipeBuildType.hosts)
+                    Text("Purpose").tag(RecipeBuildType.purpose)
+                }.pickerStyle(.segmented)
+                .padding(.top, 4)
+                
+                if(model.buildType == .hosts){
+                    urlTextField
+                        .padding(.top, 6)
+                }else{
+                    purposeTextField
+                        .padding(.top, 6)
+                }
+                
+                Text((model.buildType == .hosts ? "Paste or enter the address of the website that will use this " : "Enter a purpose for the ") + self.model.type.descriptionForRecipeBuilder)
+                    .font(.footnote)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .foregroundColor(.gray)
+                
+                
                 if case let RecipeBuilderProgress.error(errorString) = model.recipeBuilderState.progress {
                     Text(errorString).font(.footnote).foregroundColor(.red)
                 }
