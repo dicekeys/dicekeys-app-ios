@@ -135,6 +135,7 @@
 		93D39857287DE5E8006516DF /* Wordlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D3984B287DDE01006516DF /* Wordlist.swift */; };
 		93D39858287DE5E8006516DF /* Wordlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D3984B287DDE01006516DF /* Wordlist.swift */; };
 		93D39859287DE5E9006516DF /* Wordlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D3984B287DDE01006516DF /* Wordlist.swift */; };
+		93FE43F62880288E00EE55FC /* SecretsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B65A628759B8400295D14 /* SecretsView.swift */; };
 		C12763A084D675535C4C583C /* Pods_DiceKeys_DiceKeys__iOS__Tests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE730BB0AD520FB48D20673B /* Pods_DiceKeys_DiceKeys__iOS__Tests_iOS.framework */; };
 		C3191A6507C20AF840F4054E /* Pods_DiceKeys_DiceKeys__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 061985777EDBE015A8A6CD60 /* Pods_DiceKeys_DiceKeys__iOS_.framework */; };
 		D47C9F2B23F56353525EA408 /* Pods_DiceKeys_DiceKeys__macOS__Tests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1397E5F18A65098140DBC5BB /* Pods_DiceKeys_DiceKeys__macOS__Tests_macOS.framework */; };
@@ -1387,6 +1388,7 @@
 				17B6C61D25AD52C6007798F3 /* DerivationRecipeTemplates.swift in Sources */,
 				EC5092342594818F007D2B91 /* Properties.swift in Sources */,
 				17E385EC25CF4F8A004C2701 /* ApiRequestState.swift in Sources */,
+				93FE43F62880288E00EE55FC /* SecretsView.swift in Sources */,
 				17E3863425D0ED85004C2701 /* Data.swift in Sources */,
 				EC50921C25948124007D2B91 /* WebBasedApplicationIdentity.swift in Sources */,
 				17E3864125D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */,

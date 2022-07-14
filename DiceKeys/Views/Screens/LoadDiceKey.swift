@@ -41,6 +41,7 @@ struct LoadDiceKey: View {
                         editableDiceKeyState: editableDiceKeyState
                     )
                 Button(action: { useCamera = true }, label: { Text("Scan the DiceKey with my Camera") })
+                    .padding(.bottom, 10)
             }
         }
         }
@@ -50,7 +51,12 @@ struct LoadDiceKey: View {
 
 struct LoadDiceKey_Previews: PreviewProvider {
     static var previews: some View {
-        LoadDiceKey(onDiceKeyLoaded: { diceKey, _ in print("DiceKey loaded: \(diceKey.toHumanReadableForm())") },
-        onBack: {} )
+        Group {
+            LoadDiceKey(onDiceKeyLoaded: { diceKey, _ in print("DiceKey loaded: \(diceKey.toHumanReadableForm())") },
+                        onBack: {} )
+            
+            LoadDiceKey(useCamera: false, onDiceKeyLoaded: { diceKey, _ in print("DiceKey loaded: \(diceKey.toHumanReadableForm())") },
+                        onBack: {} )
+        }
     }
 }
