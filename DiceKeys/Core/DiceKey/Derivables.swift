@@ -21,11 +21,12 @@ func restrictionsJson(_ hosts: String...) -> String {
     return "{\"allow\":\(getHostRestrictionsArrayAsString(hosts))}"
 }
 
-func getRecipeJson(hosts: [String], sequenceNumber: Int = 1, lengthInChars: Int = -1) -> String {
+func getRecipeJson(hosts: [String], sequenceNumber: Int = 1, lengthInChars: Int = -1, lengthInBytes: Int = -1) -> String {
     let sortedHosts = hosts.sorted()
     return """
 {"allow":\(getHostRestrictionsArrayAsString(sortedHosts))\(
     (lengthInChars <= 0 ? "" : ",\"lengthInChars\":\(String(lengthInChars))") +
+    (lengthInBytes <= 0 ? "" : ",\"lengthInBytes\":\(String(lengthInBytes))") +
     (sequenceNumber == 1 ? "" : ",\"#\":\(String(sequenceNumber))")
 )}
 """

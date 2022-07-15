@@ -60,6 +60,7 @@ private class DerivationRecipeFromUrlModel: ObservableObject {
     @Published var urlString: String = "" { didSet { update() } }
     @Published var sequenceNumber: Int = 1 { didSet { update() } }
     @Published var lengthInChars: Int = 0 { didSet { update() } }
+    @Published var lengthInBytes: Int = 0 { didSet { update() } }
     let type: SeededCryptoRecipeType
 
     var hosts: [String]? {
@@ -92,7 +93,7 @@ private class DerivationRecipeFromUrlModel: ObservableObject {
         }
         self.recipeBuilderState.progress = .ready(DerivationRecipe(
             type: type, name: name,
-            recipe: getRecipeJson(hosts: hosts, sequenceNumber: sequenceNumber, lengthInChars: type == .Password ? lengthInChars : 0)))
+            recipe: getRecipeJson(hosts: hosts, sequenceNumber: sequenceNumber, lengthInChars: type == .Password ? lengthInChars : 0, lengthInBytes: type == .Secret ? lengthInBytes : 0)))
     }
 
     init(_ type: SeededCryptoRecipeType, _ recipeBuilderState: RecipeBuilderState) {
@@ -104,7 +105,7 @@ private class DerivationRecipeFromUrlModel: ObservableObject {
 
 struct DerivationRecipeForFromUrl: View {
     @ObservedObject private var model: DerivationRecipeFromUrlModel
-    var lengthInCharString: Binding<String> {
+    var lengthInCharsString: Binding<String> {
         return Binding<String>(
             get: {
                 if model.lengthInChars == 0 {
@@ -119,10 +120,34 @@ struct DerivationRecipeForFromUrl: View {
                 }
                 if let newIntValue = Int(newValue.filter { "0123456789".contains($0) }) {
                     // We don't value to be greater than 999
-                    guard newIntValue <= 999 && newIntValue >= 6 else {
+                    guard newIntValue <= 999 && newIntValue >= 8 else {
                         return
                     }
                     model.lengthInChars = newIntValue
+                }
+            }
+        )
+    }
+    
+    var lengthInBytesString: Binding<String> {
+        return Binding<String>(
+            get: {
+                if model.lengthInBytes == 0 {
+                    return ""
+                }
+                return String(model.lengthInBytes)
+                
+            },
+            set: { newValue in
+                if (newValue == "") {
+                    model.lengthInBytes = 0
+                }
+                if let newIntValue = Int(newValue.filter { "0123456789".contains($0) }) {
+                    // We don't value to be greater than 999
+                    guard newIntValue <= 999 && newIntValue >= 16 else {
+                        return
+                    }
+                    model.lengthInBytes = newIntValue
                 }
             }
         )
@@ -147,11 +172,24 @@ struct DerivationRecipeForFromUrl: View {
         #endif
     }
     
-    var lengthTextfield: some View {
-        TextField("no limit", text: lengthInCharString)
+    var lengthInCharsTextfield: some View {
+        TextField("no length limit", text: lengthInCharsString)
             .font(.body)
             .multilineTextAlignment(.center)
             .padding(.top, 10)
+#if os(iOS)
+            .keyboardType(.numberPad)
+#endif
+    }
+    
+    var lengthInBytesTextfield: some View {
+        TextField("32", text: lengthInBytesString)
+            .font(.body)
+            .multilineTextAlignment(.center)
+            .padding(.top, 10)
+#if os(iOS)
+            .keyboardType(.numberPad)
+#endif
     }
 
     var body: some View {
@@ -166,12 +204,14 @@ struct DerivationRecipeForFromUrl: View {
                 if case let RecipeBuilderProgress.error(errorString) = model.recipeBuilderState.progress {
                     Text(errorString).font(.footnote).foregroundColor(.red)
                 }
-                #if os(iOS)
-                lengthTextfield.keyboardType(.numberPad)
-                #else
-                lengthTextfield
-                #endif
-                Text("Maximum Character Length (6 - 999)").font(.footnote).foregroundColor(.gray)
+            
+                if model.type == .Password{
+                    lengthInCharsTextfield
+                    Text("Maximum length, in characters (8 - 999)").font(.footnote).foregroundColor(.gray)
+                }else if model.type == .Secret{
+                    lengthInBytesTextfield
+                    Text("Length, in bytes (16 - 999)").font(.footnote).foregroundColor(.gray)
+                }
             }
             SequenceNumberField(sequenceNumber: $model.sequenceNumber)
         }
