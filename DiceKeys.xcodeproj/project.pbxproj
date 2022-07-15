@@ -1677,7 +1677,7 @@
 				CODE_SIGN_ENTITLEMENTS = DiceKeys.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 30;
 				DEVELOPMENT_TEAM = CTDV6HX5KK;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -1686,7 +1686,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.70;
+				MARKETING_VERSION = 0.72;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
 				PRODUCT_NAME = DiceKeys;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1705,7 +1705,7 @@
 				CODE_SIGN_ENTITLEMENTS = DiceKeys.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 30;
 				DEVELOPMENT_TEAM = CTDV6HX5KK;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -1714,7 +1714,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.70;
+				MARKETING_VERSION = 0.72;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
 				PRODUCT_NAME = DiceKeys;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1735,7 +1735,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_TEAM = CTDV6HX5KK;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
@@ -1745,7 +1745,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.70;
+				MARKETING_VERSION = 0.71;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
 				PRODUCT_NAME = DiceKeys;
 				SDKROOT = macosx;
@@ -1763,7 +1763,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_TEAM = CTDV6HX5KK;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
@@ -1773,7 +1773,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.70;
+				MARKETING_VERSION = 0.71;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dicekeys;
 				PRODUCT_NAME = DiceKeys;
 				SDKROOT = macosx;
