@@ -111,7 +111,7 @@ struct DiceKeyWithDerivedValue: View {
                                 .padding(3)
                                 .font(.body)
                                 .multilineTextAlignment(.center)
-                                .lineLimit(5)
+                                .lineLimit(8)
                                 .minimumScaleFactor(0.4)
                                 .fixedSize(horizontal: false, vertical: true)
 //                                .padding(.horizontal, 5)

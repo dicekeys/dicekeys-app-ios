@@ -253,6 +253,7 @@ struct TestDiceKeyPresent: View {
             diceKeyState: diceKeyUnlocked,
             onComplete: {}
         )
+        .environmentObject(DerivationRecipeStore())
     }
 }
 

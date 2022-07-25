@@ -7,10 +7,24 @@
 
 import SwiftUI
 
-enum RecipeBuilderProgress {
+enum RecipeBuilderProgress: Equatable {
     case incomplete
     case error(String)
     case ready(DerivationRecipe)
+    
+    var isReady: Bool {
+        switch self {
+            case .ready: return true
+            default: return false
+        }
+    }
+    
+    var recipe: DerivationRecipe?{
+        switch self {
+        case .ready(let derivationRecipe): return derivationRecipe
+            default: return nil
+        }
+    }
 }
 
 enum RecipeBuildType {
@@ -18,10 +32,8 @@ enum RecipeBuildType {
     case purpose
 }
 
-class RecipeBuilderState: ObservableObject {
+class RecipeBuilderState: ObservableObject, Identifiable {
     @Published var progress: RecipeBuilderProgress = .incomplete
-
-    init() {}
 }
 
 private class DerivationRecipeBuilderForTemplateModel: ObservableObject {
@@ -60,7 +72,7 @@ struct DerivationRecipeBuilderForTemplate: View {
     }
 }
 
-private class DerivationRecipeFromUrlModel: ObservableObject {
+class DerivationRecipeFromUrlModel: ObservableObject, Identifiable {
     @ObservedObject var recipeBuilderState: RecipeBuilderState
     @Published var buildType: RecipeBuildType = .hosts { didSet { update() } }
     @Published var urlString: String = "" { didSet { update() } }
@@ -118,6 +130,7 @@ private class DerivationRecipeFromUrlModel: ObservableObject {
 
 struct DerivationRecipeForFromUrl: View {
     @ObservedObject private var model: DerivationRecipeFromUrlModel
+    
     var lengthInCharsString: Binding<String> {
         return Binding<String>(
             get: {
@@ -168,6 +181,10 @@ struct DerivationRecipeForFromUrl: View {
 
     init(type: SeededCryptoRecipeType, recipeBuilderState: RecipeBuilderState) {
         self.model = DerivationRecipeFromUrlModel(type, recipeBuilderState)
+    }
+    
+    init(model: DerivationRecipeFromUrlModel) {
+        self.model = model
     }
     
     var urlTextField: some View {
@@ -223,45 +240,50 @@ struct DerivationRecipeForFromUrl: View {
     }
 
     var body: some View {
-        return VStack {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("What is this recipe for?")
-                    .font(.caption)
-                Picker("", selection: $model.buildType ) {
-                    Text("Web Address").tag(RecipeBuildType.hosts)
-                    Text("Purpose").tag(RecipeBuildType.purpose)
-                }.pickerStyle(.segmented)
-                .padding(.top, 4)
+        
+        HStack(alignment: .top, spacing: 0){
+            VStack {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("What is this recipe for?")
+                        .font(.caption)
+                    Picker("", selection: $model.buildType ) {
+                        Text("Web Address").tag(RecipeBuildType.hosts)
+                        Text("Purpose").tag(RecipeBuildType.purpose)
+                    }.pickerStyle(.segmented)
+                    .padding(.top, 4)
+                    
+                    if(model.buildType == .hosts){
+                        urlTextField
+                            .padding(.top, 10)
+                    }else{
+                        purposeTextField
+                            .padding(.top, 10)
+                    }
+                    
+                    Text((model.buildType == .hosts ? "Paste or enter the address of the website that will use this " : "Enter a purpose for the ") + self.model.type.descriptionForRecipeBuilder)
+                        .font(.footnote)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .foregroundColor(.gray)
+                    
+                    
+                    if case let RecipeBuilderProgress.error(errorString) = model.recipeBuilderState.progress {
+                        Text(errorString).font(.footnote).foregroundColor(.red)
+                    }
                 
-                if(model.buildType == .hosts){
-                    urlTextField
-                        .padding(.top, 6)
-                }else{
-                    purposeTextField
-                        .padding(.top, 6)
+                    if model.type == .Password{
+                        lengthInCharsTextfield
+                        Text("Maximum length, in characters (8 - 999)").font(.footnote).foregroundColor(.gray)
+                    }else if model.type == .Secret{
+                        lengthInBytesTextfield
+                        Text("Length, in bytes (16 - 999)").font(.footnote).foregroundColor(.gray)
+                    }
                 }
-                
-                Text((model.buildType == .hosts ? "Paste or enter the address of the website that will use this " : "Enter a purpose for the ") + self.model.type.descriptionForRecipeBuilder)
-                    .font(.footnote)
-                    .lineLimit(2)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .foregroundColor(.gray)
-                
-                
-                if case let RecipeBuilderProgress.error(errorString) = model.recipeBuilderState.progress {
-                    Text(errorString).font(.footnote).foregroundColor(.red)
-                }
-            
-                if model.type == .Password{
-                    lengthInCharsTextfield
-                    Text("Maximum length, in characters (8 - 999)").font(.footnote).foregroundColor(.gray)
-                }else if model.type == .Secret{
-                    lengthInBytesTextfield
-                    Text("Length, in bytes (16 - 999)").font(.footnote).foregroundColor(.gray)
-                }
+                SequenceNumberField(sequenceNumber: $model.sequenceNumber)
+                    .padding(.top, 10)
             }
-            SequenceNumberField(sequenceNumber: $model.sequenceNumber)
         }
+        .padding()
     }
 }
 
@@ -350,6 +372,10 @@ struct DerivationRecipeView: View {
 struct DerivationRecipeBuilders_Previews: PreviewProvider {
     static var previews: some View {
         #if os(iOS)
+        DerivationRecipeForFromUrl(type: .Password, recipeBuilderState: RecipeBuilderState())
+        .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+        .environmentObject(DerivationRecipeStore())
+        
         DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(), derivationRecipeBuilder: .customFromUrl(.Password))
         .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
         .environmentObject(DerivationRecipeStore())

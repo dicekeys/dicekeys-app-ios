@@ -7,14 +7,21 @@
 
 import SwiftUI
 
+class SecretsViewModel: ObservableObject, Identifiable {
+    @Published var recipeBuilderState: RecipeBuilderState? = nil
+    @Published var derivationRecipeModel: DerivationRecipeFromUrlModel? = nil
+}
+
 struct SecretsView: View {
     @EnvironmentObject var derivationRecipeStore: DerivationRecipeStore
     
     let navigateTo: (DiceKeyPresentPageContent) -> Void
     
+    @StateObject var model = SecretsViewModel()
+
     var body: some View {
         
-        List{
+        return List{
             if(derivationRecipeStore.savedDerivationRecipes.count > 0){
                 Section(header: Text("Saved Recipes")) {
                     ForEach(derivationRecipeStore.savedDerivationRecipes) { recipe in
@@ -51,9 +58,46 @@ struct SecretsView: View {
                     }
                     .contentShape(Rectangle())
                     .onTapGesture(perform: {
-                        navigateTo(.Derive(DerivationRecipeBuilderType.customFromUrl(type)))
+                        model.recipeBuilderState = RecipeBuilderState()
+                        
+                        if let recipeBuilderState = model.recipeBuilderState{
+                            model.derivationRecipeModel = DerivationRecipeFromUrlModel(type, recipeBuilderState)
+                        }
                     })
                 }
+            }
+            .sheet(item: $model.derivationRecipeModel ) { item in
+                VStack(alignment: .leading, spacing: 0) {
+
+                    HStack{
+                        Button("Cancel"){
+                             model.derivationRecipeModel = nil
+                        }
+                        
+                        Spacer()
+                        Text(item.type.descriptionForRecipeBuilder.capitalized)
+                            .bold()
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
+                            
+                        Spacer()
+                        Button("Done"){
+                            
+                            if let recipe = model.recipeBuilderState?.progress.recipe {
+                                navigateTo(.Derive(DerivationRecipeBuilderType.recipe(recipe)))
+                            }
+                            model.derivationRecipeModel = nil
+                        }
+                        
+                    }.padding()
+                    
+                    if let derivationRecipeModel = model.derivationRecipeModel {
+                        DerivationRecipeForFromUrl(model: derivationRecipeModel)
+                    }
+                    
+                    Spacer()
+                }
+                
             }
         }
     }
@@ -62,9 +106,11 @@ struct SecretsView: View {
 struct SecretsView_Previews: PreviewProvider {
     
     static var previews: some View {
-        SecretsView(navigateTo: { _ in
-            
-        })
-        .environmentObject(DerivationRecipeStore())
+        Group {
+            SecretsView(navigateTo: { _ in
+                
+            })
+            .environmentObject(DerivationRecipeStore())
+        }
     }
 }
