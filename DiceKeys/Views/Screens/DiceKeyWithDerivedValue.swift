@@ -73,7 +73,7 @@ struct DiceKeyWithDerivedValue: View {
                             self.derivationRecipeBuilder.isRecipe ?
                                 .ready(self.derivationRecipe!) :
                                 self.recipeBuilderState.progress
-                        ).padding(.top, 3)
+                        ).padding(.top, 1)
                         Divider()
                         HStack {
                             Spacer()
@@ -109,6 +109,7 @@ struct DiceKeyWithDerivedValue: View {
                     DerivedFromDiceKey(diceKey: diceKeyState.diceKey, content: {
                         Text(derivedValue?.valueForView(view: view) ?? "")
                                 .padding(3)
+                                .foregroundColor(.white)
                                 .font(.body)
                                 .multilineTextAlignment(.center)
                                 .lineLimit(8)
@@ -126,6 +127,7 @@ struct DiceKeyWithDerivedValue: View {
                             pasteboard.setString(value, forType: .string)
                             #endif
                         }
+                        .padding(.bottom, 4)
                     }
                 }.hideIf(derivationRecipe == nil)
             }

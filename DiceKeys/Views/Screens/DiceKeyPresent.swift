@@ -211,7 +211,6 @@ struct DiceKeyPresent: View {
                     case .Derive(let derivationRecipeBuilder):
                             Spacer()
                             DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)//.layoutPriority(-1)
-                            Spacer()
                 case .Backup:
                         Spacer()
                         BackupDiceKey(

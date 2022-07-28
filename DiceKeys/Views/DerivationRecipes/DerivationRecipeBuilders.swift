@@ -231,13 +231,12 @@ struct DerivationRecipeForFromUrl: View {
             .disableAutocorrection(true)
             .autocapitalization(.none)
             .font(.body)
-            .multilineTextAlignment(.center)
+            .textFieldStyle(.roundedBorder)
             .keyboardType(.alphabet)
         #else
         return TextField("https://example.com", text: $model.urlString)
             .disableAutocorrection(true)
             .font(.body)
-            .multilineTextAlignment(.center)
         #endif
     }
     
@@ -247,13 +246,12 @@ struct DerivationRecipeForFromUrl: View {
             .disableAutocorrection(true)
             .autocapitalization(.none)
             .font(.body)
-            .multilineTextAlignment(.center)
+            .textFieldStyle(.roundedBorder)
             .keyboardType(.alphabet)
         #else
         return TextField("purpose", text: $model.purposeString)
             .disableAutocorrection(true)
             .font(.body)
-            .multilineTextAlignment(.center)
         #endif
     }
     
@@ -264,14 +262,11 @@ struct DerivationRecipeForFromUrl: View {
             .autocapitalization(.none)
             .font(.body)
             .textFieldStyle(.roundedBorder)
-            .multilineTextAlignment(.center)
             .keyboardType(.alphabet)
         #else
         return TextField("Recipe name", text: $model.nameString)
             .disableAutocorrection(true)
             .font(.body)
-            .multilineTextAlignment(.center)
-            .textFieldStyle(.roundedBorder)
         #endif
     }
     
@@ -283,21 +278,18 @@ struct DerivationRecipeForFromUrl: View {
             .font(.body)
             .lineLimit(4)
             .textFieldStyle(.roundedBorder)
-            .multilineTextAlignment(.center)
             .keyboardType(.alphabet)
         #else
         return TextField("Raw JSON", text: $model.rawJsonString)
             .disableAutocorrection(true)
             .font(.body)
-            .multilineTextAlignment(.center)
-            .textFieldStyle(.roundedBorder)
         #endif
     }
     
     var lengthInCharsTextfield: some View {
         TextField("no length limit", text: lengthInCharsString)
             .font(.body)
-            .multilineTextAlignment(.center)
+            .textFieldStyle(.roundedBorder)
             .padding(.top, 10)
 #if os(iOS)
             .keyboardType(.numberPad)
@@ -307,7 +299,7 @@ struct DerivationRecipeForFromUrl: View {
     var lengthInBytesTextfield: some View {
         TextField("32", text: lengthInBytesString)
             .font(.body)
-            .multilineTextAlignment(.center)
+            .textFieldStyle(.roundedBorder)
             .padding(.top, 10)
 #if os(iOS)
             .keyboardType(.numberPad)
@@ -365,6 +357,7 @@ struct DerivationRecipeForFromUrl: View {
                     Text((model.buildType == .rawJson ? "Even the smallest change to any field changes the entire " : model.buildType == .hosts ? "Paste or enter the address of the website that will use this " : "Enter a purpose for the ") + self.model.type.descriptionForRecipeBuilder)
                         .font(.footnote)
                         .lineLimit(2)
+                        .padding(.top, 2)
                         .fixedSize(horizontal: false, vertical: true)
                         .foregroundColor(.gray)
                     
@@ -376,10 +369,16 @@ struct DerivationRecipeForFromUrl: View {
                     if(model.buildType != .rawJson){
                         if model.type == .Password{
                             lengthInCharsTextfield
-                            Text("Maximum length, in characters (8 - 999)").font(.footnote).foregroundColor(.gray)
+                            Text("Maximum length, in characters (8 - 999)")
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                                .padding(.top, 2)
                         }else if model.type == .Secret{
                             lengthInBytesTextfield
-                            Text("Length, in bytes (16 - 999)").font(.footnote).foregroundColor(.gray)
+                            Text("Length, in bytes (16 - 999)")
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                                .padding(.top, 2)
                         }
                     }
                 }
