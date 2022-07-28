@@ -30,6 +30,7 @@ enum RecipeBuilderProgress: Equatable {
 enum RecipeBuildType {
     case hosts
     case purpose
+    case rawJson
 }
 
 class RecipeBuilderState: ObservableObject, Identifiable {
@@ -74,12 +75,24 @@ struct DerivationRecipeBuilderForTemplate: View {
 
 class DerivationRecipeFromUrlModel: ObservableObject, Identifiable {
     @ObservedObject var recipeBuilderState: RecipeBuilderState
-    @Published var buildType: RecipeBuildType = .hosts { didSet { update() } }
+    @Published var buildType: RecipeBuildType = .hosts {
+        didSet {
+            update()
+            if(buildType == .rawJson){
+                showRawJsonAlert = true
+            }
+        }
+    }
     @Published var urlString: String = "" { didSet { update() } }
     @Published var purposeString: String = "" { didSet { update() } }
+    @Published var rawJsonString: String = "{}" { didSet { update() } }
+    @Published var nameString: String = "" { didSet { update() } }
     @Published var sequenceNumber: Int = 1 { didSet { update() } }
     @Published var lengthInChars: Int = 0 { didSet { update() } }
     @Published var lengthInBytes: Int = 0 { didSet { update() } }
+    
+    @Published var showRawJsonAlert: Bool = false { didSet { update() } }
+    
     let type: SeededCryptoRecipeType
 
     var hosts: [String]? {
@@ -103,7 +116,15 @@ class DerivationRecipeFromUrlModel: ObservableObject, Identifiable {
                 }
         }
     }
-    var name: String { buildType == .hosts ? hosts?.joined(separator: ", ") ?? "" : purposeString }
+    var name: String {
+        if (buildType == .hosts) {
+            return hosts?.joined(separator: ", ") ?? ""
+        } else if (buildType == .purpose) {
+            return purposeString
+        }else{
+            return nameString
+        }
+    }
 
     func update() {
         if(buildType == .hosts){
@@ -111,14 +132,31 @@ class DerivationRecipeFromUrlModel: ObservableObject, Identifiable {
             guard hosts.contains(where: { $0 != "example.com" }) else {
                 recipeBuilderState.progress = .incomplete ; return
             }
-        }else{
+        } else if(buildType == .purpose) {
             guard !purposeString.isBlank else {
                 recipeBuilderState.progress = .incomplete ; return
             }
+        }else{
+            guard !rawJsonString.isBlank else {
+                recipeBuilderState.progress = .incomplete ; return
+            }
         }
+        
+        let recipe : String
+        let lengthInChars = type == .Password ? lengthInChars : 0
+        let lengthInBytes = type == .Secret ? lengthInBytes : 0
+        
+        if(buildType == .hosts){
+            recipe = getRecipeJson(hosts: hosts ?? [""], sequenceNumber: sequenceNumber, lengthInChars: lengthInChars, lengthInBytes: lengthInBytes)
+        } else if(buildType == .purpose){
+            recipe = getRecipeJson(purpose: purposeString.trim(), sequenceNumber: sequenceNumber, lengthInChars: lengthInChars, lengthInBytes: lengthInBytes)
+        } else {
+            recipe = rawJsonString.trim()
+        }
+        
         self.recipeBuilderState.progress = .ready(DerivationRecipe(
             type: type, name: name,
-            recipe: buildType == .hosts ? getRecipeJson(hosts: hosts ?? [""], sequenceNumber: sequenceNumber, lengthInChars: type == .Password ? lengthInChars : 0, lengthInBytes: type == .Secret ? lengthInBytes : 0) : getRecipeJson(purpose: purposeString.trim(), sequenceNumber: sequenceNumber, lengthInChars: type == .Password ? lengthInChars : 0, lengthInBytes: type == .Secret ? lengthInBytes : 0)))
+            recipe: recipe))
     }
 
     init(_ type: SeededCryptoRecipeType, _ recipeBuilderState: RecipeBuilderState) {
@@ -219,6 +257,43 @@ struct DerivationRecipeForFromUrl: View {
         #endif
     }
     
+    var nameTextField: some View {
+        #if os(iOS)
+        return TextField("Recipe name", text: $model.nameString)
+            .disableAutocorrection(true)
+            .autocapitalization(.none)
+            .font(.body)
+            .textFieldStyle(.roundedBorder)
+            .multilineTextAlignment(.center)
+            .keyboardType(.alphabet)
+        #else
+        return TextField("Recipe name", text: $model.nameString)
+            .disableAutocorrection(true)
+            .font(.body)
+            .multilineTextAlignment(.center)
+            .textFieldStyle(.roundedBorder)
+        #endif
+    }
+    
+    var rawJsonTextField: some View {
+        #if os(iOS)
+        return TextField("Raw JSON", text: $model.rawJsonString)
+            .disableAutocorrection(true)
+            .autocapitalization(.none)
+            .font(.body)
+            .lineLimit(4)
+            .textFieldStyle(.roundedBorder)
+            .multilineTextAlignment(.center)
+            .keyboardType(.alphabet)
+        #else
+        return TextField("Raw JSON", text: $model.rawJsonString)
+            .disableAutocorrection(true)
+            .font(.body)
+            .multilineTextAlignment(.center)
+            .textFieldStyle(.roundedBorder)
+        #endif
+    }
+    
     var lengthInCharsTextfield: some View {
         TextField("no length limit", text: lengthInCharsString)
             .font(.body)
@@ -249,18 +324,45 @@ struct DerivationRecipeForFromUrl: View {
                     Picker("", selection: $model.buildType ) {
                         Text("Web Address").tag(RecipeBuildType.hosts)
                         Text("Purpose").tag(RecipeBuildType.purpose)
+                        Text("Raw JSON").tag(RecipeBuildType.rawJson)
                     }.pickerStyle(.segmented)
                     .padding(.top, 4)
+                    .alert(isPresented:  $model.showRawJsonAlert) {
+        
+                        Alert(
+                            title: Text("Edit Raw JSON"),
+                            message: Text("Entering a recipe in raw JSON format can be dangerous.\n\nIf you enter a recipe provided by someone else, it could be a trick to get you to re-create a secret you use for another application or purpose.\n\nIf you generate the recipe yourself and forget even a single character, you will be unable to re-generate the same secret again. (Saving the recipe won't help you if you lose the device(s) it's saved on.)"),
+                            primaryButton: .default(
+                                Text("I accept the risk"),
+                                action: {
+                                    model.showRawJsonAlert = false
+                                }
+                            ),
+                            secondaryButton: .destructive(
+                                Text("Cancel"),
+                                action: {
+                                    model.showRawJsonAlert = false
+                                    model.buildType = .hosts
+                                }
+                            )
+                            
+                        )
+                    }
                     
                     if(model.buildType == .hosts){
                         urlTextField
                             .padding(.top, 10)
-                    }else{
+                    }else if(model.buildType == .purpose){
                         purposeTextField
+                            .padding(.top, 10)
+                    }else{
+                        nameTextField
+                            .padding(.top, 10)
+                        rawJsonTextField
                             .padding(.top, 10)
                     }
                     
-                    Text((model.buildType == .hosts ? "Paste or enter the address of the website that will use this " : "Enter a purpose for the ") + self.model.type.descriptionForRecipeBuilder)
+                    Text((model.buildType == .rawJson ? "Even the smallest change to any field changes the entire " : model.buildType == .hosts ? "Paste or enter the address of the website that will use this " : "Enter a purpose for the ") + self.model.type.descriptionForRecipeBuilder)
                         .font(.footnote)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
@@ -270,17 +372,21 @@ struct DerivationRecipeForFromUrl: View {
                     if case let RecipeBuilderProgress.error(errorString) = model.recipeBuilderState.progress {
                         Text(errorString).font(.footnote).foregroundColor(.red)
                     }
-                
-                    if model.type == .Password{
-                        lengthInCharsTextfield
-                        Text("Maximum length, in characters (8 - 999)").font(.footnote).foregroundColor(.gray)
-                    }else if model.type == .Secret{
-                        lengthInBytesTextfield
-                        Text("Length, in bytes (16 - 999)").font(.footnote).foregroundColor(.gray)
+                    
+                    if(model.buildType != .rawJson){
+                        if model.type == .Password{
+                            lengthInCharsTextfield
+                            Text("Maximum length, in characters (8 - 999)").font(.footnote).foregroundColor(.gray)
+                        }else if model.type == .Secret{
+                            lengthInBytesTextfield
+                            Text("Length, in bytes (16 - 999)").font(.footnote).foregroundColor(.gray)
+                        }
                     }
                 }
-                SequenceNumberField(sequenceNumber: $model.sequenceNumber)
-                    .padding(.top, 10)
+                if(model.buildType != .rawJson){
+                    SequenceNumberField(sequenceNumber: $model.sequenceNumber)
+                        .padding(.top, 10)
+                }
             }
         }
         .padding()
