@@ -176,7 +176,7 @@ class ApiRequestGetPassword: ApiRequestWithExplicitRecipe, ApiRequestCommand {
 
     override func execute(seedString: String, sequence: Int?) throws -> SuccessResponse {
         return SuccessResponse.getPassword(passwordJson:
-            try Password.deriveFromSeed(withSeedString: seedString, recipe: addSequenceNumberIfNotExistsToRecipeJson(self.recipeJson!, sequenceNumber: sequence ?? 1))
+                                            try Password.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!.recipeWith(sequence: sequence))
             .toJson()
         )
     }
@@ -188,7 +188,7 @@ class ApiRequestGetSecret: ApiRequestWithExplicitRecipe, ApiRequestCommand {
 
     override func execute(seedString: String, sequence: Int?) throws -> SuccessResponse {
         SuccessResponse.getSecret(secretJson:
-            try Secret.deriveFromSeed(withSeedString: seedString, recipe: addSequenceNumberIfNotExistsToRecipeJson(self.recipeJson!, sequenceNumber: sequence ?? 1))
+                                    try Secret.deriveFromSeed(withSeedString: seedString, recipe: self.recipeJson!.recipeWith(sequence: sequence))
             .toJson()
         )
     }

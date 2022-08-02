@@ -151,7 +151,7 @@ class DerivationRecipeFromUrlModel: ObservableObject, Identifiable {
         } else if(buildType == .purpose){
             recipe = getRecipeJson(purpose: purposeString.trim(), sequenceNumber: sequenceNumber, lengthInChars: lengthInChars, lengthInBytes: lengthInBytes)
         } else {
-            recipe = rawJsonString.trim()
+            recipe = rawJsonString.canonicalizeRecipeJson()
         }
         
         self.recipeBuilderState.progress = .ready(DerivationRecipe(

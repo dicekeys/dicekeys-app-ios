@@ -119,6 +119,11 @@
 		268E3DDD25BFF81D008B6DE6 /* CameraFrameCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268E3DDC25BFF81D008B6DE6 /* CameraFrameCountView.swift */; };
 		268E3DDE25BFF81D008B6DE6 /* CameraFrameCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268E3DDC25BFF81D008B6DE6 /* CameraFrameCountView.swift */; };
 		5AA7518A0EB3CE7BA918EA37 /* Pods_DiceKeys_seed_security_key.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11B47B56FAA800AB6DE64728 /* Pods_DiceKeys_seed_security_key.framework */; };
+		93281B6228944B9F00782063 /* CanonicalizeJsonRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93281B6128944B9F00782063 /* CanonicalizeJsonRecipe.swift */; };
+		93281B6328944B9F00782063 /* CanonicalizeJsonRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93281B6128944B9F00782063 /* CanonicalizeJsonRecipe.swift */; };
+		93281B6428944B9F00782063 /* CanonicalizeJsonRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93281B6128944B9F00782063 /* CanonicalizeJsonRecipe.swift */; };
+		93281B6528944B9F00782063 /* CanonicalizeJsonRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93281B6128944B9F00782063 /* CanonicalizeJsonRecipe.swift */; };
+		93281B672895282F00782063 /* DerivablesUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93281B662895282F00782063 /* DerivablesUnitTest.swift */; };
 		934A761628882A2C00B478B1 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934A761528882A2C00B478B1 /* String.swift */; };
 		934A761728882B1200B478B1 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934A761528882A2C00B478B1 /* String.swift */; };
 		934A761828882B1500B478B1 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934A761528882A2C00B478B1 /* String.swift */; };
@@ -338,6 +343,8 @@
 		2DAA8D1E1D57C9C5AD89A4B9 /* Pods-DiceKeys-seed-security-key.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-seed-security-key.debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys-seed-security-key/Pods-DiceKeys-seed-security-key.debug.xcconfig"; sourceTree = "<group>"; };
 		349BE82A357ED684A2430E54 /* Pods-DiceKeys-DiceKeys (iOS)-Tests iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiceKeys-DiceKeys (iOS)-Tests iOS.debug.xcconfig"; path = "Target Support Files/Pods-DiceKeys-DiceKeys (iOS)-Tests iOS/Pods-DiceKeys-DiceKeys (iOS)-Tests iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		81E686DCFFCE5769AB6D0DF8 /* Pods_DiceKeys_DiceKeys__macOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiceKeys_DiceKeys__macOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		93281B6128944B9F00782063 /* CanonicalizeJsonRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanonicalizeJsonRecipe.swift; sourceTree = "<group>"; };
+		93281B662895282F00782063 /* DerivablesUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivablesUnitTest.swift; sourceTree = "<group>"; };
 		934A761528882A2C00B478B1 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		93813D80261B67FF003E3211 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		939B65A628759B8400295D14 /* SecretsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsView.swift; sourceTree = "<group>"; };
@@ -617,6 +624,7 @@
 				EC5091FF25948124007D2B91 /* Derivables.swift */,
 				17B6C61B25AD52C6007798F3 /* DerivationRecipeTemplates.swift */,
 				939B65A92875DE8D00295D14 /* DerivedValueView.swift */,
+				93281B6128944B9F00782063 /* CanonicalizeJsonRecipe.swift */,
 			);
 			path = DiceKey;
 			sourceTree = "<group>";
@@ -864,6 +872,7 @@
 				EC561298258B827300A056B8 /* Tests_iOS.swift */,
 				EC56129A258B827300A056B8 /* Info.plist */,
 				93D3984F287DE396006516DF /* MnemonicsUnitTests.swift */,
+				93281B662895282F00782063 /* DerivablesUnitTest.swift */,
 			);
 			path = "Tests iOS";
 			sourceTree = "<group>";
@@ -1349,6 +1358,7 @@
 				EC5092C3259482F5007D2B91 /* StickerTargetSheet.swift in Sources */,
 				EC509293259482F4007D2B91 /* DiceKeyView.swift in Sources */,
 				17E385E525CE5DED004C2701 /* ApiRequestView.swift in Sources */,
+				93281B6228944B9F00782063 /* CanonicalizeJsonRecipe.swift in Sources */,
 				EC5092A3259482F4007D2B91 /* AppMainView.swift in Sources */,
 				EC5092CD259482F5007D2B91 /* TransferDie.swift in Sources */,
 				EC5092AF259482F5007D2B91 /* NavigationBar.swift in Sources */,
@@ -1398,6 +1408,7 @@
 				93FE43F62880288E00EE55FC /* SecretsView.swift in Sources */,
 				17E3863425D0ED85004C2701 /* Data.swift in Sources */,
 				EC50921C25948124007D2B91 /* WebBasedApplicationIdentity.swift in Sources */,
+				93281B6328944B9F00782063 /* CanonicalizeJsonRecipe.swift in Sources */,
 				17E3864125D15EE0004C2701 /* BackgroundCalculationOfApiRequestResult.swift in Sources */,
 				EC5092CC259482F5007D2B91 /* BackupToDiceKeysKitIntroduction.swift in Sources */,
 				17B6C68225B9883F007798F3 /* PartialFace.swift in Sources */,
@@ -1468,6 +1479,7 @@
 				17BB399F25CCC6690023E430 /* EncryptedDiceKeyStore.swift in Sources */,
 				17BB399D25CCC6690023E430 /* FaceSpecification.swift in Sources */,
 				17BB394B25CBB63D0023E430 /* Unmarshalling.swift in Sources */,
+				93281B6428944B9F00782063 /* CanonicalizeJsonRecipe.swift in Sources */,
 				1720581725C50CBE00282E21 /* WebBasedApplicationIdentity.swift in Sources */,
 				17BB39A125CCC6690023E430 /* DerivationRecipeTemplates.swift in Sources */,
 				17BB397125CCC61D0023E430 /* ApiInterfaces.swift in Sources */,
@@ -1482,6 +1494,7 @@
 				17BB395425CBB6C20023E430 /* AuthenticationTokens.swift in Sources */,
 				93D39855287DE5E5006516DF /* Mnemonic.swift in Sources */,
 				17BB399E25CCC6690023E430 /* DiceKey.swift in Sources */,
+				93281B672895282F00782063 /* DerivablesUnitTest.swift in Sources */,
 				17BB39A025CCC6690023E430 /* DiceKeyMedium.swift in Sources */,
 				EC561299258B827300A056B8 /* Tests_iOS.swift in Sources */,
 				17BB396725CCC6130023E430 /* ApiRequest.swift in Sources */,
@@ -1501,6 +1514,7 @@
 				17BB39A725CCC66A0023E430 /* Derivables.swift in Sources */,
 				17BB39AB25CCC66A0023E430 /* EncryptedDiceKeyStore.swift in Sources */,
 				17BB39A925CCC66A0023E430 /* FaceSpecification.swift in Sources */,
+				93281B6528944B9F00782063 /* CanonicalizeJsonRecipe.swift in Sources */,
 				17BB394C25CBB63D0023E430 /* Unmarshalling.swift in Sources */,
 				1720581C25C50CBE00282E21 /* WebBasedApplicationIdentity.swift in Sources */,
 				17BB39AD25CCC66A0023E430 /* DerivationRecipeTemplates.swift in Sources */,
