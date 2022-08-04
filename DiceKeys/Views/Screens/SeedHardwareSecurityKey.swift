@@ -141,7 +141,7 @@ struct SeedHardwareSecurityKey: View {
     @State var sequenceNumber: Int = 1
     
     var recipe: String {
-        addSequenceNumberToRecipeJson(seedSecurityKeyRecipeTemplate, sequenceNumber: sequenceNumber)
+        seedSecurityKeyRecipeTemplate.recipeWith(sequence: sequenceNumber)
     }
     
     var extState: Data {
