@@ -16,6 +16,7 @@ struct DiceKeyWithDerivedValue: View {
     @EnvironmentObject private var recipeStore: DerivationRecipeStore
     @State var view : DerivedValueView = .JSON
     @StateObject var recipeBuilderState = RecipeBuilderState()
+    @State var presentQrCode = false
 
     var diceKeyState: UnlockedDiceKeyState {
         UnlockedDiceKeyState.forDiceKey(diceKey)
@@ -100,6 +101,42 @@ struct DiceKeyWithDerivedValue: View {
                            }
                        }.pickerStyle(.menu)
                        Spacer()
+                       Button(action: {
+                           presentQrCode = true
+                       }, label: {
+                           Image("QR Code")
+                               .resizable()
+                                .scaledToFit()
+                                .frame(width: 30, height: 30)
+                       })
+                       .padding(.trailing, 10)
+                       .sheet(isPresented: self.$presentQrCode) {
+                            GeometryReader { geometry in
+                                VStack{
+                                    HStack{
+                                        Spacer()
+                                        Text(view.description)
+                                            .bold()
+                                        Spacer()
+                                        Button {
+                                            presentQrCode = false
+                                        } label: {
+                                            Text("OK")
+                                        }
+                                    }
+
+                                    HStack{
+                                        Spacer()
+                                        Image(uiImage: derivedValue.valueForView(view: view).toQRCode())
+                                        .resizable()
+                                        .interpolation(.none)
+                                        .scaledToFit()
+                                        .frame(width: geometry.size.width / 2, height: geometry.size.width / 2, alignment: .center)
+                                        Spacer()
+                                    }
+                                }.padding()
+                            }
+                        }
                    }
                    .padding(.leading, 10)
                    .padding(.trailing, 10)
@@ -198,6 +235,11 @@ struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
         Group {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(),
                                         derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
+            .environmentObject(derivationRecipeStore)
+            .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+            
+            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(),
+                                    derivationRecipeBuilder: .template(derivationRecipeTemplates[0]), presentQrCode: true)
             .environmentObject(derivationRecipeStore)
             .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
             
