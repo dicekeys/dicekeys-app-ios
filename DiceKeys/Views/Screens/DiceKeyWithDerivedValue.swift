@@ -56,118 +56,131 @@ struct DiceKeyWithDerivedValue: View {
     }
 
     var body: some View {
-        return VStack(alignment: .center, spacing: 0) {
-           if let derivationRecipeBuilder = self.derivationRecipeBuilder {
-                FormCard(title: "Recipe\( derivationRecipe == nil ? "" : " for \( derivationRecipe?.name ?? "" )")") {
-                    VStack(alignment: .leading) {
-                        if derivationRecipeBuilder.isBuilder {
-                            DerivationRecipeBuilder(derivableMenuChoice: derivationRecipeBuilder, recipeBuilderState: recipeBuilderState)
-                        }
-                        Divider().hideIf(derivationRecipe == nil)
-                        Text("Internal representation of your recipe").hideIf(derivationRecipe == nil)
-                            //.font(.title2)
-                            .scaledToFit()
-                            .minimumScaleFactor(0.01)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .lineLimit(1)
-                        DerivationRecipeView(recipeBuilderProgress:
-                            self.derivationRecipeBuilder.isRecipe ?
-                                .ready(self.derivationRecipe!) :
-                                self.recipeBuilderState.progress
-                        ).padding(.top, 1)
-                        Divider()
-                        HStack {
-                            Spacer()
-                            Button(action: {
-                                if recipeCanBeDeleted {
-                                    recipeStore.removeRecipe(derivationRecipe)
-                                } else if recipeCanBeSaved {
-                                    recipeStore.saveRecipe(derivationRecipe)
-                                }
-                            }, label: { Text(recipeCanBeDeleted ? "Remove recipe from menu" : "Save recipe in the menu")
-                            }).showIf(recipeCanBeSaved || recipeCanBeDeleted)
-                            Spacer()
-                        }
-                    }
-                }.padding(.horizontal, 10)
-                .layoutPriority(1)
-                Spacer()
-               if let derivedValue = derivedValue {
-                   HStack{
-                       Text("Output Format:")
-                       Picker("", selection: $view) {
-                           ForEach(derivedValue.views) { view in
-                               Text(view.description).tag(view)
-                           }
-                       }.pickerStyle(.menu)
-                       Spacer()
-                       Button(action: {
-                           presentQrCode = true
-                       }, label: {
-                           Image("QR Code")
-                               .resizable()
+        return ZStack {
+            VStack(alignment: .center, spacing: 0) {
+               if let derivationRecipeBuilder = self.derivationRecipeBuilder {
+                    FormCard(title: "Recipe\( derivationRecipe == nil ? "" : " for \( derivationRecipe?.name ?? "" )")") {
+                        VStack(alignment: .leading) {
+                            if derivationRecipeBuilder.isBuilder {
+                                DerivationRecipeBuilder(derivableMenuChoice: derivationRecipeBuilder, recipeBuilderState: recipeBuilderState)
+                            }
+                            Divider().hideIf(derivationRecipe == nil)
+                            Text("Internal representation of your recipe").hideIf(derivationRecipe == nil)
+                                //.font(.title2)
                                 .scaledToFit()
-                                .frame(width: 30, height: 30)
-                       })
-                       .padding(.trailing, 10)
-                       .sheet(isPresented: self.$presentQrCode) {
-                            GeometryReader { geometry in
-                                VStack{
-                                    HStack{
-                                        Spacer()
-                                        Text(view.description)
-                                            .bold()
-                                        Spacer()
-                                        Button {
-                                            presentQrCode = false
-                                        } label: {
-                                            Text("OK")
-                                        }
+                                .minimumScaleFactor(0.01)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .lineLimit(1)
+                            DerivationRecipeView(recipeBuilderProgress:
+                                self.derivationRecipeBuilder.isRecipe ?
+                                    .ready(self.derivationRecipe!) :
+                                    self.recipeBuilderState.progress
+                            ).padding(.top, 1)
+                            Divider()
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    if recipeCanBeDeleted {
+                                        recipeStore.removeRecipe(derivationRecipe)
+                                    } else if recipeCanBeSaved {
+                                        recipeStore.saveRecipe(derivationRecipe)
                                     }
-
-                                    HStack{
-                                        Spacer()
-                                        Image(uiImage: derivedValue.valueForView(view: view).toQRCode())
-                                        .resizable()
-                                        .interpolation(.none)
-                                        .scaledToFit()
-                                        .frame(width: geometry.size.width / 2, height: geometry.size.width / 2, alignment: .center)
-                                        Spacer()
-                                    }
-                                }.padding()
+                                }, label: { Text(recipeCanBeDeleted ? "Remove recipe from menu" : "Save recipe in the menu")
+                                }).showIf(recipeCanBeSaved || recipeCanBeDeleted)
+                                Spacer()
                             }
                         }
-                   }
-                   .padding(.leading, 10)
-                   .padding(.trailing, 10)
-               
-               }
-                VStack(alignment: .center, spacing: 0) {
-                    DerivedFromDiceKey(diceKey: diceKeyState.diceKey, content: {
-                        Text(derivedValue?.valueForView(view: view) ?? "")
-                                .padding(3)
-                                .foregroundColor(.white)
-                                .font(.body)
-                                .multilineTextAlignment(.center)
-                                .lineLimit(8)
-                                .minimumScaleFactor(0.4)
-                                .fixedSize(horizontal: false, vertical: true)
-//                                .padding(.horizontal, 5)
-                    }).padding(.horizontal, 5).layoutPriority(-1)
-                    if let derivedValue = derivedValue , let value = derivedValue.valueForView(view: view), value != "" {
-                        Button("Copy \( view.description )") {
-                            #if os(iOS)
-                            UIPasteboard.general.string = value
-                            #else
-                            let pasteboard = NSPasteboard.general
-                            pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
-                            pasteboard.setString(value, forType: .string)
-                            #endif
-                        }
-                        .padding(.bottom, 4)
                     }
-                }.hideIf(derivationRecipe == nil)
+                    .padding(.top, 10)
+                    .padding(.horizontal, 10)
+                    .layoutPriority(1)
+                    Spacer()
+                   if let derivedValue = derivedValue {
+                       HStack{
+                           Text("Output Format:")
+                           Picker("", selection: $view) {
+                               ForEach(derivedValue.views) { view in
+                                   Text(view.description).tag(view)
+                               }
+                           }.pickerStyle(.menu)
+                           Spacer()
+                           Button(action: {
+                               presentQrCode = true
+                           }, label: {
+                               Image("QR Code")
+                                   .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 30, height: 30)
+                           })
+                           .padding(.trailing, 10)
+                       }
+                       .padding(.leading, 10)
+                       .padding(.trailing, 10)
+                   
+                   }
+                    VStack(alignment: .center, spacing: 0) {
+                        DerivedFromDiceKey(diceKey: diceKeyState.diceKey, content: {
+                            Text(derivedValue?.valueForView(view: view) ?? "")
+                                    .padding(3)
+                                    .foregroundColor(.white)
+                                    .font(.body)
+                                    .multilineTextAlignment(.center)
+                                    .lineLimit(8)
+                                    .minimumScaleFactor(0.4)
+                                    .fixedSize(horizontal: false, vertical: true)
+    //                                .padding(.horizontal, 5)
+                        }).padding(.horizontal, 5).layoutPriority(-1)
+                        if let derivedValue = derivedValue , let value = derivedValue.valueForView(view: view), value != "" {
+                            Button("Copy \( view.description )") {
+                                #if os(iOS)
+                                UIPasteboard.general.string = value
+                                #else
+                                let pasteboard = NSPasteboard.general
+                                pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
+                                pasteboard.setString(value, forType: .string)
+                                #endif
+                            }
+                            .padding(.bottom, 4)
+                        }
+                    }.hideIf(derivationRecipe == nil)
+                }
             }
+            .blur(radius: presentQrCode ? 10 : 0)
+
+            
+            if let derivedValue = derivedValue, presentQrCode {
+            
+                HStack{
+                    VStack{
+                        Spacer()
+                        HStack{
+                            Spacer()
+                            Text(view.description)
+                                .bold()
+                            Spacer()
+                        }
+                        HStack{
+                            Image(uiImage: derivedValue.valueForView(view: view).toQRCode())
+                                .resizable()
+                                .interpolation(.none)
+                                .scaledToFit()
+                                .frame(width: UIScreen.main.bounds.width / 1.5, height: UIScreen.main.bounds.width / 1.5, alignment: .center)
+                        }
+                        
+                        .padding(10)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        Spacer()
+                    }
+                    .foregroundColor(.white)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.black.opacity(0.5))
+                .onTapGesture {
+                    presentQrCode = false
+                }
+            }
+             
         }.onAppear() {
             
             self.view = derivedValue?.views.first ?? .JSON
@@ -182,7 +195,7 @@ struct DiceKeyWithDerivedValue: View {
                 }
                 
             }
-        }
+    }
     }
 }
 

@@ -143,8 +143,12 @@ struct SavedDiceKeysView: View {
         }
     }
 }
-//struct SavedDiceKeysView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SavedDiceKeysView()
-//    }
-//}
+
+struct SavedDiceKeysView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            SavedDiceKeysView(diceKeyMemoryStore:
+                                DiceKeyMemoryStore(DiceKey.Example))
+        }
+    }
+}

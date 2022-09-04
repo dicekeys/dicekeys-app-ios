@@ -37,8 +37,8 @@ struct DiceKeyPresentNavigationFooter: View {
 
     var body: some View {
         let view = VStack(alignment: .center, spacing: 0) {
-        HStack(alignment: .top) {
-            Spacer()
+        HStack(alignment: .top, spacing: 0) {
+            Spacer(minLength: 0)
             VStack {
                 Image("DiceKey Icon")
                     .renderingMode(.template)
@@ -52,7 +52,8 @@ struct DiceKeyPresentNavigationFooter: View {
                 navigateTo(.SeedHardwareKey)
             }
             .if( pageContent == .Default ) { $0.colorInvert() }
-            Spacer()
+            Spacer(minLength: 0)
+            
             VStack {
                 Image("USB Key")
                     .renderingMode(.template)
@@ -67,6 +68,8 @@ struct DiceKeyPresentNavigationFooter: View {
                 navigateTo(.SeedHardwareKey)
             }
             .if( pageContent == .SeedHardwareKey ) { $0.colorInvert() }
+            Spacer(minLength: 0)
+            
             // Secrets
             VStack {
                 Image("Secret with Arrow")
@@ -82,6 +85,7 @@ struct DiceKeyPresentNavigationFooter: View {
             }
             
             .if( pageContent == .Secrets ) { $0.colorInvert() }
+            Spacer(minLength: 0)
 
             VStack {
                 Image("Backup to DiceKey")
@@ -97,7 +101,7 @@ struct DiceKeyPresentNavigationFooter: View {
             }.frame(width: BottomButtonRealWidth, height: navBarContentHeight, alignment: .center)
             .onTapGesture { navigateTo(.Backup) }
             .if( pageContent == .Backup ) { $0.colorInvert() }
-            Spacer()
+            Spacer(minLength: 0)
         }
         .padding(.bottom, geometry.safeAreaInsets.bottom)
         .padding(.top, 5)
@@ -209,7 +213,6 @@ struct DiceKeyPresent: View {
                         Spacer()
                     
                     case .Derive(let derivationRecipeBuilder):
-                            Spacer()
                             DiceKeyWithDerivedValue(diceKey: diceKey, derivationRecipeBuilder: derivationRecipeBuilder)//.layoutPriority(-1)
                 case .Backup:
                         Spacer()
