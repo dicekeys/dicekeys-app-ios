@@ -51,7 +51,9 @@ private class DerivationRecipeBuilderForTemplateModel: ObservableObject {
     func update() {
         recipeBuilderState.progress = .ready(DerivationRecipe(
             template: template,
-            sequenceNumber: sequenceNumber
+            sequenceNumber: sequenceNumber,
+            lengthInChars: template.lengthInChars(),
+            lengthInBytes: template.lengthInBytes()
         ))
     }
 }

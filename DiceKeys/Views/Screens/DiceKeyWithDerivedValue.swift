@@ -16,6 +16,7 @@ struct DiceKeyWithDerivedValue: View {
     @EnvironmentObject private var recipeStore: DerivationRecipeStore
     @State var view : DerivedValueView = .JSON
     @StateObject var recipeBuilderState = RecipeBuilderState()
+    @State var qrScheme: String = ""//  { didSet { update() } }
     @State var presentQrCode = false
 
     var diceKeyState: UnlockedDiceKeyState {
@@ -53,6 +54,18 @@ struct DiceKeyWithDerivedValue: View {
     private var recipeCanBeDeleted: Bool {
         guard let recipe = derivationRecipe else { return false }
         return savedRecipes.contains { $0.id == recipe.id }
+    }
+    
+    private var qrCodeContent: String {
+        if let derivedValue = derivedValue{
+            if(qrScheme.isBlank){
+                return derivedValue.valueForView(view: view)
+            }else{
+                return qrScheme.replacingOccurrences(of: " ", with: "_") + "://" + derivedValue.valueForView(view: view)
+            }
+        }
+        
+        return ""
     }
 
     var body: some View {
@@ -99,7 +112,7 @@ struct DiceKeyWithDerivedValue: View {
                        HStack{
                            Text("Output Format:")
                            Picker("", selection: $view) {
-                               ForEach(derivedValue.views) { view in
+                               ForEach(derivedValue.views.reversed()) { view in
                                    Text(view.description).tag(view)
                                }
                            }.pickerStyle(.menu)
@@ -148,31 +161,44 @@ struct DiceKeyWithDerivedValue: View {
             .blur(radius: presentQrCode ? 10 : 0)
 
             
-            if let derivedValue = derivedValue, presentQrCode {
+            if presentQrCode {
             
-                HStack{
+                VStack{
+                    Spacer()
                     VStack{
-                        Spacer()
-                        HStack{
-                            Spacer()
-                            Text(view.description)
-                                .bold()
-                            Spacer()
+                        VStack{
+                            HStack{
+                                Text(view.description)
+                                    .bold()
+                                Spacer()
+                                Button("OK", action: {
+                                    presentQrCode = false
+                                })
+                            }
+                            
+                            HStack{
+                                Image(uiImage: qrCodeContent.toQRCode())
+                                    .resizable()
+                                    .interpolation(.none)
+                                    .scaledToFit()
+                                    .background(Color.green)
+                            }
+                            .padding(1)
+                            .background(Color.black)
+                            
+                            Text(qrCodeContent)
+                                .font(.caption)
+                                .lineLimit(1)
                         }
-                        HStack{
-                            Image(uiImage: derivedValue.valueForView(view: view).toQRCode())
-                                .resizable()
-                                .interpolation(.none)
-                                .scaledToFit()
-                                .frame(width: UIScreen.main.bounds.width / 1.5, height: UIScreen.main.bounds.width / 1.5, alignment: .center)
-                        }
-                        
-                        .padding(10)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        Spacer()
+                        .padding(20)
+                        .frame(maxWidth: UIScreen.main.bounds.width / 1.25)
                     }
-                    .foregroundColor(.white)
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .onTapGesture {
+                        
+                    }
+                    Spacer()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.black.opacity(0.5))
@@ -191,6 +217,8 @@ struct DiceKeyWithDerivedValue: View {
                         self.view = .OpenPGPPrivateKey
                     }else if(purpose == "ssh" && derivationRecipe.type == .SigningKey){
                         self.view = .OpenSSHPrivateKey
+                    }else if(purpose == "bip39" && derivationRecipe.type == .Secret){
+                        self.view = .BIP39
                     }
                 }
                 
@@ -247,12 +275,12 @@ struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
 //        NavigationView {
         Group {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(),
-                                        derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
+                                        derivationRecipeBuilder: .template(derivationRecipeTemplates[1]))
             .environmentObject(derivationRecipeStore)
             .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
             
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(),
-                                    derivationRecipeBuilder: .template(derivationRecipeTemplates[0]), presentQrCode: true)
+                                    derivationRecipeBuilder: .template(derivationRecipeTemplates[1]), presentQrCode: true)
             .environmentObject(derivationRecipeStore)
             .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
             

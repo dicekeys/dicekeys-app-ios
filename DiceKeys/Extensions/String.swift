@@ -34,6 +34,7 @@ extension String {
         let ciFilter = CIFilter.qrCodeGenerator()
         
         ciFilter.message = Data(self.utf8)
+        ciFilter.setValue("H", forKey: "inputCorrectionLevel")
 
         if let outputImage = ciFilter.outputImage {
             if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
