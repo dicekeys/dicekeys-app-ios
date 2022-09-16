@@ -51,7 +51,7 @@ let derivationRecipeTemplates: [DerivationRecipe] = [
     DerivationRecipe(type: .SigningKey, name: "PGP", recipe: """
 {"purpose":"pgp"}
 """),
-    DerivationRecipe(type: .Secret, name: "Cyrptocurrency wallet", recipe: """
-{"purpose":"bip39"}
+    DerivationRecipe(type: .Secret, name: "Cryptocurrency Wallet Seed", recipe: """
+{"purpose":"wallet"}
 """)
 ];

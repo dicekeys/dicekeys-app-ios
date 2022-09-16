@@ -217,7 +217,7 @@ struct DiceKeyWithDerivedValue: View {
                         self.view = .OpenPGPPrivateKey
                     }else if(purpose == "ssh" && derivationRecipe.type == .SigningKey){
                         self.view = .OpenSSHPrivateKey
-                    }else if(purpose == "bip39" && derivationRecipe.type == .Secret){
+                    }else if(purpose == "wallet" && derivationRecipe.type == .Secret){
                         self.view = .BIP39
                     }
                 }
