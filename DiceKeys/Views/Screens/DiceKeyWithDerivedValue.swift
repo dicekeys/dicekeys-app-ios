@@ -277,7 +277,7 @@ struct DiceKeyWithDerivedValue: View {
             
             self.view = derivedValue?.views.first ?? .JSON
             
-            if let derivationRecipe = derivationRecipe, let firstView = derivationRecipe.derivedValue(diceKey: diceKey).views.first{
+            if let derivationRecipe = derivationRecipe, let _ = derivationRecipe.derivedValue(diceKey: diceKey).views.first{
                 if let purpose = derivationRecipe.purpose(){
                     if(purpose == "pgp" && derivationRecipe.type == .SigningKey){
                         self.view = .OpenPGPPrivateKey
