@@ -82,7 +82,6 @@ struct SecretsView: View {
                             
                         Spacer()
                         Button("Done"){
-                            
                             if let recipe = model.recipeBuilderState?.progress.recipe {
                                 navigateTo(.Derive(DerivationRecipeBuilderType.recipe(recipe)))
                             }

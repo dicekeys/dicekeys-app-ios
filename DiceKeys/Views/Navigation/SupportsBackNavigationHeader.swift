@@ -53,3 +53,14 @@ struct WithNavigationHeader<HeaderContent: View, BodyContent: View>: View {
         }
     }
 }
+
+struct WithNavigationHeader_Previews: PreviewProvider {
+    static var previews: some View {
+        WithNavigationHeader(header: {
+            Text("test")
+        }) { geometry in
+            Text("test")
+        }
+    }
+}
+

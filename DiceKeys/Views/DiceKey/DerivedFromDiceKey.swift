@@ -76,7 +76,7 @@ struct DerivedFromDiceKey<Content: View>: View {
                     Funnel(topWidth: diceKeySize, bottomWidth: bottomWidth, bottleneckWidth: bottleneckWidth, paddingBottom: contentHeight, bottleneckFractionFromTop: bottleneckFractionFromTop)
                         .stroke(lineWidth: 1)
                         .foregroundColor(Color.diceBox)
-                        .frame(width: width, height: totalFunnelHeight, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                        .frame(width: width, height: totalFunnelHeight, alignment: .center)
                     Image(systemName: "arrow.down").resizable().frame(width: arrowSize, height: arrowSize).foregroundColor(.yellow)
                         .offset(
                             x: 0,
@@ -113,7 +113,6 @@ struct DerivedFromDiceKey_Previews: PreviewProvider {
         .clipped()
         .background(Color.yellow)
         .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-        .environment(\.colorScheme, .dark)
         
         VStack {
             Spacer()

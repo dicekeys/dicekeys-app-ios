@@ -16,6 +16,11 @@ struct DiceKeyWithDerivedValue: View {
     @EnvironmentObject private var recipeStore: DerivationRecipeStore
     @State var view : DerivedValueView = .JSON
     @StateObject var recipeBuilderState = RecipeBuilderState()
+    @State var qrScheme: String = ""//  { didSet { update() } }
+    
+    @State var presentQrCode = false
+    @State var askForUsage = false
+    @State var warnAboutiOS = false
 
     var diceKeyState: UnlockedDiceKeyState {
         UnlockedDiceKeyState.forDiceKey(diceKey)
@@ -53,82 +58,221 @@ struct DiceKeyWithDerivedValue: View {
         guard let recipe = derivationRecipe else { return false }
         return savedRecipes.contains { $0.id == recipe.id }
     }
+    
+    private var qrCodeContent: String {
+        if let derivedValue = derivedValue{
+            if(qrScheme.isBlank){
+                return derivedValue.valueForView(view: view)
+            }else{
+                return qrScheme.replacingOccurrences(of: " ", with: "_") + "://" + derivedValue.valueForView(view: view)
+            }
+        }
+        
+        return ""
+    }
 
     var body: some View {
-        return VStack(alignment: .center, spacing: 0) {
-           if let derivationRecipeBuilder = self.derivationRecipeBuilder {
-                FormCard(title: "Recipe\( derivationRecipe == nil ? "" : " for \( derivationRecipe?.name ?? "" )")") {
-                    VStack(alignment: .leading) {
-                        if derivationRecipeBuilder.isBuilder {
-                            DerivationRecipeBuilder(derivableMenuChoice: derivationRecipeBuilder, recipeBuilderState: recipeBuilderState)
-                        }
-                        Divider().hideIf(derivationRecipe == nil)
-                        Text("Internal representation of your recipe").hideIf(derivationRecipe == nil)
-                            //.font(.title2)
-                            .scaledToFit()
-                            .minimumScaleFactor(0.01)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .lineLimit(1)
-                        DerivationRecipeView(recipeBuilderProgress:
-                            self.derivationRecipeBuilder.isRecipe ?
-                                .ready(self.derivationRecipe!) :
-                                self.recipeBuilderState.progress
-                        ).padding(.top, 3)
-                        Divider()
-                        HStack {
-                            Spacer()
-                            Button(action: {
-                                if recipeCanBeDeleted {
-                                    recipeStore.removeRecipe(derivationRecipe)
-                                } else if recipeCanBeSaved {
-                                    recipeStore.saveRecipe(derivationRecipe)
-                                }
-                            }, label: { Text(recipeCanBeDeleted ? "Remove recipe from menu" : "Save recipe in the menu")
-                            }).showIf(recipeCanBeSaved || recipeCanBeDeleted)
-                            Spacer()
-                        }
-                    }
-                }.padding(.horizontal, 10)
-                .layoutPriority(1)
-                Spacer()
-               if let derivedValue = derivedValue {
-                   HStack{
-                       Text("Output Format:")
-                       Picker("", selection: $view) {
-                           ForEach(derivedValue.views) { view in
-                               Text(view.description).tag(view)
-                           }
-                       }.pickerStyle(.menu)
-                       Spacer()
-                   }
-                   .padding(.leading, 10)
-                   .padding(.trailing, 10)
-               
-               }
-                VStack(alignment: .center, spacing: 0) {
-                    DerivedFromDiceKey(diceKey: diceKeyState.diceKey, content: {
-                        Text(derivedValue?.valueForView(view: view) ?? "")
-                                .padding(3)
-                                .font(.body)
-                                .multilineTextAlignment(.center)
-                                .lineLimit(8)
-                                .minimumScaleFactor(0.4)
+        return ZStack {
+            VStack(alignment: .center, spacing: 0) {
+               if let derivationRecipeBuilder = self.derivationRecipeBuilder {
+                    FormCard(title: "Recipe\( derivationRecipe == nil ? "" : " for \( derivationRecipe?.name ?? "" )")") {
+                        VStack(alignment: .leading) {
+                            if derivationRecipeBuilder.isBuilder {
+                                DerivationRecipeBuilder(derivableMenuChoice: derivationRecipeBuilder, recipeBuilderState: recipeBuilderState)
+                            }
+                            Divider().hideIf(derivationRecipe == nil)
+                            Text("Internal representation of your recipe").hideIf(derivationRecipe == nil)
+                                //.font(.title2)
+                                .scaledToFit()
+                                .minimumScaleFactor(0.01)
                                 .fixedSize(horizontal: false, vertical: true)
-//                                .padding(.horizontal, 5)
-                    }).padding(.horizontal, 5).layoutPriority(-1)
-                    if let derivedValue = derivedValue , let value = derivedValue.valueForView(view: view), value != "" {
-                        Button("Copy \( view.description )") {
-                            #if os(iOS)
-                            UIPasteboard.general.string = value
-                            #else
-                            let pasteboard = NSPasteboard.general
-                            pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
-                            pasteboard.setString(value, forType: .string)
-                            #endif
+                                .lineLimit(1)
+                            DerivationRecipeView(recipeBuilderProgress:
+                                self.derivationRecipeBuilder.isRecipe ?
+                                    .ready(self.derivationRecipe!) :
+                                    self.recipeBuilderState.progress
+                            ).padding(.top, 1)
+                            Divider()
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    if recipeCanBeDeleted {
+                                        recipeStore.removeRecipe(derivationRecipe)
+                                    } else if recipeCanBeSaved {
+                                        recipeStore.saveRecipe(derivationRecipe)
+                                    }
+                                }, label: { Text(recipeCanBeDeleted ? "Remove recipe from menu" : "Save recipe in the menu")
+                                }).showIf(recipeCanBeSaved || recipeCanBeDeleted)
+                                Spacer()
+                            }
                         }
                     }
-                }.hideIf(derivationRecipe == nil)
+                    .padding(.top, 10)
+                    .padding(.horizontal, 10)
+                    .layoutPriority(1)
+                    Spacer()
+                   if let derivedValue = derivedValue {
+                       HStack{
+                           Text("Output Format:")
+                           Picker("", selection: $view) {
+                               ForEach(derivedValue.views.reversed()) { view in
+                                   Text(view.description).tag(view)
+                               }
+                           }.pickerStyle(.menu)
+                           Spacer()
+                           Button(action: {
+                               presentQrCode = true
+                               askForUsage = true
+                               warnAboutiOS = false
+                           }, label: {
+                               Image("QR Code")
+                                   .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 30, height: 30)
+                           })
+                           .padding(.trailing, 10)
+                       }
+                       .padding(.leading, 10)
+                       .padding(.trailing, 10)
+                   
+                   }
+                    VStack(alignment: .center, spacing: 0) {
+                        DerivedFromDiceKey(diceKey: diceKeyState.diceKey, content: {
+                            Text(derivedValue?.valueForView(view: view) ?? "")
+                                    .padding(3)
+                                    .foregroundColor(.white)
+                                    .font(.body)
+                                    .multilineTextAlignment(.center)
+                                    .lineLimit(8)
+                                    .minimumScaleFactor(0.4)
+                                    .fixedSize(horizontal: false, vertical: true)
+    //                                .padding(.horizontal, 5)
+                        }).padding(.horizontal, 5).layoutPriority(-1)
+                        if let derivedValue = derivedValue , let value = derivedValue.valueForView(view: view), value != "" {
+                            Button("Copy \( view.description )") {
+                                #if os(iOS)
+                                UIPasteboard.general.string = value
+                                #else
+                                let pasteboard = NSPasteboard.general
+                                pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
+                                pasteboard.setString(value, forType: .string)
+                                #endif
+                            }
+                            .padding(.bottom, 4)
+                        }
+                    }.hideIf(derivationRecipe == nil)
+                }
             }
+            .blur(radius: presentQrCode ? 10 : 0)
+
+            
+            if presentQrCode {
+            
+                VStack{
+                    Spacer()
+                    VStack{
+                        
+                            VStack{
+                                HStack{
+                                    Text(view.description)
+                                        .bold()
+                                    Spacer()
+                                    Button("OK", action: {
+                                        presentQrCode = false
+                                    })
+                                }
+                                
+                                ZStack{
+                                    VStack{
+                                        
+                                        HStack{
+                                            Image(uiImage: qrCodeContent.toQRCode())
+                                                .resizable()
+                                                .interpolation(.none)
+                                                .scaledToFit()
+                                                .background(Color.green)
+                                        }
+                                        .padding(1)
+                                        .background(Color.black)
+                                        
+                                        Text(qrCodeContent)
+                                            .font(.caption)
+                                            .lineLimit(1)
+                                    }.hideIf(askForUsage)
+                                    
+                                    if(askForUsage && !warnAboutiOS){
+                                        VStack{
+                                            Text("I will be reading this QR code with:")
+                                                .font(.subheadline)
+                                            
+                                            Button {
+                                                warnAboutiOS = true
+                                            } label: {
+                                                Text("The camera app on an iPhone or iPad")
+                                                    .frame(maxWidth: .infinity)
+                                            }
+                                            .buttonStyle(.bordered)
+                                            
+                                            
+                                            Button {
+                                                askForUsage = false
+                                            } label: {
+                                                Text("The camera app on an Android phone or tablet")
+                                                    .frame(maxWidth: .infinity)
+                                            }
+                                            .buttonStyle(.bordered)
+                                            
+                                            
+                                            Button {
+                                                askForUsage = false
+                                            } label: {
+                                                Text("A different app or device")
+                                                    .frame(maxWidth: .infinity)
+                                            }
+                                            .buttonStyle(.bordered)
+                                        }
+                                    }
+                                    
+                                    if(askForUsage && warnAboutiOS){
+                                        VStack{
+                                            Text("Caution: iPhone and iPads can leak secrets from QR codes")
+                                                .bold()
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                                .padding(.bottom, 10)
+                                                
+                                            Text("Clicking on the notification that appears when the camera has scanned your QR code will start a web search. The web search sends your secrets to your search engine over the Internet. Your search engine will likely store them.\n\nTo prevent your secrets from being exposed, swipe the notification downward to the bottom of the screen to expose the copy option. This option copies the secret to the clipboard on your device.")
+                                                .font(.caption)
+                                                .frame(maxWidth: .infinity)
+                                                .padding(.bottom, 10)
+                                            
+                                            
+                                            Button("Got it. I'll be careful", action: {
+                                                askForUsage = false
+                                            })
+                                            .buttonStyle(.borderedProminent)
+                                            .frame(maxWidth: .infinity)
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(20)
+                            .frame(maxWidth: UIScreen.main.bounds.width / 1.25)
+                        
+                    }
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .onTapGesture {
+                        
+                    }
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.black.opacity(0.5))
+                .onTapGesture {
+                    presentQrCode = false
+                }
+            }
+             
         }.onAppear() {
             
             self.view = derivedValue?.views.first ?? .JSON
@@ -139,11 +283,13 @@ struct DiceKeyWithDerivedValue: View {
                         self.view = .OpenPGPPrivateKey
                     }else if(purpose == "ssh" && derivationRecipe.type == .SigningKey){
                         self.view = .OpenSSHPrivateKey
+                    }else if(purpose == "wallet" && derivationRecipe.type == .Secret){
+                        self.view = .BIP39
                     }
                 }
                 
             }
-        }
+    }
     }
 }
 
@@ -195,7 +341,14 @@ struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
 //        NavigationView {
         Group {
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(),
-                                        derivationRecipeBuilder: .template(derivationRecipeTemplates[0]))
+                                        derivationRecipeBuilder: .template(derivationRecipeTemplates[1]))
+            .environmentObject(derivationRecipeStore)
+            .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+            
+            DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(),
+                                    derivationRecipeBuilder: .template(derivationRecipeTemplates[1]), presentQrCode: true,
+                                        askForUsage: true,
+                                        warnAboutiOS: true)
             .environmentObject(derivationRecipeStore)
             .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
             

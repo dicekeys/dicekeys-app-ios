@@ -58,14 +58,14 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
         return toCanonicalizeRecipeJson(self)
     }
     
-    mutating func addLengthInCharsToDerivationOptionsJson(_ lengthInChars: Int){
-        if(lengthInChars > 1){
+    mutating func addLengthInCharsToDerivationOptionsJson(_ lengthInChars: Int?){
+        if let lengthInChars = lengthInChars, lengthInChars > 1{
             self["lengthInChars"] = lengthInChars as? Value
         }
     }
     
-    mutating func addLengthInBytesToDerivationOptionsJson(_ lengthInBytes: Int){
-        if(lengthInBytes > 1){
+    mutating func addLengthInBytesToDerivationOptionsJson(_ lengthInBytes: Int?){
+        if let lengthInBytes = lengthInBytes, lengthInBytes > 1{
             self["lengthInBytes"] = lengthInBytes as? Value
         }
     }
@@ -133,7 +133,7 @@ struct DerivationRecipe: Identifiable, Codable, Equatable {
         self.recipe = recipe
     }
 
-    init(template: DerivationRecipe, sequenceNumber: Int, lengthInChars: Int = 0, lengthInBytes: Int = 0) {
+    init(template: DerivationRecipe, sequenceNumber: Int, lengthInChars: Int? = nil, lengthInBytes: Int? = nil) {
         self.type = template.type
         let typeSuffix = template.type == .Password ? " Password" : template.type == .SymmetricKey ? " Key" : template.type == .UnsealingKey ? " Key Pair" : ""
         let sequenceSuffix = sequenceNumber == 1 ? "" : " (\(String(sequenceNumber)))"
@@ -182,14 +182,31 @@ extension DerivationRecipe{
     }
     
     func purpose() -> String?{
-        do {
-            // make sure this JSON is in the format we expect
-            if let json = try JSONSerialization.jsonObject(with: Data(recipe.utf8), options: []) as? [String: Any] {
-                if let purpose = json["purpose"] as? String {
-                    return purpose
-                }
+        if let json = recipe.parseJsonObject(){
+            if let purpose = json["purpose"] as? String {
+                return purpose
             }
-        } catch { }
+        }
+        
+        return nil
+    }
+    
+    func lengthInChars() -> Int?{
+        if let json = recipe.parseJsonObject(){
+            if let lengthInChars = json["lengthInChars"] as? Int {
+                return lengthInChars
+            }
+        }
+        
+        return nil
+    }
+    
+    func lengthInBytes() -> Int?{
+        if let json = recipe.parseJsonObject(){
+            if let lengthInBytes = json["lengthInBytes"] as? Int {
+                return lengthInBytes
+            }
+        }
         
         return nil
     }
