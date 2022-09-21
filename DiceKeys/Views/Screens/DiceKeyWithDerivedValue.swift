@@ -17,7 +17,10 @@ struct DiceKeyWithDerivedValue: View {
     @State var view : DerivedValueView = .JSON
     @StateObject var recipeBuilderState = RecipeBuilderState()
     @State var qrScheme: String = ""//  { didSet { update() } }
+    
     @State var presentQrCode = false
+    @State var askForUsage = false
+    @State var warnAboutiOS = false
 
     var diceKeyState: UnlockedDiceKeyState {
         UnlockedDiceKeyState.forDiceKey(diceKey)
@@ -119,6 +122,8 @@ struct DiceKeyWithDerivedValue: View {
                            Spacer()
                            Button(action: {
                                presentQrCode = true
+                               askForUsage = true
+                               warnAboutiOS = false
                            }, label: {
                                Image("QR Code")
                                    .resizable()
@@ -166,32 +171,93 @@ struct DiceKeyWithDerivedValue: View {
                 VStack{
                     Spacer()
                     VStack{
-                        VStack{
-                            HStack{
-                                Text(view.description)
-                                    .bold()
-                                Spacer()
-                                Button("OK", action: {
-                                    presentQrCode = false
-                                })
+                        
+                            VStack{
+                                HStack{
+                                    Text(view.description)
+                                        .bold()
+                                    Spacer()
+                                    Button("OK", action: {
+                                        presentQrCode = false
+                                    })
+                                }
+                                
+                                ZStack{
+                                    VStack{
+                                        
+                                        HStack{
+                                            Image(uiImage: qrCodeContent.toQRCode())
+                                                .resizable()
+                                                .interpolation(.none)
+                                                .scaledToFit()
+                                                .background(Color.green)
+                                        }
+                                        .padding(1)
+                                        .background(Color.black)
+                                        
+                                        Text(qrCodeContent)
+                                            .font(.caption)
+                                            .lineLimit(1)
+                                    }.hideIf(askForUsage)
+                                    
+                                    if(askForUsage && !warnAboutiOS){
+                                        VStack{
+                                            Text("I will be reading this QR code with:")
+                                                .font(.subheadline)
+                                            
+                                            Button {
+                                                warnAboutiOS = true
+                                            } label: {
+                                                Text("The camera app on an iPhone or iPad")
+                                                    .frame(maxWidth: .infinity)
+                                            }
+                                            .buttonStyle(.bordered)
+                                            
+                                            
+                                            Button {
+                                                askForUsage = false
+                                            } label: {
+                                                Text("The camera app on an Android phone or tablet")
+                                                    .frame(maxWidth: .infinity)
+                                            }
+                                            .buttonStyle(.bordered)
+                                            
+                                            
+                                            Button {
+                                                askForUsage = false
+                                            } label: {
+                                                Text("A different app or device")
+                                                    .frame(maxWidth: .infinity)
+                                            }
+                                            .buttonStyle(.bordered)
+                                        }
+                                    }
+                                    
+                                    if(askForUsage && warnAboutiOS){
+                                        VStack{
+                                            Text("Caution: iPhone and iPads can leak secrets from QR codes")
+                                                .bold()
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                                .padding(.bottom, 10)
+                                                
+                                            Text("Clicking on the notification that appears when the camera has scanned your QR code will start a web search. The web search sends your secrets to your search engine over the Internet. Your search engine will likely store them.\n\nTo prevent your secrets from being exposed, swipe the notification downward to the bottom of the screen to expose the copy option. This option copies the secret to the clipboard on your device.")
+                                                .font(.caption)
+                                                .frame(maxWidth: .infinity)
+                                                .padding(.bottom, 10)
+                                            
+                                            
+                                            Button("Got it. I'll be careful", action: {
+                                                askForUsage = false
+                                            })
+                                            .buttonStyle(.borderedProminent)
+                                            .frame(maxWidth: .infinity)
+                                        }
+                                    }
+                                }
                             }
-                            
-                            HStack{
-                                Image(uiImage: qrCodeContent.toQRCode())
-                                    .resizable()
-                                    .interpolation(.none)
-                                    .scaledToFit()
-                                    .background(Color.green)
-                            }
-                            .padding(1)
-                            .background(Color.black)
-                            
-                            Text(qrCodeContent)
-                                .font(.caption)
-                                .lineLimit(1)
-                        }
-                        .padding(20)
-                        .frame(maxWidth: UIScreen.main.bounds.width / 1.25)
+                            .padding(20)
+                            .frame(maxWidth: UIScreen.main.bounds.width / 1.25)
+                        
                     }
                     .background(Color.white)
                     .cornerRadius(10)
@@ -280,7 +346,9 @@ struct DiceKeyWithDerivedValue_Previews: PreviewProvider {
             .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
             
             DiceKeyWithDerivedValue(diceKey: DiceKey.createFromRandom(),
-                                    derivationRecipeBuilder: .template(derivationRecipeTemplates[1]), presentQrCode: true)
+                                    derivationRecipeBuilder: .template(derivationRecipeTemplates[1]), presentQrCode: true,
+                                        askForUsage: true,
+                                        warnAboutiOS: true)
             .environmentObject(derivationRecipeStore)
             .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
             
