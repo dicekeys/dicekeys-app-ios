@@ -76,6 +76,15 @@ struct DerivedValueSecret : DerivedValue {
     
     var views: [DerivedValueView] = [.JSON, .Hex, .BIP39]
     
+    init(secret: Secret, showBIP39: Bool) {
+        self.secret = secret
+        if(showBIP39) {
+            self.views = [.JSON, .Hex, .BIP39]
+        } else {
+            self.views = [.JSON, .Hex]
+        }
+    }
+    
     func valueForView(view: DerivedValueView) -> String {
         switch view{
         case .Hex: return secret.secretBytes().asHexString
