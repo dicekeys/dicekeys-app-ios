@@ -171,7 +171,8 @@ extension DerivationRecipe{
             case .Password:
                 return DerivedValuePassword(password: try! Password.deriveFromSeed(withSeedString: seed, recipe: recipe))
             case .Secret:
-                return DerivedValueSecret(secret: try! Secret.deriveFromSeed(withSeedString: seed, recipe: recipe))
+                let lengthInBytes = self.lengthInBytes()
+                return DerivedValueSecret(secret: try! Secret.deriveFromSeed(withSeedString: seed, recipe: recipe), showBIP39: (lengthInBytes == nil || lengthInBytes == 32))
             case .SigningKey:
                 return DerivedValueSigningKey(signingKey: try! SigningKey.deriveFromSeed(withSeedString: seed, recipe: recipe))
             case .SymmetricKey:
