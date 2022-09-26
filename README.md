@@ -27,6 +27,15 @@ To test the app, you'll need a DiceKey, which is a box of 25 dice, to scan using
 
 If you don't have a DiceKey, go to https://dicekeys.app, use the feature to generate a random DiceKey, and then print a picture of arrangement of 25 dice to scan from the app. (Or, you can just scan them from one device's screen to another device's camera.
 
+## Building for production
+
+- Bump version and build number in project
+- Product menu, Archive option to build an archive
+- Window > organizer to open archives window
+- Validate app button (optional)
+- Distribute app button
+
+
 ## Security Key Seed Writer
 
 The command-line utility writes a 32-byte seed to a security key for use with [DiceKeys/SoloKeys standard for seeding authenticators](https://github.com/dicekeys/seeding-webauthn).

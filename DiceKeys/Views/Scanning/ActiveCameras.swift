@@ -16,7 +16,7 @@ class ActiveCameras {
         if cache == nil || cache?.count == 0 || lastLoaded == nil || (lastLoaded?.timeIntervalSinceNow.magnitude ?? 1) > 0.1 {
             #if os(iOS) 
             cache = AVCaptureDevice.DiscoverySession(
-                deviceTypes: [AVCaptureDevice.DeviceType.builtInWideAngleCamera],
+                deviceTypes: [AVCaptureDevice.DeviceType.builtInUltraWideCamera, AVCaptureDevice.DeviceType.builtInWideAngleCamera],
                 mediaType: .video,
                 position: .back
             ).devices.filter { device in device.canBeDisplayed }
